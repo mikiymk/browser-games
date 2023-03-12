@@ -1,51 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>OX3</title>
+    <style>
+      .board {
+          height: 99vmin;
+          width: 99vmin;
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          row-gap: 0;
+          column-gap: 0;
+      }
 
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>OX3</title>
-  <style>
-    .board {
-        height: 99vmin;
-        width: 99vmin;
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-    }
+      .cell {
+          height: 3rem;
+          width: 3rem;
+          background: white;
+          border: 1px solid black;
+      }
+    </style>
+  </head>
 
-    .cell {
-        height: 3rem;
-        width: 3rem;
-        background: white;
-        border: 1px solid black;
-    }
-  </style>
-</head>
+  <body>
+    <div id="ox3-board" class="board">
+      <div id="ox3-1" class="cell"></div>
+      <div id="ox3-2" class="cell"></div>
+      <div id="ox3-3" class="cell"></div>
+      <div id="ox3-4" class="cell"></div>
+      <div id="ox3-5" class="cell"></div>
+      <div id="ox3-6" class="cell"></div>
+      <div id="ox3-7" class="cell"></div>
+      <div id="ox3-8" class="cell"></div>
+      <div id="ox3-9" class="cell"></div>
+    </div>
+    <script>
+      "use strict";
 
-<body>
-  <div id="ox3-board" class="board">
-    <div id="ox3-1" class="cell"></div>
-    <div id="ox3-2" class="cell"></div>
-    <div id="ox3-3" class="cell"></div>
-    <div id="ox3-4" class="cell"></div>
-    <div id="ox3-5" class="cell"></div>
-    <div id="ox3-6" class="cell"></div>
-    <div id="ox3-7" class="cell"></div>
-    <div id="ox3-8" class="cell"></div>
-    <div id="ox3-9" class="cell"></div>
-  </div>
-  <script>
-"use strict";
+      const main = () => {
+        const nums = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+        const ids = nums.map((n) => `oc3-${n}`);
+        const cells = ids.map((id) => document.getElementById(id));
 
-const nums = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-const ids = nums.map(n => `oc3-${n}`);
-const cells = ids.map(id => document.getElementById(id));
+        cells.forEach((cell) => {
+          cell.addEventListener("click", () => (cell.innerText = "O"));
+        });
+      };
 
-cells.forEach(cell => {
-  cell.addEventListener("click", () => cell.innerText = "O");
-});
-  </script>
-</body>
-
+      document.addEventListener("DOMContentLoaded", () => {
+        try {
+          main();
+        } catch (error) {
+          alert(error);
+        } finally {
+          alert("done");
+        }
+      });
+    </script>
+  </body>
 </html>
