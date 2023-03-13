@@ -62,6 +62,11 @@
       <div id="ox3-8" class="cell"></div>
     </div>
 
+    <div>
+      status:
+      <output id="ox3-stat"></output>
+    </div>
+
     <template id="ox3-temp-o">
       <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
         <circle cx="100" cy="100" r="70" class="char char-o" />
@@ -81,6 +86,7 @@
         const boardData = [-1, -1, -1, -1, -1, -1, -1, -1, -1];
         const ids = nums.map((n) => `ox3-${n}`);
         const cells = ids.map((id) => document.getElementById(id));
+        const stat = document.getElementById("ox3-stat");
 
         const charO = document.getElementById("ox3-temp-o");
         const charX = document.getElementById("ox3-temp-x");
@@ -99,11 +105,41 @@
           });
         };
 
+        const getWinner = () => {
+          const winnerLines = [
+            [0, 1, 2],
+            [3, 4, 5],
+            [6, 7, 8],
+            [0, 3, 6],
+            [1, 4, 7],
+            [2, 5, 8],
+            [0, 4, 8],
+            [2, 4, 6],
+          ];
+
+          for (const line of winnerLines) {
+            const cell1 = boardData[line[0]];
+            const cell2 = boardData[line[1]];
+            const cell3 = boardData[line[2]];
+
+            if (cell1 != -1 && cell1 == cell2 && cell1 == cell3) {
+              return cell1
+            }
+          }
+
+          return -1;
+        };
+
         const onClick = (number) => {
           const cellData = boardData[number];
-          if (cellData == -1) {
+          if (mark != -1 && cellData == -1) {
             boardData[number] = mark;
             mark = mark == 1 ? 2 : 1;
+            const winner = getWinner();
+            if (winner != -1) {
+              stat.innerText = winner == 1 ? "O win" : "X win";
+              mark = -1;
+            }
           }
           setBoard();
         };
