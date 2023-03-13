@@ -7,23 +7,23 @@
     <title>OX3</title>
     <style>
       .board {
-          height: 99vmin;
-          width: 99vmin;
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          row-gap: 0;
-          column-gap: 0;
+        height: 99vmin;
+        width: 99vmin;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        row-gap: 0;
+        column-gap: 0;
       }
 
       .cell {
-          height: 33vmin;
-          width: 33vmin;
-          background: white;
-          border: 1px solid black;
+        height: 33vmin;
+        width: 33vmin;
+        background: white;
+        border: 1px solid black;
 
-          display: flex;
-          align-items: center;
-          justify-content: center
+        display: flex;
+        align-items: center;
+        justify-content: center
       }
 
       .char {
@@ -45,6 +45,7 @@
 
   <body>
     <div id="ox3-board" class="board">
+      <div id="ox3-0" class="cell"></div>
       <div id="ox3-1" class="cell"></div>
       <div id="ox3-2" class="cell"></div>
       <div id="ox3-3" class="cell"></div>
@@ -53,7 +54,6 @@
       <div id="ox3-6" class="cell"></div>
       <div id="ox3-7" class="cell"></div>
       <div id="ox3-8" class="cell"></div>
-      <div id="ox3-9" class="cell"></div>
     </div>
 
     <template id="ox3-temp-o">
@@ -71,17 +71,19 @@
       "use strict";
 
       const main = () => {
-        const nums = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+        const nums = [0, 1, 2, 3, 4, 5, 6, 7, 8];
         const ids = nums.map((n) => `ox3-${n}`);
         const cells = ids.map((id) => document.getElementById(id));
 
         const charO = document.getElementById("ox3-temp-o");
         const charX = document.getElementById("ox3-temp-x");
+        const setTemplate = (element, template) => {
+          while (element.firstChild) element.removeChild(element.lastChild);
+          element.appendChild(template.content.cloneNode(true));
+        };
 
         cells.forEach((cell) => {
-          cell.addEventListener("click", () => {
-            cell.appendChild(charO);
-          });
+          cell.addEventListener("click", () => setTemplate(cell, charO));
         });
       };
 
