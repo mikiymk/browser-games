@@ -78,19 +78,36 @@
 
       const main = () => {
         const nums = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+        const boardData = [-1, -1, -1, -1, -1, -1, -1, -1, -1];
         const ids = nums.map((n) => `ox3-${n}`);
         const cells = ids.map((id) => document.getElementById(id));
 
         const charO = document.getElementById("ox3-temp-o");
         const charX = document.getElementById("ox3-temp-x");
-        const setTemplate = (element, template) => {
-          while (element.firstChild) element.removeChild(element.lastChild);
-          element.appendChild(template.content.cloneNode(true));
+
+        let mark = 1;
+
+        const setBoard = () => {
+          cells.forEach((cell, index) => {
+            while (cell.firstChild) cell.removeChild(cell.lastChild);
+            const cellData = boardData[index];
+            if (cellData == 1) {
+              cell.appendChild(charO.content.cloneNode(true));
+            } else if (cellData == 2) {
+              cell.appendChild(charX.content.cloneNode(true));
+            }
+          });
         };
 
-        cells.forEach((cell) => {
-          cell.addEventListener("click", () => setTemplate(cell, charO));
-        });
+        const onClick = (number) => {
+          boardData[number] = mark;
+          mark = mark == 1 ? 2 : 1;
+          setBoard();
+        };
+
+        cells.forEach((cell, index) =>
+          cell.addEventListener("click", () => onclick(index))
+        );
       };
 
       document.addEventListener("DOMContentLoaded", () => {
