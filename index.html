@@ -100,8 +100,11 @@
         };
 
         const onClick = (number) => {
-          boardData[number] = mark;
-          mark = mark == 1 ? 2 : 1;
+          const cellData = boardData[number];
+          if (cellData == -1) {
+            boardData[number] = mark;
+            mark = mark == 1 ? 2 : 1;
+          }
           setBoard();
         };
 
