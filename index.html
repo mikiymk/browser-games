@@ -65,6 +65,7 @@
     <div>
       status:
       <output id="ox3-stat"></output>
+      <button id="ox3-reset">reset</button>
     </div>
 
     <template id="ox3-temp-o">
@@ -87,6 +88,7 @@
         const ids = nums.map((n) => `ox3-${n}`);
         const cells = ids.map((id) => document.getElementById(id));
         const stat = document.getElementById("ox3-stat");
+        const reset = document.getElementById("ox3-reset");
 
         const charO = document.getElementById("ox3-temp-o");
         const charX = document.getElementById("ox3-temp-x");
@@ -123,7 +125,7 @@
             const cell3 = boardData[line[2]];
 
             if (cell1 != -1 && cell1 == cell2 && cell1 == cell3) {
-              return cell1
+              return cell1;
             }
           }
 
@@ -147,6 +149,14 @@
         cells.forEach((cell, index) =>
           cell.addEventListener("click", () => onClick(index))
         );
+
+        reset.addEventListener("click", () => {
+          for (let i = 0; i < 9; i++) {
+            boardData[i] = -1;
+          }
+          mark = 1;
+          setBoard();
+        });
       };
 
       document.addEventListener("DOMContentLoaded", () => {
