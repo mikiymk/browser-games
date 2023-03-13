@@ -16,10 +16,14 @@
       }
 
       .cell {
-          height: 3rem;
-          width: 3rem;
+          height: 33vmin;
+          width: 33vmin;
           background: white;
           border: 1px solid black;
+
+          display: flex;
+          align-items: center;
+          justify-content: center
       }
     </style>
   </head>
@@ -36,6 +40,18 @@
       <div id="ox3-8" class="cell"></div>
       <div id="ox3-9" class="cell"></div>
     </div>
+
+    <template id="ox3-temp-o">
+      <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="100" cy="100" r="70" class="char char-o" />
+      </svg>
+    </template>
+    <template id="ox3-temp-x">
+      <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <path d="M30,30 170,170 M30,170 170,30" class="char char-x" />
+      </svg>
+    </template>
+
     <script>
       "use strict";
 
@@ -44,8 +60,13 @@
         const ids = nums.map((n) => `ox3-${n}`);
         const cells = ids.map((id) => document.getElementById(id));
 
+        const charO = document.getElementById("ox3-temp-o");
+        const charX = document.getElementById("ox3-temp-x");
+
         cells.forEach((cell) => {
-          cell.addEventListener("click", () => (cell.innerText = "O"));
+          cell.addEventListener("click", () => {
+            cell.appendChild(charO);
+          });
         });
       };
 
