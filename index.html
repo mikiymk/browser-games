@@ -133,7 +133,7 @@
         };
 
         const onClick = (number) => {
-          alert(number);
+          try {
           const cellData = boardData[number];
           if (mark != -1 && cellData == -1) {
             boardData[number] = mark;
@@ -145,6 +145,7 @@
             }
           }
           setBoard();
+          }catch(e){alert(e);}
         };
 
         cells.forEach((cell, index) =>
