@@ -136,7 +136,6 @@
         };
 
         const onClick = (number) => {
-          try {
           const cellData = boardData[number];
           if (mark != -1 && cellData == -1) {
             boardData[number] = mark;
@@ -148,7 +147,6 @@
             }
           }
           setBoard();
-          }catch(e){alert(e);}finally{alert(document.getElementById("ox3-board").innerHTML);}
         };
 
         cells.forEach((cell, index) =>
@@ -164,15 +162,7 @@
         });
       };
 
-      document.addEventListener("DOMContentLoaded", () => {
-        try {
-          main();
-        } catch (error) {
-          alert(error);
-        } finally {
-          alert("done");
-        }
-      });
+      document.addEventListener("DOMContentLoaded", main);
     </script>
   </body>
 </html>
