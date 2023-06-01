@@ -82,7 +82,7 @@ export const main = () => {
     settings.close();
   });
 
-  playerO.addEventListener("change", (event) => {
+  playerO.addEventListener("click", (event) => {
     const value = event.currentTarget.value;
     console.log(value);
     if (value === "human") {
@@ -92,7 +92,7 @@ export const main = () => {
     }
   });
 
-  playerX.addEventListener("change", (event) => {
+  playerX.addEventListener("click", (event) => {
     const value = event.currentTarget.value;
     console.log(value);
     if (value === "human") {
@@ -165,17 +165,22 @@ const aiPlayer = {
       }
     }
 
-    // 左上から埋める
-
+    // 空きマス
+    const emptyCells = [];
     for (let i = 0; i < BoardLength; i++) {
       const cell = boardData[i];
       if (cell === Empty) {
-        return i;
+        emptyCells.push(i);
       }
     }
 
-    // 見つからなかったら終了
-    return Reset;
+    if (emptyCells.length === 0) {
+      // 見つからなかったら終了
+      return Reset;
+    }
+
+    // ランダム
+    return emptyCells[Math.floor(Math.random() * emptyCells.length)];
   },
 };
 
