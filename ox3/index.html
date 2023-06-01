@@ -9,6 +9,7 @@
   </head>
 
   <body>
+    <!-- ボード -->
     <div id="ox3-board" class="board">
       <div id="ox3-0" class="cell"></div>
       <div id="ox3-1" class="cell"></div>
@@ -21,12 +22,14 @@
       <div id="ox3-8" class="cell"></div>
     </div>
 
+    <!-- その他表示 -->
     <div>
       status:
       <output id="ox3-stat"></output>
       <button id="ox3-reset">reset</button>
     </div>
 
+    <!-- ◯テンプレート -->
     <template id="ox3-temp-o">
       <svg
         viewBox="0 0 200 200"
@@ -36,6 +39,8 @@
         <circle cx="100" cy="100" r="70" class="char-o" />
       </svg>
     </template>
+
+    <!-- ✗テンプレート -->
     <template id="ox3-temp-x">
       <svg
         viewBox="0 0 200 200"
