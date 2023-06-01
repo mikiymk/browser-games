@@ -1,6 +1,7 @@
 const Empty = -1;
 const OMarked = 1;
 const XMarked = 2;
+const Reset = 10;
 
 // 盤のサイズ
 const BoardLength = 9;
@@ -64,7 +65,7 @@ export const main = () => {
 
   const players = {
     [OMarked]: humanPlayer,
-    [XMarked]: humanPlayer,
+    [XMarked]: aiPlayer,
   };
 
   for (let index = 0; index < BoardLength; index++) {
@@ -74,7 +75,7 @@ export const main = () => {
       const cellData = humanPlayer.boardData[index];
 
       // 次のマークが空ではなく、クリックしたマスが空の場合
-      if (cellData == Empty) {
+      if (cellData === Empty) {
         humanPlayer.resolve(index);
       }
     };
@@ -83,7 +84,7 @@ export const main = () => {
   }
 
   const onReset = () => {
-    humanPlayer.resolve("reset");
+    humanPlayer.resolve(Reset);
 
     gameLoop(players);
   };
@@ -113,6 +114,37 @@ const humanPlayer = {
   },
 };
 
+const aiPlayer = {
+  getMarkIndex(boardData, mark) {
+    // 各ラインで相手が2つと空きマスの場合、空きマスを選ぶ
+    for (const line of winnerLines) {
+      const [cell1, cell2, cell3] = line.map((num) => boardData[num]);
+
+      if (cell1 === invertMark(mark) && cell1 === cell2 && cell3 === Empty) {
+        return line[2];
+      }
+      if (cell2 === invertMark(mark) && cell2 === cell3 && cell1 === Empty) {
+        return line[0];
+      }
+      if (cell3 === invertMark(mark) && cell3 === cell1 && cell2 === Empty) {
+        return line[1];
+      }
+    }
+
+    // 左上から埋める
+
+    for (let i = 0; i < BoardLength; i++) {
+      const cell = boardData[i];
+      if (cell === Empty) {
+        return i;
+      }
+    }
+
+    // 見つからなかったら終了
+    return Reset;
+  },
+};
+
 const gameLoop = async (players) => {
   let mark = OMarked;
   const boardData = Array(BoardLength).fill(Empty);
@@ -122,23 +154,23 @@ const gameLoop = async (players) => {
   while (true) {
     const player = players[mark];
 
-    stat.innerText = mark == OMarked ? "O mark" : "X mark";
+    stat.innerText = mark === OMarked ? "O mark" : "X mark";
 
     const index = await player.getMarkIndex(boardData, mark);
 
-    if (index === "reset") {
+    if (index === Reset) {
       break;
     }
 
     boardData[index] = mark;
-    mark = mark == OMarked ? XMarked : OMarked;
+    mark = invertMark(mark);
 
     setBoard(cells, boardData);
 
     // 勝ちが決まったか確認する
     const winner = getWinner(boardData);
-    if (winner != Empty) {
-      stat.innerText = winner == OMarked ? "O win" : "X win";
+    if (winner !== Empty) {
+      stat.innerText = winner === OMarked ? "O win" : "X win";
 
       break;
     }
@@ -150,8 +182,8 @@ const gameLoop = async (players) => {
         count++;
       }
     }
-    if (count == 9) {
-      stat.innerText =  "filled" ;
+    if (count === 9) {
+      stat.innerText = "filled";
       break;
     }
   }
@@ -166,6 +198,10 @@ const elem = (id) => {
   return document.getElementById(id);
 };
 
+const invertMark = (mark) => {
+  return mark === OMarked ? XMarked : OMarked;
+};
+
 /**
  * 勝利者を取得する関数
  * いない場合は空を返す
@@ -176,7 +212,7 @@ const getWinner = (boardData) => {
     const [cell1, cell2, cell3] = line.map((num) => boardData[num]);
 
     // データが空でなく、１・２・３が同じなら勝利
-    if (cell1 != Empty && cell1 == cell2 && cell1 == cell3) {
+    if (cell1 !== Empty && cell1 === cell2 && cell1 === cell3) {
       return cell1;
     }
   }
@@ -199,9 +235,9 @@ const setBoard = (cells, boardData) => {
 
     const cellData = boardData[i];
 
-    if (cellData == OMarked) {
+    if (cellData === OMarked) {
       cell.appendChild(charO.content.cloneNode(true));
-    } else if (cellData == XMarked) {
+    } else if (cellData === XMarked) {
       cell.appendChild(charX.content.cloneNode(true));
     }
   }
