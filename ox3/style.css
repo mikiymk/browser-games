@@ -1,0 +1,43 @@
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      .board {
+        margin: 5vmin;
+        height: 90vmin;
+        width: 90vmin;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        row-gap: 0;
+        column-gap: 0;
+      }
+
+      .cell {
+        height: 30vmin;
+        width: 30vmin;
+        background: white;
+        border: 1px solid black;
+
+        display: flex;
+        align-items: center;
+        justify-content: center
+      }
+
+      .char {
+        height: 100%;
+        width: 100%;
+
+        fill: none;
+        stroke: black;
+        stroke-width: 5px;
+        stroke-linecap: butt;
+      }
+
+      .char-o {
+        stroke: red;
+      }
+
+      .char-x {
+        stroke: blue;
+      }

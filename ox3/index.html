@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>OX3</title>
+    <link href="./style.css" rel="stylesheet" />
+  </head>
+
+  <body>
+    <div id="ox3-board" class="board">
+      <div id="ox3-0" class="cell"></div>
+      <div id="ox3-1" class="cell"></div>
+      <div id="ox3-2" class="cell"></div>
+      <div id="ox3-3" class="cell"></div>
+      <div id="ox3-4" class="cell"></div>
+      <div id="ox3-5" class="cell"></div>
+      <div id="ox3-6" class="cell"></div>
+      <div id="ox3-7" class="cell"></div>
+      <div id="ox3-8" class="cell"></div>
+    </div>
+
+    <div>
+      status:
+      <output id="ox3-stat"></output>
+      <button id="ox3-reset">reset</button>
+    </div>
+
+    <template id="ox3-temp-o">
+      <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" class="char">
+        <circle cx="100" cy="100" r="70" class="char-o" />
+      </svg>
+    </template>
+    <template id="ox3-temp-x">
+      <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" class="char">
+        <path d="M30,30 170,170 M30,170 170,30" class="char-x" />
+      </svg>
+    </template>
+
+    <script src="./main.js" type="module"></script>
+  </body>
+</html>
