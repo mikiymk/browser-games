@@ -21,66 +21,140 @@ const winnerLines = [
 ];
 
 /**
+ * マス目要素のリスト
+ * @type {HTMLElement[]}
+ */
+const cells = [];
+/**
+ * 状況テキスト要素
+ * @type {HTMLElement}
+ */
+let stat;
+/**
+ * リセットボタン要素
+ * @type {HTMLElement}
+ */
+let reset;
+/**
+ * ◯テンプレート要素
+ * @type {HTMLTemplateElement}
+ */
+let charO;
+/**
+ * ✗テンプレート要素
+ * @type {HTMLTemplateElement}
+ */
+let charX;
+
+/**
  * メイン関数
  */
 export const main = () => {
-  /**
-   * マス目要素のリスト
-   * @type {HTMLElement[]}
-   */
-  const cells = [];
+  // 要素を代入する
   for (let i = 0; i < BoardLength; i++) {
     const id = `ox3-${i}`;
     const cell = elem(id);
     cells.push(cell);
   }
 
-  const stat = elem("ox3-stat");
-  const reset = elem("ox3-reset");
+  stat = elem("ox3-stat");
+  reset = elem("ox3-reset");
+  charO = elem("ox3-temp-o");
+  charX = elem("ox3-temp-x");
 
-  /**
-   * @type {(-1 | 1 | 2)[]}
-   */
-  const boardData = Array(BoardLength);
-  let mark = Empty;
+  const players = {
+    [OMarked]: humanPlayer,
+    [XMarked]: humanPlayer,
+  };
 
   for (let index = 0; index < BoardLength; index++) {
     const cell = cells[index];
 
     const onClick = () => {
-      const cellData = boardData[index];
+      const cellData = humanPlayer.boardData[index];
 
       // 次のマークが空ではなく、クリックしたマスが空の場合
-      if (mark != Empty && cellData == Empty) {
-        boardData[index] = mark;
-        mark = mark == OMarked ? XMarked : OMarked;
-
-        // 勝ちが決まったか確認する
-        const winner = getWinner(boardData);
-        if (winner != Empty) {
-          // 状態テキストを更新する
-          stat.innerText = winner == OMarked ? "O win" : "X win";
-          // 次のマークができないようにする
-          mark = Empty;
-        }
+      if (cellData == Empty) {
+        humanPlayer.resolve(index);
       }
-
-      setBoard(cells, boardData);
     };
 
     cell.addEventListener("click", onClick);
   }
 
   const onReset = () => {
-    boardData.fill(Empty);
-    mark = OMarked;
-    stat.innerText = "";
-    setBoard(cells, boardData);
+    humanPlayer.resolve("reset");
+
+    gameLoop(players);
   };
 
   reset.addEventListener("click", onReset);
 
-  onReset();
+  gameLoop(players);
+};
+
+const humanPlayer = {
+  boardData: [],
+  promise: new Promise(() => {}),
+
+  reset() {
+    humanPlayer.promise = new Promise((resolve) => {
+      humanPlayer.resolve = resolve;
+    });
+  },
+
+  resolve: () => {},
+
+  getMarkIndex(boardData, mark) {
+    humanPlayer.boardData = boardData;
+    humanPlayer.reset();
+
+    return humanPlayer.promise;
+  },
+};
+
+const gameLoop = async (players) => {
+  let mark = OMarked;
+  const boardData = Array(BoardLength).fill(Empty);
+
+  setBoard(cells, boardData);
+
+  while (true) {
+    const player = players[mark];
+
+    stat.innerText = mark == OMarked ? "O mark" : "X mark";
+
+    const index = await player.getMarkIndex(boardData, mark);
+
+    if (index === "reset") {
+      break;
+    }
+
+    boardData[index] = mark;
+    mark = mark == OMarked ? XMarked : OMarked;
+
+    setBoard(cells, boardData);
+
+    // 勝ちが決まったか確認する
+    const winner = getWinner(boardData);
+    if (winner != Empty) {
+      stat.innerText = winner == OMarked ? "O win" : "X win";
+
+      break;
+    }
+
+    // すべて埋まっているか確認する
+    let count = 0;
+    for (let i = 0; i < BoardLength; i++) {
+      if (boardData[i] !== -1) {
+        count++;
+      }
+    }
+    if (count == 9) {
+      stat.innerText =  "filled" ;
+      break;
+    }
+  }
 };
 
 /**
@@ -117,9 +191,6 @@ const getWinner = (boardData) => {
  * @param {(-1 | 1 | 2)[]} boardData
  */
 const setBoard = (cells, boardData) => {
-  const charO = elem("ox3-temp-o");
-  const charX = elem("ox3-temp-x");
-
   for (let i = 0; i < BoardLength; i++) {
     const cell = cells[i];
 
