@@ -82,7 +82,7 @@ export const main = () => {
     settings.close();
   });
 
-  playerO.addEventListener("click", (event) => {
+  playerO.addEventListener("change", (event) => {
     const value = event.currentTarget.value;
     console.log(value);
     if (value === "human") {
@@ -92,15 +92,17 @@ export const main = () => {
     }
   });
 
-  playerX.addEventListener("click", (event) => {
+  playerX.addEventListener("change", (event) => {
     const value = event.currentTarget.value;
-    console.log(value);
     if (value === "human") {
       players[XMarked] = humanPlayer;
     } else if (value === "ai") {
       players[XMarked] = aiPlayer;
     }
   });
+
+  playerO.value = "human";
+  playerX.value = "ai";
 
   for (let index = 0; index < BoardLength; index++) {
     const cell = cells[index];
@@ -151,17 +153,29 @@ const humanPlayer = {
 const aiPlayer = {
   getMarkIndex(boardData, mark) {
     // 各ラインで相手が2つと空きマスの場合、空きマスを選ぶ
+    const clearCells = [];
+    const interCells = [];
     for (const line of winnerLines) {
       const [cell1, cell2, cell3] = line.map((num) => boardData[num]);
 
       if (cell1 === invertMark(mark) && cell1 === cell2 && cell3 === Empty) {
-        return line[2];
+        interCells.push(line[2]);
       }
       if (cell2 === invertMark(mark) && cell2 === cell3 && cell1 === Empty) {
-        return line[0];
+        interCells.push(line[0]);
       }
       if (cell3 === invertMark(mark) && cell3 === cell1 && cell2 === Empty) {
-        return line[1];
+        interCells.push(line[1]);
+      }
+
+      if (cell1 === mark && cell1 === cell2 && cell3 === Empty) {
+        clearCells.push(line[2]);
+      }
+      if (cell2 === mark && cell2 === cell3 && cell1 === Empty) {
+        clearCells.push(line[0]);
+      }
+      if (cell3 === mark && cell3 === cell1 && cell2 === Empty) {
+        clearCells.push(line[1]);
       }
     }
 
@@ -180,8 +194,18 @@ const aiPlayer = {
     }
 
     // ランダム
-    return emptyCells[Math.floor(Math.random() * emptyCells.length)];
+    return (
+      randomSelect(clearCells) ??
+      randomSelect(interCells) ??
+      randomSelect(emptyCells) ??
+      Reset
+    );
   },
+};
+
+const randomSelect = (list) => {
+  if (list.length === 0) return undefined;
+  return list[Math.floor(Math.random() * list.length)];
 };
 
 const gameLoop = async (players) => {
