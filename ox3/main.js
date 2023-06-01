@@ -51,6 +51,11 @@ let charX;
  * メイン関数
  */
 export const main = () => {
+  const players = {
+    [OMarked]: humanPlayer,
+    [XMarked]: aiPlayer,
+  };
+
   // 要素を代入する
   for (let i = 0; i < BoardLength; i++) {
     const id = `ox3-${i}`;
@@ -63,10 +68,39 @@ export const main = () => {
   charO = elem("ox3-temp-o");
   charX = elem("ox3-temp-x");
 
-  const players = {
-    [OMarked]: humanPlayer,
-    [XMarked]: aiPlayer,
-  };
+  const settings = elem("ox3-settings");
+  const openSettings = elem("ox3-open-settings");
+  const closeSettings = elem("ox3-close-settings");
+  const playerO = elem("ox3-player-o");
+  const playerX = elem("ox3-player-x");
+
+  openSettings.addEventListener("click", () => {
+    settings.showModal();
+  });
+
+  closeSettings.addEventListener("click", () => {
+    settings.close();
+  });
+
+  playerO.addEventListener("change", (event) => {
+    const value = event.currentTarget.value;
+    console.log(value);
+    if (value === "human") {
+      players[OMarked] = humanPlayer;
+    } else if (value === "ai") {
+      players[OMarked] = aiPlayer;
+    }
+  });
+
+  playerX.addEventListener("change", (event) => {
+    const value = event.currentTarget.value;
+    console.log(value);
+    if (value === "human") {
+      players[XMarked] = humanPlayer;
+    } else if (value === "ai") {
+      players[XMarked] = aiPlayer;
+    }
+  });
 
   for (let index = 0; index < BoardLength; index++) {
     const cell = cells[index];

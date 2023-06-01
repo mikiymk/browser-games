@@ -27,7 +27,30 @@
       status:
       <output id="ox3-stat"></output>
       <button id="ox3-reset">reset</button>
+      <button id="ox3-open-settings">open settings</button>
     </div>
+
+    <!-- 設定 -->
+    <dialog id="ox3-settings">
+      <h3>設定</h3>
+
+      <div>
+        ◯プレイヤー
+        <select id="ox3-player-o">
+          <option value="human" selected>操作</option>
+          <option value="ai">AI</option>
+        </select>
+      </div>
+      <div>
+        ✗プレイヤー
+        <select id="ox3-player-x">
+          <option value="human">操作</option>
+          <option value="ai" selected>AI</option>
+        </select>
+      </div>
+
+      <button id="ox3-close-settings">閉じる</button>
+    </dialog>
 
     <!-- ◯テンプレート -->
     <template id="ox3-temp-o">
