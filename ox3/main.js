@@ -42,7 +42,7 @@ const main = () => {
     ];
 
     for (const line of winnerLines) {
-      const [cell1, cell2, cell3] = line.map(num => boardData[num]);
+      const [cell1, cell2, cell3] = line.map((num) => boardData[num]);
 
       if (cell1 != -1 && cell1 == cell2 && cell1 == cell3) {
         return cell1;
