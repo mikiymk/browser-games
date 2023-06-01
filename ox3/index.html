@@ -46,6 +46,10 @@
       </svg>
     </template>
 
-    <script src="./main.js" type="module"></script>
+    <script type="module">
+      import { main } from "./main.js";
+
+      document.addEventListener("DOMContentLoaded", main);
+    </script>
   </body>
 </html>
