@@ -1,0 +1,61 @@
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Symbols+2&display=swap");
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.board {
+  margin: 5vmin;
+  height: 80vmin;
+  width: 80vmin;
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  row-gap: 0;
+  column-gap: 0;
+}
+
+.cell {
+  height: 10vmin;
+  width: 10vmin;
+  border: 1px solid black;
+
+  font-family: "Noto Sans Symbols 2", sans-serif;
+  font-size: 8vmin;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cell-black {
+  background: darkslategray;
+}
+.cell-white {
+  background: white;
+}
+
+.piece {
+  height: 100%;
+  width: 100%;
+
+  fill: white;
+
+  stroke: black;
+  stroke-width: 1.5px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-miterlimit: 4;
+  stroke-dasharray: none;
+  stroke-opacity: 1;
+}
+
+.piece-black {
+  stroke: white;
+  fill: black;
+}
+
+.piece-white {
+  stroke: black;
+  fill: white;
+}
