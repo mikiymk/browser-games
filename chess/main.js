@@ -13,8 +13,8 @@ const WhiteRook = 10;
 const WhiteQueen = 11;
 const WhiteKing = 12;
 
-const Black = 1;
-const White = 2;
+const Black = 13;
+const White = 14;
 const Reset = -2;
 
 // 盤のサイズ
@@ -113,6 +113,7 @@ export const main = () => {
     const cell = cells[index];
 
     const onClick = () => {
+      console.log(`clicks ${index} cell`);
       humanPlayer.resolve(index);
     };
 
@@ -132,7 +133,7 @@ export const main = () => {
 };
 
 const gameLoop = async (players) => {
-  let mark = Black;
+  let mark = White;
   const boardData = Array(BoardLength);
   initializeBoard(boardData);
 
@@ -167,41 +168,41 @@ const gameLoop = async (players) => {
 const initializeBoard = (boardData) => {
   boardData.fill(Empty);
 
-  boardData[0] = WhiteRook;
-  boardData[1] = WhiteKnight;
-  boardData[2] = WhiteBishop;
-  boardData[3] = WhiteQueen;
-  boardData[4] = WhiteKing;
-  boardData[5] = WhiteBishop;
-  boardData[6] = WhiteKnight;
-  boardData[7] = WhiteRook;
+  boardData[0] = BlackRook;
+  boardData[1] = BlackKnight;
+  boardData[2] = BlackBishop;
+  boardData[3] = BlackQueen;
+  boardData[4] = BlackKing;
+  boardData[5] = BlackBishop;
+  boardData[6] = BlackKnight;
+  boardData[7] = BlackRook;
 
-  boardData[8] = WhitePawn;
-  boardData[9] = WhitePawn;
-  boardData[10] = WhitePawn;
-  boardData[11] = WhitePawn;
-  boardData[12] = WhitePawn;
-  boardData[13] = WhitePawn;
-  boardData[14] = WhitePawn;
-  boardData[15] = WhitePawn;
+  boardData[8] = BlackPawn;
+  boardData[9] = BlackPawn;
+  boardData[10] = BlackPawn;
+  boardData[11] = BlackPawn;
+  boardData[12] = BlackPawn;
+  boardData[13] = BlackPawn;
+  boardData[14] = BlackPawn;
+  boardData[15] = BlackPawn;
 
-  boardData[48] = BlackPawn;
-  boardData[49] = BlackPawn;
-  boardData[50] = BlackPawn;
-  boardData[51] = BlackPawn;
-  boardData[52] = BlackPawn;
-  boardData[53] = BlackPawn;
-  boardData[54] = BlackPawn;
-  boardData[55] = BlackPawn;
+  boardData[48] = WhitePawn;
+  boardData[49] = WhitePawn;
+  boardData[50] = WhitePawn;
+  boardData[51] = WhitePawn;
+  boardData[52] = WhitePawn;
+  boardData[53] = WhitePawn;
+  boardData[54] = WhitePawn;
+  boardData[55] = WhitePawn;
 
-  boardData[56] = BlackRook;
-  boardData[57] = BlackKnight;
-  boardData[58] = BlackBishop;
-  boardData[59] = BlackQueen;
-  boardData[60] = BlackKing;
-  boardData[61] = BlackBishop;
-  boardData[62] = BlackKnight;
-  boardData[63] = BlackRook;
+  boardData[56] = WhiteRook;
+  boardData[57] = WhiteKnight;
+  boardData[58] = WhiteBishop;
+  boardData[59] = WhiteQueen;
+  boardData[60] = WhiteKing;
+  boardData[61] = WhiteBishop;
+  boardData[62] = WhiteKnight;
+  boardData[63] = WhiteRook;
 };
 
 /**
@@ -226,33 +227,20 @@ const setBoard = (boardData) => {
       tempElem = templateKing;
     }
 
-    if (
-      data === WhitePawn ||
-      data === WhiteKnight ||
-      data === WhiteBishop ||
-      data === WhiteRook ||
-      data === WhiteQueen ||
-      data === WhiteKing
-    ) {
+    const mark = getPieceMark(data);
+    if (mark === White) {
       color = "white";
-    } else if (
-      data === BlackPawn ||
-      data === BlackKnight ||
-      data === BlackBishop ||
-      data === BlackRook ||
-      data === BlackQueen ||
-      data === BlackKing
-    ) {
+    } else if (mark === Black) {
       color = "black";
     }
+
+    const cell = cells[i];
+    while (cell.firstChild) cell.removeChild(cell.lastChild);
 
     if (tempElem !== undefined) {
       const elem = document.createElement("span");
       elem.className = `piece-${color}`;
       elem.appendChild(tempElem.content.cloneNode(true));
-
-      const cell = cells[i];
-      while (cell.firstChild) cell.removeChild(cell.lastChild);
 
       cell.appendChild(elem);
     }
@@ -283,6 +271,25 @@ const getPieceMark = (piece) => {
   return Empty;
 };
 
+const doAction = (boardData, mark, action) => {
+  if (action.type === "move") {
+    boardData[action.moveTo] = boardData[action.moveFrom];
+    boardData[action.moveFrom] = Empty;
+  }
+};
+
+const invertMark = (mark) => {
+  if (mark === Black) {
+    return White;
+  } else if (mark === White) {
+    return Black;
+  }
+};
+
+const isFinished = (boardData) => {
+  return false;
+};
+
 const humanPlayer = {
   boardData: [],
   promise: new Promise(() => {}),
@@ -310,7 +317,18 @@ const humanPlayer = {
       }
     }
 
-    return { type: "move", moveFrom };
+    let moveTo;
+
+    while (moveTo === undefined) {
+      let clicked = await humanPlayer.promise;
+      humanPlayer.reset();
+
+      if (getPieceMark(boardData[clicked]) !== mark) {
+        moveTo = clicked;
+      }
+    }
+
+    return { type: "move", moveFrom, moveTo };
   },
 };
 
