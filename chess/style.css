@@ -16,7 +16,7 @@ body {
 .cell {
   height: 10vmin;
   width: 10vmin;
-  border: 1px solid black;
+  border: 2px solid black;
 
   display: flex;
   align-items: center;
@@ -24,10 +24,12 @@ body {
 }
 
 .cell-black {
-  background: black;
+  background-color: darkslategray;
+  border-color: darkslategray;
 }
 .cell-white {
-  background: white;
+  background-color: white;
+  border-color: white;
 }
 
 .piece {
@@ -54,4 +56,12 @@ body {
   width: 100%;
   stroke: black;
   fill: white;
+}
+
+.selected {
+  border-color: black;
+}
+
+.movable {
+  border-color: darkorange;
 }

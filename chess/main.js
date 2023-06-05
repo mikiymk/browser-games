@@ -138,6 +138,7 @@ const gameLoop = async (players) => {
   initializeBoard(boardData);
 
   setBoard(boardData);
+  console.log("start game");
 
   while (true) {
     const player = players[mark];
@@ -160,6 +161,8 @@ const gameLoop = async (players) => {
       break;
     }
   }
+
+  console.log("end game");
 };
 
 /**
@@ -287,11 +290,190 @@ const invertMark = (mark) => {
 };
 
 const isFinished = (boardData) => {
+  // todo
   return false;
 };
 
+const getMovable = (boardData, from) => {
+  const fromPiece = boardData[from];
+  const fromPieceMark = getPieceMark(fromPiece);
+  const foreDirection = fromPieceMark === White ? -1 : 1;
+  const movables = [];
+
+  if (fromPiece === WhitePawn || fromPiece === BlackPawn) {
+    let to = validateMove(from, foreDirection, 0);
+    if (to !== undefined && getPieceMark(boardData[to]) === Empty) {
+      movables.push(to);
+
+      if (
+        (fromPiece === WhitePawn && 48 <= from && from <= 55) ||
+        (fromPiece === BlackPawn && 8 <= from && from <= 15)
+      ) {
+        let to = validateMove(from, foreDirection * 2, 0);
+
+        if (to !== undefined && getPieceMark(boardData[to]) === Empty) {
+          movables.push(to);
+        }
+      }
+    }
+
+    // capturing
+    for (let i of [-1, 1]) {
+      let to = validateMove(from, foreDirection, i);
+
+      if (
+        to !== undefined &&
+        getPieceMark(boardData[to]) === invertMark(fromPieceMark)
+      ) {
+        movables.push(to);
+      }
+    }
+  } else if (fromPiece === WhiteKnight || fromPiece === BlackKnight) {
+    for (let [x, y] of [
+      [-2, -1],
+      [-2, 1],
+      [-1, -2],
+      [-1, 2],
+      [1, -2],
+      [1, 2],
+      [2, -1],
+      [2, 1],
+    ]) {
+      let to = validateMove(from, x, y);
+
+      if (to !== undefined) {
+        movables.push(to);
+      }
+    }
+  } else if (fromPiece === WhiteBishop || fromPiece === BlackBishop) {
+    for (let [dx, dy] of [
+      [-1, -1],
+      [-1, 1],
+      [1, -1],
+      [1, 1],
+    ]) {
+      let x = 0;
+      let y = 0;
+
+      while (true) {
+        x += dx;
+        y += dy;
+        let to = validateMove(from, x, y);
+
+        if (to === undefined) break;
+        if (isSameMark(boardData, from, to)) break;
+
+        movables.push(to);
+
+        if (isOtherMark(boardData, from, to)) break;
+      }
+    }
+  } else if (fromPiece === WhiteRook || fromPiece === BlackRook) {
+    for (let [dx, dy] of [
+      [0, -1],
+      [0, 1],
+      [1, 0],
+      [-1, 0],
+    ]) {
+      let x = 0;
+      let y = 0;
+
+      while (true) {
+        x += dx;
+        y += dy;
+        let to = validateMove(from, x, y);
+
+        if (to === undefined) break;
+        if (isSameMark(boardData, from, to)) break;
+
+        movables.push(to);
+
+        if (isOtherMark(boardData, from, to)) break;
+      }
+    }
+  } else if (fromPiece === WhiteQueen || fromPiece === BlackQueen) {
+    for (let [dx, dy] of [
+      [-1, -1],
+      [-1, 1],
+      [1, -1],
+      [1, 1],
+      [0, -1],
+      [0, 1],
+      [1, 0],
+      [-1, 0],
+    ]) {
+      let x = 0;
+      let y = 0;
+
+      while (true) {
+        x += dx;
+        y += dy;
+        let to = validateMove(from, x, y);
+
+        if (to === undefined) break;
+        if (isSameMark(boardData, from, to)) break;
+
+        movables.push(to);
+
+        if (isOtherMark(boardData, from, to)) break;
+      }
+    }
+  } else if (fromPiece === WhiteKing || fromPiece === BlackKing) {
+    for (let [x, y] of [
+      [-1, -1],
+      [-1, 1],
+      [1, -1],
+      [1, 1],
+      [0, -1],
+      [0, 1],
+      [1, 0],
+      [-1, 0],
+    ]) {
+      let to = validateMove(from, x, y);
+
+      if (to === undefined) continue;
+      if (isSameMark(boardData, from, to)) continue;
+
+      movables.push(to);
+    }
+  }
+
+  return movables;
+};
+
+const validateMove = (from, x, y) => {
+  const to = from + x * 8 + y;
+
+  // 縦を飛び出した場合
+  if (to < 0 || 63 < to) return undefined;
+
+  // 横を飛び出した場合
+  const moveHorizon = from + y;
+  if (from - (from % 8) !== moveHorizon - (moveHorizon % 8)) {
+    return undefined;
+  }
+
+  return to;
+};
+
+const isSameMark = (boardData, from, to) => {
+  const fromPiece = boardData[from];
+  const toPiece = boardData[to];
+
+  return getPieceMark(fromPiece) === getPieceMark(toPiece);
+};
+
+const isOtherMark = (boardData, from, to) => {
+  const fromPieceMark = getPieceMark(boardData[from]);
+  const toPieceMark = getPieceMark(boardData[to]);
+
+  return (
+    (fromPieceMark === Black && toPieceMark === White) ||
+    (fromPieceMark === White && toPieceMark === Black)
+  );
+};
+
 const humanPlayer = {
-  boardData: [],
   promise: new Promise(() => {}),
 
   reset() {
@@ -303,29 +485,48 @@ const humanPlayer = {
   resolve: () => {},
 
   async getMove(boardData, mark) {
-    humanPlayer.boardData = boardData;
-    humanPlayer.reset();
-
     let moveFrom;
 
     while (moveFrom === undefined) {
-      let clicked = await humanPlayer.promise;
       humanPlayer.reset();
+      let clicked = await humanPlayer.promise;
+
+      if (clicked === Reset) {
+        return { type: Reset };
+      }
 
       if (getPieceMark(boardData[clicked]) === mark) {
         moveFrom = clicked;
       }
     }
 
+    const movableIndeces = getMovable(boardData, moveFrom);
+
+    cells[moveFrom].classList.add("selected");
+
+    for (const index of movableIndeces) {
+      cells[index].classList.add("movable");
+    }
+
     let moveTo;
 
     while (moveTo === undefined) {
-      let clicked = await humanPlayer.promise;
       humanPlayer.reset();
+      let clicked = await humanPlayer.promise;
+
+      if (clicked === Reset) {
+        return { type: Reset };
+      }
 
       if (getPieceMark(boardData[clicked]) !== mark) {
         moveTo = clicked;
       }
+    }
+
+    cells[moveFrom].classList.remove("selected");
+
+    for (const index of movableIndeces) {
+      cells[index].classList.remove("movable");
     }
 
     return { type: "move", moveFrom, moveTo };
