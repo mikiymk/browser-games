@@ -321,10 +321,7 @@ const getMovable = (boardData, from) => {
     for (let i of [-1, 1]) {
       let to = validateMove(from, foreDirection, i);
 
-      if (
-        to !== undefined &&
-        getPieceMark(boardData[to]) === invertMark(fromPieceMark)
-      ) {
+      if (to !== undefined && getPieceMark(boardData[to]) === invertMark(fromPieceMark)) {
         movables.push(to);
       }
     }
@@ -467,10 +464,7 @@ const isOtherMark = (boardData, from, to) => {
   const fromPieceMark = getPieceMark(boardData[from]);
   const toPieceMark = getPieceMark(boardData[to]);
 
-  return (
-    (fromPieceMark === Black && toPieceMark === White) ||
-    (fromPieceMark === White && toPieceMark === Black)
-  );
+  return (fromPieceMark === Black && toPieceMark === White) || (fromPieceMark === White && toPieceMark === Black);
 };
 
 const humanPlayer = {

@@ -194,12 +194,7 @@ const aiPlayer = {
     }
 
     // ランダム
-    return (
-      randomSelect(clearCells) ??
-      randomSelect(interCells) ??
-      randomSelect(emptyCells) ??
-      Reset
-    );
+    return randomSelect(clearCells) ?? randomSelect(interCells) ?? randomSelect(emptyCells) ?? Reset;
   },
 };
 
