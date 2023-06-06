@@ -1,14 +1,11 @@
-import { resolve, dirname } from "node:path";
-import { fileURLToPath } from "node:url";
+/* eslint-disable unicorn/prefer-module */
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
+import { resolve } from "node:path";
 
 // eslint-disable-next-line import/no-unresolved
 import { defineConfig } from "vitest/config";
 
 export default defineConfig({
-  base: "https://mikiymk.github.io/js-html-game/",
-
   build: {
     rollupOptions: {
       input: {

@@ -6,10 +6,10 @@
   "type": "module",
   "scripts": {
     "test": "vitest run",
-    "lint": "run-p lint:*",
+    "lint": "run-s lint:*",
     "lint:eslint": "eslint src",
-    "lint:typescript": "tsc src",
-    "format": "prettier --write",
+    "lint:typescript": "tsc",
+    "format": "prettier src --write --cache",
     "build": "vite build"
   },
   "repository": {
