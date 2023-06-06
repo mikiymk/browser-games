@@ -28,8 +28,8 @@ body {
   border-color: darkslategray;
 }
 .cell-white {
-  background-color: white;
-  border-color: white;
+  background-color: lightgray;
+  border-color: lightgray;
 }
 
 .piece {
