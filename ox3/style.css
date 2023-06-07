@@ -5,8 +5,8 @@ body {
 
 .board {
   margin: 5vmin;
-  height: 90vmin;
-  width: 90vmin;
+  height: 80vmin;
+  width: 80vmin;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   row-gap: 0;
@@ -14,8 +14,8 @@ body {
 }
 
 .cell {
-  height: 30vmin;
-  width: 30vmin;
+  height: calc(80vmin / 3);
+  width: calc(80vmin / 3);
   background: white;
   border: 1px solid black;
 

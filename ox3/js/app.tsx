@@ -1,4 +1,4 @@
-import { createSignal } from "solid-js";
+import { createSignal, onMount } from "solid-js";
 import { BoardData, Empty, OMark, PlayerType, PlayerTypeAI, PlayerTypeHuman, Reset, XMark } from "./types";
 import { Board } from "./board";
 import { Controller } from "./controller";
@@ -13,7 +13,11 @@ export const App = () => {
   const [playerX, setPlayerX] = createSignal<PlayerType>(PlayerTypeAI);
   const [status, setStatus] = createSignal("");
 
-  const startGame = () => {
+  const reset = () => {
+    setBoardData(initialBoardData);
+
+    GameAiPromise.resolve(Reset);
+
     const players = {
       [OMark]: playerO() === PlayerTypeHuman ? humanPlayer : aiPlayer,
       [XMark]: playerX() === PlayerTypeHuman ? humanPlayer : aiPlayer,
@@ -22,13 +26,7 @@ export const App = () => {
     void gameLoop(players, board, setBoardData, setStatus);
   };
 
-  const reset = () => {
-    setBoardData(initialBoardData);
-
-    GameAiPromise.resolve(Reset);
-
-    startGame();
-  };
+  onMount(reset);
 
   return (
     <>
