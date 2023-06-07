@@ -20,35 +20,54 @@ const Reset = -2;
 // 盤のサイズ
 const BoardLength = 64;
 
-/**
- * マス目要素のリスト
- * @type {HTMLElement[]}
- */
-const cells = [];
-/**
- * 状況テキスト要素
- * @type {HTMLElement}
- */
-let stat;
-/**
- * リセットボタン要素
- * @type {HTMLElement}
- */
-let reset;
+const cells: HTMLElement[] = [];
+
+let stat: HTMLElement;
+let reset: HTMLElement;
 
 // テンプレート要素
-/** @type {HTMLTemplateElement} */
-let templatePawn;
-/** @type {HTMLTemplateElement} */
-let templateKnight;
-/** @type {HTMLTemplateElement} */
-let templateBishop;
-/** @type {HTMLTemplateElement} */
-let templateRook;
-/** @type {HTMLTemplateElement} */
-let templateQueen;
-/** @type {HTMLTemplateElement} */
-let templateKing;
+let templatePawn: HTMLTemplateElement;
+let templateKnight: HTMLTemplateElement;
+let templateBishop: HTMLTemplateElement;
+let templateRook: HTMLTemplateElement;
+let templateQueen: HTMLTemplateElement;
+let templateKing: HTMLTemplateElement;
+
+type Mark = typeof Black | typeof White;
+type Piece =
+  | typeof BlackPawn
+  | typeof BlackKnight
+  | typeof BlackBishop
+  | typeof BlackRook
+  | typeof BlackQueen
+  | typeof BlackKing
+  | typeof WhitePawn
+  | typeof WhiteKnight
+  | typeof WhiteBishop
+  | typeof WhiteRook
+  | typeof WhiteQueen
+  | typeof WhiteKing;
+type Empty = typeof Empty;
+
+type Tuple<T, N, List extends T[] = []> = List["length"] extends N ? List : Tuple<T, N, [T, ...List]>;
+type BoardData = Tuple<Piece | Empty, 64>;
+// prettier-ignore
+type Index = 
+  | 0| 1| 2| 3| 4| 5| 6| 7
+  | 8| 9|10|11|12|13|14|15
+  |16|17|18|19|20|21|22|23
+  |24|25|26|27|28|29|30|31
+  |32|33|34|35|36|37|38|39
+  |40|41|42|43|44|45|46|47
+  |48|49|50|51|52|53|54|55
+  |56|57|58|59|60|61|62|63;
+
+type Awaitable<T> = T | Promise<T>;
+interface Player {
+  getMove(boardData: BoardData, mark: Mark): Awaitable<Index | typeof Reset>;
+}
+
+type Players = Record<Mark, Player>;
 
 export const main = () => {
   const players = {
@@ -57,26 +76,26 @@ export const main = () => {
   };
 
   // 要素を代入する
-  for (let i = 0; i < BoardLength; i++) {
-    const id = `chess-${i}`;
-    const cell = elem(id);
+  for (let index = 0; index < BoardLength; index++) {
+    const id = `chess-${index}`;
+    const cell = element(id);
     cells.push(cell);
   }
 
-  stat = elem("chess-stat");
-  reset = elem("chess-reset");
-  templatePawn = elem("chess-temp-pawn");
-  templateKnight = elem("chess-temp-knight");
-  templateBishop = elem("chess-temp-bishop");
-  templateRook = elem("chess-temp-rook");
-  templateQueen = elem("chess-temp-queen");
-  templateKing = elem("chess-temp-king");
+  stat = element("chess-stat");
+  reset = element("chess-reset");
+  templatePawn = element("chess-temp-pawn") as HTMLTemplateElement;
+  templateKnight = element("chess-temp-knight") as HTMLTemplateElement;
+  templateBishop = element("chess-temp-bishop") as HTMLTemplateElement;
+  templateRook = element("chess-temp-rook") as HTMLTemplateElement;
+  templateQueen = element("chess-temp-queen") as HTMLTemplateElement;
+  templateKing = element("chess-temp-king") as HTMLTemplateElement;
 
-  const settings = elem("chess-settings");
-  const openSettings = elem("chess-open-settings");
-  const closeSettings = elem("chess-close-settings");
-  const playerBlack = elem("chess-player-black");
-  const playerWhite = elem("chess-player-white");
+  const settings = element("chess-settings") as HTMLDialogElement;
+  const openSettings = element("chess-open-settings");
+  const closeSettings = element("chess-close-settings");
+  const playerBlack = element("chess-player-black") as HTMLInputElement;
+  const playerWhite = element("chess-player-white") as HTMLInputElement;
 
   openSettings.addEventListener("click", () => {
     settings.showModal();
@@ -87,7 +106,7 @@ export const main = () => {
   });
 
   playerBlack.addEventListener("change", (event) => {
-    const value = event.currentTarget.value;
+    const value = (event.currentTarget as HTMLInputElement).value;
     console.log(`black player changes to ${value}`);
     if (value === "human") {
       players[Black] = humanPlayer;
@@ -97,7 +116,7 @@ export const main = () => {
   });
 
   playerWhite.addEventListener("change", (event) => {
-    const value = event.currentTarget.value;
+    const value = (event.currentTarget as HTMLInputElement).value;
     console.log(`white player changes to ${value}`);
     if (value === "human") {
       players[White] = humanPlayer;
@@ -124,26 +143,26 @@ export const main = () => {
     console.log("reset games");
     humanPlayer.resolve(Reset);
 
-    gameLoop(players);
+    void gameLoop(players);
   };
 
   reset.addEventListener("click", onReset);
 
-  gameLoop(players);
+  void gameLoop(players);
 };
 
-const gameLoop = async (players) => {
-  let mark = White;
-  const boardData = Array(BoardLength);
+const gameLoop = async (players: Players) => {
+  let mark: Mark = White;
+  const boardData = Array.from<Piece | Empty>({ length: BoardLength }).fill(Empty) as BoardData;
   initializeBoard(boardData);
 
   setBoard(boardData);
   console.log("start game");
 
-  while (true) {
+  for (;;) {
     const player = players[mark];
 
-    stat.innerText = mark === Black ? "Black turn" : "White turn";
+    stat.textContent = mark === Black ? "Black turn" : "White turn";
 
     const move = await player.getMove(boardData, mark);
 
@@ -165,10 +184,7 @@ const gameLoop = async (players) => {
   console.log("end game");
 };
 
-/**
- * @param {number[]} boardData
- */
-const initializeBoard = (boardData) => {
+const initializeBoard = (boardData: BoardData) => {
   boardData.fill(Empty);
 
   boardData[0] = BlackRook;
@@ -208,26 +224,49 @@ const initializeBoard = (boardData) => {
   boardData[63] = WhiteRook;
 };
 
-/**
- * @param {number[]} boardData
- */
-const setBoard = (boardData) => {
-  for (let i = 0; i < BoardLength; i++) {
-    const data = boardData[i];
-    let tempElem, color;
+const setBoard = (boardData: BoardData) => {
+  for (let index = 0; index < BoardLength; index++) {
+    const data = boardData[index];
+    let temporaryElement, color;
 
-    if (data === WhitePawn || data === BlackPawn) {
-      tempElem = templatePawn;
-    } else if (data === WhiteKnight || data === BlackKnight) {
-      tempElem = templateKnight;
-    } else if (data === WhiteBishop || data === BlackBishop) {
-      tempElem = templateBishop;
-    } else if (data === WhiteRook || data === BlackRook) {
-      tempElem = templateRook;
-    } else if (data === WhiteQueen || data === BlackQueen) {
-      tempElem = templateQueen;
-    } else if (data === WhiteKing || data === BlackKing) {
-      tempElem = templateKing;
+    switch (data) {
+      case WhitePawn:
+      case BlackPawn: {
+        temporaryElement = templatePawn;
+
+        break;
+      }
+      case WhiteKnight:
+      case BlackKnight: {
+        temporaryElement = templateKnight;
+
+        break;
+      }
+      case WhiteBishop:
+      case BlackBishop: {
+        temporaryElement = templateBishop;
+
+        break;
+      }
+      case WhiteRook:
+      case BlackRook: {
+        temporaryElement = templateRook;
+
+        break;
+      }
+      case WhiteQueen:
+      case BlackQueen: {
+        temporaryElement = templateQueen;
+
+        break;
+      }
+      case WhiteKing:
+      case BlackKing: {
+        temporaryElement = templateKing;
+
+        break;
+      }
+      // No default
     }
 
     const mark = getPieceMark(data);
@@ -237,20 +276,20 @@ const setBoard = (boardData) => {
       color = "black";
     }
 
-    const cell = cells[i];
-    while (cell.firstChild) cell.removeChild(cell.lastChild);
+    const cell = cells[index];
+    while (cell.firstChild) cell.lastChild.remove();
 
-    if (tempElem !== undefined) {
-      const elem = document.createElement("span");
-      elem.className = `piece-${color}`;
-      elem.appendChild(tempElem.content.cloneNode(true));
+    if (temporaryElement !== undefined) {
+      const element_ = document.createElement("span");
+      element_.className = `piece-${color}`;
+      element_.append(temporaryElement.content.cloneNode(true));
 
-      cell.appendChild(elem);
+      cell.append(element_);
     }
   }
 };
 
-const getPieceMark = (piece) => {
+const getPieceMark = (piece: Piece | Empty) => {
   if (
     piece === WhitePawn ||
     piece === WhiteKnight ||
@@ -274,14 +313,14 @@ const getPieceMark = (piece) => {
   return Empty;
 };
 
-const doAction = (boardData, mark, action) => {
+const doAction = (boardData: BoardData, mark: Mark, action: Action) => {
   if (action.type === "move") {
     boardData[action.moveTo] = boardData[action.moveFrom];
     boardData[action.moveFrom] = Empty;
   }
 };
 
-const invertMark = (mark) => {
+const invertMark = (mark: Mark): Mark => {
   if (mark === Black) {
     return White;
   } else if (mark === White) {
@@ -289,178 +328,204 @@ const invertMark = (mark) => {
   }
 };
 
-const isFinished = (boardData) => {
+const isFinished = (boardData: BoardData) => {
   // todo
   return false;
 };
 
-const getMovable = (boardData, from) => {
+const getMovable = (boardData: BoardData, from: Index) => {
   const fromPiece = boardData[from];
   const fromPieceMark = getPieceMark(fromPiece);
   const foreDirection = fromPieceMark === White ? -1 : 1;
   const movables = [];
 
-  if (fromPiece === WhitePawn || fromPiece === BlackPawn) {
-    let to = validateMove(from, foreDirection, 0);
-    if (to !== undefined && getPieceMark(boardData[to]) === Empty) {
-      movables.push(to);
+  switch (fromPiece) {
+    case WhitePawn:
+    case BlackPawn: {
+      const to = validateMove(from, foreDirection, 0);
+      if (to !== undefined && getPieceMark(boardData[to]) === Empty) {
+        movables.push(to);
 
-      if (
-        (fromPiece === WhitePawn && 48 <= from && from <= 55) ||
-        (fromPiece === BlackPawn && 8 <= from && from <= 15)
-      ) {
-        let to = validateMove(from, foreDirection * 2, 0);
+        if (
+          (fromPiece === WhitePawn && 48 <= from && from <= 55) ||
+          (fromPiece === BlackPawn && 8 <= from && from <= 15)
+        ) {
+          const to = validateMove(from, foreDirection * 2, 0);
 
-        if (to !== undefined && getPieceMark(boardData[to]) === Empty) {
+          if (to !== undefined && getPieceMark(boardData[to]) === Empty) {
+            movables.push(to);
+          }
+        }
+      }
+
+      // capturing
+      for (const index of [-1, 1]) {
+        const to = validateMove(from, foreDirection, index);
+
+        if (to !== undefined && getPieceMark(boardData[to]) === invertMark(fromPieceMark)) {
           movables.push(to);
         }
       }
+
+      break;
     }
+    case WhiteKnight:
+    case BlackKnight: {
+      for (const [x, y] of [
+        [-2, -1],
+        [-2, 1],
+        [-1, -2],
+        [-1, 2],
+        [1, -2],
+        [1, 2],
+        [2, -1],
+        [2, 1],
+      ]) {
+        const to = validateMove(from, x, y);
 
-    // capturing
-    for (let i of [-1, 1]) {
-      let to = validateMove(from, foreDirection, i);
+        if (to !== undefined) {
+          movables.push(to);
+        }
+      }
 
-      if (to !== undefined && getPieceMark(boardData[to]) === invertMark(fromPieceMark)) {
+      break;
+    }
+    case WhiteBishop:
+    case BlackBishop: {
+      for (const [dx, dy] of [
+        [-1, -1],
+        [-1, 1],
+        [1, -1],
+        [1, 1],
+      ]) {
+        let x = 0;
+        let y = 0;
+
+        while (true) {
+          x += dx;
+          y += dy;
+          const to = validateMove(from, x, y);
+
+          if (to === undefined) break;
+          if (isSameMark(boardData, from, to)) break;
+
+          movables.push(to);
+
+          if (isOtherMark(boardData, from, to)) break;
+        }
+      }
+
+      break;
+    }
+    case WhiteRook:
+    case BlackRook: {
+      for (const [dx, dy] of [
+        [0, -1],
+        [0, 1],
+        [1, 0],
+        [-1, 0],
+      ]) {
+        let x = 0;
+        let y = 0;
+
+        while (true) {
+          x += dx;
+          y += dy;
+          const to = validateMove(from, x, y);
+
+          if (to === undefined) break;
+          if (isSameMark(boardData, from, to)) break;
+
+          movables.push(to);
+
+          if (isOtherMark(boardData, from, to)) break;
+        }
+      }
+
+      break;
+    }
+    case WhiteQueen:
+    case BlackQueen: {
+      for (const [dx, dy] of [
+        [-1, -1],
+        [-1, 1],
+        [1, -1],
+        [1, 1],
+        [0, -1],
+        [0, 1],
+        [1, 0],
+        [-1, 0],
+      ]) {
+        let x = 0;
+        let y = 0;
+
+        while (true) {
+          x += dx;
+          y += dy;
+          const to = validateMove(from, x, y);
+
+          if (to === undefined) break;
+          if (isSameMark(boardData, from, to)) break;
+
+          movables.push(to);
+
+          if (isOtherMark(boardData, from, to)) break;
+        }
+      }
+
+      break;
+    }
+    case WhiteKing:
+    case BlackKing: {
+      for (const [x, y] of [
+        [-1, -1],
+        [-1, 1],
+        [1, -1],
+        [1, 1],
+        [0, -1],
+        [0, 1],
+        [1, 0],
+        [-1, 0],
+      ]) {
+        const to = validateMove(from, x, y);
+
+        if (to === undefined) continue;
+        if (isSameMark(boardData, from, to)) continue;
+
         movables.push(to);
       }
+
+      break;
     }
-  } else if (fromPiece === WhiteKnight || fromPiece === BlackKnight) {
-    for (let [x, y] of [
-      [-2, -1],
-      [-2, 1],
-      [-1, -2],
-      [-1, 2],
-      [1, -2],
-      [1, 2],
-      [2, -1],
-      [2, 1],
-    ]) {
-      let to = validateMove(from, x, y);
-
-      if (to !== undefined) {
-        movables.push(to);
-      }
-    }
-  } else if (fromPiece === WhiteBishop || fromPiece === BlackBishop) {
-    for (let [dx, dy] of [
-      [-1, -1],
-      [-1, 1],
-      [1, -1],
-      [1, 1],
-    ]) {
-      let x = 0;
-      let y = 0;
-
-      while (true) {
-        x += dx;
-        y += dy;
-        let to = validateMove(from, x, y);
-
-        if (to === undefined) break;
-        if (isSameMark(boardData, from, to)) break;
-
-        movables.push(to);
-
-        if (isOtherMark(boardData, from, to)) break;
-      }
-    }
-  } else if (fromPiece === WhiteRook || fromPiece === BlackRook) {
-    for (let [dx, dy] of [
-      [0, -1],
-      [0, 1],
-      [1, 0],
-      [-1, 0],
-    ]) {
-      let x = 0;
-      let y = 0;
-
-      while (true) {
-        x += dx;
-        y += dy;
-        let to = validateMove(from, x, y);
-
-        if (to === undefined) break;
-        if (isSameMark(boardData, from, to)) break;
-
-        movables.push(to);
-
-        if (isOtherMark(boardData, from, to)) break;
-      }
-    }
-  } else if (fromPiece === WhiteQueen || fromPiece === BlackQueen) {
-    for (let [dx, dy] of [
-      [-1, -1],
-      [-1, 1],
-      [1, -1],
-      [1, 1],
-      [0, -1],
-      [0, 1],
-      [1, 0],
-      [-1, 0],
-    ]) {
-      let x = 0;
-      let y = 0;
-
-      while (true) {
-        x += dx;
-        y += dy;
-        let to = validateMove(from, x, y);
-
-        if (to === undefined) break;
-        if (isSameMark(boardData, from, to)) break;
-
-        movables.push(to);
-
-        if (isOtherMark(boardData, from, to)) break;
-      }
-    }
-  } else if (fromPiece === WhiteKing || fromPiece === BlackKing) {
-    for (let [x, y] of [
-      [-1, -1],
-      [-1, 1],
-      [1, -1],
-      [1, 1],
-      [0, -1],
-      [0, 1],
-      [1, 0],
-      [-1, 0],
-    ]) {
-      let to = validateMove(from, x, y);
-
-      if (to === undefined) continue;
-      if (isSameMark(boardData, from, to)) continue;
-
-      movables.push(to);
-    }
+    // No default
   }
 
   return movables;
 };
 
-const validateMove = (from, x, y) => {
-  const to = from + x * 8 + y;
+const validateMove = (from: Index, x: number, y: number): Index | undefined => {
+  const to = (from + x * 8 + y) as Index;
 
   // 縦を飛び出した場合
-  if (to < 0 || 63 < to) return undefined;
+  if (to < 0 || 63 < to) return;
 
   // 横を飛び出した場合
   const moveHorizon = from + y;
   if (from - (from % 8) !== moveHorizon - (moveHorizon % 8)) {
-    return undefined;
+    return;
   }
 
   return to;
 };
 
-const isSameMark = (boardData, from, to) => {
+const isSameMark = (boardData: BoardData, from: Index, to: Index) => {
   const fromPiece = boardData[from];
   const toPiece = boardData[to];
 
   return getPieceMark(fromPiece) === getPieceMark(toPiece);
 };
 
-const isOtherMark = (boardData, from, to) => {
+const isOtherMark = (boardData: BoardData, from: Index, to: Index) => {
   const fromPieceMark = getPieceMark(boardData[from]);
   const toPieceMark = getPieceMark(boardData[to]);
 
@@ -478,12 +543,12 @@ const humanPlayer = {
 
   resolve: () => {},
 
-  async getMove(boardData, mark) {
+  async getMove(boardData: BoardData, mark: Mark) {
     let moveFrom;
 
     while (moveFrom === undefined) {
       humanPlayer.reset();
-      let clicked = await humanPlayer.promise;
+      const clicked = await humanPlayer.promise;
 
       if (clicked === Reset) {
         return { type: Reset };
@@ -506,7 +571,7 @@ const humanPlayer = {
 
     while (moveTo === undefined) {
       humanPlayer.reset();
-      let clicked = await humanPlayer.promise;
+      const clicked = await humanPlayer.promise;
 
       if (clicked === Reset) {
         return { type: Reset };
@@ -532,6 +597,7 @@ const humanPlayer = {
  * @param {string} id
  * @returns {HTMLElement}
  */
-const elem = (id) => {
-  return document.getElementById(id);
+const element = (id: string) => {
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion, unicorn/prefer-query-selector
+  return document.getElementById(id)!;
 };

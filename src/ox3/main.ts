@@ -19,9 +19,9 @@ const winnerLines: [Index, Index, Index][] = [
   [0, 4, 8],
   [2, 4, 6],
 ];
-const indexes: Index[] = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+const indexes: Tuple<Index, 9> = [0, 1, 2, 3, 4, 5, 6, 7, 8];
 
-const cells: HTMLElement[] = [];
+const cells = [] as HTMLElement[] as Tuple<HTMLElement, 9>;
 let stat: HTMLElement;
 let reset: HTMLElement;
 let charO: HTMLTemplateElement;
@@ -30,18 +30,9 @@ let charX: HTMLTemplateElement;
 type Mark = typeof OMarked | typeof XMarked;
 type Empty = typeof Empty;
 type Index = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
+type Tuple<T, N, List extends T[] = []> = List["length"] extends N ? List : Tuple<T, N, [T, ...List]>;
 
-type BoardData = [
-  Mark | Empty,
-  Mark | Empty,
-  Mark | Empty,
-  Mark | Empty,
-  Mark | Empty,
-  Mark | Empty,
-  Mark | Empty,
-  Mark | Empty,
-  Mark | Empty,
-];
+type BoardData = Tuple<Mark | Empty, 9>;
 
 type Awaitable<T> = T | Promise<T>;
 interface Player {
@@ -60,7 +51,7 @@ export const main = () => {
   };
 
   // 要素を代入する
-  for (let index = 0; index < BoardLength; index++) {
+  for (const index of indexes) {
     const id = `ox3-${index}`;
     const cell = element(id);
     cells.push(cell);
@@ -255,7 +246,7 @@ const gameLoop = async (players: Players) => {
  * IDから要素を取得する関数
  */
 const element = (id: string): HTMLElement => {
-  // eslint-disable-next-line unicorn/prefer-query-selector, @typescript-eslint/no-non-null-assertion
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   return document.getElementById(id)!;
 };
 
