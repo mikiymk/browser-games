@@ -4,16 +4,16 @@ import { resolve } from "node:path";
 
 // eslint-disable-next-line import/no-unresolved
 import { defineConfig } from "vitest/config";
+import solidPlugin from "vite-plugin-solid";
 
 export default defineConfig({
-  root: "src",
+  plugins: [solidPlugin()],
   build: {
-    outDir: "../dist",
     rollupOptions: {
       input: {
-        main: resolve(__dirname, "src/index.html"),
-        ox3: resolve(__dirname, "src/ox3/index.html"),
-        chess: resolve(__dirname, "src/chess/index.html"),
+        main: resolve(__dirname, "index.html"),
+        ox3: resolve(__dirname, "ox3/index.html"),
+        chess: resolve(__dirname, "chess/index.html"),
       },
     },
   },

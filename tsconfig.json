@@ -2,7 +2,11 @@
   "$schema": "https://json.schemastore.org/tsconfig.json",
   "extends": "@tsconfig/strictest/tsconfig.json",
   "compilerOptions": {
+    "target": "ESNext",
+    "moduleResolution": "bundler",
+    "jsx": "preserve",
+    "jsxImportSource": "solid-js",
     "noEmit": true
   },
-  "include": ["**/*.ts"]
+  "include": ["**/*.ts", "**/*.tsx"]
 }
