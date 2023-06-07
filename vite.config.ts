@@ -7,6 +7,7 @@ import { defineConfig } from "vitest/config";
 import solidPlugin from "vite-plugin-solid";
 
 export default defineConfig({
+  base: "/js-html-game/",
   plugins: [solidPlugin()],
   build: {
     rollupOptions: {
