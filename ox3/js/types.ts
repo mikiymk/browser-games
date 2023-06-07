@@ -27,9 +27,9 @@ export type Tuple<T, N, List extends T[] = []> = List["length"] extends N ? List
 export type BoardData = Tuple<Mark | Empty, 9>;
 
 export type Awaitable<T> = T | Promise<T>;
-export interface Player {
+export type Player = {
   getMarkIndex(boardData: Accessor<BoardData>, mark: Mark): Awaitable<Index | typeof Reset>;
-}
+};
 
 export type Players = Record<Mark, Player>;
 

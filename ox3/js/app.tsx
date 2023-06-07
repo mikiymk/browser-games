@@ -31,6 +31,7 @@ export const App = () => {
   return (
     <>
       <Board board={board()} />
+
       <Controller
         statusMessage={status()}
         onReset={reset}

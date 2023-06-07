@@ -1,7 +1,7 @@
 import { Setter } from "solid-js";
 import { PlayerType, PlayerTypeHuman, PlayerTypeAI } from "./types";
 
-interface ControllerProperties {
+type ControllerProperties = {
   statusMessage: string;
   onReset: () => void;
 
@@ -9,7 +9,7 @@ interface ControllerProperties {
   playerX: PlayerType;
   setPlayerO: Setter<PlayerType>;
   setPlayerX: Setter<PlayerType>;
-}
+};
 export const Controller = (properties: ControllerProperties) => {
   return (
     <div>
@@ -26,12 +26,12 @@ export const Controller = (properties: ControllerProperties) => {
   );
 };
 
-interface SettingModalProperties {
+type SettingModalProperties = {
   playerO: PlayerType;
   playerX: PlayerType;
   setPlayerO: Setter<PlayerType>;
   setPlayerX: Setter<PlayerType>;
-}
+};
 const SettingModal = (properties: SettingModalProperties) => {
   let dialog: HTMLDialogElement | undefined;
   const dialogReference = (element: HTMLDialogElement) => {
@@ -67,10 +67,10 @@ const SettingModal = (properties: SettingModalProperties) => {
   );
 };
 
-interface SettingPlayerSelectProperties {
+type SettingPlayerSelectProperties = {
   player: PlayerType;
   setPlayer: Setter<PlayerType>;
-}
+};
 const SettingPlayerSelect = (properties: SettingPlayerSelectProperties) => {
   return (
     <select

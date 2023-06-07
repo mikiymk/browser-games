@@ -2,9 +2,9 @@ import { For, Switch, Match } from "solid-js";
 import { BoardData, Mark, Empty, OMark, XMark, Index } from "./types";
 import { GameAiPromise } from "./ai";
 
-interface BoardProperties {
+type BoardProperties = {
   board: BoardData;
-}
+};
 export const Board = (properties: BoardProperties) => {
   return (
     <div class="board">
@@ -13,13 +13,13 @@ export const Board = (properties: BoardProperties) => {
   );
 };
 
-interface CellProperties {
+type CellProperties = {
   mark: Mark | Empty;
   index: Index;
-}
+};
 const Cell = (properties: CellProperties) => {
   const onClick = () => {
-    console.log(properties.index)
+    console.log(properties.index);
     GameAiPromise.resolve(properties.index);
   };
   return (

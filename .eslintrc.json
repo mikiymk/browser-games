@@ -27,6 +27,7 @@
         "caughtErrorsIgnorePattern": "^_",
         "destructuredArrayIgnorePattern": "^_"
       }
-    ]
+    ],
+    "@typescript-eslint/consistent-type-definitions": ["warn", "type"]
   }
 }

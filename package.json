@@ -7,10 +7,12 @@
   "scripts": {
     "test": "vitest run",
     "lint": "run-s lint:*",
-    "lint:eslint": "eslint src",
+    "lint:eslint": "eslint **/*",
     "lint:typescript": "tsc",
-    "format": "prettier src --write --cache",
-    "build": "vite build"
+    "format": "prettier chess ox3 .eslintrc.json .prettierrc.json index.html package.json tsconfig.json vite.config.ts  --write --cache",
+    "format:force": "prettier chess ox3 .eslintrc.json .prettierrc.json index.html package.json tsconfig.json vite.config.ts  --write",
+    "build": "vite build",
+    "serve": "vite run"
   },
   "repository": {
     "type": "git",
