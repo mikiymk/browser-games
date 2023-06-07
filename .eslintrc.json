@@ -9,6 +9,7 @@
     "plugin:import/recommended",
     "plugin:import/typescript",
     "plugin:unicorn/recommended",
+    "plugin:solid/recommended",
     "prettier"
   ],
 
