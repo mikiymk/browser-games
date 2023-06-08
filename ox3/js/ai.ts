@@ -35,10 +35,15 @@ class ResolvablePromise<T, E = unknown> {
 
 export const GameAiPromise = new ResolvablePromise<Index | typeof Reset>();
 export const humanPlayer: Player = {
-  getMarkIndex(_boardData: Accessor<BoardData>, _mark: Mark) {
-    GameAiPromise.reset();
+  async getMarkIndex(boardData: Accessor<BoardData>, _mark: Mark) {
+    
+    for (;;) {
+      GameAiPromise.reset();
 
-    return GameAiPromise.promise;
+      const index = await GameAiPromise.promise;
+      if (index === Reset) return index;
+      if (boardData()[index] === Empty) return index;
+    }
   },
 };
 
