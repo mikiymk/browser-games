@@ -1,38 +1,39 @@
 import { Setter } from "solid-js";
-import { PlayerType, PlayerTypeHuman, PlayerTypeAI } from "../../common/types";
+import { PlayerType, PlayerTypeAI, PlayerTypeHuman } from "../../common/types";
 
 type ControllerProperties = {
   statusMessage: string;
-  onReset: () => void;
+  reset: () => void;
 
-  playerO: PlayerType;
-  playerX: PlayerType;
-  setPlayerO: Setter<PlayerType>;
-  setPlayerX: Setter<PlayerType>;
+  playerWhite: PlayerType;
+  playerBlack: PlayerType;
+  setPlayerWhite: Setter<PlayerType>;
+  setPlayerBlack: Setter<PlayerType>;
 };
+
 export const Controller = (properties: ControllerProperties) => {
   return (
     <div>
       status:
       <output>{properties.statusMessage}</output>
-      <button onClick={() => properties.onReset()}>reset</button>
-      <SettingModal
-        playerO={properties.playerO}
-        playerX={properties.playerX}
-        setPlayerO={properties.setPlayerO}
-        setPlayerX={properties.setPlayerX}
+      <button onClick={() => properties.reset()}>reset</button>
+      <Settings
+        playerWhite={properties.playerWhite}
+        playerBlack={properties.playerBlack}
+        setPlayerWhite={properties.setPlayerWhite}
+        setPlayerBlack={properties.setPlayerWhite}
       />
     </div>
   );
 };
 
-type SettingModalProperties = {
-  playerO: PlayerType;
-  playerX: PlayerType;
-  setPlayerO: Setter<PlayerType>;
-  setPlayerX: Setter<PlayerType>;
+type SettingsProperties = {
+  playerWhite: PlayerType;
+  playerBlack: PlayerType;
+  setPlayerWhite: Setter<PlayerType>;
+  setPlayerBlack: Setter<PlayerType>;
 };
-const SettingModal = (properties: SettingModalProperties) => {
+const Settings = (properties: SettingsProperties) => {
   let dialog: HTMLDialogElement | undefined;
   const dialogReference = (element: HTMLDialogElement) => {
     dialog = element;
@@ -49,16 +50,17 @@ const SettingModal = (properties: SettingModalProperties) => {
   return (
     <>
       <button onClick={openSettings}>open settings</button>
+
       <dialog ref={dialogReference}>
         <h3>Settings</h3>
 
         <div>
-          ◯ player
-          <SettingPlayerSelect player={properties.playerO} setPlayer={properties.setPlayerO} />
+          Black player
+          <SettingPlayerSelect player={properties.playerBlack} setPlayer={properties.setPlayerBlack} />
         </div>
         <div>
-          ✗ player
-          <SettingPlayerSelect player={properties.playerX} setPlayer={properties.setPlayerX} />
+          White player
+          <SettingPlayerSelect player={properties.playerWhite} setPlayer={properties.setPlayerWhite} />
         </div>
 
         <button onClick={closeSettings}>Close</button>

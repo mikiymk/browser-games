@@ -36,7 +36,6 @@ class ResolvablePromise<T, E = unknown> {
 export const GameAiPromise = new ResolvablePromise<Index | typeof Reset>();
 export const humanPlayer: Player = {
   async getMarkIndex(boardData: Accessor<BoardData>, _mark: Mark) {
-    
     for (;;) {
       GameAiPromise.reset();
 

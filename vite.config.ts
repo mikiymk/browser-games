@@ -10,6 +10,9 @@ export default defineConfig({
   base: "/js-html-game/",
   plugins: [solidPlugin()],
   build: {
+    modulePreload: {
+      polyfill: false,
+    },
     rollupOptions: {
       input: {
         main: resolve(__dirname, "index.html"),
