@@ -33,7 +33,7 @@ export const App = () => {
         playerWhite={playerWhite()}
         playerBlack={playerBlack()}
         setPlayerWhite={setPlayerWhite}
-        setPlayerBlack={setPlayerWhite}
+        setPlayerBlack={setPlayerBlack}
       />
     </>
   );

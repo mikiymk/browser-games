@@ -10,11 +10,13 @@ import {
   BoardData,
   Castling,
   Empty,
+  EnPassant,
   Index,
   Mark,
   Move,
   MoveTypes,
   Players,
+  Promotion,
   Reset,
   White,
   WhiteBishop,
@@ -47,7 +49,7 @@ export const gameLoop = async (
       break;
     }
 
-    doAction(setBoard, mark, move);
+    doAction(setBoard, move);
 
     mark = invertMark(mark);
 
@@ -105,70 +107,103 @@ const initializeBoard = (setBoard: Setter<BoardData>) => {
   });
 };
 
-const doAction = (setBoard: Setter<BoardData>, mark: Mark, move: MoveTypes) => {
+const doAction = (setBoard: Setter<BoardData>, move: MoveTypes) => {
+  setBoard((board) => {
+    return getNewBoard(board, move);
+  });
+};
+
+const getNewBoard = (board: BoardData, move: MoveTypes): BoardData => {
+  const newBoard: BoardData = [...board];
+
   switch (move.type) {
     case Reset: {
-      return;
+      return board;
     }
 
     case Move: {
       const from = move.from;
       const to = move.to;
 
-      setBoard((board) => {
-        const newBoard: BoardData = [...board];
+      newBoard[to] = newBoard[from];
+      newBoard[from] = Empty;
 
-        newBoard[to] = newBoard[from];
-        newBoard[from] = Empty;
-
-        return newBoard;
-      });
-
-      return;
+      return newBoard;
     }
 
     case Castling: {
-      const side = move.side;
+      const rookFrom = move.rook;
 
       let kingFrom: Index = 1;
       let kingTo: Index = 2;
-      let rookFrom: Index = 3;
       let rookTo: Index = 4;
-      if (mark === Black && side === WhiteQueen) {
-        kingFrom = 4;
-        kingTo = 2;
-        rookFrom = 0;
-        rookTo = 3;
-      } else if (mark === Black && side === WhiteKing) {
-        kingFrom = 4;
-        kingTo = 6;
-        rookFrom = 8;
-        rookTo = 7;
-      } else if (mark === White && side === WhiteQueen) {
-        kingFrom = 60;
-        kingTo = 58;
-        rookFrom = 56;
-        rookTo = 59;
-      } else if (mark === White && side === WhiteKing) {
-        kingFrom = 60;
-        kingTo = 62;
-        rookFrom = 63;
-        rookTo = 61;
+
+      switch (rookFrom) {
+        case 0: {
+          kingFrom = 4;
+          kingTo = 2;
+          rookTo = 3;
+
+          break;
+        }
+
+        case 7: {
+          kingFrom = 4;
+          kingTo = 6;
+          rookTo = 5;
+
+          break;
+        }
+
+        case 56: {
+          kingFrom = 60;
+          kingTo = 58;
+          rookTo = 59;
+
+          break;
+        }
+
+        case 63: {
+          kingFrom = 60;
+          kingTo = 62;
+          rookTo = 61;
+
+          break;
+        }
+
+        // No default
       }
 
-      setBoard((board) => {
-        const newBoard: BoardData = [...board];
+      newBoard[kingTo] = newBoard[kingFrom];
+      newBoard[kingFrom] = Empty;
 
-        newBoard[kingTo] = newBoard[kingFrom];
-        newBoard[kingFrom] = Empty;
+      newBoard[rookTo] = newBoard[rookFrom];
+      newBoard[rookFrom] = Empty;
 
-        newBoard[rookTo] = newBoard[rookFrom];
-        newBoard[rookFrom] = Empty;
+      return newBoard;
+    }
 
-        return newBoard;
-      });
+    case EnPassant: {
+      const from = move.from;
+      const to = move.to;
+      const capture = move.capture;
 
-      return;
+      newBoard[to] = newBoard[from];
+      newBoard[from] = Empty;
+      newBoard[capture] = Empty;
+
+      return newBoard;
+    }
+
+    case Promotion: {
+      const from = move.from;
+      const to = move.to;
+      const piece = move.piece;
+
+      newBoard[to] = piece;
+      newBoard[from] = Empty;
+
+      return newBoard;
     }
   }
 };
@@ -178,5 +213,17 @@ const invertMark = (mark: Mark) => {
 };
 
 const isFinished = (board: Accessor<BoardData>) => {
+  // チェックメイトの場合
+  // キングの位置を探す
+  // キングとその周りの位置が攻撃されているか調べる
+
+  // ステイルメイトの場合
+  // 全ての駒の動ける場所を調べる
+
+  // チェックメイトできない場合
+  // 駒の数を数えて、足りないか調べる
+
+  // 同じ盤面が３回以上の場合
+
   return false;
 };

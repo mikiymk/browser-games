@@ -1,26 +1,29 @@
 import { Accessor } from "solid-js";
 
 // マスの状況
-export const Empty = -1;
-export const BlackPawn = 1;
-export const BlackKnight = 2;
-export const BlackBishop = 3;
-export const BlackRook = 4;
-export const BlackQueen = 5;
-export const BlackKing = 6;
-export const WhitePawn = 7;
-export const WhiteKnight = 8;
-export const WhiteBishop = 9;
-export const WhiteRook = 10;
-export const WhiteQueen = 11;
-export const WhiteKing = 12;
+export const Empty = 100;
+export const BlackPawn = 111;
+export const BlackKnight = 112;
+export const BlackBishop = 113;
+export const BlackRook = 114;
+export const BlackQueen = 115;
+export const BlackKing = 116;
 
-export const Black = 13;
-export const White = 14;
-export const Reset = -2;
+export const WhitePawn = 121;
+export const WhiteKnight = 122;
+export const WhiteBishop = 123;
+export const WhiteRook = 124;
+export const WhiteQueen = 125;
+export const WhiteKing = 126;
 
-export const Move = 15;
-export const Castling = 16;
+export const Black = 110;
+export const White = 120;
+
+export const Reset = 131;
+export const Move = 132;
+export const Castling = 133;
+export const EnPassant = 134;
+export const Promotion = 135;
 
 // 盤のサイズ
 export const BoardLength = 64;
@@ -43,6 +46,8 @@ export type Empty = typeof Empty;
 export type Reset = typeof Reset;
 export type Move = typeof Move;
 export type Castling = typeof Castling;
+export type EnPassant = typeof EnPassant;
+export type Promotion = typeof Promotion;
 
 export type Tuple<T, N, List extends T[] = []> = List["length"] extends N ? List : Tuple<T, N, [T, ...List]>;
 export type BoardData = Tuple<Piece | Empty, 64>;
@@ -61,7 +66,9 @@ export type Awaitable<T> = T | Promise<T>;
 export type MoveTypes =
   | { type: Reset }
   | { type: Move; from: Index; to: Index }
-  | { type: Castling; side: typeof WhiteQueen | typeof WhiteKing };
+  | { type: Castling; rook: 0 | 7 | 56 | 63 }
+  | { type: EnPassant; from: Index; to: Index; capture: Index }
+  | { type: Promotion; from: Index; to: Index; piece: Piece };
 export type Player = {
   getMove(boardData: Accessor<BoardData>, mark: Mark): Awaitable<MoveTypes>;
 };
