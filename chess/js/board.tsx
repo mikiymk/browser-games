@@ -26,26 +26,26 @@ export const Board = (properties: BoardProperties) => {
   return (
     <div class="board">
       <For each={properties.boardData}>
-        {(cell, index) => {
-          return <Cell cell={cell} index={index() as Index} />;
+        {(square, index) => {
+          return <Square square={square} index={index() as Index} />;
         }}
       </For>
     </div>
   );
 };
 
-type CellProperties = {
-  cell: Piece | Empty;
+type SquareProperties = {
+  square: Piece | Empty;
   index: Index;
 };
-const Cell = (properties: CellProperties) => {
+const Square = (properties: SquareProperties) => {
   const isCellWhite = () => {
     const index = properties.index;
     return index % 16 >= 8 ? index % 2 !== 0 : index % 2 === 0;
   };
 
   const pieceColor = () => {
-    switch (properties.cell) {
+    switch (properties.square) {
       case BlackPawn:
       case BlackKnight:
       case BlackBishop:
@@ -73,30 +73,30 @@ const Cell = (properties: CellProperties) => {
   return (
     <div
       classList={{
-        cell: true,
-        "cell-white": isCellWhite(),
-        "cell-black": !isCellWhite(),
+        square: true,
+        "square-white": isCellWhite(),
+        "square-black": !isCellWhite(),
         "piece-white": pieceColor() === "white",
         "piece-black": pieceColor() === "black",
       }}
     >
       <Switch>
-        <Match when={properties.cell === BlackPawn || properties.cell === WhitePawn}>
+        <Match when={properties.square === BlackPawn || properties.square === WhitePawn}>
           <PiecePawn />
         </Match>
-        <Match when={properties.cell === BlackKnight || properties.cell === WhiteKnight}>
+        <Match when={properties.square === BlackKnight || properties.square === WhiteKnight}>
           <PieceKnight />
         </Match>
-        <Match when={properties.cell === BlackBishop || properties.cell === WhiteBishop}>
+        <Match when={properties.square === BlackBishop || properties.square === WhiteBishop}>
           <PieceBishop />
         </Match>
-        <Match when={properties.cell === BlackRook || properties.cell === WhiteRook}>
+        <Match when={properties.square === BlackRook || properties.square === WhiteRook}>
           <PieceRook />
         </Match>
-        <Match when={properties.cell === BlackQueen || properties.cell === WhiteQueen}>
+        <Match when={properties.square === BlackQueen || properties.square === WhiteQueen}>
           <PieceQueen />
         </Match>
-        <Match when={properties.cell === BlackKing || properties.cell === WhiteKing}>
+        <Match when={properties.square === BlackKing || properties.square === WhiteKing}>
           <PieceKing />
         </Match>
       </Switch>

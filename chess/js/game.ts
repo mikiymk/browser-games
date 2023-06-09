@@ -497,10 +497,10 @@ const isFinished = (board: BoardData) => {
 
   let whiteKingIndex = 64;
   let blackKingIndex = 64;
-  for (const [index, cell] of board.entries()) {
-    if (cell === WhiteKing) {
+  for (const [index, square] of board.entries()) {
+    if (square === WhiteKing) {
       whiteKingIndex = index;
-    } else if (cell === BlackKing) {
+    } else if (square === BlackKing) {
       blackKingIndex = index;
     }
   }

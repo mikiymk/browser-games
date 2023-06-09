@@ -13,7 +13,7 @@ body {
   column-gap: 0;
 }
 
-.cell {
+.square {
   height: 10vmin;
   width: 10vmin;
   border: 2px solid black;
@@ -23,11 +23,11 @@ body {
   justify-content: center;
 }
 
-.cell-black {
+.square-black {
   background-color: darkslategray;
   border-color: darkslategray;
 }
-.cell-white {
+.square-white {
   background-color: lightgray;
   border-color: lightgray;
 }
