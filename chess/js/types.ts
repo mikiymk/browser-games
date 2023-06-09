@@ -53,14 +53,15 @@ export type Tuple<T, N, List extends T[] = []> = List["length"] extends N ? List
 export type BoardData = Tuple<Piece | Empty, 64>;
 // prettier-ignore
 export type Index = 
-  | 0| 1| 2| 3| 4| 5| 6| 7
-  | 8| 9|10|11|12|13|14|15
-  |16|17|18|19|20|21|22|23
-  |24|25|26|27|28|29|30|31
-  |32|33|34|35|36|37|38|39
-  |40|41|42|43|44|45|46|47
-  |48|49|50|51|52|53|54|55
-  |56|57|58|59|60|61|62|63;
+//  a  b  c  d  e  f  g  h
+  | 0| 1| 2| 3| 4| 5| 6| 7  // 8
+  | 8| 9|10|11|12|13|14|15  // 7
+  |16|17|18|19|20|21|22|23  // 6
+  |24|25|26|27|28|29|30|31  // 5
+  |32|33|34|35|36|37|38|39  // 4
+  |40|41|42|43|44|45|46|47  // 3
+  |48|49|50|51|52|53|54|55  // 2
+  |56|57|58|59|60|61|62|63; // 1
 
 export type Awaitable<T> = T | Promise<T>;
 export type MoveTypes =
@@ -69,8 +70,15 @@ export type MoveTypes =
   | { type: Castling; rook: 0 | 7 | 56 | 63 }
   | { type: EnPassant; from: Index; to: Index; capture: Index }
   | { type: Promotion; from: Index; to: Index; piece: Piece };
+export type IsCastled = [
+  black_queen_0: boolean,
+  black_king_7: boolean,
+  white_queen_56: boolean,
+  white_king_64: boolean,
+];
+
 export type Player = {
-  getMove(boardData: Accessor<BoardData>, mark: Mark): Awaitable<MoveTypes>;
+  getMove(boardData: BoardData, mark: Mark): Awaitable<MoveTypes>;
 };
 
 export type Players = Record<Mark, Player>;
