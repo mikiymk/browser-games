@@ -15,6 +15,7 @@ import {
   IsCastled,
   Mark,
   Move,
+  MoveTypeGenerator,
   MoveTypes,
   Piece,
   Players,
@@ -36,6 +37,8 @@ export const gameLoop = async (
   setStatus: Setter<string>,
 ) => {
   let mark: Mark = White;
+  let castling: IsCastled = [true, true, true, true];
+  let canEnPassant: false | Index = false;
   initializeBoard(setBoard);
 
   console.log("start game");
@@ -55,7 +58,7 @@ export const gameLoop = async (
 
     mark = invertMark(mark);
 
-    if (isFinished(board())) {
+    if (isFinished(board(), castling, canEnPassant)) {
       break;
     }
   }
@@ -257,65 +260,60 @@ const kingMoves: [number, number][] = [
   [-1, 0],
 ];
 
-const getMoves = (board: BoardData, castling: IsCastled, canEnPassant: false | Index, from: Index): MoveTypes[] => {
+const getPiecesMoves = function* (board: BoardData, mark: Mark, canEnPassant: false | Index): MoveTypeGenerator {
+  for (const [index, square] of board.entries()) {
+    if (getMark(square) === mark) {
+      yield* getMoves(board, canEnPassant, index as Index);
+    }
+  }
+};
+
+const getMoves = function* (board: BoardData, canEnPassant: false | Index, from: Index): MoveTypeGenerator {
   const fromPiece = board[from];
 
   switch (fromPiece) {
     case WhitePawn: {
-      return getPawnMove(board, from, -1, canEnPassant);
+      yield* getPawnMove(board, from, -1, canEnPassant);
+      break;
     }
 
     case BlackPawn: {
-      return getPawnMove(board, from, 1, canEnPassant);
+      yield* getPawnMove(board, from, 1, canEnPassant);
+      break;
     }
 
     case WhiteKnight:
     case BlackKnight: {
-      return getJumpMove(board, from, knightMoves);
+      yield* getJumpMove(board, from, knightMoves);
+      break;
     }
 
     case WhiteBishop:
     case BlackBishop: {
-      return getRunMove(board, from, bishopDirections);
+      yield* getRunMove(board, from, bishopDirections);
+      break;
     }
 
     case WhiteRook:
     case BlackRook: {
-      return getRunMove(board, from, rookDirections);
+      yield* getRunMove(board, from, rookDirections);
+      break;
     }
 
     case WhiteQueen:
     case BlackQueen: {
-      return getRunMove(board, from, queenDirections);
+      yield* getRunMove(board, from, queenDirections);
+      break;
     }
 
     case WhiteKing:
     case BlackKing: {
-      const moves = getJumpMove(board, from, kingMoves);
-
-      // キャスリング
-      if (fromPiece === BlackKing && castling[0]) {
-        // black queen side (rook 0)
-        moves.push(generateMoveCastling(0));
-      }
-      if (fromPiece === BlackKing && castling[1]) {
-        // black king side (rook 7)
-        moves.push(generateMoveCastling(7));
-      }
-      if (fromPiece === WhiteKing && castling[2]) {
-        // white queen side (rook 56)
-        moves.push(generateMoveCastling(56));
-      }
-      if (fromPiece === WhiteKing && castling[3]) {
-        // white king side (rook 63)
-        moves.push(generateMoveCastling(63));
-      }
-
-      return moves;
+      yield* getJumpMove(board, from, kingMoves);
+      break;
     }
 
     case Empty: {
-      return [];
+      break;
     }
   }
 };
@@ -335,7 +333,12 @@ const validateMove = (from: Index, dx: number, dy: number): Index | undefined =>
   return to as Index;
 };
 
-const getPawnMove = (board: BoardData, from: Index, direction: 1 | -1, canEnPassant: false | Index): MoveTypes[] => {
+const getPawnMove = function* (
+  board: BoardData,
+  from: Index,
+  direction: 1 | -1,
+  canEnPassant: false | Index,
+): MoveTypeGenerator {
   const moves: MoveTypes[] = [];
 
   const step1 = direction;
@@ -375,35 +378,30 @@ const getPawnMove = (board: BoardData, from: Index, direction: 1 | -1, canEnPass
   }
 
   // ランク８に到達したらプロモーション
-  const promotionMoves = moves.flatMap((move) => {
+  const promotionPieces: Piece[] = [WhiteKnight, WhiteBishop, WhiteRook, WhiteQueen];
+
+  for (const move of moves) {
     if (move.type === Move && promotionRankRangeStart <= from && from <= promotionRankRangeEnd) {
-      const promotionPieces: Piece[] = [WhiteKnight, WhiteBishop, WhiteRook, WhiteQueen];
-      return promotionPieces.map((piece) => generateMovePromotion(move.from, move.to, piece));
+      for (const piece of promotionPieces) {
+        yield generateMovePromotion(move.from, move.to, piece);
+      }
+    } else {
+      yield move;
     }
-
-    return move;
-  });
-
-  return promotionMoves;
+  }
 };
 
-const getJumpMove = (board: BoardData, from: Index, points: [number, number][]): MoveTypes[] => {
-  const moves: MoveTypes[] = [];
-
+const getJumpMove = function* (board: BoardData, from: Index, points: [number, number][]): MoveTypeGenerator {
   for (const [dx, dy] of points) {
     const to = validateMove(from, dx, dy);
 
     if (to !== undefined && !isSameMark(board, from, to)) {
-      moves.push(generateMoveMove(from, to));
+      yield generateMoveMove(from, to);
     }
   }
-
-  return moves;
 };
 
-const getRunMove = (board: BoardData, from: Index, directions: [number, number][]): MoveTypes[] => {
-  const moves: MoveTypes[] = [];
-
+const getRunMove = function* (board: BoardData, from: Index, directions: [number, number][]): MoveTypeGenerator {
   for (const [ddx, ddy] of directions) {
     let dx = 0;
     let dy = 0;
@@ -417,15 +415,13 @@ const getRunMove = (board: BoardData, from: Index, directions: [number, number][
         break;
       }
 
-      moves.push(generateMoveMove(from, to));
+      yield generateMoveMove(from, to);
 
       if (isOtherMark(board, from, to)) {
         break;
       }
     }
   }
-
-  return moves;
 };
 
 const generateMoveMove = (from: Index, to: Index): MoveTypes => {
@@ -490,18 +486,46 @@ const isOtherMark = (board: BoardData, from: Index, to: Index): boolean => {
   return fromMark !== toMark;
 };
 
-const isFinished = (board: BoardData) => {
+const isFinished = (board: BoardData, castling: IsCastled, canEnPassant: false | Index) => {
   // チェックメイトの場合
   // キングの位置を探す
   // キングとその周りの位置が攻撃されているか調べる
 
-  let whiteKingIndex = 64;
-  let blackKingIndex = 64;
-  for (const [index, square] of board.entries()) {
-    if (square === WhiteKing) {
-      whiteKingIndex = index;
-    } else if (square === BlackKing) {
-      blackKingIndex = index;
+  const whiteMoves = [...getPiecesMoves(board, White, canEnPassant)];
+  const blackMoves = [...getPiecesMoves(board, Black, canEnPassant)];
+
+  const whiteKingIndex = board.indexOf(WhiteKing) as Index | undefined;
+  const blackKingIndex = board.indexOf(BlackKing) as Index | undefined;
+
+  if (whiteKingIndex === undefined || blackKingIndex === undefined) {
+    // キングが不在
+    return true;
+  }
+
+  if (canAttackThereByMove(whiteMoves, blackKingIndex)) {
+    // チェック状態の場合、次に動いてチェック状態が解除される手があるか調べ、ない場合はチェックメイトになる
+    for (const move of blackMoves) {
+      const nextBoard = getNewBoard(board, move);
+      const kingIndex = nextBoard.indexOf(BlackKing) as Index;
+
+      if (canAttackThereByBoard(nextBoard, White, getNextEnPassant(board, move), kingIndex)) {
+        // チェックメイト
+        return true;
+      }
+    }
+  }
+
+  // 白のキング
+  if (canAttackThereByMove(whiteMoves, blackKingIndex)) {
+    // チェック状態の場合、次に動いてチェック状態が解除される手があるか調べ、ない場合はチェックメイトになる
+    for (const move of blackMoves) {
+      const nextBoard = getNewBoard(board, move);
+      const kingIndex = nextBoard.indexOf(BlackKing) as Index;
+
+      if (canAttackThereByBoard(nextBoard, White, getNextEnPassant(board, move), kingIndex)) {
+        // チェックメイト
+        return true;
+      }
     }
   }
 
@@ -513,5 +537,35 @@ const isFinished = (board: BoardData) => {
 
   // 同じ盤面が３回以上の場合
 
+  return false;
+};
+
+const canAttackThereByMove = (moves: MoveTypes[], target: Index) => {
+  return moves.some((move) => isMoveAttackThere(move, target));
+};
+
+const canAttackThereByBoard = (board: BoardData, mark: Mark, canEnPassant: false | Index, target: Index): boolean => {
+  for (const move of getPiecesMoves(board, mark, canEnPassant)) {
+    if (isMoveAttackThere(move, target)) {
+      return true;
+    }
+  }
+
+  return false;
+};
+
+const isMoveAttackThere = (move: MoveTypes, target: Index): boolean => {
+  return (move.type === Move || move.type === EnPassant || move.type === Promotion) && move.to === target;
+};
+
+const getNextEnPassant = (board: BoardData, move: MoveTypes): false | Index => {
+  // ポーンが縦に２つ進んでいる場合、アンパサン可能とする
+  if (
+    move.type === Move &&
+    move.from - move.to === 16 &&
+    (board[move.from] === BlackPawn || board[move.from] === WhitePawn)
+  ) {
+    return move.to;
+  }
   return false;
 };

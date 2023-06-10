@@ -70,6 +70,7 @@ export type MoveTypes =
   | { type: Castling; rook: 0 | 7 | 56 | 63 }
   | { type: EnPassant; from: Index; to: Index; capture: Index }
   | { type: Promotion; from: Index; to: Index; piece: Piece };
+export type MoveTypeGenerator = Generator<MoveTypes, void, undefined>;
 export type IsCastled = [
   black_queen_0: boolean,
   black_king_7: boolean,
