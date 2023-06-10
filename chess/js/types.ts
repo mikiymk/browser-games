@@ -1,5 +1,3 @@
-import { Accessor } from "solid-js";
-
 // マスの状況
 export const Empty = 100;
 export const BlackPawn = 111;
@@ -25,6 +23,11 @@ export const Castling = 133;
 export const EnPassant = 134;
 export const Promotion = 135;
 
+export const OddBoard = 201;
+export const WinnerBlack = 202;
+export const WinnerWhite = 203;
+export const Draw = 204;
+
 // 盤のサイズ
 export const BoardLength = 64;
 
@@ -48,6 +51,7 @@ export type Move = typeof Move;
 export type Castling = typeof Castling;
 export type EnPassant = typeof EnPassant;
 export type Promotion = typeof Promotion;
+export type GameEnd = typeof OddBoard | typeof WinnerWhite | typeof WinnerBlack | typeof Draw;
 
 export type Tuple<T, N, List extends T[] = []> = List["length"] extends N ? List : Tuple<T, N, [T, ...List]>;
 export type BoardData = Tuple<Piece | Empty, 64>;
@@ -79,7 +83,7 @@ export type IsCastled = [
 ];
 
 export type Player = {
-  getMove(boardData: BoardData, mark: Mark): Awaitable<MoveTypes>;
+  getMove(boardData: BoardData, mark: Mark, castling: IsCastled, canEnPassant: false | Index): Awaitable<MoveTypes>;
 };
 
 export type Players = Record<Mark, Player>;

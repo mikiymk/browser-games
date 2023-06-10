@@ -9,14 +9,17 @@ import {
   BlackRook,
   BoardData,
   Castling,
+  Draw,
   Empty,
   EnPassant,
+  GameEnd,
   Index,
   IsCastled,
   Mark,
   Move,
   MoveTypeGenerator,
   MoveTypes,
+  OddBoard,
   Piece,
   Players,
   Promotion,
@@ -28,6 +31,8 @@ import {
   WhitePawn,
   WhiteQueen,
   WhiteRook,
+  WinnerBlack,
+  WinnerWhite,
 } from "./types";
 
 export const gameLoop = async (
@@ -48,7 +53,7 @@ export const gameLoop = async (
 
     setStatus(mark === Black ? "Black turn" : "White turn");
 
-    const move = await player.getMove(board(), mark);
+    const move = await player.getMove(board(), mark, castling, canEnPassant);
 
     if (move.type === Reset) {
       break;
@@ -58,7 +63,7 @@ export const gameLoop = async (
 
     mark = invertMark(mark);
 
-    if (isFinished(board(), castling, canEnPassant)) {
+    if (isFinished(board(), mark, castling, canEnPassant)) {
       break;
     }
   }
@@ -486,7 +491,12 @@ const isOtherMark = (board: BoardData, from: Index, to: Index): boolean => {
   return fromMark !== toMark;
 };
 
-const isFinished = (board: BoardData, castling: IsCastled, canEnPassant: false | Index) => {
+const isFinished = (
+  board: BoardData,
+  mark: Mark,
+  castling: IsCastled,
+  canEnPassant: false | Index,
+): GameEnd | false => {
   // チェックメイトの場合
   // キングの位置を探す
   // キングとその周りの位置が攻撃されているか調べる
@@ -499,43 +509,80 @@ const isFinished = (board: BoardData, castling: IsCastled, canEnPassant: false |
 
   if (whiteKingIndex === undefined || blackKingIndex === undefined) {
     // キングが不在
-    return true;
+    return OddBoard;
   }
 
-  if (canAttackThereByMove(whiteMoves, blackKingIndex)) {
-    // チェック状態の場合、次に動いてチェック状態が解除される手があるか調べ、ない場合はチェックメイトになる
-    for (const move of blackMoves) {
-      const nextBoard = getNewBoard(board, move);
-      const kingIndex = nextBoard.indexOf(BlackKing) as Index;
+  if (mark === White) {
+    // 次は白の番
+    if (canAttackThereByMove(blackMoves, whiteKingIndex)) {
+      // チェック状態の場合、次に動いてチェック状態が解除される手があるか調べ、ない場合はチェックメイトになる
+      for (const move of whiteMoves) {
+        const nextBoard = getNewBoard(board, move);
+        const kingIndex = nextBoard.indexOf(WhiteKing) as Index;
 
-      if (canAttackThereByBoard(nextBoard, White, getNextEnPassant(board, move), kingIndex)) {
-        // チェックメイト
-        return true;
+        if (canAttackThereByBoard(nextBoard, Black, getNextEnPassant(board, move), kingIndex)) {
+          // チェックメイト
+          return WinnerBlack;
+        }
       }
     }
-  }
+  } else {
+    // 次は黒の番
+    if (canAttackThereByMove(whiteMoves, blackKingIndex)) {
+      // チェック状態の場合、次に動いてチェック状態が解除される手があるか調べ、ない場合はチェックメイトになる
+      for (const move of blackMoves) {
+        const nextBoard = getNewBoard(board, move);
+        const kingIndex = nextBoard.indexOf(BlackKing) as Index;
 
-  // 白のキング
-  if (canAttackThereByMove(whiteMoves, blackKingIndex)) {
-    // チェック状態の場合、次に動いてチェック状態が解除される手があるか調べ、ない場合はチェックメイトになる
-    for (const move of blackMoves) {
-      const nextBoard = getNewBoard(board, move);
-      const kingIndex = nextBoard.indexOf(BlackKing) as Index;
-
-      if (canAttackThereByBoard(nextBoard, White, getNextEnPassant(board, move), kingIndex)) {
-        // チェックメイト
-        return true;
+        if (canAttackThereByBoard(nextBoard, White, getNextEnPassant(board, move), kingIndex)) {
+          // チェックメイト
+          return WinnerWhite;
+        }
       }
     }
   }
 
   // ステイルメイトの場合
-  // 全ての駒の動ける場所を調べる
+
+  // キャスリング以外の動きが１つ以上あるか調べる
+  // キャスリングができる状況では確実にできる動きがある
+  if (mark === White) {
+    if (whiteMoves.length === 0) {
+      return Draw;
+    }
+  } else {
+    if (blackMoves.length === 0) {
+      return Draw;
+    }
+  }
 
   // チェックメイトできない場合
   // 駒の数を数えて、足りないか調べる
 
+  const piecesCount: Record<Piece | Empty, number> = {
+    [Empty]: 0,
+    [BlackPawn]: 0,
+    [BlackKnight]: 0,
+    [BlackBishop]: 0,
+    [BlackRook]: 0,
+    [BlackQueen]: 0,
+    [BlackKing]: 0,
+    [WhitePawn]: 0,
+    [WhiteKnight]: 0,
+    [WhiteBishop]: 0,
+    [WhiteRook]: 0,
+    [WhiteQueen]: 0,
+    [WhiteKing]: 0,
+  };
+  for (const square of board) {
+    piecesCount[square]++;
+  }
+  if (!canCheckmatePieces(piecesCount)) {
+    return Draw;
+  }
+
   // 同じ盤面が３回以上の場合
+  // ５０手（白と黒の２回の動きで１手なので１００回の動き）の間、・ポーンが動かない・駒を取る動きがない場合
 
   return false;
 };
@@ -568,4 +615,71 @@ const getNextEnPassant = (board: BoardData, move: MoveTypes): false | Index => {
     return move.to;
   }
   return false;
+};
+
+const canCheckmatePieces = (pieces: Record<Piece, number>): boolean => {
+  if (
+    pieces[BlackPawn] === 0 &&
+    pieces[BlackKnight] === 0 &&
+    pieces[BlackBishop] === 0 &&
+    pieces[BlackRook] === 0 &&
+    pieces[BlackQueen] === 0
+  ) {
+    // 黒がキングのみ
+    if (pieces[WhitePawn] >= 1) {
+      // ポーンがある (プロモーションができる)
+      return true;
+    }
+    if (pieces[WhiteKnight] >= 1 && pieces[WhiteBishop] >= 1) {
+      // ナイトとビショップがある
+      return true;
+    }
+    if (pieces[WhiteBishop] >= 2) {
+      // ビショップが２つある
+      return true;
+    }
+    if (pieces[WhiteRook] >= 1) {
+      // ルークがある
+      return true;
+    }
+    if (pieces[WhiteQueen] >= 1) {
+      // クイーンがある
+      return true;
+    }
+
+    return false;
+  }
+  if (
+    pieces[WhitePawn] === 0 &&
+    pieces[WhiteKnight] === 0 &&
+    pieces[WhiteBishop] === 0 &&
+    pieces[WhiteRook] === 0 &&
+    pieces[WhiteQueen] === 0
+  ) {
+    // 白がキングのみ
+    if (pieces[BlackPawn] >= 1) {
+      // ポーンがある (プロモーションができる)
+      return true;
+    }
+    if (pieces[BlackKnight] >= 1 && pieces[BlackBishop] >= 1) {
+      // ナイトとビショップがある
+      return true;
+    }
+    if (pieces[BlackBishop] >= 2) {
+      // ビショップが２つある
+      return true;
+    }
+    if (pieces[BlackRook] >= 1) {
+      // ルークがある
+      return true;
+    }
+    if (pieces[BlackQueen] >= 1) {
+      // クイーンがある
+      return true;
+    }
+
+    return false;
+  }
+
+  return true;
 };
