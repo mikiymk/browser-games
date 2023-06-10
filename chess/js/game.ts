@@ -42,13 +42,17 @@ export const gameLoop = async (
   setStatus: Setter<string>,
 ) => {
   let mark: Mark = White;
-  let castling: IsCastled = [true, true, true, true];
+  const castling: IsCastled = [true, true, true, true];
   let canEnPassant: false | Index = false;
+  let fiftyMoveCount = 0;
+  let fiftyMoveLastMoved: Mark = Black;
+  const threefoldRepetition = new Map<string, number>();
+
   initializeBoard(setBoard);
 
   console.log("start game");
 
-  for (;;) {
+  mainLoop: for (;;) {
     const player = players[mark];
 
     setStatus(mark === Black ? "Black turn" : "White turn");
@@ -59,12 +63,45 @@ export const gameLoop = async (
       break;
     }
 
-    doAction(setBoard, move);
+    canEnPassant = getNextEnPassant(board(), move);
+    if (isFiftyMoveCountReset(board(), move)) {
+      fiftyMoveCount = 0;
+      fiftyMoveLastMoved = mark;
+    }
+
+    setBoard((board) => {
+      const newBoard = getNewBoard(board, move);
+
+      updateThreefoldMap(threefoldRepetition, newBoard, mark);
+
+      return newBoard;
+    });
 
     mark = invertMark(mark);
 
-    if (isFinished(board(), mark, castling, canEnPassant)) {
+    if (isCheckmate(board(), mark, canEnPassant)) {
       break;
+    }
+
+    if (isStalemate(board(), mark, canEnPassant)) {
+      break;
+    }
+
+    if (!existsCheckmatePieces(board())) {
+      break;
+    }
+
+    if (fiftyMoveCount > 50) {
+      break;
+    }
+    if (mark === fiftyMoveLastMoved) {
+      fiftyMoveCount++;
+    }
+
+    for (const [_, value] of threefoldRepetition) {
+      if (value >= 3) {
+        break mainLoop;
+      }
     }
   }
 
@@ -114,12 +151,6 @@ const initializeBoard = (setBoard: Setter<BoardData>) => {
     newBoard[63] = WhiteRook;
 
     return newBoard;
-  });
-};
-
-const doAction = (setBoard: Setter<BoardData>, move: MoveTypes) => {
-  setBoard((board) => {
-    return getNewBoard(board, move);
   });
 };
 
@@ -491,12 +522,7 @@ const isOtherMark = (board: BoardData, from: Index, to: Index): boolean => {
   return fromMark !== toMark;
 };
 
-const isFinished = (
-  board: BoardData,
-  mark: Mark,
-  castling: IsCastled,
-  canEnPassant: false | Index,
-): GameEnd | false => {
+const isCheckmate = (board: BoardData, mark: Mark, canEnPassant: false | Index): GameEnd | false => {
   // チェックメイトの場合
   // キングの位置を探す
   // キングとその周りの位置が攻撃されているか調べる
@@ -542,7 +568,14 @@ const isFinished = (
     }
   }
 
+  return false;
+};
+
+const isStalemate = (board: BoardData, mark: Mark, canEnPassant: false | Index): GameEnd | false => {
   // ステイルメイトの場合
+
+  const whiteMoves = [...getPiecesMoves(board, White, canEnPassant)];
+  const blackMoves = [...getPiecesMoves(board, Black, canEnPassant)];
 
   // キャスリング以外の動きが１つ以上あるか調べる
   // キャスリングができる状況では確実にできる動きがある
@@ -555,34 +588,6 @@ const isFinished = (
       return Draw;
     }
   }
-
-  // チェックメイトできない場合
-  // 駒の数を数えて、足りないか調べる
-
-  const piecesCount: Record<Piece | Empty, number> = {
-    [Empty]: 0,
-    [BlackPawn]: 0,
-    [BlackKnight]: 0,
-    [BlackBishop]: 0,
-    [BlackRook]: 0,
-    [BlackQueen]: 0,
-    [BlackKing]: 0,
-    [WhitePawn]: 0,
-    [WhiteKnight]: 0,
-    [WhiteBishop]: 0,
-    [WhiteRook]: 0,
-    [WhiteQueen]: 0,
-    [WhiteKing]: 0,
-  };
-  for (const square of board) {
-    piecesCount[square]++;
-  }
-  if (!canCheckmatePieces(piecesCount)) {
-    return Draw;
-  }
-
-  // 同じ盤面が３回以上の場合
-  // ５０手（白と黒の２回の動きで１手なので１００回の動き）の間、・ポーンが動かない・駒を取る動きがない場合
 
   return false;
 };
@@ -617,7 +622,29 @@ const getNextEnPassant = (board: BoardData, move: MoveTypes): false | Index => {
   return false;
 };
 
-const canCheckmatePieces = (pieces: Record<Piece, number>): boolean => {
+const existsCheckmatePieces = (board: BoardData): boolean => {
+  // チェックメイトできない場合
+  // 駒の数を数えて、足りないか調べる
+
+  const pieces: Record<Piece | Empty, number> = {
+    [Empty]: 0,
+    [BlackPawn]: 0,
+    [BlackKnight]: 0,
+    [BlackBishop]: 0,
+    [BlackRook]: 0,
+    [BlackQueen]: 0,
+    [BlackKing]: 0,
+    [WhitePawn]: 0,
+    [WhiteKnight]: 0,
+    [WhiteBishop]: 0,
+    [WhiteRook]: 0,
+    [WhiteQueen]: 0,
+    [WhiteKing]: 0,
+  };
+  for (const square of board) {
+    pieces[square]++;
+  }
+
   if (
     pieces[BlackPawn] === 0 &&
     pieces[BlackKnight] === 0 &&
@@ -682,4 +709,42 @@ const canCheckmatePieces = (pieces: Record<Piece, number>): boolean => {
   }
 
   return true;
+};
+
+const updateThreefoldMap = (threefoldMap: Map<string, number>, board: BoardData, mark: Mark) => {
+  const markChar = mark === White ? "W" : "B";
+
+  const charsMap: Record<Piece | Empty, string> = {
+    [Empty]: " ",
+    [BlackPawn]: "p",
+    [BlackKnight]: "n",
+    [BlackBishop]: "b",
+    [BlackRook]: "r",
+    [BlackQueen]: "q",
+    [BlackKing]: "k",
+    [WhitePawn]: "P",
+    [WhiteKnight]: "N",
+    [WhiteBishop]: "B",
+    [WhiteRook]: "R",
+    [WhiteQueen]: "Q",
+    [WhiteKing]: "K",
+  };
+
+  const boardString = [markChar, ...board.map((square) => charsMap[square])].join("");
+
+  const count = threefoldMap.get(boardString);
+  if (count === undefined) {
+    threefoldMap.set(boardString, 1);
+  } else {
+    threefoldMap.set(boardString, count + 1);
+  }
+};
+
+const isFiftyMoveCountReset = (board: BoardData, move: MoveTypes): boolean => {
+  return (
+    move.type === EnPassant ||
+    move.type === Promotion ||
+    (move.type === Move &&
+      (board[move.to] !== Empty || board[move.from] === BlackPawn || board[move.from] === WhitePawn))
+  );
 };
