@@ -82,6 +82,11 @@ export type IsCastled = [
   white_king_64: boolean,
 ];
 
+export type InputType = Index | Reset;
+
+export type Sender<T> = (value: T) => void;
+export type Receiver<T> = () => Promise<T> | T;
+
 export type Player = {
   getMove(boardData: BoardData, mark: Mark, castling: IsCastled, canEnPassant: false | Index): Awaitable<MoveTypes>;
 };

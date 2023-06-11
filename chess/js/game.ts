@@ -304,7 +304,7 @@ const getPiecesMoves = function* (board: BoardData, mark: Mark, canEnPassant: fa
   }
 };
 
-const getMoves = function* (board: BoardData, canEnPassant: false | Index, from: Index): MoveTypeGenerator {
+export const getMoves = function* (board: BoardData, canEnPassant: false | Index, from: Index): MoveTypeGenerator {
   const fromPiece = board[from];
 
   switch (fromPiece) {

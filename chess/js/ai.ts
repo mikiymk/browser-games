@@ -1,63 +1,64 @@
-import { BoardData, Mark, Reset } from "./types";
+import { Setter } from "solid-js";
+import { getMoves } from "./game";
+import {
+  BoardData,
+  Castling,
+  EnPassant,
+  Index,
+  InputType,
+  IsCastled,
+  Mark,
+  Move,
+  Player,
+  Promotion,
+  Receiver,
+  Reset,
+  Sender,
+} from "./types";
 
-export const createMessenger = <T>(): [Sender<T>, Receciver<T>] => {};
+export const createMessenger = <T>(): [Sender<T>, Receiver<T>] => {
+  let resolveFunction = (value: T): void => void value;
 
-export const humanPlayer = {
-  promise: new Promise(() => {}),
+  const sender: Sender<T> = (value) => {
+    resolveFunction(value);
+  };
 
-  reset() {
-    humanPlayer.promise = new Promise((resolve) => {
-      humanPlayer.resolve = resolve;
-    });
-  },
+  const receiver = () => {
+    return new Promise<T>((resolve) => (resolveFunction = resolve));
+  };
 
-  resolve: () => {},
+  return [sender, receiver];
+};
 
-  async getMove(boardData: BoardData, mark: Mark) {
-    let moveFrom;
+export const createHumanPlayer = (input: Receiver<InputType>, setMovable: Setter<Index[]>): Player => {
+  return {
+    async getMove(board: BoardData, mark: Mark, castling: IsCastled, canEnPassant: false | Index) {
+      for (;;) {
+        const from = await input();
+        if (from === Reset) {
+          return { type: Reset };
+        }
 
-    while (moveFrom === undefined) {
-      humanPlayer.reset();
-      const clicked = await humanPlayer.promise;
+        const moves = getMoves(board, canEnPassant, from);
 
-      if (clicked === Reset) {
-        return { type: Reset };
+        setMovable(
+          [...moves].flatMap((move) => {
+            if (move.type === Move || move.type === EnPassant || move.type === Promotion) {
+              return [move.to];
+            }
+            if (move.type === Castling) {
+              return [move.rook];
+            }
+            return [];
+          }),
+        );
+
+        const to = await input();
+        if (to === Reset) {
+          return { type: Reset };
+        }
+        return { type: Move, from, to };
       }
-
-      if (getPieceMark(boardData[clicked]) === mark) {
-        moveFrom = clicked;
-      }
-    }
-
-    const movableIndeces = getMovable(boardData, moveFrom);
-
-    cells[moveFrom].classList.add("selected");
-
-    for (const index of movableIndeces) {
-      cells[index].classList.add("movable");
-    }
-
-    let moveTo;
-
-    while (moveTo === undefined) {
-      humanPlayer.reset();
-      const clicked = await humanPlayer.promise;
-
-      if (clicked === Reset) {
-        return { type: Reset };
-      }
-
-      if (getPieceMark(boardData[clicked]) !== mark) {
-        moveTo = clicked;
-      }
-    }
-
-    cells[moveFrom].classList.remove("selected");
-
-    for (const index of movableIndeces) {
-      cells[index].classList.remove("movable");
-    }
-
-    return { type: "move", moveFrom, moveTo };
-  },
+    },
+  };
 };
