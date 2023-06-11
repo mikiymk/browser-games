@@ -7,7 +7,7 @@
   "scripts": {
     "test": "vitest run",
     "lint": "run-s lint:*",
-    "lint:eslint": "eslint **/*",
+    "lint:eslint": "eslint **/*.ts **/*.tsx",
     "lint:typescript": "tsc",
     "format": "prettier chess ox3 .eslintrc.json .prettierrc.json index.html package.json tsconfig.json vite.config.ts  --write --cache",
     "format:force": "prettier chess ox3 .eslintrc.json .prettierrc.json index.html package.json tsconfig.json vite.config.ts  --write",

@@ -354,6 +354,32 @@ export const getMoves = function* (board: BoardData, canEnPassant: false | Index
   }
 };
 
+export const getCastling = function* (board: BoardData, castling: IsCastled, from: Index): MoveTypeGenerator {
+  const fromPiece = board[from];
+
+  switch (fromPiece) {
+    case BlackKing: {
+      if (castling[0]) {
+        yield generateMoveCastling(0);
+      }
+      if (castling[1]) {
+        yield generateMoveCastling(7);
+      }
+      break;
+    }
+
+    case WhiteKing: {
+      if (castling[2]) {
+        yield generateMoveCastling(56);
+      }
+      if (castling[3]) {
+        yield generateMoveCastling(63);
+      }
+      break;
+    }
+  }
+};
+
 const validateMove = (from: Index, dx: number, dy: number): Index | undefined => {
   const to = from + dx * 8 + dy;
 
