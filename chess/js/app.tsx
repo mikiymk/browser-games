@@ -33,7 +33,7 @@ export const App = () => {
 
   return (
     <>
-      <Board boardData={board()} />
+      <Board board={board()} setInput={humanInputSender} movableSquares={movable()} />
       <Controller
         statusMessage={status()}
         reset={reset}

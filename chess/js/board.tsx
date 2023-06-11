@@ -9,7 +9,9 @@ import {
   BoardData,
   Empty,
   Index,
+  InputType,
   Piece,
+  Sender,
   WhiteBishop,
   WhiteKing,
   WhiteKnight,
@@ -19,15 +21,25 @@ import {
 } from "./types";
 
 type BoardProperties = {
-  boardData: BoardData;
+  board: BoardData;
+
+  setInput: Sender<InputType>;
+  movableSquares: Index[];
 };
 
 export const Board = (properties: BoardProperties) => {
   return (
     <div class="board">
-      <For each={properties.boardData}>
+      <For each={properties.board}>
         {(square, index) => {
-          return <Square square={square} index={index() as Index} />;
+          return (
+            <Square
+              square={square}
+              index={index() as Index}
+              setInput={properties.setInput}
+              movable={properties.movableSquares.includes(index() as Index)}
+            />
+          );
         }}
       </For>
     </div>
@@ -37,6 +49,9 @@ export const Board = (properties: BoardProperties) => {
 type SquareProperties = {
   square: Piece | Empty;
   index: Index;
+
+  setInput: Sender<InputType>;
+  movable: boolean;
 };
 const Square = (properties: SquareProperties) => {
   const isCellWhite = () => {
@@ -78,7 +93,9 @@ const Square = (properties: SquareProperties) => {
         "square-black": !isCellWhite(),
         "piece-white": pieceColor() === "white",
         "piece-black": pieceColor() === "black",
+        movable: properties.movable,
       }}
+      onClick={() => properties.setInput(properties.index)}
     >
       <Switch>
         <Match when={properties.square === BlackPawn || properties.square === WhitePawn}>

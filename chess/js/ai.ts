@@ -39,10 +39,13 @@ export const createHumanPlayer = (input: Receiver<InputType>, setMovable: Setter
           return { type: Reset };
         }
 
-        const moves = getMoves(board, canEnPassant, from);
+        const moves = [...getMoves(board, canEnPassant, from)];
+        if (moves.length === 0) {
+          continue;
+        }
 
         setMovable(
-          [...moves].flatMap((move) => {
+          moves.flatMap((move) => {
             if (move.type === Move || move.type === EnPassant || move.type === Promotion) {
               return [move.to];
             }
@@ -54,9 +57,11 @@ export const createHumanPlayer = (input: Receiver<InputType>, setMovable: Setter
         );
 
         const to = await input();
+        setMovable([]);
         if (to === Reset) {
           return { type: Reset };
         }
+
         return { type: Move, from, to };
       }
     },
