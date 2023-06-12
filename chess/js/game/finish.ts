@@ -191,26 +191,24 @@ export const existsCheckmatePieces = (board: BoardData): boolean => {
   return true;
 };
 
+const charsMap: Record<Piece | Empty, string> = {
+  [Empty]: "E",
+  [BlackPawn]: "p",
+  [BlackKnight]: "n",
+  [BlackBishop]: "b",
+  [BlackRook]: "r",
+  [BlackQueen]: "q",
+  [BlackKing]: "k",
+  [WhitePawn]: "P",
+  [WhiteKnight]: "N",
+  [WhiteBishop]: "B",
+  [WhiteRook]: "R",
+  [WhiteQueen]: "Q",
+  [WhiteKing]: "K",
+};
+
 export const updateThreefoldMap = (threefoldMap: Map<string, number>, board: BoardData, mark: Mark) => {
-  const markChar = mark === White ? "W" : "B";
-
-  const charsMap: Record<Piece | Empty, string> = {
-    [Empty]: " ",
-    [BlackPawn]: "p",
-    [BlackKnight]: "n",
-    [BlackBishop]: "b",
-    [BlackRook]: "r",
-    [BlackQueen]: "q",
-    [BlackKing]: "k",
-    [WhitePawn]: "P",
-    [WhiteKnight]: "N",
-    [WhiteBishop]: "B",
-    [WhiteRook]: "R",
-    [WhiteQueen]: "Q",
-    [WhiteKing]: "K",
-  };
-
-  const boardString = [markChar, ...board.map((square) => charsMap[square])].join("");
+  const boardString = `${boardToFen(board)} ${markToFen(mark)}`;
 
   const count = threefoldMap.get(boardString);
   if (count === undefined) {
@@ -218,6 +216,35 @@ export const updateThreefoldMap = (threefoldMap: Map<string, number>, board: Boa
   } else {
     threefoldMap.set(boardString, count + 1);
   }
+};
+
+const boardToFen = (board: BoardData): string => {
+  let emptyCount = 0;
+  const stringArray: string[] = [];
+  for (const [index, square] of board.entries()) {
+    if (index % 8 === 0) {
+      if (emptyCount !== 0) {
+        stringArray.push(String(emptyCount));
+      }
+      emptyCount = 0;
+      stringArray.push("/");
+    }
+    if (square === Empty) {
+      emptyCount++;
+    } else {
+      if (emptyCount !== 0) {
+        stringArray.push(String(emptyCount));
+      }
+      emptyCount = 0;
+      stringArray.push(charsMap[square]);
+    }
+  }
+
+  return stringArray.slice(1).join("");
+};
+
+const markToFen = (mark: Mark): string => {
+  return mark === White ? "w" : "b";
 };
 
 export const isFiftyMoveCountReset = (board: BoardData, move: MoveTypes): boolean => {
@@ -233,7 +260,12 @@ export const canAttackThereByMove = (moves: MoveTypes[], target: Index) => {
   return moves.some((move) => isMoveAttackThere(move, target));
 };
 
-export const canAttackThereByBoard = (board: BoardData, mark: Mark, canEnPassant: false | Index, target: Index): boolean => {
+export const canAttackThereByBoard = (
+  board: BoardData,
+  mark: Mark,
+  canEnPassant: false | Index,
+  target: Index,
+): boolean => {
   for (const move of getPiecesMoves(board, mark, canEnPassant)) {
     if (isMoveAttackThere(move, target)) {
       return true;
