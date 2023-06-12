@@ -229,11 +229,11 @@ export const isFiftyMoveCountReset = (board: BoardData, move: MoveTypes): boolea
   );
 };
 
-const canAttackThereByMove = (moves: MoveTypes[], target: Index) => {
+export const canAttackThereByMove = (moves: MoveTypes[], target: Index) => {
   return moves.some((move) => isMoveAttackThere(move, target));
 };
 
-const canAttackThereByBoard = (board: BoardData, mark: Mark, canEnPassant: false | Index, target: Index): boolean => {
+export const canAttackThereByBoard = (board: BoardData, mark: Mark, canEnPassant: false | Index, target: Index): boolean => {
   for (const move of getPiecesMoves(board, mark, canEnPassant)) {
     if (isMoveAttackThere(move, target)) {
       return true;

@@ -386,7 +386,7 @@ describe("castling", () => {
       4: BlackKing,
       0: BlackRook,
     });
-    const result = [...getCastling(board, [true, false, false, false], 4)];
+    const result = [...getCastling(board, [true, false, false, false], Black)];
     const expected = { type: Castling, rook: 0 };
 
     expect(result).toContainEqual(expected);
@@ -397,7 +397,7 @@ describe("castling", () => {
       4: BlackKing,
       7: BlackRook,
     });
-    const result = [...getCastling(board, [false, true, false, false], 4)];
+    const result = [...getCastling(board, [false, true, false, false], Black)];
     const expected = { type: Castling, rook: 7 };
 
     expect(result).toContainEqual(expected);
@@ -408,7 +408,7 @@ describe("castling", () => {
       60: WhiteKing,
       56: WhiteRook,
     });
-    const result = [...getCastling(board, [false, false, true, false], 60)];
+    const result = [...getCastling(board, [false, false, true, false], White)];
     const expected = { type: Castling, rook: 56 };
 
     expect(result).toContainEqual(expected);
@@ -419,7 +419,7 @@ describe("castling", () => {
       60: WhiteKing,
       63: WhiteRook,
     });
-    const result = [...getCastling(board, [false, false, false, true], 60)];
+    const result = [...getCastling(board, [false, false, false, true], White)];
     const expected = { type: Castling, rook: 63 };
 
     expect(result).toContainEqual(expected);
@@ -432,7 +432,7 @@ describe("castling", () => {
       4: BlackKing,
       0: BlackRook,
     });
-    const result = [...getCastling(board, [true, false, false, false], 4)];
+    const result = [...getCastling(board, [true, false, false, false], Black)];
     const expected = { type: Castling, rook: 0 };
 
     expect(result).not.toContainEqual(expected);
@@ -445,7 +445,7 @@ describe("castling", () => {
       4: BlackKing,
       7: BlackRook,
     });
-    const result = [...getCastling(board, [false, true, false, false], 4)];
+    const result = [...getCastling(board, [false, true, false, false], Black)];
     const expected = { type: Castling, rook: 7 };
 
     expect(result).not.toContainEqual(expected);
@@ -458,7 +458,7 @@ describe("castling", () => {
       60: WhiteKing,
       56: WhiteRook,
     });
-    const result = [...getCastling(board, [false, false, true, false], 60)];
+    const result = [...getCastling(board, [false, false, true, false], White)];
     const expected = { type: Castling, rook: 56 };
 
     expect(result).not.toContainEqual(expected);
@@ -471,7 +471,7 @@ describe("castling", () => {
       60: WhiteKing,
       63: WhiteRook,
     });
-    const result = [...getCastling(board, [false, false, false, true], 60)];
+    const result = [...getCastling(board, [false, false, false, true], White)];
     const expected = { type: Castling, rook: 63 };
 
     expect(result).not.toContainEqual(expected);
