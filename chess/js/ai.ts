@@ -1,5 +1,4 @@
 import { Setter } from "solid-js";
-import { getCastling, getMoves } from "./game";
 import {
   BoardData,
   Castling,
@@ -15,6 +14,7 @@ import {
   Reset,
   Sender,
 } from "./types";
+import { getCastling, getMoves } from "./game/get-moves";
 
 export const createMessenger = <T>(): [Sender<T>, Receiver<T>] => {
   let resolveFunction = (value: T): void => void value;

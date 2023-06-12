@@ -10,6 +10,7 @@
     "plugin:import/typescript",
     "plugin:unicorn/recommended",
     "plugin:solid/recommended",
+    "plugin:vitest/recommended",
     "prettier"
   ],
 
