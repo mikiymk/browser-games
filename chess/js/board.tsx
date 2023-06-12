@@ -56,11 +56,6 @@ const Square = (properties: SquareProperties) => {
       onDrop={() => properties.setInput(properties.index)}
     >
       <span
-        classList={{
-          piece: true,
-          "piece-white": getMark(properties.square) === White,
-          "piece-black": getMark(properties.square) === Black,
-        }}
         draggable={properties.square !== Empty}
         onDragStart={(event) => {
           event.dataTransfer && (event.dataTransfer.effectAllowed = "move");

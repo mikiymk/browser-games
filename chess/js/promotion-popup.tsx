@@ -14,9 +14,7 @@ export const PromotionPopup = (properties: PromotionPopupProperties) => {
 
   createEffect<Mark | undefined>((prev) => {
     if (prev !== properties.mark) {
-      if (properties.mark === undefined) {
-        dialog.value?.close();
-      } else {
+      if (properties.mark !== undefined) {
         dialog.value?.showModal();
       }
     }
@@ -35,7 +33,10 @@ export const PromotionPopup = (properties: PromotionPopupProperties) => {
                   "square-white": index() % 2 === 0,
                   "square-black": index() % 2 !== 0,
                 }}
-                onClick={() => properties.setInput(piece)}
+                onClick={() => {
+                  properties.setInput(piece);
+                  dialog.value?.close();
+                }}
               >
                 <PieceImage mark={piece} />
               </div>

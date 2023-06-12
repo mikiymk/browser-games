@@ -18,7 +18,7 @@ export const App = () => {
   const [humanInputSender, humanInputReceiver] = createMessenger<InputType>();
   const [humanPromotionSender, humanPromotionReceiver] = createMessenger<PromotionPieces>();
 
-  const humanPlayer = createHumanPlayer(humanInputReceiver, setMovable);
+  const humanPlayer = createHumanPlayer(humanInputReceiver, setMovable, humanPromotionReceiver, setPromotionMark);
 
   const reset = () => {
     humanInputSender(Reset);

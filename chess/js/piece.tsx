@@ -1,5 +1,6 @@
 import { Switch, Match } from "solid-js";
 import {
+  Black,
   BlackBishop,
   BlackKing,
   BlackKnight,
@@ -8,6 +9,7 @@ import {
   BlackRook,
   Empty,
   Piece,
+  White,
   WhiteBishop,
   WhiteKing,
   WhiteKnight,
@@ -15,29 +17,38 @@ import {
   WhiteQueen,
   WhiteRook,
 } from "./types";
+import { getMark } from "./game/mark";
 
 export const PieceImage = (properties: { mark: Piece | Empty }) => {
   return (
-    <Switch>
-      <Match when={properties.mark === BlackPawn || properties.mark === WhitePawn}>
-        <PiecePawn />
-      </Match>
-      <Match when={properties.mark === BlackKnight || properties.mark === WhiteKnight}>
-        <PieceKnight />
-      </Match>
-      <Match when={properties.mark === BlackBishop || properties.mark === WhiteBishop}>
-        <PieceBishop />
-      </Match>
-      <Match when={properties.mark === BlackRook || properties.mark === WhiteRook}>
-        <PieceRook />
-      </Match>
-      <Match when={properties.mark === BlackQueen || properties.mark === WhiteQueen}>
-        <PieceQueen />
-      </Match>
-      <Match when={properties.mark === BlackKing || properties.mark === WhiteKing}>
-        <PieceKing />
-      </Match>
-    </Switch>
+    <span
+      classList={{
+        piece: true,
+        "piece-white": getMark(properties.mark) === White,
+        "piece-black": getMark(properties.mark) === Black,
+      }}
+    >
+      <Switch>
+        <Match when={properties.mark === BlackPawn || properties.mark === WhitePawn}>
+          <PiecePawn />
+        </Match>
+        <Match when={properties.mark === BlackKnight || properties.mark === WhiteKnight}>
+          <PieceKnight />
+        </Match>
+        <Match when={properties.mark === BlackBishop || properties.mark === WhiteBishop}>
+          <PieceBishop />
+        </Match>
+        <Match when={properties.mark === BlackRook || properties.mark === WhiteRook}>
+          <PieceRook />
+        </Match>
+        <Match when={properties.mark === BlackQueen || properties.mark === WhiteQueen}>
+          <PieceQueen />
+        </Match>
+        <Match when={properties.mark === BlackKing || properties.mark === WhiteKing}>
+          <PieceKing />
+        </Match>
+      </Switch>
+    </span>
   );
 };
 
