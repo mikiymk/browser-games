@@ -12,14 +12,12 @@ type PromotionPopupProperties = {
 export const PromotionPopup = (properties: PromotionPopupProperties) => {
   const dialog = createReference<HTMLDialogElement>();
 
-  createEffect<Mark | undefined>((prev) => {
-    if (prev !== properties.mark) {
-      if (properties.mark !== undefined) {
-        dialog.value?.showModal();
-      }
+  createEffect<Mark | undefined>((previous) => {
+    if (previous !== properties.mark && properties.mark !== undefined) {
+      dialog.value?.showModal();
     }
     return properties.mark;
-  }, undefined);
+  });
 
   return (
     <dialog class="promotion" ref={dialog.setValue}>

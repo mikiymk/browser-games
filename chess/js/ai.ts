@@ -32,7 +32,7 @@ export const createMessenger = <T>(): [Sender<T>, Receiver<T>] => {
 export const createHumanPlayer = (
   input: Receiver<InputType>,
   setMovable: Setter<Index[]>,
-  propotionInput: Receiver<PromotionPieces>,
+  promotionInput: Receiver<PromotionPieces>,
   openPromotionMark: Setter<Mark>,
 ): Player => {
   return {
@@ -62,7 +62,7 @@ export const createHumanPlayer = (
         if (toMove !== undefined) {
           if (toMove.type === Promotion) {
             openPromotionMark(mark);
-            const piece = await propotionInput();
+            const piece = await promotionInput();
             return generateMovePromotion(from, to, piece);
           }
           return toMove;

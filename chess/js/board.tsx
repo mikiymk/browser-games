@@ -1,6 +1,5 @@
 import { For } from "solid-js";
-import { Black, BoardData, Empty, Index, InputType, Piece, Sender, White } from "./types";
-import { getMark } from "./game/mark";
+import { BoardData, Empty, Index, InputType, Piece, Sender } from "./types";
 import { PieceImage } from "./piece";
 
 type BoardProperties = {
