@@ -1,19 +1,5 @@
 import { Setter } from "solid-js";
-import {
-  BoardData,
-  Castling,
-  EnPassant,
-  Index,
-  InputType,
-  IsCastled,
-  Mark,
-  Move,
-  Player,
-  Promotion,
-  Receiver,
-  Reset,
-  Sender,
-} from "./types";
+import { BoardData, Index, InputType, IsCastled, Mark, Player, Receiver, Reset, Sender } from "./types";
 import { getCastling, getMoves } from "./game/get-moves";
 
 export const createMessenger = <T>(): [Sender<T>, Receiver<T>] => {
@@ -39,22 +25,14 @@ export const createHumanPlayer = (input: Receiver<InputType>, setMovable: Setter
           return { type: Reset };
         }
 
-        const moves = [...getMoves(board, canEnPassant, from), ...getCastling(board, castling, mark)];
-        if (moves.length === 0) {
+        const moves = [...getMoves(board, canEnPassant, from)];
+        const castlingMoves = from === 4 || from === 60 ? [...getCastling(board, castling, mark)] : [];
+
+        if (moves.length === 0 && castlingMoves.length === 0) {
           continue;
         }
 
-        setMovable(
-          moves.flatMap((move) => {
-            if (move.type === Move || move.type === EnPassant || move.type === Promotion) {
-              return [move.to];
-            }
-            if (move.type === Castling) {
-              return [move.rook];
-            }
-            return [];
-          }),
-        );
+        setMovable([...moves.map((move) => move.to), ...castlingMoves.map((move) => move.rook)]);
 
         const to = await input();
         setMovable([]);
@@ -62,7 +40,15 @@ export const createHumanPlayer = (input: Receiver<InputType>, setMovable: Setter
           return { type: Reset };
         }
 
-        return { type: Move, from, to };
+        const toMove = moves.find((move) => move.to === to);
+        if (toMove !== undefined) {
+          return toMove;
+        }
+
+        const toCastlingMove = castlingMoves.find((move) => move.rook === to);
+        if (toCastlingMove !== undefined) {
+          return toCastlingMove;
+        }
       }
     },
   };

@@ -262,7 +262,7 @@ const indexToAlgebraic = (index: Index): string => {
   const rank = Math.floor(index / 8);
   const file = index % 8;
 
-  return (["a", "b", "c", "d", "e", "f", "g", "h"][file] ?? "") + String(rank + 1);
+  return (["a", "b", "c", "d", "e", "f", "g", "h"][file] ?? "") + String(8 - rank);
 };
 
 export const isFiftyMoveCountReset = (board: BoardData, move: MoveTypes): boolean => {

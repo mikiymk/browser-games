@@ -68,12 +68,15 @@ export type Index =
   |56|57|58|59|60|61|62|63; // 1
 
 export type Awaitable<T> = T | Promise<T>;
-export type MoveTypes =
-  | { type: Reset }
-  | { type: Move; from: Index; to: Index }
-  | { type: Castling; rook: 0 | 7 | 56 | 63 }
-  | { type: EnPassant; from: Index; to: Index; capture: Index }
-  | { type: Promotion; from: Index; to: Index; piece: Piece };
+
+export type MoveTypeReset = { type: Reset };
+export type MoveTypeMove = { type: Move; from: Index; to: Index };
+export type MoveTypeCastling = { type: Castling; rook: 0 | 7 | 56 | 63 };
+export type MoveTypeEnPassant = { type: EnPassant; from: Index; to: Index; capture: Index };
+export type MoveTypePromotion = { type: Promotion; from: Index; to: Index; piece: Piece };
+
+export type MoveTypes = MoveTypeReset | MoveTypeMove | MoveTypeCastling | MoveTypeEnPassant | MoveTypePromotion;
+
 export type MoveTypeGenerator = Generator<MoveTypes, void, undefined>;
 export type IsCastled = [
   black_queen_0: boolean,

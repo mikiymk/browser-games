@@ -16,12 +16,15 @@ import {
   BlackKing,
   Empty,
   IsCastled,
-  MoveTypes,
   Piece,
   Move,
   Index,
   Black,
   White,
+  MoveTypeEnPassant,
+  MoveTypeMove,
+  MoveTypePromotion,
+  MoveTypeCastling,
 } from "../types";
 import { canAttackThereByMove } from "./finish";
 import { generateMoveCastling, generateMoveMove, generateMoveEnPassant, generateMovePromotion } from "./generate-move";
@@ -82,7 +85,11 @@ export const getPiecesMoves = function* (board: BoardData, mark: Mark, canEnPass
   }
 };
 
-export const getMoves = function* (board: BoardData, canEnPassant: false | Index, from: Index): MoveTypeGenerator {
+export const getMoves = function* (
+  board: BoardData,
+  canEnPassant: false | Index,
+  from: Index,
+): Generator<MoveTypeMove | MoveTypeEnPassant | MoveTypePromotion, void, undefined> {
   const fromPiece = board[from];
 
   switch (fromPiece) {
@@ -132,7 +139,11 @@ export const getMoves = function* (board: BoardData, canEnPassant: false | Index
   }
 };
 
-export const getCastling = function* (board: BoardData, castling: IsCastled, mark: Mark): MoveTypeGenerator {
+export const getCastling = function* (
+  board: BoardData,
+  castling: IsCastled,
+  mark: Mark,
+): Generator<MoveTypeCastling, void, undefined> {
   switch (mark) {
     case Black: {
       // アンパサンはキングを攻撃することはないから false
@@ -226,8 +237,8 @@ const getPawnMove = function* (
   from: Index,
   direction: 1 | -1,
   canEnPassant: false | Index,
-): MoveTypeGenerator {
-  const moves: MoveTypes[] = [];
+): Generator<MoveTypeMove | MoveTypeEnPassant | MoveTypePromotion, void, undefined> {
+  const moves: (MoveTypeMove | MoveTypeEnPassant | MoveTypePromotion)[] = [];
 
   const step1 = direction;
   const step2 = direction * 2;
@@ -282,7 +293,11 @@ const getPawnMove = function* (
   }
 };
 
-const getJumpMove = function* (board: BoardData, from: Index, points: [number, number][]): MoveTypeGenerator {
+const getJumpMove = function* (
+  board: BoardData,
+  from: Index,
+  points: [number, number][],
+): Generator<MoveTypeMove | MoveTypeEnPassant | MoveTypePromotion, void, undefined> {
   for (const [dx, dy] of points) {
     const to = validateMove(from, dx, dy);
 
@@ -292,7 +307,11 @@ const getJumpMove = function* (board: BoardData, from: Index, points: [number, n
   }
 };
 
-const getRunMove = function* (board: BoardData, from: Index, directions: [number, number][]): MoveTypeGenerator {
+const getRunMove = function* (
+  board: BoardData,
+  from: Index,
+  directions: [number, number][],
+): Generator<MoveTypeMove | MoveTypeEnPassant | MoveTypePromotion, void, undefined> {
   for (const [ddx, ddy] of directions) {
     let dx = 0;
     let dy = 0;
