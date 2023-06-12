@@ -1,5 +1,6 @@
 import { Setter } from "solid-js";
 import { PlayerType, PlayerTypeAI, PlayerTypeHuman } from "../../common/types";
+import { createReference } from "./reference";
 
 type ControllerProperties = {
   statusMessage: string;
@@ -34,24 +35,21 @@ type SettingsProperties = {
   setPlayerBlack: Setter<PlayerType>;
 };
 const Settings = (properties: SettingsProperties) => {
-  let dialog: HTMLDialogElement | undefined;
-  const dialogReference = (element: HTMLDialogElement) => {
-    dialog = element;
-  };
+  const dialog = createReference<HTMLDialogElement>();
 
   const openSettings = () => {
-    dialog?.showModal();
+    dialog.value?.showModal();
   };
 
   const closeSettings = () => {
-    dialog?.close();
+    dialog.value?.close();
   };
 
   return (
     <>
       <button onClick={openSettings}>open settings</button>
 
-      <dialog ref={dialogReference}>
+      <dialog ref={dialog.setValue}>
         <h3>Settings</h3>
 
         <div>

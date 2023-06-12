@@ -86,6 +86,9 @@ export type IsCastled = [
 ];
 
 export type InputType = Index | Reset;
+export type BlackPromotionTarget = typeof BlackKnight | typeof BlackBishop | typeof BlackRook | typeof BlackQueen;
+export type WhitePromotionTarget = typeof WhiteKnight | typeof WhiteBishop | typeof WhiteRook | typeof WhiteQueen;
+export type PromotionPieces = BlackPromotionTarget | WhitePromotionTarget;
 
 export type Sender<T> = (value: T) => void;
 export type Receiver<T> = () => Promise<T> | T;

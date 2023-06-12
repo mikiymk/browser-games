@@ -25,6 +25,7 @@ import {
   MoveTypeMove,
   MoveTypePromotion,
   MoveTypeCastling,
+  PromotionPieces,
 } from "../types";
 import { canAttackThereByMove } from "./finish";
 import { generateMoveCastling, generateMoveMove, generateMoveEnPassant, generateMovePromotion } from "./generate-move";
@@ -332,4 +333,11 @@ const getRunMove = function* (
       }
     }
   }
+};
+
+export const promotionTargetPieces = (mark: Mark): PromotionPieces[] => {
+  const promotionWhitePieces: PromotionPieces[] = [WhiteKnight, WhiteBishop, WhiteRook, WhiteQueen];
+  const promotionBlackPieces: PromotionPieces[] = [BlackKnight, BlackBishop, BlackRook, BlackQueen];
+
+  return mark === White ? promotionWhitePieces : promotionBlackPieces;
 };
