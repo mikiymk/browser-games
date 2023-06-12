@@ -12,6 +12,7 @@ import {
   EnPassant,
   GameEnd,
   Index,
+  IsCastled,
   Mark,
   Move,
   MoveTypes,
@@ -218,7 +219,7 @@ export const updateThreefoldMap = (threefoldMap: Map<string, number>, board: Boa
   }
 };
 
-const boardToFen = (board: BoardData): string => {
+export const boardToFen = (board: BoardData): string => {
   let emptyCount = 0;
   const stringArray: string[] = [];
   for (const [index, square] of board.entries()) {
@@ -243,8 +244,25 @@ const boardToFen = (board: BoardData): string => {
   return stringArray.slice(1).join("");
 };
 
-const markToFen = (mark: Mark): string => {
+export const markToFen = (mark: Mark): string => {
   return mark === White ? "w" : "b";
+};
+
+export const castlingToFen = (castling: IsCastled): string => {
+  return (
+    (castling[3] ? "K" : "") + (castling[2] ? "Q" : "") + (castling[1] ? "k" : "") + (castling[0] ? "q" : "") || "-"
+  );
+};
+
+export const enPassantToFen = (enPassant: false | Index): string => {
+  return enPassant === false ? "-" : indexToAlgebraic(enPassant);
+};
+
+const indexToAlgebraic = (index: Index): string => {
+  const rank = Math.floor(index / 8);
+  const file = index % 8;
+
+  return (["a", "b", "c", "d", "e", "f", "g", "h"][file] ?? "") + String(rank + 1);
 };
 
 export const isFiftyMoveCountReset = (board: BoardData, move: MoveTypes): boolean => {

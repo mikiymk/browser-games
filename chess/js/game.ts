@@ -21,13 +21,19 @@ import {
   WhitePawn,
   WhiteQueen,
   WhiteRook,
+  WinnerBlack,
+  WinnerWhite,
 } from "./types";
 import { invertMark } from "./game/mark";
 import {
+  boardToFen,
+  castlingToFen,
+  enPassantToFen,
   existsCheckmatePieces,
   isCheckmate,
   isFiftyMoveCountReset,
   isStalemate,
+  markToFen,
   updateThreefoldMap,
 } from "./game/finish";
 import { getNewBoard } from "./game/next-board";
@@ -43,7 +49,7 @@ export const gameLoop = async (
   const castling: IsCastled = [true, true, true, true];
   let canEnPassant: false | Index = false;
   let fiftyMoveCount = 0;
-  let fiftyMoveLastMoved: Mark = Black;
+  let turn = 1;
   const threefoldRepetition = new Map<string, number>();
 
   initializeBoard(setBoard);
@@ -51,6 +57,12 @@ export const gameLoop = async (
   console.log("start game");
 
   mainLoop: for (;;) {
+    console.log(
+      `${boardToFen(board())} ${markToFen(mark)} ${castlingToFen(castling)} ${enPassantToFen(
+        canEnPassant,
+      )} ${fiftyMoveCount} ${turn}`,
+    );
+
     const player = players[mark];
 
     setStatus(mark === Black ? "Black turn" : "White turn");
@@ -64,7 +76,6 @@ export const gameLoop = async (
     canEnPassant = getNextEnPassant(board(), move);
     if (isFiftyMoveCountReset(board(), move)) {
       fiftyMoveCount = 0;
-      fiftyMoveLastMoved = mark;
     }
 
     setBoard((board) => {
@@ -77,29 +88,52 @@ export const gameLoop = async (
 
     mark = invertMark(mark);
 
-    if (isCheckmate(board(), mark, canEnPassant)) {
+    const checkmate = isCheckmate(board(), mark, canEnPassant);
+    if (checkmate === WinnerWhite) {
+      console.log("white win");
+
+      setStatus("White win");
+      break;
+    } else if (checkmate === WinnerBlack) {
+      console.log("black win");
+
+      setStatus("Black win");
       break;
     }
 
     if (isStalemate(board(), mark, canEnPassant)) {
+      console.log("stalemate");
+
+      setStatus("Draw - stalemate");
       break;
     }
 
     if (!existsCheckmatePieces(board())) {
+      console.log("no checkmate pieces");
+
+      setStatus("Draw - insufficient material");
       break;
     }
 
-    if (fiftyMoveCount > 50) {
+    if (fiftyMoveCount > 100) {
+      console.log("no capture and no pawn while 50 moves");
+
+      setStatus("Draw - fifty-move rule");
       break;
     }
-    if (mark === fiftyMoveLastMoved) {
-      fiftyMoveCount++;
-    }
+    fiftyMoveCount++;
 
-    for (const [_, value] of threefoldRepetition) {
+    for (const [boardString, value] of threefoldRepetition) {
       if (value >= 3) {
+        console.log("threefold repetition " + boardString);
+
+        setStatus("Draw - threefold repetition");
         break mainLoop;
       }
+    }
+
+    if (mark === Black) {
+      turn++;
     }
   }
 
