@@ -1,5 +1,6 @@
 import { For, Match, Switch } from "solid-js";
 import {
+  Black,
   BlackBishop,
   BlackKing,
   BlackKnight,
@@ -12,6 +13,7 @@ import {
   InputType,
   Piece,
   Sender,
+  White,
   WhiteBishop,
   WhiteKing,
   WhiteKnight,
@@ -19,6 +21,7 @@ import {
   WhiteQueen,
   WhiteRook,
 } from "./types";
+import { getMark } from "./game/mark";
 
 type BoardProperties = {
   board: BoardData;
@@ -59,64 +62,52 @@ const Square = (properties: SquareProperties) => {
     return index % 16 >= 8 ? index % 2 !== 0 : index % 2 === 0;
   };
 
-  const pieceColor = () => {
-    switch (properties.square) {
-      case BlackPawn:
-      case BlackKnight:
-      case BlackBishop:
-      case BlackRook:
-      case BlackQueen:
-      case BlackKing: {
-        return "black";
-      }
-
-      case WhitePawn:
-      case WhiteKnight:
-      case WhiteBishop:
-      case WhiteRook:
-      case WhiteQueen:
-      case WhiteKing: {
-        return "white";
-      }
-
-      default: {
-        return "";
-      }
-    }
-  };
-
   return (
     <div
       classList={{
         square: true,
         "square-white": isCellWhite(),
         "square-black": !isCellWhite(),
-        "piece-white": pieceColor() === "white",
-        "piece-black": pieceColor() === "black",
         movable: properties.movable,
       }}
       onClick={() => properties.setInput(properties.index)}
+      onDragEnter={(event) => event.preventDefault()}
+      onDragOver={(event) => event.preventDefault()}
+      onDrop={() => properties.setInput(properties.index)}
     >
-      <Switch>
-        <Match when={properties.square === BlackPawn || properties.square === WhitePawn}>
-          <PiecePawn />
-        </Match>
-        <Match when={properties.square === BlackKnight || properties.square === WhiteKnight}>
-          <PieceKnight />
-        </Match>
-        <Match when={properties.square === BlackBishop || properties.square === WhiteBishop}>
-          <PieceBishop />
-        </Match>
-        <Match when={properties.square === BlackRook || properties.square === WhiteRook}>
-          <PieceRook />
-        </Match>
-        <Match when={properties.square === BlackQueen || properties.square === WhiteQueen}>
-          <PieceQueen />
-        </Match>
-        <Match when={properties.square === BlackKing || properties.square === WhiteKing}>
-          <PieceKing />
-        </Match>
-      </Switch>
+      <span
+        classList={{
+          piece: true,
+          "piece-white": getMark(properties.square) === White,
+          "piece-black": getMark(properties.square) === Black,
+        }}
+        draggable={properties.square !== Empty}
+        onDragStart={(event) => {
+          event.dataTransfer && (event.dataTransfer.effectAllowed = "move");
+          properties.setInput(properties.index);
+        }}
+      >
+        <Switch>
+          <Match when={properties.square === BlackPawn || properties.square === WhitePawn}>
+            <PiecePawn />
+          </Match>
+          <Match when={properties.square === BlackKnight || properties.square === WhiteKnight}>
+            <PieceKnight />
+          </Match>
+          <Match when={properties.square === BlackBishop || properties.square === WhiteBishop}>
+            <PieceBishop />
+          </Match>
+          <Match when={properties.square === BlackRook || properties.square === WhiteRook}>
+            <PieceRook />
+          </Match>
+          <Match when={properties.square === BlackQueen || properties.square === WhiteQueen}>
+            <PieceQueen />
+          </Match>
+          <Match when={properties.square === BlackKing || properties.square === WhiteKing}>
+            <PieceKing />
+          </Match>
+        </Switch>
+      </span>
     </div>
   );
 };

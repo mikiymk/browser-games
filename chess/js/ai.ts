@@ -32,14 +32,14 @@ export const createMessenger = <T>(): [Sender<T>, Receiver<T>] => {
 
 export const createHumanPlayer = (input: Receiver<InputType>, setMovable: Setter<Index[]>): Player => {
   return {
-    async getMove(board: BoardData, _mark: Mark, castling: IsCastled, canEnPassant: false | Index) {
+    async getMove(board: BoardData, mark: Mark, castling: IsCastled, canEnPassant: false | Index) {
       for (;;) {
         const from = await input();
         if (from === Reset) {
           return { type: Reset };
         }
 
-        const moves = [...getMoves(board, canEnPassant, from), ...getCastling(board, castling, from)];
+        const moves = [...getMoves(board, canEnPassant, from), ...getCastling(board, castling, mark)];
         if (moves.length === 0) {
           continue;
         }
