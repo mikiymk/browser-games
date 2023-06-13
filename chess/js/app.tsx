@@ -2,9 +2,9 @@ import { createSignal } from "solid-js";
 import { Board } from "./board";
 import { Black, BoardData, BoardLength, Empty, Index, InputType, Mark, PromotionPieces, Reset, White } from "./types";
 import { Controller } from "./controller";
-import { PlayerType, PlayerTypeAI, PlayerTypeHuman } from "../../common/types";
+import { PlayerType, PlayerTypeAI, PlayerTypeHuman, selectPlayer } from "../../common/types";
 import { gameLoop } from "./game";
-import { createHumanPlayer, createMessenger } from "./ai";
+import { aiPlayer, createHumanPlayer, createMessenger } from "./ai";
 import { PromotionPopup } from "./promotion-popup";
 
 export const App = () => {
@@ -28,9 +28,10 @@ export const App = () => {
     });
 
     const players = {
-      [Black]: humanPlayer,
-      [White]: humanPlayer,
+      [White]: selectPlayer(playerWhite(), humanPlayer, aiPlayer),
+      [Black]: selectPlayer(playerBlack(), humanPlayer, aiPlayer),
     };
+    console.log(playerWhite(), playerBlack());
 
     void gameLoop(players, board, setBoard, setStatus);
   };

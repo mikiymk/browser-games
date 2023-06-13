@@ -5,15 +5,19 @@ import {
   InputType,
   IsCastled,
   Mark,
+  MoveTypes,
   Player,
   Promotion,
   PromotionPieces,
   Receiver,
   Reset,
+  Resign,
   Sender,
 } from "./types";
-import { getCastling, getLegalMoves } from "./game/get-moves";
+import { getCastling, getLegalMoves, getPiecesLegalMoves } from "./game/get-moves";
 import { generateMovePromotion } from "./game/generate-move";
+import { getMark } from "./game/mark";
+import { randomSelect } from "../../common/random-select";
 
 export const createMessenger = <T>(): [Sender<T>, Receiver<T>] => {
   let resolveFunction = (value: T): void => void value;
@@ -36,11 +40,15 @@ export const createHumanPlayer = (
   openPromotionMark: Setter<Mark>,
 ): Player => {
   return {
-    async getMove(board: BoardData, mark: Mark, castling: IsCastled, canEnPassant: false | Index) {
+    async getMove(board: BoardData, mark: Mark, castling: IsCastled, canEnPassant: false | Index): Promise<MoveTypes> {
       for (;;) {
         const from = await input();
         if (from === Reset) {
           return { type: Reset };
+        }
+
+        if (getMark(board[from]) !== mark) {
+          continue;
         }
 
         const moves = [...getLegalMoves(board, canEnPassant, from)];
@@ -76,3 +84,15 @@ export const createHumanPlayer = (
     },
   };
 };
+
+export const aiPlayer: Player = {
+  async getMove(board: BoardData, mark: Mark, castling: IsCastled, canEnPassant: false | Index): Promise<MoveTypes> {
+    const moves = [...getPiecesLegalMoves(board, mark, canEnPassant), ...getCastling(board, castling, mark)];
+
+    await sleep(100);
+
+    return randomSelect(moves) ?? { type: Resign };
+  },
+};
+
+const sleep = (millisecond: number) => new Promise<void>((resolve) => setTimeout(() => resolve(), millisecond));

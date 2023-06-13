@@ -1,6 +1,7 @@
 import { Accessor } from "solid-js";
 import { invertMark } from "./game";
 import { BoardData, Mark, Reset, Empty, Index, Player, winnerLines } from "./types";
+import { randomSelect } from "../../common/random-select";
 
 const emptyFunction = <T>(_: T): void => void 0;
 
@@ -94,9 +95,4 @@ export const aiPlayer = {
     // ランダム
     return randomSelect(clearCells) ?? randomSelect(interCells) ?? randomSelect(emptyCells) ?? Reset;
   },
-};
-
-const randomSelect = <T>(list: T[]): T | undefined => {
-  if (list.length === 0) return undefined;
-  return list[Math.floor(Math.random() * list.length)];
 };

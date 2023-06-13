@@ -22,6 +22,7 @@ export const Move = 132;
 export const Castling = 133;
 export const EnPassant = 134;
 export const Promotion = 135;
+export const Resign = 136;
 
 export const OddBoard = 201;
 export const WinnerBlack = 202;
@@ -51,6 +52,7 @@ export type Move = typeof Move;
 export type Castling = typeof Castling;
 export type EnPassant = typeof EnPassant;
 export type Promotion = typeof Promotion;
+export type Resign = typeof Resign;
 export type GameEnd = typeof OddBoard | typeof WinnerWhite | typeof WinnerBlack | typeof Draw;
 
 export type Tuple<T, N, List extends T[] = []> = List["length"] extends N ? List : Tuple<T, N, [T, ...List]>;
@@ -70,12 +72,19 @@ export type Index =
 export type Awaitable<T> = T | Promise<T>;
 
 export type MoveTypeReset = { type: Reset };
+export type MoveTypeResign = { type: Resign };
 export type MoveTypeMove = { type: Move; from: Index; to: Index };
 export type MoveTypeCastling = { type: Castling; rook: 0 | 7 | 56 | 63 };
 export type MoveTypeEnPassant = { type: EnPassant; from: Index; to: Index; capture: Index };
 export type MoveTypePromotion = { type: Promotion; from: Index; to: Index; piece: Piece };
 
-export type MoveTypes = MoveTypeReset | MoveTypeMove | MoveTypeCastling | MoveTypeEnPassant | MoveTypePromotion;
+export type MoveTypes =
+  | MoveTypeReset
+  | MoveTypeResign
+  | MoveTypeMove
+  | MoveTypeCastling
+  | MoveTypeEnPassant
+  | MoveTypePromotion;
 
 export type MoveTypeGenerator = Generator<MoveTypeMove | MoveTypeEnPassant | MoveTypePromotion, void, undefined>;
 export type IsCastled = [
