@@ -1,6 +1,7 @@
 import { test, expect, describe } from "vitest";
 import {
   Black,
+  BlackBishop,
   BlackKing,
   BlackKnight,
   BlackPawn,
@@ -10,12 +11,15 @@ import {
   Index,
   Mark,
   White,
+  WhiteBishop,
   WhiteKing,
   WhiteKnight,
   WhitePawn,
+  WhiteQueen,
+  WhiteRook,
 } from "../../types";
 import { generateBoard } from "./test-util";
-import { isCheckmate } from "../finish";
+import { existsCheckmatePieces, isCheckmate, isStalemate } from "../finish";
 
 describe("checkmate", () => {
   const checkmateCases: [BoardData][] = [
@@ -134,5 +138,169 @@ describe("checkmate", () => {
     const expected = checkmate;
 
     expect(result).toStrictEqual(expected);
+  });
+});
+
+describe("stalemate", () => {
+  test("white can move", () => {
+    const board = generateBoard({
+      18: BlackBishop,
+      19: BlackPawn,
+      27: WhitePawn,
+      28: BlackPawn,
+      36: WhitePawn,
+
+      46: BlackQueen,
+      63: WhiteKing,
+    });
+    const result = isStalemate(board, White, false);
+    const expected = false;
+
+    expect(result).toStrictEqual(expected);
+  });
+
+  test("white cannot move", () => {
+    const board = generateBoard({
+      19: BlackPawn,
+      27: WhitePawn,
+      28: BlackPawn,
+      36: WhitePawn,
+
+      46: BlackQueen,
+      63: WhiteKing,
+    });
+    const result = isStalemate(board, White, false);
+    const expected = true;
+
+    expect(result).toStrictEqual(expected);
+  });
+
+  test("black can move", () => {
+    const board = generateBoard({
+      18: BlackPawn,
+      26: WhitePawn,
+      25: BlackPawn,
+      33: WhitePawn,
+      32: BlackPawn,
+      40: WhitePawn,
+
+      16: BlackKing,
+
+      10: BlackKnight,
+      3: WhiteBishop,
+      11: WhiteRook,
+    });
+    const result = isStalemate(board, Black, false);
+    const expected = false;
+
+    expect(result).toStrictEqual(expected);
+  });
+
+  test("black cannot move", () => {
+    const board = generateBoard({
+      18: BlackPawn,
+      26: WhitePawn,
+      25: BlackPawn,
+      33: WhitePawn,
+      32: BlackPawn,
+      40: WhitePawn,
+
+      16: BlackKing,
+
+      3: WhiteBishop,
+      11: WhiteRook,
+    });
+    const result = isStalemate(board, Black, false);
+    const expected = true;
+
+    expect(result).toStrictEqual(expected);
+  });
+});
+
+describe("no checkmate piece", () => {
+  const checkmateCases: [string, BoardData][] = [
+    [
+      "1 pawn",
+      generateBoard({
+        4: BlackKing,
+        52: WhitePawn,
+        60: WhiteKing,
+      }),
+    ],
+    [
+      "1 queen",
+      generateBoard({
+        4: BlackKing,
+        52: WhiteQueen,
+        60: WhiteKing,
+      }),
+    ],
+    [
+      "1 rook",
+      generateBoard({
+        4: BlackKing,
+        52: WhiteRook,
+        60: WhiteKing,
+      }),
+    ],
+    [
+      "1 bishop and 1 knight",
+      generateBoard({
+        4: BlackKing,
+        52: WhiteBishop,
+        53: WhiteKnight,
+        60: WhiteKing,
+      }),
+    ],
+    [
+      "2 bishops",
+      generateBoard({
+        4: BlackKing,
+        52: WhiteBishop,
+        53: WhiteBishop,
+        60: WhiteKing,
+      }),
+    ],
+  ];
+  const noCheckmateCases: [string, BoardData][] = [
+    [
+      "1 knight",
+      generateBoard({
+        4: BlackKing,
+        52: WhiteKnight,
+        60: WhiteKing,
+      }),
+    ],
+
+    [
+      "1 bishop",
+      generateBoard({
+        4: BlackKing,
+        52: WhiteBishop,
+        60: WhiteKing,
+      }),
+    ],
+    [
+      "2 knights",
+      generateBoard({
+        4: BlackKing,
+        52: WhiteKnight,
+        53: WhiteKnight,
+        60: WhiteKing,
+      }),
+    ],
+  ];
+
+  test.each(checkmateCases)("%s", (_, board) => {
+    const result = existsCheckmatePieces(board);
+    const expected = true;
+
+    expect(result).toBe(expected);
+  });
+  test.each(noCheckmateCases)("%s", (_, board) => {
+    const result = existsCheckmatePieces(board);
+    const expected = false;
+
+    expect(result).toBe(expected);
   });
 });

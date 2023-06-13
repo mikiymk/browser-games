@@ -77,7 +77,7 @@ export type MoveTypePromotion = { type: Promotion; from: Index; to: Index; piece
 
 export type MoveTypes = MoveTypeReset | MoveTypeMove | MoveTypeCastling | MoveTypeEnPassant | MoveTypePromotion;
 
-export type MoveTypeGenerator = Generator<MoveTypes, void, undefined>;
+export type MoveTypeGenerator = Generator<MoveTypeMove | MoveTypeEnPassant | MoveTypePromotion, void, undefined>;
 export type IsCastled = [
   black_queen_0: boolean,
   black_king_7: boolean,

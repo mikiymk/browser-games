@@ -7,10 +7,8 @@ import {
   BlackQueen,
   BlackRook,
   BoardData,
-  Draw,
   Empty,
   EnPassant,
-  GameEnd,
   Index,
   IsCastled,
   Mark,
@@ -71,7 +69,7 @@ export const isCheckmate = (board: BoardData, mark: Mark, canEnPassant: false | 
   return false;
 };
 
-export const isStalemate = (board: BoardData, mark: Mark, canEnPassant: false | Index): GameEnd | false => {
+export const isStalemate = (board: BoardData, mark: Mark, canEnPassant: false | Index): boolean => {
   // ステイルメイトの場合
 
   const whiteMoves = [...getPiecesMoves(board, White, canEnPassant)];
@@ -81,11 +79,11 @@ export const isStalemate = (board: BoardData, mark: Mark, canEnPassant: false | 
   // キャスリングができる状況では確実にできる動きがある
   if (mark === White) {
     if (whiteMoves.length === 0) {
-      return Draw;
+      return true;
     }
   } else {
     if (blackMoves.length === 0) {
-      return Draw;
+      return true;
     }
   }
 

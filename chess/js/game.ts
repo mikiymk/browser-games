@@ -21,8 +21,6 @@ import {
   WhitePawn,
   WhiteQueen,
   WhiteRook,
-  WinnerBlack,
-  WinnerWhite,
 } from "./types";
 import { invertMark } from "./game/mark";
 import {
@@ -89,12 +87,12 @@ export const gameLoop = async (
     mark = invertMark(mark);
 
     const checkmate = isCheckmate(board(), mark, canEnPassant);
-    if (checkmate === WinnerWhite) {
+    if (checkmate === White) {
       console.log("white win");
 
       setStatus("White win");
       break;
-    } else if (checkmate === WinnerBlack) {
+    } else if (checkmate === Black) {
       console.log("black win");
 
       setStatus("Black win");
