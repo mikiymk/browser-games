@@ -24,7 +24,7 @@ import {
   WhiteQueen,
   WhiteRook,
 } from "../types";
-import { getPiecesMoves } from "./get-moves";
+import { getPiecesLegalMoves, getPiecesMoves } from "./get-moves";
 import { invertMark } from "./mark";
 import { getNewBoard } from "./next-board";
 
@@ -72,8 +72,8 @@ export const isCheckmate = (board: BoardData, mark: Mark, canEnPassant: false | 
 export const isStalemate = (board: BoardData, mark: Mark, canEnPassant: false | Index): boolean => {
   // ステイルメイトの場合
 
-  const whiteMoves = [...getPiecesMoves(board, White, canEnPassant)];
-  const blackMoves = [...getPiecesMoves(board, Black, canEnPassant)];
+  const whiteMoves = [...getPiecesLegalMoves(board, White, canEnPassant)];
+  const blackMoves = [...getPiecesLegalMoves(board, Black, canEnPassant)];
 
   // キャスリング以外の動きが１つ以上あるか調べる
   // キャスリングができる状況では確実にできる動きがある

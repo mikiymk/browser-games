@@ -26,10 +26,12 @@ import {
   MoveTypePromotion,
   MoveTypeCastling,
   PromotionPieces,
+  MoveTypes,
 } from "../types";
-import { canAttackThereByMove } from "./finish";
+import { canAttackThereByMove, isCheck } from "./finish";
 import { generateMoveCastling, generateMoveMove, generateMoveEnPassant, generateMovePromotion } from "./generate-move";
 import { getMark, isOtherMark, isSameMark } from "./mark";
+import { getNewBoard } from "./next-board";
 
 const knightMoves: [number, number][] = [
   [1, 2],
@@ -78,12 +80,31 @@ const kingMoves: [number, number][] = [
   [-1, 0],
 ];
 
+export const getPiecesLegalMoves = function* (
+  board: BoardData,
+  mark: Mark,
+  canEnPassant: false | Index,
+): MoveTypeGenerator {
+  for (const [index, square] of board.entries()) {
+    if (getMark(square) === mark) {
+      yield* getLegalMoves(board, canEnPassant, index as Index);
+    }
+  }
+};
+
 export const getPiecesMoves = function* (board: BoardData, mark: Mark, canEnPassant: false | Index): MoveTypeGenerator {
   for (const [index, square] of board.entries()) {
     if (getMark(square) === mark) {
       yield* getMoves(board, canEnPassant, index as Index);
     }
   }
+};
+
+export const getLegalMoves = function* (board: BoardData, canEnPassant: false | Index, from: Index): MoveTypeGenerator {
+  const mark = getMark(board[from]);
+  if (mark === Empty) return;
+
+  yield* filterLegalMove(getMoves(board, canEnPassant, from), board, mark);
 };
 
 export const getMoves = function* (board: BoardData, canEnPassant: false | Index, from: Index): MoveTypeGenerator {
@@ -227,6 +248,21 @@ const validateMove = (from: Index, dx: number, dy: number): Index | undefined =>
   }
 
   return to as Index;
+};
+
+export const filterLegalMove = function* (moves: MoveTypeGenerator, board: BoardData, mark: Mark): MoveTypeGenerator {
+  for (const move of moves) {
+    if (isLegalMove(board, move, mark)) {
+      yield move;
+    }
+  }
+};
+
+const isLegalMove = (board: BoardData, move: MoveTypes, mark: Mark): boolean => {
+  // 自分のキングをチェックさせる動きをフィルターする
+  const nextBoard = getNewBoard(board, move);
+
+  return !isCheck(nextBoard, mark);
 };
 
 const getPawnMove = function* (

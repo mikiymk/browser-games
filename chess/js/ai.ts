@@ -12,7 +12,7 @@ import {
   Reset,
   Sender,
 } from "./types";
-import { getCastling, getMoves } from "./game/get-moves";
+import { getCastling, getLegalMoves } from "./game/get-moves";
 import { generateMovePromotion } from "./game/generate-move";
 
 export const createMessenger = <T>(): [Sender<T>, Receiver<T>] => {
@@ -43,7 +43,7 @@ export const createHumanPlayer = (
           return { type: Reset };
         }
 
-        const moves = [...getMoves(board, canEnPassant, from)];
+        const moves = [...getLegalMoves(board, canEnPassant, from)];
         const castlingMoves = from === 4 || from === 60 ? [...getCastling(board, castling, mark)] : [];
 
         if (moves.length === 0 && castlingMoves.length === 0) {
