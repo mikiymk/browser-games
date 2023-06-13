@@ -16,7 +16,6 @@ import {
   Mark,
   Move,
   MoveTypes,
-  OddBoard,
   Piece,
   Promotion,
   White,
@@ -26,57 +25,47 @@ import {
   WhitePawn,
   WhiteQueen,
   WhiteRook,
-  WinnerBlack,
-  WinnerWhite,
 } from "../types";
-import { getNextEnPassant } from "./en-passant";
 import { getPiecesMoves } from "./get-moves";
+import { invertMark } from "./mark";
 import { getNewBoard } from "./next-board";
 
-export const isCheckmate = (board: BoardData, mark: Mark, canEnPassant: false | Index): GameEnd | false => {
+export const isNoKing = (board: BoardData): boolean => {
+  return !(board.includes(WhiteKing) && board.includes(BlackKing));
+};
+
+/**
+ * mark のキングがチェックされているか調べる
+ * @param board
+ * @param mark
+ * @returns
+ */
+export const isCheck = (board: BoardData, mark: Mark): boolean => {
+  const kingIndex = board.indexOf(mark === White ? WhiteKing : BlackKing) as Index | undefined;
+  if (kingIndex === undefined) {
+    return true;
+  }
+
+  return canAttackThereByBoard(board, invertMark(mark), false, kingIndex);
+};
+
+export const isCheckmate = (board: BoardData, mark: Mark, canEnPassant: false | Index): Mark | false => {
   // チェックメイトの場合
   // キングの位置を探す
   // キングとその周りの位置が攻撃されているか調べる
 
-  const whiteMoves = [...getPiecesMoves(board, White, canEnPassant)];
-  const blackMoves = [...getPiecesMoves(board, Black, canEnPassant)];
+  if (isCheck(board, mark)) {
+    // チェック状態の場合、次に動いてチェック状態が解除される手があるか調べ、ない場合はチェックメイトになる
+    for (const move of getPiecesMoves(board, mark, canEnPassant)) {
+      const nextBoard = getNewBoard(board, move);
 
-  const whiteKingIndex = board.indexOf(WhiteKing) as Index | undefined;
-  const blackKingIndex = board.indexOf(BlackKing) as Index | undefined;
-
-  if (whiteKingIndex === undefined || blackKingIndex === undefined) {
-    // キングが不在
-    return OddBoard;
-  }
-
-  if (mark === White) {
-    // 次は白の番
-    if (canAttackThereByMove(blackMoves, whiteKingIndex)) {
-      // チェック状態の場合、次に動いてチェック状態が解除される手があるか調べ、ない場合はチェックメイトになる
-      for (const move of whiteMoves) {
-        const nextBoard = getNewBoard(board, move);
-        const kingIndex = nextBoard.indexOf(WhiteKing) as Index;
-
-        if (canAttackThereByBoard(nextBoard, Black, getNextEnPassant(board, move), kingIndex)) {
-          // チェックメイト
-          return WinnerBlack;
-        }
+      if (!isCheck(nextBoard, mark)) {
+        return false;
       }
     }
-  } else {
-    // 次は黒の番
-    if (canAttackThereByMove(whiteMoves, blackKingIndex)) {
-      // チェック状態の場合、次に動いてチェック状態が解除される手があるか調べ、ない場合はチェックメイトになる
-      for (const move of blackMoves) {
-        const nextBoard = getNewBoard(board, move);
-        const kingIndex = nextBoard.indexOf(BlackKing) as Index;
 
-        if (canAttackThereByBoard(nextBoard, White, getNextEnPassant(board, move), kingIndex)) {
-          // チェックメイト
-          return WinnerWhite;
-        }
-      }
-    }
+    // チェックメイト
+    return invertMark(mark);
   }
 
   return false;

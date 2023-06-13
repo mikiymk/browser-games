@@ -22,5 +22,7 @@ export default defineConfig({
     },
   },
 
-  test: {},
+  test: {
+    reporters: "verbose",
+  },
 });
