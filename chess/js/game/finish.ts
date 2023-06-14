@@ -9,6 +9,7 @@ import {
   BoardData,
   Empty,
   EnPassant,
+  GameState,
   Index,
   Mark,
   Move,
@@ -26,7 +27,58 @@ import {
 import { getPiecesLegalMoves, getPiecesMoves } from "./get-moves";
 import { invertMark } from "./mark";
 import { getNextBoard } from "./get-next";
-import { boardToFen, markToFen } from "./fen";
+import { Setter } from "solid-js";
+
+export const isFinished = (state: GameState, setMessage: Setter<string>): boolean => {
+  if (isNoKing(state.board)) {
+    return true;
+  }
+
+  const checkmate = isCheckmate(state.board, state.mark, state.enPassant);
+  if (checkmate === White) {
+    console.log("white win");
+
+    setMessage("White win");
+    return true;
+  } else if (checkmate === Black) {
+    console.log("black win");
+
+    setMessage("Black win");
+    return true;
+  }
+
+  if (isStalemate(state.board, state.mark, state.enPassant)) {
+    console.log("stalemate");
+
+    setMessage("Draw - stalemate");
+    return true;
+  }
+
+  if (!existsCheckmatePieces(state.board)) {
+    console.log("no checkmate pieces");
+
+    setMessage("Draw - insufficient material");
+    return true;
+  }
+
+  if (state.fiftyMove > 100) {
+    console.log("no capture and no pawn while 50 moves");
+
+    setMessage("Draw - fifty-move rule");
+    return true;
+  }
+
+  for (const [boardString, value] of state.threefold) {
+    if (value >= 3) {
+      console.log("threefold repetition " + boardString);
+
+      setMessage("Draw - threefold repetition");
+      return true;
+    }
+  }
+
+  return false;
+};
 
 export const isNoKing = (board: BoardData): boolean => {
   return !(board.includes(WhiteKing) && board.includes(BlackKing));
@@ -177,26 +229,6 @@ export const existsCheckmatePieces = (board: BoardData): boolean => {
   }
 
   return true;
-};
-
-export const updateThreefoldMap = (threefoldMap: Map<string, number>, board: BoardData, mark: Mark) => {
-  const boardString = `${boardToFen(board)} ${markToFen(mark)}`;
-
-  const count = threefoldMap.get(boardString);
-  if (count === undefined) {
-    threefoldMap.set(boardString, 1);
-  } else {
-    threefoldMap.set(boardString, count + 1);
-  }
-};
-
-export const isFiftyMoveCountReset = (board: BoardData, move: MoveTypes): boolean => {
-  return (
-    move.type === EnPassant ||
-    move.type === Promotion ||
-    (move.type === Move &&
-      (board[move.to] !== Empty || board[move.from] === BlackPawn || board[move.from] === WhitePawn))
-  );
 };
 
 export const canAttackThereByMove = (moves: MoveTypes[], target: Index) => {
