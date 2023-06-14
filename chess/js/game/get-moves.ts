@@ -31,7 +31,7 @@ import {
 import { canAttackThereByMove, isCheck } from "./finish";
 import { generateMoveCastling, generateMoveMove, generateMoveEnPassant, generateMovePromotion } from "./generate-move";
 import { getMark, isOtherMark, isSameMark } from "./mark";
-import { getNewBoard } from "./next-board";
+import { getNextBoard } from "./get-next";
 
 const knightMoves: [number, number][] = [
   [1, 2],
@@ -260,7 +260,7 @@ export const filterLegalMove = function* (moves: MoveTypeGenerator, board: Board
 
 const isLegalMove = (board: BoardData, move: MoveTypes, mark: Mark): boolean => {
   // 自分のキングをチェックさせる動きをフィルターする
-  const nextBoard = getNewBoard(board, move);
+  const nextBoard = getNextBoard(board, move);
 
   return !isCheck(nextBoard, mark);
 };

@@ -25,7 +25,7 @@ import {
 } from "@/chess/js/types";
 import { getPiecesLegalMoves, getPiecesMoves } from "./get-moves";
 import { invertMark } from "./mark";
-import { getNewBoard } from "./next-board";
+import { getNextBoard } from "./get-next";
 import { boardToFen, markToFen } from "./fen";
 
 export const isNoKing = (board: BoardData): boolean => {
@@ -55,7 +55,7 @@ export const isCheckmate = (board: BoardData, mark: Mark, canEnPassant: false | 
   if (isCheck(board, mark)) {
     // チェック状態の場合、次に動いてチェック状態が解除される手があるか調べ、ない場合はチェックメイトになる
     for (const move of getPiecesMoves(board, mark, canEnPassant)) {
-      const nextBoard = getNewBoard(board, move);
+      const nextBoard = getNextBoard(board, move);
 
       if (!isCheck(nextBoard, mark)) {
         return false;

@@ -6,14 +6,15 @@
   "type": "module",
   "scripts": {
     "test": "vitest run",
-    "lint:eslint": "eslint **/*.ts **/*.tsx",
+    "lint:eslint": "eslint **/*.ts **/*.tsx --cache",
     "lint:typescript": "tsc",
     "format": "npm run format:base -- --write --cache",
     "format:base": "prettier **/*.ts **/*.tsx **/*.json **/*.html",
     "format:force": "npm run format:base -- --write",
     "format:check": "npm run format:base -- --check",
     "build": "vite build",
-    "check-all": "run-s format:check lint:* test build",
+    "check-all": "run-s format lint:* test build",
+    "ci": "run-s format:check lint:* test build",
     "serve": "vite"
   },
   "repository": {

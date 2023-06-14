@@ -31,8 +31,7 @@ import {
   isStalemate,
   updateThreefoldMap,
 } from "./game/finish";
-import { getNewBoard } from "./game/next-board";
-import { getNextEnPassant } from "./game/en-passant";
+import { getNextBoard, getNextEnPassant } from "./game/get-next";
 import { stateToFen } from "./game/fen";
 
 export const gameLoop = async (
@@ -70,7 +69,7 @@ export const gameLoop = async (
     }
 
     setState((state) => {
-      const newBoard = getNewBoard(state.board, move);
+      const newBoard = getNextBoard(state.board, move);
 
       updateThreefoldMap(threefoldRepetition, newBoard, mark);
 

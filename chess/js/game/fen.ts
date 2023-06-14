@@ -65,6 +65,10 @@ export const boardToFen = (board: BoardData): string => {
     }
   }
 
+  if (emptyCount !== 0) {
+    stringArray.push(String(emptyCount));
+  }
+
   return stringArray.slice(1).join("");
 };
 
