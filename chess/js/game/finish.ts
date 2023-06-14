@@ -23,7 +23,7 @@ import {
   WhitePawn,
   WhiteQueen,
   WhiteRook,
-} from "../types";
+} from "@/chess/js/types";
 import { getPiecesLegalMoves, getPiecesMoves } from "./get-moves";
 import { invertMark } from "./mark";
 import { getNewBoard } from "./next-board";

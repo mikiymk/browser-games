@@ -9,6 +9,11 @@ import solidPlugin from "vite-plugin-solid";
 export default defineConfig({
   base: "/js-html-game/",
   plugins: [solidPlugin()],
+
+  resolve: {
+    alias: [{ find: /^@\/(.*)/, replacement: resolve(__dirname, "$1") }],
+  },
+
   build: {
     modulePreload: {
       polyfill: false,

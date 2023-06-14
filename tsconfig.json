@@ -6,7 +6,12 @@
     "moduleResolution": "bundler",
     "jsx": "preserve",
     "jsxImportSource": "solid-js",
-    "noEmit": true
+    "noEmit": true,
+
+    "baseUrl": "./",
+    "paths": {
+      "@/*": ["*"]
+    }
   },
   "include": ["**/*.ts", "**/*.tsx"]
 }

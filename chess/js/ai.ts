@@ -17,7 +17,7 @@ import {
 import { getCastling, getLegalMoves, getPiecesLegalMoves } from "./game/get-moves";
 import { generateMovePromotion } from "./game/generate-move";
 import { getMark } from "./game/mark";
-import { randomSelect } from "../../common/random-select";
+import { randomSelect } from "@/common/random-select";
 
 export const createMessenger = <T>(): [Sender<T>, Receiver<T>] => {
   let resolveFunction = (value: T): void => void value;

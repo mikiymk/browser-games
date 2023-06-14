@@ -1,10 +1,11 @@
-import { BoardData, MoveTypes, Reset, Move, Empty, Castling, EnPassant, Promotion, Index } from "../types";
+import { BoardData, MoveTypes, Reset, Move, Empty, Castling, EnPassant, Promotion, Index, Resign } from "../types";
 
 export const getNewBoard = (board: BoardData, move: MoveTypes): BoardData => {
   const newBoard: BoardData = [...board];
 
   switch (move.type) {
-    case Reset: {
+    case Reset:
+    case Resign: {
       return board;
     }
 

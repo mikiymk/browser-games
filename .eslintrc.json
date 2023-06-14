@@ -14,8 +14,13 @@
     "prettier"
   ],
 
+  "settings": {
+    "import/resolver": "typescript"
+  },
+
   "parserOptions": {
-    "project": ["./tsconfig.json"]
+    "project": ["./tsconfig.json"],
+    "tsconfigRootDir": "./"
   },
 
   "rules": {
