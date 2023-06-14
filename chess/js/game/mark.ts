@@ -18,7 +18,8 @@ import {
   BlackKing,
   BoardData,
   Index,
-} from "../types";
+} from "@/chess/js/types";
+
 
 export const invertMark = (mark: Mark) => {
   return mark === Black ? White : Black;

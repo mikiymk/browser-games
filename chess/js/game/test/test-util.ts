@@ -1,4 +1,4 @@
-import { BoardData, BoardLength, Empty, Index, Piece } from "../../types";
+import { BoardData, BoardLength, Empty, Index, Piece }  from "@/chess/js/types";
 
 export const generateBoard = (pieces: Partial<Record<Index, Piece>>): BoardData => {
   return Array.from<never, Piece | Empty>(

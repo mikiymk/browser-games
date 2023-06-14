@@ -9,7 +9,7 @@ import {
   WhitePawn,
   WhiteQueen,
   WhiteRook,
-} from "../../types";
+}  from "@/chess/js/types";
 import { generateBoard } from "./test-util";
 import { generateMoveCastling, generateMoveEnPassant, generateMoveMove, generateMovePromotion } from "../generate-move";
 import { getNewBoard } from "../next-board";

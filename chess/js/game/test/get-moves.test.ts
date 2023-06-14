@@ -18,7 +18,7 @@ import {
   WhitePawn,
   WhiteQueen,
   WhiteRook,
-} from "../../types";
+}  from "@/chess/js/types";
 import { generateBoard } from "./test-util";
 import { getCastling, getPiecesMoves } from "../get-moves";
 

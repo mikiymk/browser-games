@@ -1,5 +1,5 @@
 import { Setter } from "solid-js";
-import { PlayerType, PlayerTypeAI, PlayerTypeHuman } from "../../common/types";
+import { PlayerType, PlayerTypeAI, PlayerTypeHuman } from "@/common/types";
 import { createReference } from "./reference";
 
 type ControllerProperties = {

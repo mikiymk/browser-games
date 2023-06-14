@@ -9,7 +9,7 @@ import {
   MoveTypePromotion,
   Piece,
   Promotion,
-} from "../types";
+} from "@/chess/js/types";
 
 export const generateMoveMove = (from: Index, to: Index): MoveTypeMove => {
   return { type: Move, from, to };

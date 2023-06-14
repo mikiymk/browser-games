@@ -1,4 +1,5 @@
-import { BoardData, MoveTypes, Reset, Move, Empty, Castling, EnPassant, Promotion, Index, Resign } from "../types";
+import { BoardData, MoveTypes, Reset, Move, Empty, Castling, EnPassant, Promotion, Index, Resign } from "@/chess/js/types";
+
 
 export const getNewBoard = (board: BoardData, move: MoveTypes): BoardData => {
   const newBoard: BoardData = [...board];

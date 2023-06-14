@@ -2,7 +2,7 @@ import { createSignal } from "solid-js";
 import { Board } from "./board";
 import { Black, BoardData, BoardLength, Empty, Index, InputType, Mark, PromotionPieces, Reset, White } from "./types";
 import { Controller } from "./controller";
-import { PlayerType, PlayerTypeAI, PlayerTypeHuman, selectPlayer } from "../../common/types";
+import { PlayerType, PlayerTypeAI, PlayerTypeHuman, selectPlayer } from "@/common/types";
 import { gameLoop } from "./game";
 import { aiPlayer, createHumanPlayer, createMessenger } from "./ai";
 import { PromotionPopup } from "./promotion-popup";

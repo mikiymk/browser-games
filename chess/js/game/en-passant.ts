@@ -1,4 +1,4 @@
-import { BlackPawn, BoardData, Index, Move, MoveTypes, WhitePawn } from "../types";
+import { BlackPawn, BoardData, Index, Move, MoveTypes, WhitePawn } from "@/chess/js/types";
 
 export const getNextEnPassant = (board: BoardData, move: MoveTypes): false | Index => {
   // ポーンが縦に２つ進んでいる場合、アンパサン可能とする

@@ -4,7 +4,7 @@ import { Board } from "./board";
 import { Controller } from "./controller";
 import { gameLoop } from "./game";
 import { GameAiPromise, aiPlayer, humanPlayer } from "./ai";
-import { PlayerType, PlayerTypeHuman, PlayerTypeAI } from "../../common/types";
+import { PlayerType, PlayerTypeHuman, PlayerTypeAI } from "@/common/types";
 
 const initialBoardData: BoardData = [Empty, Empty, Empty, Empty, Empty, Empty, Empty, Empty, Empty];
 

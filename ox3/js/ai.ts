@@ -1,7 +1,7 @@
 import { Accessor } from "solid-js";
 import { invertMark } from "./game";
 import { BoardData, Mark, Reset, Empty, Index, Player, winnerLines } from "./types";
-import { randomSelect } from "../../common/random-select";
+import { randomSelect } from "@/common/random-select";
 
 const emptyFunction = <T>(_: T): void => void 0;
 

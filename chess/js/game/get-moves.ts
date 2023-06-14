@@ -27,7 +27,7 @@ import {
   MoveTypeCastling,
   PromotionPieces,
   MoveTypes,
-} from "../types";
+} from "@/chess/js/types";
 import { canAttackThereByMove, isCheck } from "./finish";
 import { generateMoveCastling, generateMoveMove, generateMoveEnPassant, generateMovePromotion } from "./generate-move";
 import { getMark, isOtherMark, isSameMark } from "./mark";
