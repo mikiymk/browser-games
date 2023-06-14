@@ -16,8 +16,8 @@ import {
   WhitePawn,
   WhiteQueen,
   WhiteRook,
-} from "./types";
-import { getMark } from "./game/mark";
+} from "@/chess/js/types";
+import { getMark } from "@/chess/js/game/mark";
 
 export const PieceImage = (properties: { mark: Piece | Empty }) => {
   return (

@@ -1,5 +1,5 @@
 import { For } from "solid-js";
-import { BoardData, Empty, Index, InputType, Piece, Sender } from "./types";
+import { BoardData, Empty, Index, InputType, Piece, Sender } from "@/chess/js/types";
 import { PieceImage } from "./piece";
 
 type BoardProperties = {
