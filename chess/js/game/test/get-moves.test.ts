@@ -18,8 +18,8 @@ import {
   WhitePawn,
   WhiteQueen,
   WhiteRook,
-}  from "@/chess/js/types";
-import { generateBoard } from "./test-util";
+} from "@/chess/js/types";
+import { generateBoard } from "../state";
 import { getCastling, getPiecesMoves } from "../get-moves";
 
 describe("pawn", () => {

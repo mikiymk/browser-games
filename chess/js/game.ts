@@ -9,6 +9,7 @@ import {
   BlackRook,
   BoardData,
   Empty,
+  GameState,
   Index,
   IsCastled,
   Mark,
@@ -39,9 +40,9 @@ import { getNextEnPassant } from "./game/en-passant";
 
 export const gameLoop = async (
   players: Players,
-  board: Accessor<BoardData>,
-  setBoard: Setter<BoardData>,
-  setStatus: Setter<string>,
+  state: Accessor<GameState>,
+  setState: Setter<GameState>,
+  setMessage: Setter<string>,
 ) => {
   let mark: Mark = White;
   const castling: IsCastled = [true, true, true, true];
@@ -50,73 +51,81 @@ export const gameLoop = async (
   let turn = 1;
   const threefoldRepetition = new Map<string, number>();
 
-  initializeBoard(setBoard);
+  initializeBoard(setState);
 
   console.log("start game");
 
   mainLoop: for (;;) {
     console.log(
-      `${boardToFen(board())} ${markToFen(mark)} ${castlingToFen(castling)} ${enPassantToFen(
+      `${boardToFen(state().board)} ${markToFen(mark)} ${castlingToFen(castling)} ${enPassantToFen(
         canEnPassant,
       )} ${fiftyMoveCount} ${turn}`,
     );
 
     const player = players[mark];
 
-    setStatus(mark === Black ? "Black turn" : "White turn");
+    setMessage(mark === Black ? "Black turn" : "White turn");
 
-    const move = await player.getMove(board(), mark, castling, canEnPassant);
+    const move = await player.getMove(state().board, mark, castling, canEnPassant);
 
     if (move.type === Reset) {
       break;
     }
 
-    canEnPassant = getNextEnPassant(board(), move);
-    if (isFiftyMoveCountReset(board(), move)) {
+    canEnPassant = getNextEnPassant(state().board, move);
+    if (isFiftyMoveCountReset(state().board, move)) {
       fiftyMoveCount = 0;
     }
 
-    setBoard((board) => {
-      const newBoard = getNewBoard(board, move);
+    setState((state) => {
+      const newBoard = getNewBoard(state.board, move);
 
       updateThreefoldMap(threefoldRepetition, newBoard, mark);
 
-      return newBoard;
+      return {
+        board: newBoard,
+        mark: state.mark,
+        castling: state.castling,
+        enPassant: state.enPassant,
+        fiftyMove: state.fiftyMove,
+        threefold: state.threefold,
+        moves: state.moves,
+      };
     });
 
     mark = invertMark(mark);
 
-    const checkmate = isCheckmate(board(), mark, canEnPassant);
+    const checkmate = isCheckmate(state().board, mark, canEnPassant);
     if (checkmate === White) {
       console.log("white win");
 
-      setStatus("White win");
+      setMessage("White win");
       break;
     } else if (checkmate === Black) {
       console.log("black win");
 
-      setStatus("Black win");
+      setMessage("Black win");
       break;
     }
 
-    if (isStalemate(board(), mark, canEnPassant)) {
+    if (isStalemate(state().board, mark, canEnPassant)) {
       console.log("stalemate");
 
-      setStatus("Draw - stalemate");
+      setMessage("Draw - stalemate");
       break;
     }
 
-    if (!existsCheckmatePieces(board())) {
+    if (!existsCheckmatePieces(state().board)) {
       console.log("no checkmate pieces");
 
-      setStatus("Draw - insufficient material");
+      setMessage("Draw - insufficient material");
       break;
     }
 
     if (fiftyMoveCount > 100) {
       console.log("no capture and no pawn while 50 moves");
 
-      setStatus("Draw - fifty-move rule");
+      setMessage("Draw - fifty-move rule");
       break;
     }
     fiftyMoveCount++;
@@ -125,7 +134,7 @@ export const gameLoop = async (
       if (value >= 3) {
         console.log("threefold repetition " + boardString);
 
-        setStatus("Draw - threefold repetition");
+        setMessage("Draw - threefold repetition");
         break mainLoop;
       }
     }

@@ -9,8 +9,8 @@ import {
   WhitePawn,
   WhiteQueen,
   WhiteRook,
-}  from "@/chess/js/types";
-import { generateBoard } from "./test-util";
+} from "@/chess/js/types";
+import { generateBoard } from "../state";
 import { generateMoveCastling, generateMoveEnPassant, generateMoveMove, generateMovePromotion } from "../generate-move";
 import { getNewBoard } from "../next-board";
 

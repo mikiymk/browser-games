@@ -56,18 +56,37 @@ export type Resign = typeof Resign;
 export type GameEnd = typeof OddBoard | typeof WinnerWhite | typeof WinnerBlack | typeof Draw;
 
 export type Tuple<T, N, List extends T[] = []> = List["length"] extends N ? List : Tuple<T, N, [T, ...List]>;
+export type TupleIndex<T extends unknown[]> = {
+  [k in keyof T]: k extends `${number}` ? k : never;
+}[keyof T] extends infer R
+  ? R extends `${infer N extends number}`
+    ? N
+    : never
+  : never;
+
 export type BoardData = Tuple<Piece | Empty, 64>;
-// prettier-ignore
-export type Index = 
-//  a  b  c  d  e  f  g  h
-  | 0| 1| 2| 3| 4| 5| 6| 7  // 8
-  | 8| 9|10|11|12|13|14|15  // 7
-  |16|17|18|19|20|21|22|23  // 6
-  |24|25|26|27|28|29|30|31  // 5
-  |32|33|34|35|36|37|38|39  // 4
-  |40|41|42|43|44|45|46|47  // 3
-  |48|49|50|51|52|53|54|55  // 2
-  |56|57|58|59|60|61|62|63; // 1
+export type Index = TupleIndex<BoardData>;
+
+export type GameState = {
+  board: BoardData;
+  mark: Mark;
+  castling: IsCastled;
+  enPassant: EnPassantTarget;
+  fiftyMove: number;
+  threefold: Map<string, number>;
+  moves: number;
+};
+
+//   |  a  b  c  d  e  f  g  h
+// --+------------------------
+// 8 |  0  1  2  3  4  5  6  7
+// 7 |  8  9 10 11 12 13 14 15
+// 6 | 16 17 18 19 20 21 22 23
+// 5 | 24 25 26 27 28 29 30 31
+// 4 | 32 33 34 35 36 37 38 39
+// 3 | 40 41 42 43 44 45 46 47
+// 2 | 48 49 50 51 52 53 54 55
+// 1 | 56 57 58 59 60 61 62 63
 
 export type Awaitable<T> = T | Promise<T>;
 
@@ -93,6 +112,8 @@ export type IsCastled = [
   white_queen_56: boolean,
   white_king_64: boolean,
 ];
+
+export type EnPassantTarget = Index | false;
 
 export type InputType = Index | Reset;
 export type BlackPromotionTarget = typeof BlackKnight | typeof BlackBishop | typeof BlackRook | typeof BlackQueen;

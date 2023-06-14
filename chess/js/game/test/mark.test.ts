@@ -19,8 +19,8 @@ import {
   WhitePawn,
   WhiteQueen,
   WhiteRook,
-}  from "@/chess/js/types";
-import { generateBoard } from "./test-util";
+} from "@/chess/js/types";
+import { generateBoard } from "../state";
 
 describe("invert mark", () => {
   test("white -> black", () => {

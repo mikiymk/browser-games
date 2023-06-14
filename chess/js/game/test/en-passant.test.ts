@@ -1,6 +1,6 @@
 import { test, expect, describe } from "vitest";
 import { BlackPawn, BlackRook, WhitePawn, WhiteRook } from "@/chess/js/types";
-import { generateBoard } from "./test-util";
+import { generateBoard } from "../state";
 import { generateMoveMove } from "../generate-move";
 import { getNextEnPassant } from "../en-passant";
 

@@ -18,7 +18,7 @@ import {
   WhiteQueen,
   WhiteRook,
 } from "@/chess/js/types";
-import { generateBoard } from "./test-util";
+import { generateBoard } from "../state";
 import { existsCheckmatePieces, isCheckmate, isStalemate } from "../finish";
 
 describe("checkmate", () => {

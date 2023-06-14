@@ -8,10 +8,12 @@
     "test": "vitest run",
     "lint:eslint": "eslint **/*.ts **/*.tsx",
     "lint:typescript": "tsc",
-    "format": "prettier chess ox3 .eslintrc.json .prettierrc.json index.html package.json tsconfig.json vite.config.ts  --write --cache",
-    "format:force": "prettier chess ox3 .eslintrc.json .prettierrc.json index.html package.json tsconfig.json vite.config.ts  --write",
+    "format": "npm run format:base -- --write --cache",
+    "format:base": "prettier **/*.ts **/*.tsx **/*.json **/*.html",
+    "format:force": "npm run format:base -- --write",
+    "format:check": "npm run format:base -- --check",
     "build": "vite build",
-    "check-all": "run-s lint:* test build",
+    "check-all": "run-s format:check lint:* test build",
     "serve": "vite"
   },
   "repository": {

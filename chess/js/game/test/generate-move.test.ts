@@ -1,6 +1,6 @@
 import { test, expect } from "vitest";
 import { generateMoveCastling, generateMoveEnPassant, generateMoveMove, generateMovePromotion } from "../generate-move";
-import { Castling, EnPassant, Move, Promotion, WhitePawn }  from "@/chess/js/types";
+import { Castling, EnPassant, Move, Promotion, WhitePawn } from "@/chess/js/types";
 
 test("generate move move", () => {
   const result = generateMoveMove(1, 5);

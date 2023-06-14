@@ -20,7 +20,6 @@ import {
   Index,
 } from "@/chess/js/types";
 
-
 export const invertMark = (mark: Mark) => {
   return mark === Black ? White : Black;
 };

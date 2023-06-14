@@ -1,25 +1,15 @@
 import { createSignal } from "solid-js";
 import { Board } from "./board";
-import {
-  Black,
-  BoardData,
-  BoardLength,
-  Empty,
-  Index,
-  InputType,
-  Mark,
-  PromotionPieces,
-  Reset,
-  White,
-} from "@/chess/js/types";
+import { Black, Index, InputType, Mark, PromotionPieces, Reset, White } from "@/chess/js/types";
 import { Controller } from "./controller";
 import { PlayerType, PlayerTypeAI, PlayerTypeHuman, selectPlayer } from "@/common/types";
 import { gameLoop } from "@/chess/js/game";
 import { aiPlayer, createHumanPlayer, createMessenger } from "@/chess/js/ai";
 import { PromotionPopup } from "./promotion-popup";
+import { generateState } from "../game/state";
 
 export const App = () => {
-  const [board, setBoard] = createSignal(Array.from({ length: BoardLength }).fill(Empty) as BoardData);
+  const [state, setState] = createSignal(generateState());
   const [status, setStatus] = createSignal("");
   const [playerWhite, setPlayerWhite] = createSignal<PlayerType>(PlayerTypeHuman);
   const [playerBlack, setPlayerBlack] = createSignal<PlayerType>(PlayerTypeAI);
@@ -34,8 +24,8 @@ export const App = () => {
   const reset = () => {
     humanInputSender(Reset);
 
-    setBoard((board) => {
-      return board.map(() => Empty) as BoardData;
+    setState(() => {
+      return generateState();
     });
 
     const players = {
@@ -44,12 +34,12 @@ export const App = () => {
     };
     console.log(playerWhite(), playerBlack());
 
-    void gameLoop(players, board, setBoard, setStatus);
+    void gameLoop(players, state, setState, setStatus);
   };
 
   return (
     <>
-      <Board board={board()} setInput={humanInputSender} movableSquares={movable()} />
+      <Board board={state().board} setInput={humanInputSender} movableSquares={movable()} />
       <Controller
         statusMessage={status()}
         reset={reset}
