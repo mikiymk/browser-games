@@ -25,18 +25,15 @@ import {
 } from "./types";
 import { invertMark } from "./game/mark";
 import {
-  boardToFen,
-  castlingToFen,
-  enPassantToFen,
   existsCheckmatePieces,
   isCheckmate,
   isFiftyMoveCountReset,
   isStalemate,
-  markToFen,
   updateThreefoldMap,
 } from "./game/finish";
 import { getNewBoard } from "./game/next-board";
 import { getNextEnPassant } from "./game/en-passant";
+import { stateToFen } from "./game/fen";
 
 export const gameLoop = async (
   players: Players,
@@ -48,7 +45,6 @@ export const gameLoop = async (
   const castling: IsCastled = [true, true, true, true];
   let canEnPassant: false | Index = false;
   let fiftyMoveCount = 0;
-  let turn = 1;
   const threefoldRepetition = new Map<string, number>();
 
   initializeBoard(setState);
@@ -56,11 +52,7 @@ export const gameLoop = async (
   console.log("start game");
 
   mainLoop: for (;;) {
-    console.log(
-      `${boardToFen(state().board)} ${markToFen(mark)} ${castlingToFen(castling)} ${enPassantToFen(
-        canEnPassant,
-      )} ${fiftyMoveCount} ${turn}`,
-    );
+    console.log(stateToFen(state()));
 
     const player = players[mark];
 
@@ -137,10 +129,6 @@ export const gameLoop = async (
         setMessage("Draw - threefold repetition");
         break mainLoop;
       }
-    }
-
-    if (mark === Black) {
-      turn++;
     }
   }
 
