@@ -14,21 +14,19 @@ export const gameLoop = async (
   setState(generateState());
 
   console.log("start game");
+  console.log(stateToFen(state()));
 
   for (;;) {
-    console.log(stateToFen(state()));
-
-    const player = players[state().mark];
-
     setMessage(state().mark === Black ? "Black turn" : "White turn");
 
-    const move = await player.getMove(state().board, state().mark, state().castling, state().enPassant);
+    const move = await players[state().mark].getMove(state());
 
     if (move.type === Reset) {
       break;
     }
 
     setState((state) => getNextState(state, move));
+    console.log(stateToFen(state()));
 
     if (isFinished(state(), setMessage)) {
       break;

@@ -124,7 +124,7 @@ export type Sender<T> = (value: T) => void;
 export type Receiver<T> = () => Promise<T> | T;
 
 export type Player = {
-  getMove(boardData: BoardData, mark: Mark, castling: IsCastled, canEnPassant: false | Index): Awaitable<MoveTypes>;
+  getMove(gameState: GameState): Awaitable<MoveTypes>;
 };
 
 export type Players = Record<Mark, Player>;

@@ -1,9 +1,8 @@
 import { Setter } from "solid-js";
 import {
-  BoardData,
+  GameState,
   Index,
   InputType,
-  IsCastled,
   Mark,
   MoveTypes,
   Player,
@@ -40,7 +39,7 @@ export const createHumanPlayer = (
   openPromotionMark: Setter<Mark>,
 ): Player => {
   return {
-    async getMove(board: BoardData, mark: Mark, castling: IsCastled, canEnPassant: false | Index): Promise<MoveTypes> {
+    async getMove({ board, mark, castling, enPassant }: GameState): Promise<MoveTypes> {
       for (;;) {
         const from = await input();
         if (from === Reset) {
@@ -51,7 +50,7 @@ export const createHumanPlayer = (
           continue;
         }
 
-        const moves = [...getLegalMoves(board, canEnPassant, from)];
+        const moves = [...getLegalMoves(board, enPassant, from)];
         const castlingMoves = from === 4 || from === 60 ? [...getCastling(board, castling, mark)] : [];
 
         if (moves.length === 0 && castlingMoves.length === 0) {
@@ -86,8 +85,8 @@ export const createHumanPlayer = (
 };
 
 export const aiPlayer: Player = {
-  async getMove(board: BoardData, mark: Mark, castling: IsCastled, canEnPassant: false | Index): Promise<MoveTypes> {
-    const moves = [...getPiecesLegalMoves(board, mark, canEnPassant), ...getCastling(board, castling, mark)];
+  async getMove({ board, mark, castling, enPassant }: GameState): Promise<MoveTypes> {
+    const moves = [...getPiecesLegalMoves(board, mark, enPassant), ...getCastling(board, castling, mark)];
 
     await sleep(100);
 
