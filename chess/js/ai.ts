@@ -24,6 +24,7 @@ import {
   Reset,
   Resign,
   Sender,
+  White,
   WhiteBishop,
   WhiteKing,
   WhiteKnight,
@@ -33,7 +34,7 @@ import {
 } from "./types";
 import { getCastling, getLegalMoves, getPiecesLegalMoves } from "./game/get-moves";
 import { generateMovePromotion } from "./game/generate-move";
-import { getMark } from "./game/mark";
+import { getMark, invertMark } from "./game/mark";
 import { isFinished } from "./game/finish";
 import { getNextState } from "./game/get-next";
 
@@ -107,6 +108,8 @@ export const aiPlayer: Player = {
   async getMove(state: GameState): Promise<MoveTypes> {
     await sleep(0);
 
+    console.time("get move");
+
     const moves = [
       ...getPiecesLegalMoves(state.board, state.mark, state.enPassant),
       ...getCastling(state.board, state.castling, state.mark),
@@ -125,6 +128,8 @@ export const aiPlayer: Player = {
       }
     }
 
+    console.timeEnd("get move");
+
     await sleep(100);
 
     return maxMove ?? { type: Resign };
@@ -142,7 +147,7 @@ const alphaBeta = (
   if (depth === 0 || isFinished(state)) {
     const value = evaluateState(state);
 
-    return value;
+    return value * (state.mark === White ? 1 : -1);
   }
 
   for (const move of getPiecesLegalMoves(state.board, state.mark, state.enPassant)) {

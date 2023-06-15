@@ -128,22 +128,16 @@ export const isCheckmate = (board: BoardData, mark: Mark, canEnPassant: false | 
 export const isStalemate = (board: BoardData, mark: Mark, canEnPassant: false | Index): boolean => {
   // ステイルメイトの場合
 
-  const whiteMoves = [...getPiecesLegalMoves(board, White, canEnPassant)];
-  const blackMoves = [...getPiecesLegalMoves(board, Black, canEnPassant)];
-
   // キャスリング以外の動きが１つ以上あるか調べる
   // キャスリングができる状況では確実にできる動きがある
-  if (mark === White) {
-    if (whiteMoves.length === 0) {
-      return true;
-    }
-  } else {
-    if (blackMoves.length === 0) {
-      return true;
-    }
+  const moves = getPiecesLegalMoves(board, mark, canEnPassant);
+
+  for (const _ of moves) {
+    // この部分が実行される＝動きが１つ以上ある
+    return false;
   }
 
-  return false;
+  return true;
 };
 
 export const existsCheckmatePieces = (board: BoardData): boolean => {
