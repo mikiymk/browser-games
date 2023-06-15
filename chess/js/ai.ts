@@ -121,7 +121,9 @@ export const aiPlayer: Player = {
     for (const move of moves) {
       const nextState = getNextState(state, move);
 
-      const value = alphaBeta(nextState, 3);
+      const timeout = { timeout: false };
+      setTimeout(() => (timeout.timeout = true), 400);
+      const value = await minimaxBreadthFirst(nextState, 3, timeout);
 
       if (value > maxValue) {
         maxValue = value;
@@ -164,6 +166,46 @@ export const alphaBeta = (
   }
 
   return alpha;
+};
+
+export const minimaxBreadthFirst = async (
+  state: GameState,
+  depth: number,
+  timeout?: { timeout: boolean },
+): Promise<number> => {
+  const queue: [state: GameState, depth: number, max: boolean][] = [[state, depth, state.mark === Black]];
+
+  let node;
+  let maxValue = Number.NEGATIVE_INFINITY;
+  let minValue = Number.POSITIVE_INFINITY;
+  while ((node = queue.shift())) {
+    await sleep(0);
+
+    const [state, depth, max] = node;
+
+    const value = evaluateState(state);
+
+    if (max) {
+      maxValue = Math.max(maxValue, value);
+    } else {
+      minValue = Math.min(minValue, value);
+    }
+
+    if ((depth <= 0 && (timeout?.timeout ?? true)) || isFinished(state)) {
+      continue;
+    }
+
+    for (const move of getPiecesLegalMoves(state.board, state.mark, state.enPassant)) {
+      const nextState = getNextState(state, move);
+      queue.push([nextState, depth - 1, false]);
+    }
+
+    if (maxValue >= minValue) {
+      break;
+    }
+  }
+
+  return state.mark === Black ? maxValue : -minValue;
 };
 
 const pieceCosts: Record<Piece | Empty, number> = {
