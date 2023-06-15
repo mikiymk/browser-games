@@ -22,15 +22,13 @@ import { boardToFen, markToFen } from "./fen";
 export const getNextState = (state: GameState, move: MoveTypes): GameState => {
   const nextBoard = getNextBoard(state.board, move);
 
-  updateThreefoldMap(state.threefold, nextBoard, state.mark);
-
   return {
-    board: getNextBoard(state.board, move),
+    board: nextBoard,
     mark: invertMark(state.mark),
     castling: getNextCastling(state.castling, move),
     enPassant: getNextEnPassant(state.board, move),
     fiftyMove: getNextFiftyMove(state.fiftyMove, state.board, move),
-    threefold: state.threefold,
+    threefold: getNextThreefoldMap(state.threefold, nextBoard, state.mark),
     moves: nextMoves(state.moves, state.mark),
   };
 };
@@ -189,15 +187,17 @@ export const getNextFiftyMove = (fiftyMove: number, board: BoardData, move: Move
     : fiftyMove + 1;
 };
 
-export const updateThreefoldMap = (threefoldMap: Map<string, number>, board: BoardData, mark: Mark) => {
-  const boardString = `${boardToFen(board)} ${markToFen(mark)}`;
+export const getNextThreefoldMap = (
+  threefoldMap: Map<string, number>,
+  board: BoardData,
+  mark: Mark,
+): Map<string, number> => {
+  const newMap = new Map(threefoldMap);
 
-  const count = threefoldMap.get(boardString);
-  if (count === undefined) {
-    threefoldMap.set(boardString, 1);
-  } else {
-    threefoldMap.set(boardString, count + 1);
-  }
+  const boardString = `${boardToFen(board)} ${markToFen(mark)}`;
+  newMap.set(boardString, (newMap.get(boardString) ?? 0) + 1);
+
+  return newMap;
 };
 
 export const nextMoves = (moves: number, mark: Mark): number => {

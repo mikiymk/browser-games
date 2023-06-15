@@ -23,7 +23,7 @@ import {
   getNextEnPassant,
   getNextFiftyMove,
   nextMoves,
-  updateThreefoldMap,
+  getNextThreefoldMap,
 } from "../get-next";
 
 test("reset, no move", () => {
@@ -356,7 +356,7 @@ test("threefold repetition", () => {
     60: WhiteKing,
   });
 
-  updateThreefoldMap(map, board, White);
+  getNextThreefoldMap(map, board, White);
 
   const expected = new Map([["4k3/8/8/8/8/8/8/4K3 w", 1]]);
 

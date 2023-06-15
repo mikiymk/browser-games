@@ -29,7 +29,11 @@ import { invertMark } from "./mark";
 import { getNextBoard } from "./get-next";
 import { Setter } from "solid-js";
 
-export const isFinished = (state: GameState, setMessage: Setter<string>): boolean => {
+export const isFinished = (state: GameState, setMessage?: Setter<string>): boolean => {
+  const message = (message: string) => {
+    setMessage?.(message);
+  };
+
   if (isNoKing(state.board)) {
     return true;
   }
@@ -38,33 +42,33 @@ export const isFinished = (state: GameState, setMessage: Setter<string>): boolea
   if (checkmate === White) {
     console.log("white win");
 
-    setMessage("White win");
+    message("White win");
     return true;
   } else if (checkmate === Black) {
     console.log("black win");
 
-    setMessage("Black win");
+    message("Black win");
     return true;
   }
 
   if (isStalemate(state.board, state.mark, state.enPassant)) {
     console.log("stalemate");
 
-    setMessage("Draw - stalemate");
+    message("Draw - stalemate");
     return true;
   }
 
   if (!existsCheckmatePieces(state.board)) {
     console.log("no checkmate pieces");
 
-    setMessage("Draw - insufficient material");
+    message("Draw - insufficient material");
     return true;
   }
 
   if (state.fiftyMove > 100) {
     console.log("no capture and no pawn while 50 moves");
 
-    setMessage("Draw - fifty-move rule");
+    message("Draw - fifty-move rule");
     return true;
   }
 
@@ -72,7 +76,7 @@ export const isFinished = (state: GameState, setMessage: Setter<string>): boolea
     if (value >= 3) {
       console.log("threefold repetition " + boardString);
 
-      setMessage("Draw - threefold repetition");
+      message("Draw - threefold repetition");
       return true;
     }
   }
