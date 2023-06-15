@@ -28,6 +28,6 @@ export default defineConfig({
   },
 
   test: {
-    reporters: "verbose",
+    reporters: "default",
   },
 });
