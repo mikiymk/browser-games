@@ -23,6 +23,8 @@
     "tsconfigRootDir": "./"
   },
 
+  "ignorePatterns": ["**/wasm/pkg/*"],
+
   "rules": {
     "unicorn/prefer-query-selector": "off",
     "@typescript-eslint/no-unused-vars": [

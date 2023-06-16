@@ -4,11 +4,14 @@ import { resolve } from "node:path";
 
 // eslint-disable-next-line import/no-unresolved
 import { defineConfig } from "vitest/config";
+
 import solidPlugin from "vite-plugin-solid";
+import wasmPlugin from "vite-plugin-wasm";
+import topLevelAwaitPlugin from "vite-plugin-top-level-await";
 
 export default defineConfig({
   base: "/js-html-game/",
-  plugins: [solidPlugin()],
+  plugins: [solidPlugin(), wasmPlugin(), topLevelAwaitPlugin()],
 
   resolve: {
     alias: [{ find: /^@\/(.*)/, replacement: resolve(__dirname, "$1") }],
