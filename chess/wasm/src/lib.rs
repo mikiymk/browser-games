@@ -1,4 +1,9 @@
-mod utils;
+mod board;
+mod en_passant;
+mod piece;
+mod ply;
+mod position;
+mod state;
 
 use wasm_bindgen::prelude::*;
 

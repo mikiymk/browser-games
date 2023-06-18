@@ -7,6 +7,7 @@ import { gameLoop } from "@/chess/js/game";
 import { aiPlayer, createHumanPlayer, createMessenger } from "@/chess/js/ai";
 import { PromotionPopup } from "./promotion-popup";
 import { generateState } from "../game/state";
+import { add } from "@/chess/wasm/pkg/chess_wasm";
 
 export const App = () => {
   const [state, setState] = createSignal(generateState());
@@ -49,6 +50,7 @@ export const App = () => {
         setPlayerBlack={setPlayerBlack}
       />
       <PromotionPopup mark={promotionMark()} setInput={humanPromotionSender} />
+      {1} + {2} = {add(1, 2)}
     </>
   );
 };
