@@ -5,7 +5,9 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "vitest run",
+    "test": "run-s test:*",
+    "test:vitest": "vitest run",
+    "test:wasm": "cargo test",
     "lint:eslint": "eslint **/*.ts **/*.tsx --cache",
     "lint:typescript": "tsc",
     "format": "npm run format:base -- --write --cache",
@@ -14,8 +16,8 @@
     "format:check": "npm run format:base -- --check",
     "build": "vite build",
     "build-wasm:chess": "wasm-pack build chess/wasm",
-    "check-all": "run-s build-wasm:* format lint:* test build",
-    "ci": "run-s format:check lint:* test build",
+    "check-all": "run-s build-wasm:* format lint:* test:* build",
+    "ci": "run-s build-wasm:* format:check lint:* test:* build",
     "serve": "vite"
   },
   "repository": {

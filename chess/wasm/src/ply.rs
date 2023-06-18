@@ -1,4 +1,4 @@
-use crate::{piece::Piece, state::CastlingType, position::Position};
+use crate::{piece::Piece, position::Position, state::castling::CastlingType};
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum Ply {

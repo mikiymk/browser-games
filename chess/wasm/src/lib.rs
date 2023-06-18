@@ -1,5 +1,5 @@
-mod board;
-mod en_passant;
+#![allow(dead_code)]
+
 mod piece;
 mod ply;
 mod position;
@@ -26,3 +26,4 @@ pub fn greet() {
 pub fn add(left: u32, right: u32) -> u32 {
     left + right
 }
+

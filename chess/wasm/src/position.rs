@@ -11,7 +11,7 @@
 /// 6   | a2 b2 c2 d2 e2 f2 g2 h2
 /// 7   | a1 b1 c1 d1 e1 f1 g1 h1
 /// ```
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq,Hash)]
 pub struct Position {
     pub x: u8,
     pub y: u8,
@@ -26,7 +26,7 @@ impl Position {
     pub const WHITE_ROOK_QUEEN_SIDE: Position = Position { x: 7, y: 0 };
 
     pub fn try_new(x: u8, y: u8) -> Option<Position> {
-        if x < 0 || 7 < x || y < 0 || 7 < y {
+        if 7 < x || 7 < y {
             None
         } else {
             Some(Position { x, y })
