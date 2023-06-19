@@ -10,6 +10,13 @@ impl EnPassant {
         EnPassant(None)
     }
 
+    pub fn is_there(&self, position: &Position) -> bool {
+        match self.0 {
+            Some(en_passant_position) => *position == en_passant_position,
+            None => false,
+        }
+    }
+
     pub fn next_turn_available(&self, board: Board, ply: Ply) -> Self {
         match ply {
             Ply::Move { from, to } => match board.get_piece(from) {

@@ -11,7 +11,7 @@
 /// 6   | a2 b2 c2 d2 e2 f2 g2 h2
 /// 7   | a1 b1 c1 d1 e1 f1 g1 h1
 /// ```
-#[derive(Debug, Clone, Copy, PartialEq, Eq,Hash)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub struct Position {
     pub x: u8,
     pub y: u8,
@@ -39,6 +39,13 @@ impl Position {
 
     pub fn index_of(x: u8, y: u8) -> usize {
         (x as usize) * 8 + (y as usize)
+    }
+
+    pub fn rel_new(&self, x: i8, y: i8) -> Option<Position> {
+        let x: u8 = self.x.wrapping_add_signed(x);
+        let y: u8 = self.y.wrapping_add_signed(y);
+
+        Position::try_new(x, y)
     }
 
     pub fn index(&self) -> usize {

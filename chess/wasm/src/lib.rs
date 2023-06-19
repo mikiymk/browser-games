@@ -4,6 +4,7 @@ mod piece;
 mod ply;
 mod position;
 mod state;
+mod get_ply;
 
 use wasm_bindgen::prelude::*;
 

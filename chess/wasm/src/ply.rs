@@ -38,4 +38,11 @@ impl Ply {
     pub fn new_promotion(from: Position, to: Position, piece: Piece) -> Ply {
         Ply::Promotion { from, to, piece }
     }
+
+    pub fn move_to_promotion(&self, piece: &Piece) -> Ply {
+        match self {
+            Ply::Move { from, to } => Ply::new_promotion(*from, *to, *piece),
+            ply => *ply,
+        }
+    }
 }
