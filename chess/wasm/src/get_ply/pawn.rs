@@ -19,46 +19,32 @@ pub fn get_pawn_ply(
     };
 
     if let Some(front_pos) = from.rel_new(mark_direction, 0) {
-        let square_front = board.get_piece(front_pos);
-        if square_front.mark().is_none() {
+        if board.get_piece(&front_pos).mark().is_none() {
             // 眼の前のマスが駒がいない
             plies.push(Ply::new_move(*from, front_pos));
-        }
-    }
 
-    if !plies.is_empty() {
-        if let Some(front_pos) = from.rel_new(mark_direction * 2, 0) {
-            let square_front = board.get_piece(front_pos);
-            if square_front.mark().is_none() {
-                // 駒がいない
-                plies.push(Ply::new_move(*from, front_pos));
+            if let Some(front_pos) = from.rel_new(mark_direction * 2, 0) {
+                if board.get_piece(&front_pos).mark().is_none() {
+                    // 駒がいない
+                    plies.push(Ply::new_move(*from, front_pos));
+                }
             }
         }
     }
 
     const LEFT_DIFFERENT: i8 = -1;
-
-    if let Some(capture_pos) = from.rel_new(mark_direction, LEFT_DIFFERENT) {
-        if en_passant.is_there(&capture_pos) {
-            let en_passant_capture = from.rel_new(0, LEFT_DIFFERENT);
-            if let Some(en_passant_capture) = en_passant_capture {
-                plies.push(Ply::new_en_passant(*from, capture_pos, en_passant_capture))
-            }
-        } else {
-            plies.push(Ply::new_move(*from, capture_pos))
-        }
-    }
-
     const RIGHT_DIFFERENT: i8 = 1;
 
-    if let Some(capture_pos) = from.rel_new(mark_direction, RIGHT_DIFFERENT) {
-        if en_passant.is_there(&capture_pos) {
-            let en_passant_capture = from.rel_new(0, RIGHT_DIFFERENT);
-            if let Some(en_passant_capture) = en_passant_capture {
-                plies.push(Ply::new_en_passant(*from, capture_pos, en_passant_capture))
+    for different in [LEFT_DIFFERENT, RIGHT_DIFFERENT] {
+        if let Some(capture_pos) = from.rel_new(mark_direction, different) {
+            if en_passant.is_there(&capture_pos) {
+                let en_passant_capture = from.rel_new(0, different);
+                if let Some(en_passant_capture) = en_passant_capture {
+                    plies.push(Ply::new_en_passant(*from, capture_pos, en_passant_capture))
+                }
+            } else {
+                plies.push(Ply::new_move(*from, capture_pos))
             }
-        } else {
-            plies.push(Ply::new_move(*from, capture_pos))
         }
     }
 

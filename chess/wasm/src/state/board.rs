@@ -56,23 +56,23 @@ impl Board {
         board
     }
 
-    pub fn is_same_mark(&self, left: Position, right: Position) -> bool {
+    pub fn is_same_mark(&self, left: &Position, right: &Position) -> bool {
         self.get_piece(left).is_same_mark(&self.get_piece(right))
     }
 
-    pub fn is_other_mark(&self, left: Position, right: Position) -> bool {
+    pub fn is_other_mark(&self, left: &Position, right: &Position) -> bool {
         self.get_piece(left).is_other_mark(&self.get_piece(right))
     }
 
-    pub fn set_piece(&mut self, pos: Position, square: BoardSquare) {
+    pub fn set_piece(&mut self, pos: &Position, square: BoardSquare) {
         self.squares[pos.index()] = square;
     }
 
-    pub fn get_piece(&self, pos: Position) -> BoardSquare {
+    pub fn get_piece(&self, pos: &Position) -> BoardSquare {
         self.squares[pos.index()]
     }
 
-    fn move_piece(&mut self, from: Position, to: Position) {
+    fn move_piece(&mut self, from: &Position, to: &Position) {
         self.set_piece(to, self.get_piece(from));
         self.set_piece(from, BoardSquare::Empty);
     }
@@ -82,7 +82,7 @@ impl Board {
             Ply::Move { from, to } => {
                 let mut clone = self.clone();
 
-                clone.move_piece(from, to);
+                clone.move_piece(&from, &to);
 
                 clone
             }
@@ -92,8 +92,8 @@ impl Board {
 
                 let (king_from, king_to, rook_from, rook_to) = pos.get_move_indexes();
 
-                clone.move_piece(king_from, king_to);
-                clone.move_piece(rook_from, rook_to);
+                clone.move_piece(&king_from, &king_to);
+                clone.move_piece(&rook_from, &rook_to);
 
                 clone
             }
@@ -101,7 +101,7 @@ impl Board {
             Ply::EnPassant { from, to, capture } => {
                 let mut clone = self.clone();
 
-                clone.move_piece(from, to);
+                clone.move_piece(&from, &to);
                 clone.squares[capture.index()] = BoardSquare::Empty;
 
                 clone
@@ -110,7 +110,7 @@ impl Board {
             Ply::Promotion { from, to, piece } => {
                 let mut clone = self.clone();
 
-                clone.move_piece(from, to);
+                clone.move_piece(&from, &to);
                 let mut square = clone.squares[to.index()];
                 square = square.promotion(piece);
                 clone.squares[to.index()] = square;
