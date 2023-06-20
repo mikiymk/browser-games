@@ -43,7 +43,7 @@ mod test {
         let mut board = Board::new();
         board.set_piece(
             &Position::new(4, 4),
-            BoardSquare::new(Mark::White, Piece::Knight),
+            BoardSquare::new(Mark::White, Piece::Bishop),
         );
         board.set_piece(
             &Position::new(1, 1),
