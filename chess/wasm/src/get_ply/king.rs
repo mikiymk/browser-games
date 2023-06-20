@@ -1,6 +1,6 @@
-use crate::{get_ply::steps::StepPlyIterator, ply::Ply, position::Position, state::board::Board};
+use crate::{get_ply::steps::StepPlyIterator, position::Position, state::board::Board};
 
-pub fn get_king_ply(board: &Board, from: Position) -> impl Iterator<Item = Ply> + '_ {
+pub fn get_king_ply(board: &Board, from: Position) -> StepPlyIterator<'_> {
     const KING_STEPS: [(i8, i8); 8] = [
         (1, 0),
         (-1, 0),

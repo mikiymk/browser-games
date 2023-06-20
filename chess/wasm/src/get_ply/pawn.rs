@@ -10,7 +10,7 @@ pub fn get_pawn_ply(
     from: &Position,
     mark: &Mark,
     en_passant: &EnPassant,
-) -> Vec<Ply> {
+) -> PawnPlyIterator {
     let mut plies = Vec::new();
 
     let mark_direction = match mark {
@@ -48,11 +48,13 @@ pub fn get_pawn_ply(
         }
     }
 
-    plies
-        .iter()
-        .map(|ply| promotion(mark, ply))
-        .flatten()
-        .collect()
+    PawnPlyIterator::new(
+        plies
+            .iter()
+            .map(|ply| promotion(mark, ply))
+            .flatten()
+            .collect(),
+    )
 }
 
 fn promotion(mark: &Mark, ply: &Ply) -> Vec<Ply> {
@@ -81,4 +83,27 @@ fn is_promotion(mark: Mark, ply: Ply) -> bool {
     };
 
     pos.x == other_end_rank
+}
+
+pub struct PawnPlyIterator {
+    vec: Vec<Ply>,
+
+    count: usize,
+}
+
+impl PawnPlyIterator {
+    fn new(vec: Vec<Ply>) -> Self {
+        PawnPlyIterator { vec, count: 0 }
+    }
+}
+
+impl Iterator for PawnPlyIterator {
+    type Item = Ply;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        let ply = self.vec.get(self.count);
+        self.count += 1;
+
+        ply.copied()
+    }
 }

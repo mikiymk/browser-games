@@ -119,4 +119,11 @@ impl Board {
             }
         }
     }
+
+    pub fn square_iter(&self) -> impl Iterator<Item = (Position, BoardSquare)> + '_ {
+        self.squares
+            .iter()
+            .enumerate()
+            .map(|(i, s)| (Position::new((i / 8) as u8, (i % 8) as u8), *s))
+    }
 }

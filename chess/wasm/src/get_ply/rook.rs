@@ -1,11 +1,10 @@
 use crate::{
     get_ply::runs::{RunDirection, RunPlyIterator},
-    ply::Ply,
     position::Position,
     state::board::Board,
 };
 
-pub fn get_rook_ply(board: &Board, from: Position) -> impl Iterator<Item = Ply> + '_ {
+pub fn get_rook_ply(board: &Board, from: Position) -> RunPlyIterator<'_> {
     const ROOK_DIRECTIONS: [RunDirection; 4] = [
         RunDirection::Up,
         RunDirection::Down,

@@ -1,10 +1,10 @@
 #![allow(dead_code)]
 
+mod get_ply;
 mod piece;
 mod ply;
 mod position;
 mod state;
-mod get_ply;
 
 use wasm_bindgen::prelude::*;
 
@@ -27,4 +27,3 @@ pub fn greet() {
 pub fn add(left: u32, right: u32) -> u32 {
     left + right
 }
-
