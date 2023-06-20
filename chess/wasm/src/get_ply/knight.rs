@@ -1,59 +1,18 @@
-use crate::{ply::Ply, position::Position, state::board::Board};
+use crate::{get_ply::steps::StepPlyIterator, ply::Ply, position::Position, state::board::Board};
 
 pub fn get_knight_ply(board: &Board, from: Position) -> impl Iterator<Item = Ply> + '_ {
-    KnightPlyIterator::new(board, from)
-}
+    const KNIGHT_STEPS: [(i8, i8); 8] = [
+        (1, 2),
+        (1, -2),
+        (-1, 2),
+        (-1, -2),
+        (2, 1),
+        (2, -1),
+        (-2, 1),
+        (-2, -1),
+    ];
 
-struct KnightPlyIterator<'a> {
-    board: &'a Board,
-    from: Position,
-
-    count: usize,
-}
-
-impl<'a> KnightPlyIterator<'a> {
-    fn new(board: &'a Board, from: Position) -> Self {
-        KnightPlyIterator {
-            board,
-            from,
-            count: 0,
-        }
-    }
-}
-
-impl<'a> Iterator for KnightPlyIterator<'a> {
-    type Item = Ply;
-
-    fn next(&mut self) -> Option<Self::Item> {
-        const KNIGHT_STEPS: [(i8, i8); 8] = [
-            (1, 2),
-            (1, -2),
-            (-1, 2),
-            (-1, -2),
-            (2, 1),
-            (2, -1),
-            (-2, 1),
-            (-2, -1),
-        ];
-
-        loop {
-            match KNIGHT_STEPS.get(self.count) {
-                Some((x, y)) => {
-                    self.count += 1;
-
-                    match self.from.rel_new(*x, *y) {
-                        Some(to) => {
-                            if !self.board.is_same_mark(&self.from, &to) {
-                                break Some(Ply::new_move(self.from, to));
-                            }
-                        }
-                        None => continue,
-                    }
-                }
-                None => break None,
-            }
-        }
-    }
+    StepPlyIterator::new(&KNIGHT_STEPS, board, from)
 }
 
 #[cfg(test)]
