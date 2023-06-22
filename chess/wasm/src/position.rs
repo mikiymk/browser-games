@@ -1,5 +1,7 @@
 use std::fmt::Debug;
 
+use serde::Serialize;
+
 /// ```text
 ///   y |  0  1  2  3  4  5  6  7
 /// x   |
@@ -13,7 +15,7 @@ use std::fmt::Debug;
 /// 6   | a2 b2 c2 d2 e2 f2 g2 h2
 /// 7   | a1 b1 c1 d1 e1 f1 g1 h1
 /// ```
-#[derive(Clone, Copy, PartialEq, Eq, Hash)]
+#[derive(Clone, Copy, PartialEq, Eq, Hash, Serialize)]
 pub struct Position {
     x: u8,
     y: u8,

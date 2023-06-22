@@ -38,16 +38,14 @@ pub fn game(
     player_white: u8,
     player_black: u8,
     set_state: &js_sys::Function,
-    set_message: &js_sys::Function,
 ) -> Result<(), String> {
     let player_white = Player::try_from(player_white)?;
     let player_black = Player::try_from(player_black)?;
     let set_state: JsFunction<'_, GameState> = JsFunction::new(set_state);
-    let set_message: JsFunction<'_, String> = JsFunction::new(set_message);
 
-    let mut game = Game::new(player_white, player_black, set_state, set_message);
+    let mut game = Game::new(player_white, player_black, set_state);
 
-    game.run();
+    game.run()?;
 
     Ok(())
 }

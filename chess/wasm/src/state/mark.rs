@@ -1,3 +1,5 @@
+use std::fmt::Display;
+
 use serde::Serialize;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize)]
@@ -14,6 +16,19 @@ impl Mark {
             White => Black,
             Black => White,
         }
+    }
+}
+
+impl Display for Mark {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(
+            f,
+            "{}",
+            match self {
+                Mark::White => "White",
+                Mark::Black => "Black",
+            }
+        )
     }
 }
 

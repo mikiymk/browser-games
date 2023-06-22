@@ -23,7 +23,7 @@
     "check-all:js": "run-s format:prettier lint:eslint lint:typescript test:vitest build-js:vite",
     "check-all:wasm": "run-s format:wasm build-wasm:* lint:wasm test:wasm",
     "check-all": "run-s check-all:wasm check-all:js",
-    "ci": "npm-run-all -p format:check format:wasm-check -s build-wasm:* -p lint:* test:* -s build",
+    "ci": "npm-run-all -p lint:format lint:format-wasm -s build-wasm:* -p lint:* test:* -s build",
     "serve": "vite"
   },
   "repository": {

@@ -1,4 +1,4 @@
-use std::marker::PhantomData;
+use std::{fmt::Debug, marker::PhantomData};
 
 use wasm_bindgen::JsValue;
 
@@ -18,8 +18,19 @@ where
         }
     }
 
-    pub fn call(&self, value: T) -> Result<JsValue, JsValue> {
+    pub fn call(&self, value: T) -> Result<JsValue, String> {
         self.js_function
-            .call1(&JsValue::NULL, &serde_wasm_bindgen::to_value(&value)?)
+            .call1(
+                &JsValue::NULL,
+                &serde_wasm_bindgen::to_value(&value).map_err(Self::js_value_to_string)?,
+            )
+            .map_err(Self::js_value_to_string)
+    }
+
+    fn js_value_to_string<Err>(error: Err) -> String
+    where
+        Err: Debug,
+    {
+        format!("{:?}", error)
     }
 }
