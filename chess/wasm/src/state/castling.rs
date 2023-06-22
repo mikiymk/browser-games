@@ -1,4 +1,4 @@
-use serde::{Deserialize, Serialize};
+use serde::Serialize;
 
 use crate::{ply::Ply, position::Position};
 
@@ -48,7 +48,7 @@ impl CastlingType {
     }
 }
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize)]
 pub struct Castling(u8);
 impl Castling {
     pub fn new() -> Castling {

@@ -1,18 +1,31 @@
-use serde::{Deserialize, Serialize};
+use serde::{ser::SerializeSeq, Serialize};
 
 use crate::{piece::Piece, ply::Ply, position::Position, state::mark::Mark};
 
 use super::board_square::BoardSquare;
 
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub struct Board {
-    squares: Vec<BoardSquare>,
+    squares: [BoardSquare; 64],
+}
+
+impl Serialize for Board {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: serde::Serializer,
+    {
+        let mut s = serializer.serialize_seq(Some(64))?;
+        for element in &self.squares {
+            s.serialize_element(element)?;
+        }
+        s.end()
+    }
 }
 
 impl Board {
     pub fn new() -> Board {
         Board {
-            squares: vec![BoardSquare::Empty; 64],
+            squares: [BoardSquare::Empty; 64],
         }
     }
 

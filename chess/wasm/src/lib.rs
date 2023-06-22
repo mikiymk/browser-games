@@ -2,15 +2,15 @@
 
 mod game;
 mod get_ply;
+mod js_function;
 mod piece;
 mod player;
 mod ply;
 mod position;
 mod state;
 
-use std::marker::PhantomData;
-
 use game::Game;
+use js_function::JsFunction;
 use player::Player;
 use state::GameState;
 use wasm_bindgen::prelude::*;
@@ -45,31 +45,9 @@ pub fn game(
     let set_state: JsFunction<'_, GameState> = JsFunction::new(set_state);
     let set_message: JsFunction<'_, String> = JsFunction::new(set_message);
 
-    let mut game = Game::new();
+    let mut game = Game::new(player_white, player_black, set_state, set_message);
 
     game.run();
 
     Ok(())
-}
-
-struct JsFunction<'a, T> {
-    js_function: &'a js_sys::Function,
-    call_type: PhantomData<T>,
-}
-
-impl<'a, T> JsFunction<'a, T>
-where
-    T: serde::ser::Serialize,
-{
-    pub fn new(js_function: &'a js_sys::Function) -> Self {
-        JsFunction {
-            js_function,
-            call_type: PhantomData,
-        }
-    }
-
-    pub fn call(&self, value: T) -> Result<JsValue, JsValue> {
-        self.js_function
-            .call1(&JsValue::NULL, &serde_wasm_bindgen::to_value(&value)?)
-    }
 }

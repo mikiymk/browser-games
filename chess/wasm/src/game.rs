@@ -1,13 +1,29 @@
-use crate::state::GameState;
+use crate::{js_function::JsFunction, player::Player, state::GameState};
 
-pub struct Game {
+pub struct Game<'a> {
     state: GameState,
+
+    player_white: Player,
+    player_black: Player,
+    set_state: JsFunction<'a, GameState>,
+    set_message: JsFunction<'a, String>,
 }
 
-impl Game {
-    pub fn new() -> Self {
+impl<'a> Game<'a> {
+    /// Creates a new [`Game`].
+    pub fn new(
+        player_white: Player,
+        player_black: Player,
+        set_state: JsFunction<'a, GameState>,
+        set_message: JsFunction<'a, String>,
+    ) -> Self {
         Game {
             state: GameState::new(),
+
+            player_white,
+            player_black,
+            set_state,
+            set_message,
         }
     }
 

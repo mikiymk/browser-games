@@ -6,11 +6,11 @@ pub mod mark;
 
 use std::collections::HashMap;
 
-use serde::{Deserialize, Serialize};
+use serde::Serialize;
 
 use self::{board::Board, castling::Castling, mark::Mark};
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize)]
 pub struct GameState {
     board: Board,
     mark: Mark,
