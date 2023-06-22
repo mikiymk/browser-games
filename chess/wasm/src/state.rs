@@ -6,10 +6,12 @@ pub mod mark;
 
 use std::collections::HashMap;
 
+use serde::{Deserialize, Serialize};
+
 use self::{board::Board, castling::Castling, mark::Mark};
 
-#[derive(Debug, Clone)]
-pub struct Game {
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct GameState {
     board: Board,
     mark: Mark,
     castling: Castling,
@@ -21,9 +23,9 @@ pub struct Game {
     message: String,
 }
 
-impl Game {
-    pub fn new() -> Game {
-        Game {
+impl GameState {
+    pub fn new() -> GameState {
+        GameState {
             board: Board::initial(),
             mark: Mark::White,
             castling: Castling::new(),

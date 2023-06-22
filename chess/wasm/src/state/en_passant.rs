@@ -19,7 +19,7 @@ impl EnPassant {
 
     pub fn next_turn_available(&self, board: &Board, ply: &Ply) -> Self {
         match ply {
-            Ply::Move { from, to } => match board.get_piece(&from) {
+            Ply::Move { from, to } => match board.get_piece(from) {
                 BoardSquare::Piece(_, Piece::Pawn) => {
                     let diff_x = from.x().abs_diff(to.x());
 

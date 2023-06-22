@@ -1,8 +1,10 @@
+use serde::{Deserialize, Serialize};
+
 use crate::piece::Piece;
 
 use crate::state::Mark;
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum BoardSquare {
     Piece(Mark, Piece),
     Empty,

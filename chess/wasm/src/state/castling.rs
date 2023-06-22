@@ -1,3 +1,5 @@
+use serde::{Deserialize, Serialize};
+
 use crate::{ply::Ply, position::Position};
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
@@ -46,7 +48,7 @@ impl CastlingType {
     }
 }
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub struct Castling(u8);
 impl Castling {
     pub fn new() -> Castling {
@@ -64,15 +66,15 @@ impl Castling {
 
     pub fn get(&self, pos: CastlingType) -> bool {
         match pos {
-            CastlingType::BlackKingSide => self.0 | 0b1000 != 0,
-            CastlingType::BlackQueenSide => self.0 | 0b0100 != 0,
-            CastlingType::WhiteKingSide => self.0 | 0b0010 != 0,
-            CastlingType::WhiteQueenSide => self.0 | 0b0001 != 0,
+            CastlingType::BlackKingSide => self.0 & 0b1000 != 0,
+            CastlingType::BlackQueenSide => self.0 & 0b0100 != 0,
+            CastlingType::WhiteKingSide => self.0 & 0b0010 != 0,
+            CastlingType::WhiteQueenSide => self.0 & 0b0001 != 0,
         }
     }
 
     pub fn apply_ply(&self, ply: Ply) -> Castling {
-        let mut clone = self.clone();
+        let mut clone = *self;
 
         match ply {
             Ply::Castling(CastlingType::BlackKingSide | CastlingType::BlackQueenSide)

@@ -50,13 +50,7 @@ pub fn get_pawn_ply(
         }
     }
 
-    PawnPlyIterator::new(
-        plies
-            .iter()
-            .map(|ply| promotion(mark, ply))
-            .flatten()
-            .collect(),
-    )
+    PawnPlyIterator::new(plies.iter().flat_map(|ply| promotion(mark, ply)).collect())
 }
 
 fn promotion(mark: &Mark, ply: &Ply) -> Vec<Ply> {

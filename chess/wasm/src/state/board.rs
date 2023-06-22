@@ -1,16 +1,18 @@
+use serde::{Deserialize, Serialize};
+
 use crate::{piece::Piece, ply::Ply, position::Position, state::mark::Mark};
 
 use super::board_square::BoardSquare;
 
-#[derive(Debug, Clone, PartialEq, Eq, Hash)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub struct Board {
-    squares: [BoardSquare; 64],
+    squares: Vec<BoardSquare>,
 }
 
 impl Board {
     pub fn new() -> Board {
         Board {
-            squares: [BoardSquare::Empty; 64],
+            squares: vec![BoardSquare::Empty; 64],
         }
     }
 
