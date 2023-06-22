@@ -15,11 +15,16 @@ enum PlyIterator<'a> {
     Steps(StepPlyIterator<'a>),
     Runs(RunPlyIterator<'a>),
 }
-impl Iterator for &PlyIterator<'_> {
+
+impl Iterator for PlyIterator<'_> {
     type Item = Ply;
 
     fn next(&mut self) -> Option<Self::Item> {
-        todo!()
+        match self {
+            PlyIterator::PawnMoves(iter) => iter.next(),
+            PlyIterator::Steps(iter) => iter.next(),
+            PlyIterator::Runs(iter) => iter.next(),
+        }
     }
 }
 
@@ -39,11 +44,19 @@ impl Iterator for AllPlyIterator<'_> {
     type Item = Ply;
 
     fn next(&mut self) -> Option<Self::Item> {
-        let mut current: Option<&PlyIterator<'_>> = self.ply.get(self.count);
+        loop {
+            let current = self.ply.get_mut(self.count);
 
-        match current.as_mut() {
-            Some(iter) => iter.next(),
-            None => None,
+            match current {
+                Some(iter) => match iter.next() {
+                    Some(ply) => break Some(ply),
+                    None => {
+                        self.count += 1;
+                        continue;
+                    }
+                },
+                None => break None,
+            }
         }
     }
 }
@@ -100,4 +113,119 @@ pub fn get_all_board_ply<'a>(
         AllPlyIterator::new(white_ply),
         AllPlyIterator::new(black_ply),
     )
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_all_board_ply_iterator() {
+        //   | 0 1 2 3 4 5 6 7
+        // - + - - - - - - - -
+        // 0 | . . . . . . . .
+        // 1 | . . . . . . . .
+        // 2 | . . . . . . * .
+        // 3 | . . . . r . p P
+        // 4 | . . . . . . P .
+        // 5 | . . . N . . . .
+        // 6 | p P . . . . . .
+        // 7 | . . . . . . . .
+
+        macro_rules! set_board {
+            ($( ( $x:expr , $y:expr => $mark:expr , $piece:expr ) ),*) => {{
+                use Mark::{Black, White};
+                use Piece::{Knight, Pawn, Rook};
+
+                let mut board = Board::new();
+
+                $(
+                    board.set_piece(
+                        &Position::new($x, $y),
+                        BoardSquare::new($mark, $piece),
+                    );
+                )*
+
+                board
+            }};
+        }
+
+        let board = set_board! {
+            (3, 7 => White, Pawn),
+            (4, 6 => White, Pawn),
+            (5, 3 => White, Knight),
+            (6, 1 => White, Pawn),
+
+            (3, 4 => Black, Rook),
+            (1, 6 => Black, Pawn),
+            (6, 0 => Black, Pawn)
+        };
+        let en_passant = EnPassant::new();
+
+        let ply = Ply::new_move(Position::new(1, 6), Position::new(3, 6));
+
+        let en_passant = en_passant.next_turn_available(&board, &ply);
+        let board = board.apply_ply(ply);
+
+        let (iter_white, iter_black) = get_all_board_ply(&board, &en_passant);
+        let vec_white: Vec<_> = iter_white.collect();
+        let vec_black: Vec<_> = iter_black.collect();
+
+        eprintln!("white: {:?}", vec_white);
+        eprintln!("black: {:?}", vec_black);
+
+        assert_eq!(vec_white.len(), 11);
+        assert!(vec_white.contains(&Ply::new_move(Position::new(6, 1), Position::new(5, 1))));
+        assert!(vec_white.contains(&Ply::new_move(Position::new(6, 1), Position::new(4, 1))));
+
+        assert!(vec_white.contains(&Ply::new_move(Position::new(5, 3), Position::new(3, 2))));
+        assert!(vec_white.contains(&Ply::new_move(Position::new(5, 3), Position::new(3, 4))));
+        assert!(vec_white.contains(&Ply::new_move(Position::new(5, 3), Position::new(4, 1))));
+        assert!(vec_white.contains(&Ply::new_move(Position::new(5, 3), Position::new(4, 5))));
+        assert!(vec_white.contains(&Ply::new_move(Position::new(5, 3), Position::new(6, 5))));
+        assert!(vec_white.contains(&Ply::new_move(Position::new(5, 3), Position::new(7, 2))));
+        assert!(vec_white.contains(&Ply::new_move(Position::new(5, 3), Position::new(7, 4))));
+
+        assert!(vec_white.contains(&Ply::new_move(Position::new(3, 7), Position::new(2, 7))));
+        assert!(vec_white.contains(&Ply::new_en_passant(
+            Position::new(3, 7),
+            Position::new(2, 6),
+            Position::new(3, 6)
+        )));
+
+        assert_eq!(vec_black.len(), 16);
+        assert!(vec_black.contains(&Ply::new_move(Position::new(3, 4), Position::new(3, 0))));
+        assert!(vec_black.contains(&Ply::new_move(Position::new(3, 4), Position::new(3, 1))));
+        assert!(vec_black.contains(&Ply::new_move(Position::new(3, 4), Position::new(3, 2))));
+        assert!(vec_black.contains(&Ply::new_move(Position::new(3, 4), Position::new(3, 3))));
+        assert!(vec_black.contains(&Ply::new_move(Position::new(3, 4), Position::new(3, 5))));
+        assert!(vec_black.contains(&Ply::new_move(Position::new(3, 4), Position::new(0, 4))));
+        assert!(vec_black.contains(&Ply::new_move(Position::new(3, 4), Position::new(1, 4))));
+        assert!(vec_black.contains(&Ply::new_move(Position::new(3, 4), Position::new(2, 4))));
+        assert!(vec_black.contains(&Ply::new_move(Position::new(3, 4), Position::new(4, 4))));
+        assert!(vec_black.contains(&Ply::new_move(Position::new(3, 4), Position::new(5, 4))));
+        assert!(vec_black.contains(&Ply::new_move(Position::new(3, 4), Position::new(6, 4))));
+        assert!(vec_black.contains(&Ply::new_move(Position::new(3, 4), Position::new(7, 4))));
+
+        assert!(vec_black.contains(&Ply::new_promotion(
+            Position::new(6, 0),
+            Position::new(7, 0),
+            Piece::Knight
+        )));
+        assert!(vec_black.contains(&Ply::new_promotion(
+            Position::new(6, 0),
+            Position::new(7, 0),
+            Piece::Bishop
+        )));
+        assert!(vec_black.contains(&Ply::new_promotion(
+            Position::new(6, 0),
+            Position::new(7, 0),
+            Piece::Rook
+        )));
+        assert!(vec_black.contains(&Ply::new_promotion(
+            Position::new(6, 0),
+            Position::new(7, 0),
+            Piece::Queen
+        )));
+    }
 }

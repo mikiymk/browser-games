@@ -36,14 +36,15 @@ pub fn get_pawn_ply(
     const RIGHT_DIFFERENT: i8 = 1;
 
     for different in [LEFT_DIFFERENT, RIGHT_DIFFERENT] {
-        if let Some(capture_pos) = from.rel_new(mark_direction, different) {
-            if en_passant.is_there(&capture_pos) {
+        if let Some(to) = from.rel_new(mark_direction, different) {
+            if en_passant.is_there(&to) {
                 let en_passant_capture = from.rel_new(0, different);
                 if let Some(en_passant_capture) = en_passant_capture {
-                    plies.push(Ply::new_en_passant(*from, capture_pos, en_passant_capture))
+                    plies.push(Ply::new_en_passant(*from, to, en_passant_capture))
                 }
-            } else {
-                plies.push(Ply::new_move(*from, capture_pos))
+            } else if board.is_other_mark(from, &to) {
+
+                plies.push(Ply::new_move(*from, to))
             }
         }
     }
@@ -105,5 +106,235 @@ impl Iterator for PawnPlyIterator {
         self.count += 1;
 
         ply.copied()
+    }
+}
+
+#[cfg(test)]
+mod test {
+    use crate::{
+        piece::Piece,
+        ply::Ply,
+        position::Position,
+        state::{board::Board, board_square::BoardSquare, en_passant::EnPassant, mark::Mark},
+    };
+
+    use super::get_pawn_ply;
+
+    /// initialize board
+    ///
+    /// ## param
+    ///
+    /// ```rust
+    /// macro set_board!((x: u8, y: u8) => (mark: Mark, piece: Piece), ...) -> Board
+    /// ```
+    ///
+    /// ## usage
+    ///
+    /// ```rust
+    /// let board = set_board!{
+    ///     (1, 2) => (White, Rook),
+    ///     (3, 4) => (Black, King),
+    /// };
+    /// ```
+    macro_rules! set_board {
+        { $( ( $x:expr , $y:expr ) => ( $mark:expr , $piece:expr ) ),* $(,)? } => {{
+            #[allow(unused_imports)]
+            use Mark::{Black, White};
+
+            #[allow(unused_imports)]
+            use Piece::{Pawn, Knight, Bishop, Rook, Queen, King};
+
+            let mut board = Board::new();
+
+            $(
+                board.set_piece(&Position::new($x, $y), BoardSquare::new($mark, $piece));
+            )*
+
+            board
+        }};
+    }
+
+    #[test]
+    fn test_pawn_first_rank() {
+        //   | 0 1 2 3 4 5 6 7
+        // - + - - - - - - - -
+        // 0 | . . . . . . . .
+        // 1 | . . . . . . . .
+        // 2 | . . . . . . . .
+        // 3 | . . . . . . . .
+        // 4 | . . . * . . . .
+        // 5 | . . . * . . . .
+        // 6 | . . . P . . . .
+        // 7 | . . . . . . . .
+
+        let board = set_board! {
+            (6, 3) => (White, Pawn)
+        };
+
+        let from = Position::new(6, 3);
+        let mark = Mark::White;
+        let en_passant = EnPassant::new();
+
+        let mut iter = get_pawn_ply(&board, &from, &mark, &en_passant);
+
+        assert_eq!(iter.next(), Some(Ply::new_move(from, Position::new(5, 3))));
+        assert_eq!(iter.next(), Some(Ply::new_move(from, Position::new(4, 3))));
+        assert_eq!(iter.next(), None);
+    }
+
+    #[test]
+    fn test_pawn_moved() {
+        //   | 0 1 2 3 4 5 6 7
+        // - + - - - - - - - -
+        // 0 | . . . . . . . .
+        // 1 | . . . . . . . .
+        // 2 | . . . . . . . .
+        // 3 | . . . * . . . .
+        // 4 | . . . P . . . .
+        // 5 | . . . . . . . .
+        // 6 | . . . . . . . .
+        // 7 | . . . . . . . .
+
+        let board = set_board! {
+            (4, 3) => (White, Pawn)
+        };
+
+        let from = Position::new(4, 3);
+        let mark = Mark::White;
+        let en_passant = EnPassant::new();
+
+        let mut iter = get_pawn_ply(&board, &from, &mark, &en_passant);
+
+        assert_eq!(iter.next(), Some(Ply::new_move(from, Position::new(3, 3))));
+        assert_eq!(iter.next(), None);
+    }
+
+    #[test]
+    fn test_pawn_cannot_capture_straight() {
+        //   | 0 1 2 3 4 5 6 7
+        // - + - - - - - - - -
+        // 0 | . . . . . . . .
+        // 1 | . . . . . . . .
+        // 2 | . . . . . . . .
+        // 3 | . . . p . . . .
+        // 4 | . . . P . . . .
+        // 5 | . . . . . . . .
+        // 6 | . . . . . . . .
+        // 7 | . . . . . . . .
+
+        let board = set_board! {
+            (4, 3) => (White, Pawn),
+
+            (3, 3) => (Black, Pawn),
+        };
+
+        let from = Position::new(4, 3);
+        let mark = Mark::White;
+        let en_passant = EnPassant::new();
+
+        let mut iter = get_pawn_ply(&board, &from, &mark, &en_passant);
+
+        assert_eq!(iter.next(), None);
+    }
+
+    #[test]
+    fn test_pawn_cannot_double_step_when_piece_front() {
+        //   | 0 1 2 3 4 5 6 7
+        // - + - - - - - - - -
+        // 0 | . . . . . . . .
+        // 1 | . . . . . . . .
+        // 2 | . . . . . . . .
+        // 3 | . . . . . . . .
+        // 4 | . . . . . . . .
+        // 5 | . . . p . . . .
+        // 6 | . . . P . . . .
+        // 7 | . . . . . . . .
+
+        let board = set_board! {
+            (6, 3) => (White, Pawn),
+
+            (5, 3) => (Black, Pawn),
+        };
+
+        let from = Position::new(4, 3);
+        let mark = Mark::White;
+        let en_passant = EnPassant::new();
+
+        let mut iter = get_pawn_ply(&board, &from, &mark, &en_passant);
+
+        assert_eq!(iter.next(), None);
+    }
+
+    #[test]
+    fn test_pawn_captures() {
+        //   | 0 1 2 3 4 5 6 7
+        // - + - - - - - - - -
+        // 0 | . . . . . . . .
+        // 1 | . . . . . . . .
+        // 2 | . . . . . . . .
+        // 3 | . . . . . . . .
+        // 4 | . . . * . . . .
+        // 5 | . . p * . . . .
+        // 6 | . . . P . . . .
+        // 7 | . . . . . . . .
+
+        let board = set_board! {
+            (6, 3) => (White, Pawn),
+
+            (5, 2) => (Black, Pawn),
+        };
+
+        let from = Position::new(6, 3);
+        let mark = Mark::White;
+        let en_passant = EnPassant::new();
+
+        let mut iter = get_pawn_ply(&board, &from, &mark, &en_passant);
+
+        assert_eq!(iter.next(), Some(Ply::new_move(from, Position::new(5, 3))));
+        assert_eq!(iter.next(), Some(Ply::new_move(from, Position::new(4, 3))));
+        assert_eq!(iter.next(), Some(Ply::new_move(from, Position::new(5, 2))));
+        assert_eq!(iter.next(), None);
+    }
+
+    #[test]
+    fn test_pawn_en_passant() {
+        //   | 0 1 2 3 4 5 6 7
+        // - + - - - - - - - -
+        // 0 | . . . . . . . .
+        // 1 | . . . . . . . .
+        // 2 | . . . * * . . .
+        // 3 | . . . P p . . .
+        // 4 | . . . . . . . .
+        // 5 | . . . . . . . .
+        // 6 | . . . . . . . .
+        // 7 | . . . . . . . .
+
+        let board = set_board! {
+            (3, 3) => (White, Pawn),
+
+            (1, 4) => (Black, Pawn),
+        };
+        let en_passant = EnPassant::new();
+
+        let ply = Ply::new_move(Position::new(1, 4), Position::new(3, 4));
+
+        let en_passant = en_passant.next_turn_available(&board, &ply);
+        let board = board.apply_ply(ply);
+
+        let from = Position::new(6, 3);
+        let mark = Mark::White;
+
+        let mut iter = get_pawn_ply(&board, &from, &mark, &en_passant);
+
+        assert_eq!(iter.next(), Some(Ply::new_move(from, Position::new(2, 3))));
+        assert_eq!(
+            iter.next(),
+            Some(Ply::new_en_passant(
+                from,
+                Position::new(2, 4),
+                Position::new(3, 4)
+            ))
+        );
+        assert_eq!(iter.next(), None);
     }
 }
