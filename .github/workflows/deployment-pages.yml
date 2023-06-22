@@ -34,6 +34,13 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v3
       - run: npm ci
+
+      - name: Setup Wasm-pack
+        uses: jetli/wasm-pack-action@v0.4.0
+        with:
+          # Optional version of wasm-pack to install(eg. 'v0.9.1', 'latest')
+          version: 'latest'
+
       - name: Build
         run: npm run build
       - name: Setup Pages
