@@ -23,10 +23,12 @@ pub fn get_pawn_ply(
             // 眼の前のマスが駒がいない
             plies.push(Ply::new_move(*from, front_pos));
 
-            if let Some(front_pos) = from.rel_new(mark_direction * 2, 0) {
-                if board.get_piece(&front_pos).mark().is_none() {
-                    // 駒がいない
-                    plies.push(Ply::new_move(*from, front_pos));
+            if is_on_initial_rank(mark, from) {
+                if let Some(front_pos) = from.rel_new(mark_direction * 2, 0) {
+                    if board.get_piece(&front_pos).mark().is_none() {
+                        // 駒がいない
+                        plies.push(Ply::new_move(*from, front_pos));
+                    }
                 }
             }
         }
@@ -43,7 +45,6 @@ pub fn get_pawn_ply(
                     plies.push(Ply::new_en_passant(*from, to, en_passant_capture))
                 }
             } else if board.is_other_mark(from, &to) {
-
                 plies.push(Ply::new_move(*from, to))
             }
         }
@@ -59,9 +60,9 @@ pub fn get_pawn_ply(
 }
 
 fn promotion(mark: &Mark, ply: &Ply) -> Vec<Ply> {
-    if is_promotion(*mark, *ply) {
+    if is_on_promotion_rank(*mark, *ply) {
         const PROMOTION_TARGET_PIECES: [Piece; 4] =
-            [Piece::Knight, Piece::Bishop, Piece::Rook, Piece::King];
+            [Piece::Knight, Piece::Bishop, Piece::Rook, Piece::Queen];
 
         PROMOTION_TARGET_PIECES
             .iter()
@@ -72,7 +73,16 @@ fn promotion(mark: &Mark, ply: &Ply) -> Vec<Ply> {
     }
 }
 
-fn is_promotion(mark: Mark, ply: Ply) -> bool {
+fn is_on_initial_rank(mark: &Mark, position: &Position) -> bool {
+    let initial_rank = match mark {
+        Mark::Black => 1,
+        Mark::White => 6,
+    };
+
+    position.x() == initial_rank
+}
+
+fn is_on_promotion_rank(mark: Mark, ply: Ply) -> bool {
     let pos = match ply {
         Ply::Move { to, .. } => to,
         _ => return false,
@@ -83,7 +93,7 @@ fn is_promotion(mark: Mark, ply: Ply) -> bool {
         Mark::White => 0,
     };
 
-    pos.x == other_end_rank
+    pos.x() == other_end_rank
 }
 
 pub struct PawnPlyIterator {
@@ -163,125 +173,15 @@ mod test {
         // 2 | . . . . . . . .
         // 3 | . . . . . . . .
         // 4 | . . . * . . . .
-        // 5 | . . . * . . . .
-        // 6 | . . . P . . . .
-        // 7 | . . . . . . . .
-
-        let board = set_board! {
-            (6, 3) => (White, Pawn)
-        };
-
-        let from = Position::new(6, 3);
-        let mark = Mark::White;
-        let en_passant = EnPassant::new();
-
-        let mut iter = get_pawn_ply(&board, &from, &mark, &en_passant);
-
-        assert_eq!(iter.next(), Some(Ply::new_move(from, Position::new(5, 3))));
-        assert_eq!(iter.next(), Some(Ply::new_move(from, Position::new(4, 3))));
-        assert_eq!(iter.next(), None);
-    }
-
-    #[test]
-    fn test_pawn_moved() {
-        //   | 0 1 2 3 4 5 6 7
-        // - + - - - - - - - -
-        // 0 | . . . . . . . .
-        // 1 | . . . . . . . .
-        // 2 | . . . . . . . .
-        // 3 | . . . * . . . .
-        // 4 | . . . P . . . .
-        // 5 | . . . . . . . .
-        // 6 | . . . . . . . .
-        // 7 | . . . . . . . .
-
-        let board = set_board! {
-            (4, 3) => (White, Pawn)
-        };
-
-        let from = Position::new(4, 3);
-        let mark = Mark::White;
-        let en_passant = EnPassant::new();
-
-        let mut iter = get_pawn_ply(&board, &from, &mark, &en_passant);
-
-        assert_eq!(iter.next(), Some(Ply::new_move(from, Position::new(3, 3))));
-        assert_eq!(iter.next(), None);
-    }
-
-    #[test]
-    fn test_pawn_cannot_capture_straight() {
-        //   | 0 1 2 3 4 5 6 7
-        // - + - - - - - - - -
-        // 0 | . . . . . . . .
-        // 1 | . . . . . . . .
-        // 2 | . . . . . . . .
-        // 3 | . . . p . . . .
-        // 4 | . . . P . . . .
-        // 5 | . . . . . . . .
-        // 6 | . . . . . . . .
-        // 7 | . . . . . . . .
-
-        let board = set_board! {
-            (4, 3) => (White, Pawn),
-
-            (3, 3) => (Black, Pawn),
-        };
-
-        let from = Position::new(4, 3);
-        let mark = Mark::White;
-        let en_passant = EnPassant::new();
-
-        let mut iter = get_pawn_ply(&board, &from, &mark, &en_passant);
-
-        assert_eq!(iter.next(), None);
-    }
-
-    #[test]
-    fn test_pawn_cannot_double_step_when_piece_front() {
-        //   | 0 1 2 3 4 5 6 7
-        // - + - - - - - - - -
-        // 0 | . . . . . . . .
-        // 1 | . . . . . . . .
-        // 2 | . . . . . . . .
-        // 3 | . . . . . . . .
-        // 4 | . . . . . . . .
-        // 5 | . . . p . . . .
+        // 5 | . . r * n . . .
         // 6 | . . . P . . . .
         // 7 | . . . . . . . .
 
         let board = set_board! {
             (6, 3) => (White, Pawn),
 
-            (5, 3) => (Black, Pawn),
-        };
-
-        let from = Position::new(4, 3);
-        let mark = Mark::White;
-        let en_passant = EnPassant::new();
-
-        let mut iter = get_pawn_ply(&board, &from, &mark, &en_passant);
-
-        assert_eq!(iter.next(), None);
-    }
-
-    #[test]
-    fn test_pawn_captures() {
-        //   | 0 1 2 3 4 5 6 7
-        // - + - - - - - - - -
-        // 0 | . . . . . . . .
-        // 1 | . . . . . . . .
-        // 2 | . . . . . . . .
-        // 3 | . . . . . . . .
-        // 4 | . . . * . . . .
-        // 5 | . . p * . . . .
-        // 6 | . . . P . . . .
-        // 7 | . . . . . . . .
-
-        let board = set_board! {
-            (6, 3) => (White, Pawn),
-
-            (5, 2) => (Black, Pawn),
+            (5, 2) => (Black, Rook),
+            (5, 4) => (Black, Knight),
         };
 
         let from = Position::new(6, 3);
@@ -293,6 +193,69 @@ mod test {
         assert_eq!(iter.next(), Some(Ply::new_move(from, Position::new(5, 3))));
         assert_eq!(iter.next(), Some(Ply::new_move(from, Position::new(4, 3))));
         assert_eq!(iter.next(), Some(Ply::new_move(from, Position::new(5, 2))));
+        assert_eq!(iter.next(), Some(Ply::new_move(from, Position::new(5, 4))));
+        assert_eq!(iter.next(), None);
+    }
+
+    #[test]
+    fn test_pawn_moved() {
+        //   | 0 1 2 3 4 5 6 7
+        // - + - - - - - - - -
+        // 0 | . . . . . . . .
+        // 1 | . . . . . . . .
+        // 2 | . . . . . . . .
+        // 3 | . . b * q . . .
+        // 4 | . . . P . . . .
+        // 5 | . . . . . . . .
+        // 6 | . . . . . . . .
+        // 7 | . . . . . . . .
+
+        let board = set_board! {
+            (4, 3) => (White, Pawn),
+
+            (3, 2) => (Black, Bishop),
+            (3, 4) => (Black, Queen),
+        };
+
+        let from = Position::new(4, 3);
+        let mark = Mark::White;
+        let en_passant = EnPassant::new();
+
+        let mut iter = get_pawn_ply(&board, &from, &mark, &en_passant);
+
+        assert_eq!(iter.next(), Some(Ply::new_move(from, Position::new(3, 3))));
+        assert_eq!(iter.next(), Some(Ply::new_move(from, Position::new(3, 2))));
+        assert_eq!(iter.next(), Some(Ply::new_move(from, Position::new(3, 4))));
+        assert_eq!(iter.next(), None);
+    }
+
+    #[test]
+    fn test_pawn_cannot_move() {
+        //   | 0 1 2 3 4 5 6 7
+        // - + - - - - - - - -
+        // 0 | . . . . . . . .
+        // 1 | . . . . . . . .
+        // 2 | . . . . . . . .
+        // 3 | . . . . . . . .
+        // 4 | . . . . . . . .
+        // 5 | . . Q p K . . .
+        // 6 | . . . P . . . .
+        // 7 | . . . . . . . .
+
+        let board = set_board! {
+            (6, 3) => (White, Pawn),
+            (5, 2) => (White, Queen),
+            (5, 4) => (White, King),
+
+            (5, 3) => (Black, Pawn),
+        };
+
+        let from = Position::new(6, 3);
+        let mark = Mark::White;
+        let en_passant = EnPassant::new();
+
+        let mut iter = get_pawn_ply(&board, &from, &mark, &en_passant);
+
         assert_eq!(iter.next(), None);
     }
 
@@ -321,7 +284,7 @@ mod test {
         let en_passant = en_passant.next_turn_available(&board, &ply);
         let board = board.apply_ply(ply);
 
-        let from = Position::new(6, 3);
+        let from = Position::new(3, 3);
         let mark = Mark::White;
 
         let mut iter = get_pawn_ply(&board, &from, &mark, &en_passant);
@@ -334,6 +297,48 @@ mod test {
                 Position::new(2, 4),
                 Position::new(3, 4)
             ))
+        );
+        assert_eq!(iter.next(), None);
+    }
+
+    #[test]
+    fn test_pawn_promotion() {
+        //   | 0 1 2 3 4 5 6 7
+        // - + - - - - - - - -
+        // 0 | . . . * . . . .
+        // 1 | . . . P . . . .
+        // 2 | . . . . . . . .
+        // 3 | . . . . . . . .
+        // 4 | . . . . . . . .
+        // 5 | . . . . . . . .
+        // 6 | . . . . . . . .
+        // 7 | . . . . . . . .
+
+        let board = set_board! {
+            (1, 3) => (White, Pawn),
+        };
+
+        let from = Position::new(1, 3);
+        let mark = Mark::White;
+        let en_passant = EnPassant::new();
+
+        let mut iter = get_pawn_ply(&board, &from, &mark, &en_passant);
+
+        assert_eq!(
+            iter.next(),
+            Some(Ply::new_promotion(from, Position::new(0, 3), Piece::Knight))
+        );
+        assert_eq!(
+            iter.next(),
+            Some(Ply::new_promotion(from, Position::new(0, 3), Piece::Bishop))
+        );
+        assert_eq!(
+            iter.next(),
+            Some(Ply::new_promotion(from, Position::new(0, 3), Piece::Rook))
+        );
+        assert_eq!(
+            iter.next(),
+            Some(Ply::new_promotion(from, Position::new(0, 3), Piece::Queen))
         );
         assert_eq!(iter.next(), None);
     }

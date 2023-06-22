@@ -132,18 +132,34 @@ mod tests {
         // 6 | p P . . . . . .
         // 7 | . . . . . . . .
 
+        /// initialize board
+        ///
+        /// ## param
+        ///
+        /// ```rust
+        /// macro set_board!((x: u8, y: u8) => (mark: Mark, piece: Piece), ...) -> Board
+        /// ```
+        ///
+        /// ## usage
+        ///
+        /// ```rust
+        /// let board = set_board!{
+        ///     (1, 2) => (White, Rook),
+        ///     (3, 4) => (Black, King),
+        /// };
+        /// ```
         macro_rules! set_board {
-            ($( ( $x:expr , $y:expr => $mark:expr , $piece:expr ) ),*) => {{
+            { $( ( $x:expr , $y:expr ) => ( $mark:expr , $piece:expr ) ),* $(,)? } => {{
+                #[allow(unused_imports)]
                 use Mark::{Black, White};
-                use Piece::{Knight, Pawn, Rook};
+
+                #[allow(unused_imports)]
+                use Piece::{Pawn, Knight, Bishop, Rook, Queen, King};
 
                 let mut board = Board::new();
 
                 $(
-                    board.set_piece(
-                        &Position::new($x, $y),
-                        BoardSquare::new($mark, $piece),
-                    );
+                    board.set_piece(&Position::new($x, $y), BoardSquare::new($mark, $piece));
                 )*
 
                 board
@@ -151,14 +167,14 @@ mod tests {
         }
 
         let board = set_board! {
-            (3, 7 => White, Pawn),
-            (4, 6 => White, Pawn),
-            (5, 3 => White, Knight),
-            (6, 1 => White, Pawn),
+            (3, 7) => (White, Pawn),
+            (4, 6) => (White, Pawn),
+            (5, 3) => (White, Knight),
+            (6, 1) => (White, Pawn),
 
-            (3, 4 => Black, Rook),
-            (1, 6 => Black, Pawn),
-            (6, 0 => Black, Pawn)
+            (3, 4) => (Black, Rook),
+            (1, 6) => (Black, Pawn),
+            (6, 0) => (Black, Pawn),
         };
         let en_passant = EnPassant::new();
 
@@ -170,9 +186,6 @@ mod tests {
         let (iter_white, iter_black) = get_all_board_ply(&board, &en_passant);
         let vec_white: Vec<_> = iter_white.collect();
         let vec_black: Vec<_> = iter_black.collect();
-
-        eprintln!("white: {:?}", vec_white);
-        eprintln!("black: {:?}", vec_black);
 
         assert_eq!(vec_white.len(), 11);
         assert!(vec_white.contains(&Ply::new_move(Position::new(6, 1), Position::new(5, 1))));

@@ -15,8 +15,8 @@ use std::fmt::Debug;
 /// ```
 #[derive(Clone, Copy, PartialEq, Eq, Hash)]
 pub struct Position {
-    pub x: u8,
-    pub y: u8,
+    x: u8,
+    y: u8,
 }
 
 impl Position {
@@ -39,10 +39,6 @@ impl Position {
         Position { x, y }
     }
 
-    pub fn index_of(x: u8, y: u8) -> usize {
-        (x as usize) * 8 + (y as usize)
-    }
-
     pub fn rel_new(&self, x: i8, y: i8) -> Option<Position> {
         let x: u8 = self.x.wrapping_add_signed(x);
         let y: u8 = self.y.wrapping_add_signed(y);
@@ -50,8 +46,16 @@ impl Position {
         Position::try_new(x, y)
     }
 
+    pub fn x(&self) -> u8 {
+        self.x
+    }
+
+    pub fn y(&self) -> u8 {
+        self.y
+    }
+
     pub fn index(&self) -> usize {
-        Self::index_of(self.x, self.y)
+        (self.x as usize) * 8 + (self.y as usize)
     }
 
     pub fn algebraic(&self) -> String {

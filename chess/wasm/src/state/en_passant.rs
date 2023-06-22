@@ -21,11 +21,11 @@ impl EnPassant {
         match ply {
             Ply::Move { from, to } => match board.get_piece(&from) {
                 BoardSquare::Piece(_, Piece::Pawn) => {
-                    let diff_x = from.x.abs_diff(to.x);
+                    let diff_x = from.x().abs_diff(to.x());
 
-                    if diff_x == 2 && from.y == to.y {
-                        let x = (from.x + to.x) / 2;
-                        let y = from.y;
+                    if diff_x == 2 && from.y() == to.y() {
+                        let x = (from.x() + to.x()) / 2;
+                        let y = from.y();
 
                         EnPassant(Position::try_new(x, y))
                     } else {

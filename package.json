@@ -14,6 +14,7 @@
     "format:base": "prettier **/*.ts **/*.tsx **/*.json **/*.html",
     "format:force": "npm run format:base -- --write",
     "format:check": "npm run format:base -- --check",
+    "format:wasm": "cargo fmt",
     "build": "run-s build-wasm:* build-js:vite",
     "build-js:vite": "vite build",
     "build-wasm:chess": "wasm-pack build chess/wasm",
