@@ -73,7 +73,7 @@ impl Castling {
         }
     }
 
-    pub fn apply_ply(&self, ply: Ply) -> Castling {
+    pub fn apply_ply(&self, ply: &Ply) -> Castling {
         let mut clone = *self;
 
         match ply {

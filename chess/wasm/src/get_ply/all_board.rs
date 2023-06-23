@@ -181,7 +181,7 @@ mod tests {
         let ply = Ply::new_move(Position::new(1, 6), Position::new(3, 6));
 
         let en_passant = en_passant.next_turn_available(&board, &ply);
-        let board = board.apply_ply(ply);
+        let board = board.apply_ply(&ply);
 
         let (iter_white, iter_black) = get_all_board_ply(&board, &en_passant);
         let vec_white: Vec<_> = iter_white.collect();

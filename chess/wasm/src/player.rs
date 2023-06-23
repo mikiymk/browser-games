@@ -1,3 +1,5 @@
+use crate::ply::Ply;
+
 pub enum Player {
     RandomAIPlayer(),
 }
@@ -5,6 +7,10 @@ pub enum Player {
 impl Player {
     pub fn new() -> Self {
         Player::RandomAIPlayer()
+    }
+
+    pub fn get_ply(&self) -> Ply {
+        todo!()
     }
 }
 

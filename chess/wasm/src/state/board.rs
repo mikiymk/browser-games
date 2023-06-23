@@ -92,7 +92,7 @@ impl Board {
         self.set_piece(from, BoardSquare::Empty);
     }
 
-    pub fn apply_ply(&self, ply: Ply) -> Board {
+    pub fn apply_ply(&self, ply: &Ply) -> Board {
         match ply {
             Ply::Move { from, to } => {
                 let mut clone = self.clone();
@@ -127,7 +127,7 @@ impl Board {
 
                 clone.move_piece(&from, &to);
                 let mut square = clone.squares[to.index()];
-                square = square.promotion(piece);
+                square = square.promotion(*piece);
                 clone.squares[to.index()] = square;
 
                 clone
