@@ -3,12 +3,12 @@
 mod game;
 mod get_ply;
 mod js_function;
+mod message_const;
 mod piece;
 mod player;
 mod ply;
 mod position;
 mod state;
-mod message_const;
 
 use game::Game;
 use js_function::JsFunction;

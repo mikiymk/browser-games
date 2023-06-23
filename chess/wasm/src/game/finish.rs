@@ -2,6 +2,7 @@ use std::collections::HashMap;
 
 use crate::{
     piece::Piece,
+    position::Position,
     state::{board::Board, board_square::BoardSquare, mark::Mark},
 };
 
@@ -18,10 +19,14 @@ pub fn is_check(board: &Board, mark: &Mark) -> bool {
         None => return false,
     };
 
+    is_attacked_there(board, mark, &king_position)
+}
+
+pub fn is_attacked_there(board: &Board, mark: &Mark, position: &Position) -> bool {
     let front_direction = mark.front_direction();
     for (dx, dy) in [(front_direction, 1), (front_direction, -1)] {
         // ポーン
-        if let Some(position) = king_position.rel_new(dx, dy) {
+        if let Some(position) = position.rel_new(dx, dy) {
             let square = board.get_piece(&position);
             if square == BoardSquare::new(mark.invert(), Piece::Pawn) {
                 return true;
@@ -44,7 +49,7 @@ pub fn is_check(board: &Board, mark: &Mark) -> bool {
 
     for (dx, dy) in BISHOP_DIR {
         // キング
-        if let Some(position) = king_position.rel_new(dx, dy) {
+        if let Some(position) = position.rel_new(dx, dy) {
             let square = board.get_piece(&position);
             if square == BoardSquare::new(mark.invert(), Piece::King) {
                 return true;
@@ -52,7 +57,7 @@ pub fn is_check(board: &Board, mark: &Mark) -> bool {
         }
 
         // ビショップとクイーン
-        let mut position = king_position;
+        let mut position = *position;
         while let Some(new_pos) = position.rel_new(dx, dy) {
             position = new_pos;
             let square = board.get_piece(&position);
@@ -68,7 +73,7 @@ pub fn is_check(board: &Board, mark: &Mark) -> bool {
 
     for (dx, dy) in ROOK_DIR {
         // キング
-        if let Some(position) = king_position.rel_new(dx, dy) {
+        if let Some(position) = position.rel_new(dx, dy) {
             let square = board.get_piece(&position);
             if square == BoardSquare::new(mark.invert(), Piece::King) {
                 return true;
@@ -76,7 +81,7 @@ pub fn is_check(board: &Board, mark: &Mark) -> bool {
         }
 
         // ビショップとクイーン
-        let mut position = king_position;
+        let mut position = *position;
         while let Some(new_pos) = position.rel_new(dx, dy) {
             position = new_pos;
             let square = board.get_piece(&position);
@@ -92,7 +97,7 @@ pub fn is_check(board: &Board, mark: &Mark) -> bool {
 
     for (dx, dy) in KNIGHT_DIR {
         // ナイト
-        if let Some(position) = king_position.rel_new(dx, dy) {
+        if let Some(position) = position.rel_new(dx, dy) {
             let square = board.get_piece(&position);
             if square == BoardSquare::new(mark.invert(), Piece::Knight) {
                 return true;

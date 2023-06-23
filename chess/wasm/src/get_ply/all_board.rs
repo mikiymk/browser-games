@@ -1,8 +1,15 @@
 use crate::{
+    game::finish::is_attacked_there,
     piece::Piece,
     ply::Ply,
     position::Position,
-    state::{board::Board, board_square::BoardSquare, en_passant::EnPassant, mark::Mark},
+    state::{
+        board::Board,
+        board_square::BoardSquare,
+        castling::{Castling, CastlingType},
+        en_passant::EnPassant,
+        mark::Mark,
+    },
 };
 
 use super::{
@@ -99,6 +106,48 @@ pub fn get_all_board_ply<'a>(
     }
 
     AllPlyIterator::new(ply_iter_vec)
+}
+
+pub fn get_castling_ply(mark: &Mark, board: &Board, castling: &Castling) -> Vec<Ply> {
+    let mut ply_vec = Vec::new();
+    match mark {
+        Mark::White => {
+            if castling.get(CastlingType::WhiteQueenSide)
+                && is_attacked_there(board, mark, &Position::new(7, 4))
+                && is_attacked_there(board, mark, &Position::new(7, 3))
+                && is_attacked_there(board, mark, &Position::new(7, 2))
+            {
+                ply_vec.push(Ply::new_castling(CastlingType::WhiteQueenSide))
+            }
+
+            if castling.get(CastlingType::WhiteKingSide)
+                && is_attacked_there(board, mark, &Position::new(7, 4))
+                && is_attacked_there(board, mark, &Position::new(7, 5))
+                && is_attacked_there(board, mark, &Position::new(7, 6))
+            {
+                ply_vec.push(Ply::new_castling(CastlingType::WhiteKingSide))
+            }
+        }
+        Mark::Black => {
+            if castling.get(CastlingType::BlackQueenSide)
+                && is_attacked_there(board, mark, &Position::new(0, 4))
+                && is_attacked_there(board, mark, &Position::new(0, 3))
+                && is_attacked_there(board, mark, &Position::new(0, 2))
+            {
+                ply_vec.push(Ply::new_castling(CastlingType::BlackQueenSide))
+            }
+
+            if castling.get(CastlingType::BlackKingSide)
+                && is_attacked_there(board, mark, &Position::new(0, 4))
+                && is_attacked_there(board, mark, &Position::new(0, 5))
+                && is_attacked_there(board, mark, &Position::new(0, 6))
+            {
+                ply_vec.push(Ply::new_castling(CastlingType::BlackKingSide))
+            }
+        }
+    }
+
+    ply_vec
 }
 
 #[cfg(test)]

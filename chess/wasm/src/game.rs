@@ -1,4 +1,4 @@
-mod finish;
+pub mod finish;
 
 use std::collections::HashMap;
 

@@ -5,7 +5,7 @@ use wasm_bindgen::{JsCast, JsValue};
 use wasm_bindgen_futures::JsFuture;
 
 use crate::{
-    get_ply::get_ply,
+    get_ply::{get_castling_ply, get_ply},
     js_function::JsFunction,
     message_const::{
         PROMOTION, PROMOTION_BISHOP, PROMOTION_KNIGHT, PROMOTION_QUEEN, PROMOTION_ROOK, RESET,
@@ -84,7 +84,7 @@ impl<'a> Player<'a> {
                 continue;
             }
 
-            let ply_vec = match get_ply(board, &from, en_passant) {
+            let mut ply_vec = match get_ply(board, &from, en_passant) {
                 Some(ply_iter) => {
                     let vec: Vec<_> = ply_iter.collect();
                     if vec.len() == 0 {
@@ -94,6 +94,8 @@ impl<'a> Player<'a> {
                 }
                 None => continue,
             };
+            let mut castling_vec = get_castling_ply(mark, board, castling);
+            ply_vec.append(&mut castling_vec);
 
             Player::send_highlight(set_highlight, &ply_vec)?;
 
