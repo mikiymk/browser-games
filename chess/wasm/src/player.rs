@@ -58,7 +58,7 @@ impl<'a> Player<'a> {
                 )
                 .await
             }
-            Player::RandomAIPlayer => todo!(),
+            Player::RandomAIPlayer => Self::get_random_ai_ply(board, mark, castling, en_passant),
         }
     }
 
@@ -133,6 +133,31 @@ impl<'a> Player<'a> {
                 }
             }
         }
+    }
+
+    fn get_random_ai_ply(
+        board: &Board,
+        mark: &Mark,
+        castling: &Castling,
+        en_passant: &EnPassant,
+    ) -> Result<Ply, String> {
+        let mut ply_vec = Vec::new();
+
+        for (from, _) in board.square_iter() {
+            if let Some(ply_iter) = get_ply(board, &from, en_passant) {
+                ply_vec.extend(ply_iter);
+            }
+
+            let mut castling_vec = get_castling_ply(mark, board, castling);
+            ply_vec.append(&mut castling_vec);
+        }
+
+        use rand::seq::SliceRandom;
+        let ply = ply_vec
+            .choose(&mut rand::thread_rng())
+            .ok_or("0".to_string())?;
+
+        Ok(*ply)
     }
 
     async fn get_input<T>(human_input: &js_sys::Function) -> Result<T, String>

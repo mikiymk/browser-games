@@ -19,7 +19,7 @@
     "format:wasm": "cargo fmt",
     "build": "run-s build-wasm:* build-js:vite",
     "build-js:vite": "vite build",
-    "build-wasm:chess": "wasm-pack build chess/wasm",
+    "build-wasm:chess": "wasm-pack build chess/wasm --release",
     "check-all:js": "run-s format:prettier lint:eslint lint:typescript test:vitest build-js:vite",
     "check-all:wasm": "run-s format:wasm build-wasm:* lint:wasm test:wasm",
     "check-all": "run-s check-all:wasm check-all:js",
