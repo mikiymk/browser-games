@@ -29,6 +29,10 @@ impl BoardSquare {
         }
     }
 
+    pub fn is_empty(&self) -> bool {
+        matches!(self, BoardSquare::Empty)
+    }
+
     pub fn is_same_mark(&self, other: &BoardSquare) -> bool {
         match (self.mark(), other.mark()) {
             (None, _) | (_, None) => false,

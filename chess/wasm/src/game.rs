@@ -1,14 +1,15 @@
+mod finish;
+
 use std::collections::HashMap;
 
 use crate::{
+    game::finish::{is_check, is_enough_for_checkmate},
+    get_ply::get_all_board_ply,
     js_function::JsFunction,
     piece::Piece,
     player::Player,
     ply::Ply,
-    state::{
-        board::Board, board_square::BoardSquare, castling::Castling, en_passant::EnPassant,
-        mark::Mark, GameState,
-    },
+    state::{board::Board, castling::Castling, en_passant::EnPassant, mark::Mark, GameState},
 };
 
 pub struct Game<'a> {
@@ -52,11 +53,15 @@ impl<'a> Game<'a> {
 
     pub fn run(&mut self) -> Result<(), String> {
         self.initialize();
+        self.set_state()?;
 
         loop {
             self.ply()?;
+            self.set_state()?;
 
             if self.is_finished() {
+                self.set_state()?;
+
                 break;
             }
         }
@@ -64,14 +69,16 @@ impl<'a> Game<'a> {
         Ok(())
     }
 
-    fn initialize(&mut self) {
-        todo!()
-    }
-
-    fn ply(&mut self) -> Result<(), String> {
+    fn set_state(&self) -> Result<(), String> {
         self.set_state
             .call(GameState::new(self.board.clone(), self.message.clone()))?;
 
+        Ok(())
+    }
+
+    fn initialize(&mut self) {}
+
+    fn ply(&mut self) -> Result<(), String> {
         let player = match self.mark {
             Mark::White => &self.player_white,
             Mark::Black => &self.player_black,
@@ -80,8 +87,6 @@ impl<'a> Game<'a> {
         let ply = player.get_ply();
 
         self.update_state(&ply);
-        self.set_state
-            .call(GameState::new(self.board.clone(), self.message.clone()))?;
 
         Ok(())
     }
@@ -97,7 +102,7 @@ impl<'a> Game<'a> {
                 // 動かし元がポーン （ポーンを動かす）
                 self.board.get_piece(from).piece() == Some(Piece::Pawn)
                 // 動かし先が空ではない （駒を取る動き）
-                    || self.board.get_piece(to) != BoardSquare::Empty
+                    || !self.board.get_piece(to).is_empty()
             }
             // プロモーションとアンパッサンはポーンを動かす
             Ply::Promotion { .. } | Ply::EnPassant { .. } => true,
@@ -117,6 +122,46 @@ impl<'a> Game<'a> {
     }
 
     fn is_finished(&mut self) -> bool {
-        todo!()
+        // チェックメイト
+        if is_check(&self.board, &self.mark) {
+            for ply in get_all_board_ply(&self.mark, &self.board, &self.en_passant) {
+                let board = self.board.apply_ply(&ply);
+                if is_check(&board, &self.mark) {
+                    self.message = format!("{} win", self.mark);
+
+                    return true;
+                }
+            }
+        }
+
+        // ステイルメイト
+        if None == get_all_board_ply(&self.mark, &self.board, &self.en_passant).next() {
+            self.message = "Draw - stalemate".to_string();
+
+            return true;
+        }
+
+        // 駒がチェックメイトに充分
+        if is_enough_for_checkmate(&self.board) {
+            self.message = "Draw - insufficient material".to_string();
+
+            return true;
+        }
+
+        if self.fifty_move > 100 {
+            self.message = "Draw - fifty-move rule".to_string();
+
+            return true;
+        }
+
+        for (_, num) in &self.threefold {
+            if num >= &3 {
+                self.message = "Draw - threefold repetition".to_string();
+
+                return true;
+            }
+        }
+
+        false
     }
 }

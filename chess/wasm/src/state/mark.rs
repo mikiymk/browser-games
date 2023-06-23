@@ -17,6 +17,13 @@ impl Mark {
             Black => White,
         }
     }
+
+    pub fn front_direction(&self) -> i8 {
+        match self {
+            Mark::White => -1,
+            Mark::Black => 1,
+        }
+    }
 }
 
 impl Display for Mark {

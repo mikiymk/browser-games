@@ -28,7 +28,7 @@ impl Iterator for PlyIterator<'_> {
     }
 }
 
-struct AllPlyIterator<'a> {
+pub struct AllPlyIterator<'a> {
     ply: Vec<PlyIterator<'a>>,
 
     count: usize,
@@ -84,35 +84,21 @@ fn get_ply<'a>(
 }
 
 pub fn get_all_board_ply<'a>(
+    mark: &Mark,
     board: &'a Board,
     en_passant: &EnPassant,
-) -> (
-    impl Iterator<Item = Ply> + 'a, // black ply
-    impl Iterator<Item = Ply> + 'a, // white ply
-) {
-    let mut white_ply = Vec::new();
-    let mut black_ply = Vec::new();
+) -> AllPlyIterator<'a> {
+    let mut ply_iter_vec = Vec::new();
 
     for (position, square) in board.square_iter() {
-        match square.mark() {
-            Some(Mark::White) => {
-                if let Some(ply) = get_ply(board, &position, en_passant) {
-                    white_ply.push(ply)
-                }
+        if square.mark() == Some(*mark) {
+            if let Some(ply) = get_ply(board, &position, en_passant) {
+                ply_iter_vec.push(ply)
             }
-            Some(Mark::Black) => {
-                if let Some(ply) = get_ply(board, &position, en_passant) {
-                    black_ply.push(ply)
-                }
-            }
-            _ => (),
         }
     }
 
-    (
-        AllPlyIterator::new(white_ply),
-        AllPlyIterator::new(black_ply),
-    )
+    AllPlyIterator::new(ply_iter_vec)
 }
 
 #[cfg(test)]
@@ -183,7 +169,8 @@ mod tests {
         let en_passant = en_passant.next_turn_available(&board, &ply);
         let board = board.apply_ply(&ply);
 
-        let (iter_white, iter_black) = get_all_board_ply(&board, &en_passant);
+        let iter_black = get_all_board_ply(&Mark::Black, &board, &en_passant);
+        let iter_white = get_all_board_ply(&Mark::White, &board, &en_passant);
         let vec_white: Vec<_> = iter_white.collect();
         let vec_black: Vec<_> = iter_black.collect();
 

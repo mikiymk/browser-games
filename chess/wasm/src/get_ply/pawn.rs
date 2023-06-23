@@ -13,10 +13,7 @@ pub fn get_pawn_ply(
 ) -> PawnPlyIterator {
     let mut plies = Vec::new();
 
-    let mark_direction = match mark {
-        Mark::White => -1,
-        Mark::Black => 1,
-    };
+    let mark_direction = mark.front_direction();
 
     if let Some(front_pos) = from.rel_new(mark_direction, 0) {
         if board.get_piece(&front_pos).mark().is_none() {
