@@ -10,7 +10,7 @@ use super::{
     pawn::PawnPlyIterator, runs::RunPlyIterator, steps::StepPlyIterator,
 };
 
-enum PlyIterator<'a> {
+pub enum PlyIterator<'a> {
     PawnMoves(PawnPlyIterator),
     Steps(StepPlyIterator<'a>),
     Runs(RunPlyIterator<'a>),
@@ -61,7 +61,7 @@ impl Iterator for AllPlyIterator<'_> {
     }
 }
 
-fn get_ply<'a>(
+pub fn get_ply<'a>(
     board: &'a Board,
     from: &Position,
     en_passant: &EnPassant,

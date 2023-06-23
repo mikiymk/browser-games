@@ -18,11 +18,11 @@ where
         }
     }
 
-    pub fn call(&self, value: T) -> Result<JsValue, String> {
+    pub fn call(&self, value: &T) -> Result<JsValue, String> {
         self.js_function
             .call1(
                 &JsValue::NULL,
-                &serde_wasm_bindgen::to_value(&value).map_err(Self::js_value_to_string)?,
+                &serde_wasm_bindgen::to_value(value).map_err(Self::js_value_to_string)?,
             )
             .map_err(Self::js_value_to_string)
     }

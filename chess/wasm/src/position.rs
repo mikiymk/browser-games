@@ -84,3 +84,13 @@ impl Debug for Position {
         write!(f, "({}, {})", self.x, self.y)
     }
 }
+
+impl TryFrom<u8> for Position {
+    type Error = String;
+
+    fn try_from(value: u8) -> Result<Self, Self::Error> {
+        let x = (value / 8) as u8;
+        let y = (value % 8) as u8;
+        Position::try_new(x, y).ok_or(format!("{} {} is not position", x, y))
+    }
+}

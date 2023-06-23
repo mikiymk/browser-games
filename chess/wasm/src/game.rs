@@ -22,16 +22,16 @@ pub struct Game<'a> {
     moves: u32,
     message: String,
 
-    player_white: Player,
-    player_black: Player,
+    player_white: Player<'a>,
+    player_black: Player<'a>,
     set_state: JsFunction<'a, GameState>,
 }
 
 impl<'a> Game<'a> {
     /// Creates a new [`Game`].
     pub fn new(
-        player_white: Player,
-        player_black: Player,
+        player_white: Player<'a>,
+        player_black: Player<'a>,
         set_state: JsFunction<'a, GameState>,
     ) -> Self {
         Game {
@@ -51,12 +51,12 @@ impl<'a> Game<'a> {
         }
     }
 
-    pub fn run(&mut self) -> Result<(), String> {
+    pub async fn run(&mut self) -> Result<(), String> {
         self.initialize();
         self.set_state()?;
 
         loop {
-            self.ply()?;
+            self.ply().await?;
             self.set_state()?;
 
             if self.is_finished() {
@@ -71,20 +71,22 @@ impl<'a> Game<'a> {
 
     fn set_state(&self) -> Result<(), String> {
         self.set_state
-            .call(GameState::new(self.board.clone(), self.message.clone()))?;
+            .call(&GameState::new(self.board.clone(), self.message.clone()))?;
 
         Ok(())
     }
 
     fn initialize(&mut self) {}
 
-    fn ply(&mut self) -> Result<(), String> {
+    async fn ply(&mut self) -> Result<(), String> {
         let player = match self.mark {
             Mark::White => &self.player_white,
             Mark::Black => &self.player_black,
         };
 
-        let ply = player.get_ply();
+        let ply = player
+            .get_ply(&self.board, &self.mark, &self.castling, &self.en_passant)
+            .await?;
 
         self.update_state(&ply);
 
