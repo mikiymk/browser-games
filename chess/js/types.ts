@@ -121,7 +121,7 @@ export type WhitePromotionTarget = typeof WhiteKnight | typeof WhiteBishop | typ
 export type PromotionPieces = BlackPromotionTarget | WhitePromotionTarget;
 
 export type Sender<T> = (value: T) => void;
-export type Receiver<T> = () => Promise<T> | T;
+export type Receiver<T> = () => Promise<T>;
 
 export type Player = {
   getMove(gameState: GameState): Awaitable<MoveTypes>;

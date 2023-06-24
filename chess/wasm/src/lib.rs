@@ -1,5 +1,3 @@
-#![allow(dead_code)]
-
 mod game;
 mod get_ply;
 mod js_function;
@@ -25,7 +23,7 @@ static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
 extern "C" {
 
     #[wasm_bindgen(js_namespace = console)]
-    fn log(s: &str);
+    pub fn log(s: &str);
 
 }
 

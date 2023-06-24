@@ -17,6 +17,7 @@ impl Serialize for Board {
         let mut s = serializer.serialize_seq(Some(64))?;
         for element in &self.squares {
             let element_number = match element {
+                BoardSquare::Empty => 0,
                 BoardSquare::Piece(Mark::White, Piece::Pawn) => 1,
                 BoardSquare::Piece(Mark::White, Piece::Knight) => 2,
                 BoardSquare::Piece(Mark::White, Piece::Bishop) => 3,
@@ -29,7 +30,6 @@ impl Serialize for Board {
                 BoardSquare::Piece(Mark::Black, Piece::Rook) => 10,
                 BoardSquare::Piece(Mark::Black, Piece::Queen) => 11,
                 BoardSquare::Piece(Mark::Black, Piece::King) => 12,
-                BoardSquare::Empty => 0,
             };
             s.serialize_element(&element_number)?;
         }
@@ -112,7 +112,7 @@ impl Board {
             Ply::Move { from, to } => {
                 let mut clone = self.clone();
 
-                clone.move_piece(&from, &to);
+                clone.move_piece(from, to);
 
                 clone
             }
@@ -131,7 +131,7 @@ impl Board {
             Ply::EnPassant { from, to, capture } => {
                 let mut clone = self.clone();
 
-                clone.move_piece(&from, &to);
+                clone.move_piece(from, to);
                 clone.squares[capture.index()] = BoardSquare::Empty;
 
                 clone
@@ -140,7 +140,7 @@ impl Board {
             Ply::Promotion { from, to, piece } => {
                 let mut clone = self.clone();
 
-                clone.move_piece(&from, &to);
+                clone.move_piece(from, to);
                 let mut square = clone.squares[to.index()];
                 square = square.promotion(*piece);
                 clone.squares[to.index()] = square;

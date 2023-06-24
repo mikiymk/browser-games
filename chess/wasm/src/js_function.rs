@@ -2,6 +2,7 @@ use std::{fmt::Debug, marker::PhantomData};
 
 use wasm_bindgen::JsValue;
 
+#[derive(Debug)]
 pub struct JsFunction<'a, T> {
     js_function: &'a js_sys::Function,
     call_type: PhantomData<T>,

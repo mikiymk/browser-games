@@ -2,10 +2,10 @@ use crate::{ply::Ply, position::Position};
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum CastlingType {
-    BlackQueenSide,
-    BlackKingSide,
-    WhiteQueenSide,
-    WhiteKingSide,
+    BlackQueen,
+    BlackKing,
+    WhiteQueen,
+    WhiteKing,
 }
 
 impl CastlingType {
@@ -18,25 +18,25 @@ impl CastlingType {
         Position, // rook to
     ) {
         match self {
-            CastlingType::BlackQueenSide => (
+            CastlingType::BlackQueen => (
                 Position::new(0, 4),
                 Position::new(0, 2),
                 Position::new(0, 0),
                 Position::new(0, 3),
             ),
-            CastlingType::BlackKingSide => (
+            CastlingType::BlackKing => (
                 Position::new(0, 4),
                 Position::new(0, 6),
                 Position::new(0, 7),
                 Position::new(0, 5),
             ),
-            CastlingType::WhiteQueenSide => (
+            CastlingType::WhiteQueen => (
                 Position::new(7, 4),
                 Position::new(7, 2),
                 Position::new(7, 0),
                 Position::new(7, 3),
             ),
-            CastlingType::WhiteKingSide => (
+            CastlingType::WhiteKing => (
                 Position::new(7, 4),
                 Position::new(7, 6),
                 Position::new(7, 7),
@@ -55,19 +55,19 @@ impl Castling {
 
     pub fn set(&mut self, pos: CastlingType) {
         match pos {
-            CastlingType::BlackKingSide => self.0 |= 0b1000,
-            CastlingType::BlackQueenSide => self.0 |= 0b0100,
-            CastlingType::WhiteKingSide => self.0 |= 0b0010,
-            CastlingType::WhiteQueenSide => self.0 |= 0b0001,
+            CastlingType::BlackKing => self.0 |= 0b1000,
+            CastlingType::BlackQueen => self.0 |= 0b0100,
+            CastlingType::WhiteKing => self.0 |= 0b0010,
+            CastlingType::WhiteQueen => self.0 |= 0b0001,
         }
     }
 
     pub fn get(&self, pos: CastlingType) -> bool {
         match pos {
-            CastlingType::BlackKingSide => self.0 & 0b1000 != 0,
-            CastlingType::BlackQueenSide => self.0 & 0b0100 != 0,
-            CastlingType::WhiteKingSide => self.0 & 0b0010 != 0,
-            CastlingType::WhiteQueenSide => self.0 & 0b0001 != 0,
+            CastlingType::BlackKing => self.0 & 0b1000 != 0,
+            CastlingType::BlackQueen => self.0 & 0b0100 != 0,
+            CastlingType::WhiteKing => self.0 & 0b0010 != 0,
+            CastlingType::WhiteQueen => self.0 & 0b0001 != 0,
         }
     }
 
@@ -75,7 +75,7 @@ impl Castling {
         let mut clone = *self;
 
         match ply {
-            Ply::Castling(CastlingType::BlackKingSide | CastlingType::BlackQueenSide)
+            Ply::Castling(CastlingType::BlackKing | CastlingType::BlackQueen)
             | Ply::Move {
                 from: Position::BLACK_KING,
                 ..
@@ -84,11 +84,11 @@ impl Castling {
                 to: Position::BLACK_KING,
                 ..
             } => {
-                clone.set(CastlingType::BlackKingSide);
-                clone.set(CastlingType::BlackQueenSide);
+                clone.set(CastlingType::BlackKing);
+                clone.set(CastlingType::BlackQueen);
             }
 
-            Ply::Castling(CastlingType::WhiteKingSide | CastlingType::WhiteQueenSide)
+            Ply::Castling(CastlingType::WhiteKing | CastlingType::WhiteQueen)
             | Ply::Move {
                 from: Position::WHITE_KING,
                 ..
@@ -97,8 +97,8 @@ impl Castling {
                 to: Position::WHITE_KING,
                 ..
             } => {
-                clone.set(CastlingType::WhiteKingSide);
-                clone.set(CastlingType::WhiteQueenSide);
+                clone.set(CastlingType::WhiteKing);
+                clone.set(CastlingType::WhiteQueen);
             }
 
             Ply::Move {
@@ -109,7 +109,7 @@ impl Castling {
                 to: Position::BLACK_ROOK_QUEEN_SIDE,
                 ..
             } => {
-                clone.set(CastlingType::BlackQueenSide);
+                clone.set(CastlingType::BlackQueen);
             }
 
             Ply::Move {
@@ -120,7 +120,7 @@ impl Castling {
                 to: Position::BLACK_ROOK_KING_SIDE,
                 ..
             } => {
-                clone.set(CastlingType::BlackKingSide);
+                clone.set(CastlingType::BlackKing);
             }
 
             Ply::Move {
@@ -131,7 +131,7 @@ impl Castling {
                 to: Position::WHITE_ROOK_QUEEN_SIDE,
                 ..
             } => {
-                clone.set(CastlingType::WhiteQueenSide);
+                clone.set(CastlingType::WhiteQueen);
             }
 
             Ply::Move {
@@ -142,7 +142,7 @@ impl Castling {
                 to: Position::WHITE_ROOK_KING_SIDE,
                 ..
             } => {
-                clone.set(CastlingType::WhiteKingSide);
+                clone.set(CastlingType::WhiteKing);
             }
             _ => (),
         }

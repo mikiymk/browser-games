@@ -7,6 +7,7 @@ use wasm_bindgen_futures::JsFuture;
 use crate::{
     get_ply::{get_castling_ply, get_ply},
     js_function::JsFunction,
+    log,
     message_const::{
         PROMOTION, PROMOTION_BISHOP, PROMOTION_KNIGHT, PROMOTION_QUEEN, PROMOTION_ROOK, RESET,
     },
@@ -21,6 +22,7 @@ use crate::{
     },
 };
 
+#[derive(Debug)]
 pub enum Player<'a> {
     HumanPlayer(&'a js_sys::Function, &'a JsFunction<'a, Vec<usize>>),
     RandomAIPlayer,
@@ -46,6 +48,8 @@ impl<'a> Player<'a> {
         castling: &Castling,
         en_passant: &EnPassant,
     ) -> Result<Ply, String> {
+        log(&format!("board in Player::get_ply {:?}", board));
+
         match self {
             Player::HumanPlayer(human_input, set_highlight) => {
                 Self::get_human_input_ply(
@@ -87,7 +91,7 @@ impl<'a> Player<'a> {
             let mut ply_vec = match get_ply(board, &from, en_passant) {
                 Some(ply_iter) => {
                     let vec: Vec<_> = ply_iter.collect();
-                    if vec.len() == 0 {
+                    if vec.is_empty() {
                         continue;
                     }
                     vec
@@ -102,7 +106,7 @@ impl<'a> Player<'a> {
             // todo get castling
 
             let to: f64 = Player::get_input(human_input).await?;
-            Player::send_highlight(set_highlight, &vec![])?;
+            Player::send_highlight(set_highlight, &[])?;
 
             let to = to as u8;
 
@@ -181,7 +185,7 @@ impl<'a> Player<'a> {
 
     fn send_highlight(
         set_highlight: &'a JsFunction<'a, Vec<usize>>,
-        ply_vec: &Vec<Ply>,
+        ply_vec: &[Ply],
     ) -> Result<(), String> {
         set_highlight.call(&ply_vec.iter().map(convert_move_to_usize).collect())?;
         Ok(())
@@ -192,10 +196,10 @@ fn convert_move_to_usize(ply: &Ply) -> usize {
     match ply {
         Ply::Move { to, .. } => to.index(),
         Ply::Castling(castling) => match castling {
-            CastlingType::BlackQueenSide => 0,
-            CastlingType::BlackKingSide => 7,
-            CastlingType::WhiteQueenSide => 56,
-            CastlingType::WhiteKingSide => 63,
+            CastlingType::BlackQueen => 0,
+            CastlingType::BlackKing => 7,
+            CastlingType::WhiteQueen => 56,
+            CastlingType::WhiteKing => 63,
         },
         Ply::EnPassant { to, .. } => to.index(),
         Ply::Promotion { to, .. } => to.index(),

@@ -6,6 +6,7 @@ use crate::{
     game::finish::{is_check, is_enough_for_checkmate},
     get_ply::get_all_board_ply,
     js_function::JsFunction,
+    log,
     message_const::{
         MESSAGE_BLACK_TURN, MESSAGE_BLACK_WIN, MESSAGE_FIFTY_MOVE, MESSAGE_INSUFFICIENT_MATERIAL,
         MESSAGE_STALEMATE, MESSAGE_THREEFOLD_REPETITION, MESSAGE_WHITE_TURN, MESSAGE_WHITE_WIN,
@@ -23,7 +24,7 @@ pub struct Game<'a> {
     en_passant: EnPassant,
     fifty_move: u32,
     threefold: HashMap<(Board, Mark), u8>,
-    moves: u32,
+
     message: &'static str,
 
     player_white: Player<'a>,
@@ -45,7 +46,6 @@ impl<'a> Game<'a> {
             en_passant: EnPassant::new(),
             fifty_move: 0,
             threefold: HashMap::new(),
-            moves: 1,
 
             message: MESSAGE_WHITE_TURN,
 
@@ -80,7 +80,15 @@ impl<'a> Game<'a> {
         Ok(())
     }
 
-    fn initialize(&mut self) {}
+    fn initialize(&mut self) {
+        log(&format!("board in Game::initialize {:?}", self.board));
+        log(&format!("mark in Game::initialize {:?}", self.mark));
+        log(&format!("castling in Game::initialize {:?}", self.castling));
+        log(&format!(
+            "en passant in Game::initialize {:?}",
+            self.en_passant
+        ));
+    }
 
     async fn ply(&mut self) -> Result<(), String> {
         let player = match self.mark {
@@ -88,9 +96,17 @@ impl<'a> Game<'a> {
             Mark::Black => &self.player_black,
         };
 
+        log(&format!("board in Game::ply {:?}", self.board));
+        log(&format!("mark in Game::ply {:?}", self.mark));
+        log(&format!("castling in Game::ply {:?}", self.castling));
+        log(&format!("en passant in Game::ply {:?}", self.en_passant));
+        log(&format!("player in Game::ply {:?}", player));
+
         let ply = player
             .get_ply(&self.board, &self.mark, &self.castling, &self.en_passant)
             .await?;
+
+        log(&format!("ply in Game::ply {:?}", ply));
 
         self.update_state(&ply);
 
@@ -98,7 +114,7 @@ impl<'a> Game<'a> {
     }
 
     fn update_state(&mut self, ply: &Ply) {
-        self.en_passant = self.en_passant.next_turn_available(&self.board, &ply);
+        self.en_passant = self.en_passant.next_turn_available(&self.board, ply);
         self.mark = self.mark.invert();
         self.castling = self.castling.apply_ply(ply);
         self.message = match self.mark {
@@ -147,7 +163,10 @@ impl<'a> Game<'a> {
         }
 
         // ステイルメイト
-        if None == get_all_board_ply(&self.mark, &self.board, &self.en_passant).next() {
+        if get_all_board_ply(&self.mark, &self.board, &self.en_passant)
+            .next()
+            .is_none()
+        {
             self.message = MESSAGE_STALEMATE;
 
             return true;
@@ -166,12 +185,10 @@ impl<'a> Game<'a> {
             return true;
         }
 
-        for (_, num) in &self.threefold {
-            if num >= &3 {
-                self.message = MESSAGE_THREEFOLD_REPETITION;
+        if self.threefold.values().any(|num| *num >= 3) {
+            self.message = MESSAGE_THREEFOLD_REPETITION;
 
-                return true;
-            }
+            return true;
         }
 
         false

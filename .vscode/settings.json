@@ -1,4 +1,5 @@
 {
   "svg.preview.background": "transparent",
-  "cSpell.words": ["bindgen"]
+  "cSpell.words": ["wasm_bindgen"],
+  "rust-analyzer.check.command": "clippy"
 }

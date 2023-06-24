@@ -28,14 +28,6 @@ impl Position {
         Position(pos)
     }
 
-    const fn try_new_from_position(pos: usize) -> Option<Position> {
-        if 63 < pos {
-            None
-        } else {
-            Some(Position::new_from_position(pos))
-        }
-    }
-
     pub const fn new(x: u8, y: u8) -> Position {
         Position::new_from_position(Self::to_position_index(x, y))
     }
@@ -84,8 +76,8 @@ impl TryFrom<u8> for Position {
     type Error = String;
 
     fn try_from(value: u8) -> Result<Self, Self::Error> {
-        let x = (value / 8) as u8;
-        let y = (value % 8) as u8;
+        let x = value / 8;
+        let y = value % 8;
         Position::try_new(x, y).ok_or(format!("{} {} is not position", x, y))
     }
 }
