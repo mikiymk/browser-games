@@ -1,40 +1,14 @@
+use std::fmt::Display;
+
 use serde::{ser::SerializeSeq, Serialize};
 
-use crate::{piece::Piece, ply::Ply, position::Position, state::mark::Mark};
+use crate::{state::mark::Mark, state::piece::Piece, state::ply::Ply, state::position::Position};
 
 use super::board_square::BoardSquare;
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub struct Board {
     squares: [BoardSquare; 64],
-}
-
-impl Serialize for Board {
-    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
-    where
-        S: serde::Serializer,
-    {
-        let mut s = serializer.serialize_seq(Some(64))?;
-        for element in &self.squares {
-            let element_number = match element {
-                BoardSquare::Empty => 0,
-                BoardSquare::Piece(Mark::White, Piece::Pawn) => 1,
-                BoardSquare::Piece(Mark::White, Piece::Knight) => 2,
-                BoardSquare::Piece(Mark::White, Piece::Bishop) => 3,
-                BoardSquare::Piece(Mark::White, Piece::Rook) => 4,
-                BoardSquare::Piece(Mark::White, Piece::Queen) => 5,
-                BoardSquare::Piece(Mark::White, Piece::King) => 6,
-                BoardSquare::Piece(Mark::Black, Piece::Pawn) => 7,
-                BoardSquare::Piece(Mark::Black, Piece::Knight) => 8,
-                BoardSquare::Piece(Mark::Black, Piece::Bishop) => 9,
-                BoardSquare::Piece(Mark::Black, Piece::Rook) => 10,
-                BoardSquare::Piece(Mark::Black, Piece::Queen) => 11,
-                BoardSquare::Piece(Mark::Black, Piece::King) => 12,
-            };
-            s.serialize_element(&element_number)?;
-        }
-        s.end()
-    }
 }
 
 impl Board {
@@ -155,5 +129,46 @@ impl Board {
             .iter()
             .enumerate()
             .map(|(i, s)| (Position::new((i / 8) as u8, (i % 8) as u8), *s))
+    }
+}
+
+impl Display for Board {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        for (i, square) in self.squares.iter().enumerate() {
+            if i % 8 == 0 {
+                writeln!(f)?;
+            }
+
+            write!(f, "{}", square)?;
+        }
+        writeln!(f)
+    }
+}
+
+impl Serialize for Board {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: serde::Serializer,
+    {
+        let mut s = serializer.serialize_seq(Some(64))?;
+        for element in &self.squares {
+            let element_number = match element {
+                BoardSquare::Empty => 0,
+                BoardSquare::Piece(Mark::White, Piece::Pawn) => 1,
+                BoardSquare::Piece(Mark::White, Piece::Knight) => 2,
+                BoardSquare::Piece(Mark::White, Piece::Bishop) => 3,
+                BoardSquare::Piece(Mark::White, Piece::Rook) => 4,
+                BoardSquare::Piece(Mark::White, Piece::Queen) => 5,
+                BoardSquare::Piece(Mark::White, Piece::King) => 6,
+                BoardSquare::Piece(Mark::Black, Piece::Pawn) => 7,
+                BoardSquare::Piece(Mark::Black, Piece::Knight) => 8,
+                BoardSquare::Piece(Mark::Black, Piece::Bishop) => 9,
+                BoardSquare::Piece(Mark::Black, Piece::Rook) => 10,
+                BoardSquare::Piece(Mark::Black, Piece::Queen) => 11,
+                BoardSquare::Piece(Mark::Black, Piece::King) => 12,
+            };
+            s.serialize_element(&element_number)?;
+        }
+        s.end()
     }
 }

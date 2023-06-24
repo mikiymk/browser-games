@@ -11,9 +11,9 @@ use crate::{
     message_const::{
         PROMOTION, PROMOTION_BISHOP, PROMOTION_KNIGHT, PROMOTION_QUEEN, PROMOTION_ROOK, RESET,
     },
-    piece::Piece,
-    ply::Ply,
-    position::Position,
+    state::piece::Piece,
+    state::ply::Ply,
+    state::position::Position,
     state::{
         board::Board,
         castling::{Castling, CastlingType},
@@ -48,7 +48,7 @@ impl<'a> Player<'a> {
         castling: &Castling,
         en_passant: &EnPassant,
     ) -> Result<Ply, String> {
-        log(&format!("board in Player::get_ply {:?}", board));
+        log(&format!("board in Player::get_ply {}", board));
 
         match self {
             Player::HumanPlayer(human_input, set_highlight) => {
@@ -75,8 +75,8 @@ impl<'a> Player<'a> {
         set_highlight: &'a JsFunction<'a, Vec<usize>>,
     ) -> Result<Ply, String> {
         'input_loop: loop {
-            let from: f64 = Player::get_input(human_input).await?;
-            let from = from as u8;
+            let from_f64: f64 = Player::get_input(human_input).await?;
+            let from = from_f64 as u8;
 
             if from == RESET as u8 {
                 // reset;
@@ -84,7 +84,11 @@ impl<'a> Player<'a> {
 
             let from = Position::try_from(from)?;
             let square = board.get_piece(&from);
-            if square.mark() == Some(*mark) {
+
+            log(&format!("from in Player::get_human_input_ply {}", from));
+            log(&format!("square in Player::get_human_input_ply {}", square));
+
+            if square.mark() != Some(*mark) {
                 continue;
             }
 

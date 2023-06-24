@@ -1,7 +1,7 @@
 use crate::{
     get_ply::runs::{RunDirection, RunPlyIterator},
-    position::Position,
     state::board::Board,
+    state::position::Position,
 };
 
 pub fn get_rook_ply(board: &Board, from: Position) -> RunPlyIterator<'_> {
@@ -18,9 +18,9 @@ pub fn get_rook_ply(board: &Board, from: Position) -> RunPlyIterator<'_> {
 #[cfg(test)]
 mod test {
     use crate::{
-        piece::Piece,
-        ply::Ply,
-        position::Position,
+        state::piece::Piece,
+        state::ply::Ply,
+        state::position::Position,
         state::{board::Board, board_square::BoardSquare, mark::Mark},
     };
 

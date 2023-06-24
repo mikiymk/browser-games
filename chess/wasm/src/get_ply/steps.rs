@@ -1,4 +1,4 @@
-use crate::{ply::Ply, position::Position, state::board::Board};
+use crate::{state::board::Board, state::ply::Ply, state::position::Position};
 
 pub struct StepPlyIterator<'a> {
     step_targets: &'static [(i8, i8)],

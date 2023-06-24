@@ -2,10 +2,7 @@ mod game;
 mod get_ply;
 mod js_function;
 mod message_const;
-mod piece;
 mod player;
-mod ply;
-mod position;
 mod state;
 
 use game::Game;

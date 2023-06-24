@@ -1,8 +1,8 @@
 use crate::{
     game::finish::is_attacked_there,
-    piece::Piece,
-    ply::Ply,
-    position::Position,
+    state::piece::Piece,
+    state::ply::Ply,
+    state::position::Position,
     state::{
         board::Board,
         board_square::BoardSquare,

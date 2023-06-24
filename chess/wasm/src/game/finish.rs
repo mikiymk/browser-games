@@ -1,8 +1,8 @@
 use std::collections::HashMap;
 
 use crate::{
-    piece::Piece,
-    position::Position,
+    state::piece::Piece,
+    state::position::Position,
     state::{board::Board, board_square::BoardSquare, mark::Mark},
 };
 

@@ -11,9 +11,9 @@ use crate::{
         MESSAGE_BLACK_TURN, MESSAGE_BLACK_WIN, MESSAGE_FIFTY_MOVE, MESSAGE_INSUFFICIENT_MATERIAL,
         MESSAGE_STALEMATE, MESSAGE_THREEFOLD_REPETITION, MESSAGE_WHITE_TURN, MESSAGE_WHITE_WIN,
     },
-    piece::Piece,
     player::Player,
-    ply::Ply,
+    state::piece::Piece,
+    state::ply::Ply,
     state::{board::Board, castling::Castling, en_passant::EnPassant, mark::Mark, GameState},
 };
 
@@ -81,7 +81,7 @@ impl<'a> Game<'a> {
     }
 
     fn initialize(&mut self) {
-        log(&format!("board in Game::initialize {:?}", self.board));
+        log(&format!("board in Game::initialize {}", self.board));
         log(&format!("mark in Game::initialize {:?}", self.mark));
         log(&format!("castling in Game::initialize {:?}", self.castling));
         log(&format!(
@@ -96,17 +96,16 @@ impl<'a> Game<'a> {
             Mark::Black => &self.player_black,
         };
 
-        log(&format!("board in Game::ply {:?}", self.board));
-        log(&format!("mark in Game::ply {:?}", self.mark));
+        log(&format!("board in Game::ply {}", self.board));
+        log(&format!("mark in Game::ply {}", self.mark));
         log(&format!("castling in Game::ply {:?}", self.castling));
         log(&format!("en passant in Game::ply {:?}", self.en_passant));
-        log(&format!("player in Game::ply {:?}", player));
 
         let ply = player
             .get_ply(&self.board, &self.mark, &self.castling, &self.en_passant)
             .await?;
 
-        log(&format!("ply in Game::ply {:?}", ply));
+        log(&format!("ply in Game::ply {}", ply));
 
         self.update_state(&ply);
 

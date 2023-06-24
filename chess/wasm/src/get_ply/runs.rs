@@ -1,4 +1,4 @@
-use crate::{ply::Ply, position::Position, state::board::Board};
+use crate::{state::board::Board, state::ply::Ply, state::position::Position};
 
 pub enum RunDirection {
     Up,

@@ -20,7 +20,13 @@ export const App = () => {
   const [humanInputSender, humanInputReceiver] = createMessenger<InputType>();
   const [humanPromotionSender, humanPromotionReceiver] = createMessenger<PromotionPieces>();
 
-  const humanPlayer = createHumanPlayer(humanInputReceiver, setMovable, humanPromotionReceiver, setPromotionMark);
+  const humanPlayer = createHumanPlayer(
+    // humanInputReceiver,
+    () => Promise.reject(),
+    setMovable,
+    humanPromotionReceiver,
+    setPromotionMark,
+  );
 
   const reset = () => {
     humanInputSender(Reset);
@@ -38,9 +44,15 @@ export const App = () => {
     void game(
       0,
       1,
-      (state: unknown) => console.log("set state", state),
-      (highlight: unknown) => console.log("highlight", highlight),
-      () => Promise.reject(1),
+      (state: unknown) => {
+        console.log("set state", state);
+      },
+      (highlight: unknown) => {
+        console.log("highlight", highlight);
+
+        setMovable(highlight as Index[]);
+      },
+      humanInputReceiver,
     );
 
     void gameLoop(players, state, setState, setStatus);

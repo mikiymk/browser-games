@@ -1,7 +1,7 @@
 use crate::{
-    piece::Piece,
-    ply::Ply,
-    position::Position,
+    state::piece::Piece,
+    state::ply::Ply,
+    state::position::Position,
     state::{board::Board, en_passant::EnPassant, mark::Mark},
 };
 
@@ -113,9 +113,9 @@ impl Iterator for PawnPlyIterator {
 #[cfg(test)]
 mod test {
     use crate::{
-        piece::Piece,
-        ply::Ply,
-        position::Position,
+        state::piece::Piece,
+        state::ply::Ply,
+        state::position::Position,
         state::{board::Board, board_square::BoardSquare, en_passant::EnPassant, mark::Mark},
     };
 

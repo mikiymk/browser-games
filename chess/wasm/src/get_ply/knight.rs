@@ -1,4 +1,4 @@
-use crate::{get_ply::steps::StepPlyIterator, position::Position, state::board::Board};
+use crate::{get_ply::steps::StepPlyIterator, state::board::Board, state::position::Position};
 
 pub fn get_knight_ply(board: &Board, from: Position) -> StepPlyIterator<'_> {
     const KNIGHT_STEPS: [(i8, i8); 8] = [
@@ -18,9 +18,9 @@ pub fn get_knight_ply(board: &Board, from: Position) -> StepPlyIterator<'_> {
 #[cfg(test)]
 mod test {
     use crate::{
-        piece::Piece,
-        ply::Ply,
-        position::Position,
+        state::piece::Piece,
+        state::ply::Ply,
+        state::position::Position,
         state::{board::Board, board_square::BoardSquare, mark::Mark},
     };
 

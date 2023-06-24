@@ -1,4 +1,4 @@
-use std::fmt::Debug;
+use std::fmt::{Debug, Display};
 
 /// ```text
 ///   y |  0  1  2  3  4  5  6  7
@@ -13,7 +13,7 @@ use std::fmt::Debug;
 /// 6 2 | a2 b2 c2 d2 e2 f2 g2 h2
 /// 7 1 | a1 b1 c1 d1 e1 f1 g1 h1
 /// ```
-#[derive(Clone, Copy, PartialEq, Eq, Hash)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub struct Position(usize);
 
 impl Position {
@@ -66,7 +66,7 @@ impl Position {
     }
 }
 
-impl Debug for Position {
+impl Display for Position {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "({}, {})", self.x(), self.y())
     }

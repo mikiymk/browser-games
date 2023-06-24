@@ -1,4 +1,6 @@
-use crate::piece::Piece;
+use std::fmt::Display;
+
+use crate::state::piece::Piece;
 
 use crate::state::Mark;
 
@@ -50,5 +52,29 @@ impl BoardSquare {
             BoardSquare::Piece(m, _) => BoardSquare::Piece(*m, piece),
             BoardSquare::Empty => BoardSquare::Empty,
         }
+    }
+}
+
+impl Display for BoardSquare {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(
+            f,
+            "{}",
+            match self {
+                BoardSquare::Piece(Mark::White, Piece::Pawn) => 'P',
+                BoardSquare::Piece(Mark::White, Piece::Knight) => 'N',
+                BoardSquare::Piece(Mark::White, Piece::Bishop) => 'B',
+                BoardSquare::Piece(Mark::White, Piece::Rook) => 'R',
+                BoardSquare::Piece(Mark::White, Piece::Queen) => 'Q',
+                BoardSquare::Piece(Mark::White, Piece::King) => 'K',
+                BoardSquare::Piece(Mark::Black, Piece::Pawn) => 'p',
+                BoardSquare::Piece(Mark::Black, Piece::Knight) => 'n',
+                BoardSquare::Piece(Mark::Black, Piece::Bishop) => 'b',
+                BoardSquare::Piece(Mark::Black, Piece::Rook) => 'r',
+                BoardSquare::Piece(Mark::Black, Piece::Queen) => 'q',
+                BoardSquare::Piece(Mark::Black, Piece::King) => 'k',
+                BoardSquare::Empty => ' ',
+            }
+        )
     }
 }

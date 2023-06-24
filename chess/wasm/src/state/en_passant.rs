@@ -1,4 +1,4 @@
-use crate::{piece::Piece, ply::Ply, position::Position, state::board::Board};
+use crate::{state::board::Board, state::piece::Piece, state::ply::Ply, state::position::Position};
 
 use super::board_square::BoardSquare;
 
@@ -43,9 +43,9 @@ impl EnPassant {
 mod test {
     use super::EnPassant;
     use crate::{
-        piece::Piece,
-        ply::Ply,
-        position::Position,
+        state::piece::Piece,
+        state::ply::Ply,
+        state::position::Position,
         state::{board::Board, board_square::BoardSquare, mark::Mark},
     };
 

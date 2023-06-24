@@ -1,4 +1,6 @@
-use crate::{ply::Ply, position::Position};
+use std::fmt::Display;
+
+use crate::{state::ply::Ply, state::position::Position};
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum CastlingType {
@@ -43,6 +45,19 @@ impl CastlingType {
                 Position::new(7, 5),
             ),
         }
+    }
+}
+
+impl Display for CastlingType {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let (king, rook) = match self {
+            CastlingType::BlackQueen => (Position::new(0, 4), Position::new(0, 0)),
+            CastlingType::BlackKing => (Position::new(0, 4), Position::new(0, 7)),
+            CastlingType::WhiteQueen => (Position::new(7, 4), Position::new(7, 0)),
+            CastlingType::WhiteKing => (Position::new(7, 4), Position::new(7, 7)),
+        };
+
+        write!(f, "{} <=> {}", king, rook)
     }
 }
 
