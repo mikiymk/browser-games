@@ -1,8 +1,6 @@
 use std::fmt::Display;
 
-use serde::Serialize;
-
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum Mark {
     White,
     Black,

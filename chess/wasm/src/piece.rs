@@ -1,6 +1,4 @@
-use serde::Serialize;
-
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum Piece {
     Pawn,
     Knight,

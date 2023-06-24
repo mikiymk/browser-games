@@ -1,10 +1,8 @@
-use serde::Serialize;
-
 use crate::{piece::Piece, ply::Ply, position::Position, state::board::Board};
 
 use super::board_square::BoardSquare;
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub struct EnPassant(Option<Position>);
 
 impl EnPassant {

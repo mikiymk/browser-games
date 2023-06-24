@@ -16,7 +16,22 @@ impl Serialize for Board {
     {
         let mut s = serializer.serialize_seq(Some(64))?;
         for element in &self.squares {
-            s.serialize_element(element)?;
+            let element_number = match element {
+                BoardSquare::Piece(Mark::White, Piece::Pawn) => 1,
+                BoardSquare::Piece(Mark::White, Piece::Knight) => 2,
+                BoardSquare::Piece(Mark::White, Piece::Bishop) => 3,
+                BoardSquare::Piece(Mark::White, Piece::Rook) => 4,
+                BoardSquare::Piece(Mark::White, Piece::Queen) => 5,
+                BoardSquare::Piece(Mark::White, Piece::King) => 6,
+                BoardSquare::Piece(Mark::Black, Piece::Pawn) => 7,
+                BoardSquare::Piece(Mark::Black, Piece::Knight) => 8,
+                BoardSquare::Piece(Mark::Black, Piece::Bishop) => 9,
+                BoardSquare::Piece(Mark::Black, Piece::Rook) => 10,
+                BoardSquare::Piece(Mark::Black, Piece::Queen) => 11,
+                BoardSquare::Piece(Mark::Black, Piece::King) => 12,
+                BoardSquare::Empty => 0,
+            };
+            s.serialize_element(&element_number)?;
         }
         s.end()
     }
