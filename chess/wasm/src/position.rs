@@ -59,24 +59,6 @@ impl Position {
     pub fn index(&self) -> usize {
         (self.x as usize) * 8 + (self.y as usize)
     }
-
-    pub fn algebraic(&self) -> String {
-        format!(
-            "{}{}",
-            match self.x {
-                0 => 'a',
-                1 => 'b',
-                2 => 'c',
-                3 => 'd',
-                4 => 'e',
-                5 => 'f',
-                6 => 'g',
-                7 => 'h',
-                _ => ' ',
-            },
-            8 - self.y
-        )
-    }
 }
 
 impl Debug for Position {

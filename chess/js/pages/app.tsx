@@ -7,7 +7,7 @@ import { gameLoop } from "@/chess/js/game";
 import { aiPlayer, createHumanPlayer, createMessenger } from "@/chess/js/ai";
 import { PromotionPopup } from "./promotion-popup";
 import { generateState } from "../game/state";
-import { add } from "@/chess/wasm/pkg/chess_wasm";
+import { add, game } from "@/chess/wasm/pkg/chess_wasm";
 
 export const App = () => {
   const [state, setState] = createSignal(generateState());
@@ -34,6 +34,43 @@ export const App = () => {
       [Black]: selectPlayer(playerBlack(), humanPlayer, aiPlayer),
     };
     console.log(playerWhite(), playerBlack());
+
+    void game(
+      1,
+      1,
+      (state: {
+        board: ({ Piece: ["Black" | "White", "King" | "Queen" | "Rook" | "Bishop" | "Knight" | "Pawn"] } | "Empty")[];
+        message: string;
+      }) =>
+        console.log(
+          state.board
+            .map((v) => (v == "Empty" ? 0 : v.Piece))
+            .map((v) =>
+              v == 0
+                ? v
+                : {
+                    Black: 1,
+                    White: 7,
+                  }[v[0]] +
+                  {
+                    King: 0,
+                    Queen: 1,
+                    Rook: 2,
+                    Bishop: 3,
+                    Knight: 4,
+                    Pawn: 5,
+                  }[v[1]],
+            )
+            .map((v) => " KQRBNPkqrbnp"[v]!)
+            // eslint-disable-next-line unicorn/no-array-reduce
+            .reduce<string[][]>((p, c, index) => (index % 8 ? p[0]?.push(c) : p.unshift([c]), p), [])
+            .map((v) => v.join(""))
+            .join("\n"),
+          state.message,
+        ),
+      (...highlight: unknown[]) => console.log(highlight),
+      () => Promise.reject(1),
+    );
 
     void gameLoop(players, state, setState, setStatus);
   };

@@ -6,6 +6,10 @@ use crate::{
     game::finish::{is_check, is_enough_for_checkmate},
     get_ply::get_all_board_ply,
     js_function::JsFunction,
+    message_const::{
+        MESSAGE_BLACK_TURN, MESSAGE_BLACK_WIN, MESSAGE_FIFTY_MOVE, MESSAGE_INSUFFICIENT_MATERIAL,
+        MESSAGE_STALEMATE, MESSAGE_THREEFOLD_REPETITION, MESSAGE_WHITE_TURN, MESSAGE_WHITE_WIN,
+    },
     piece::Piece,
     player::Player,
     ply::Ply,
@@ -20,7 +24,7 @@ pub struct Game<'a> {
     fifty_move: u32,
     threefold: HashMap<(Board, Mark), u8>,
     moves: u32,
-    message: String,
+    message: &'static str,
 
     player_white: Player<'a>,
     player_black: Player<'a>,
@@ -43,7 +47,7 @@ impl<'a> Game<'a> {
             threefold: HashMap::new(),
             moves: 1,
 
-            message: "".to_string(),
+            message: MESSAGE_WHITE_TURN,
 
             player_white,
             player_black,
@@ -71,7 +75,7 @@ impl<'a> Game<'a> {
 
     fn set_state(&self) -> Result<(), String> {
         self.set_state
-            .call(&GameState::new(self.board.clone(), self.message.clone()))?;
+            .call(&GameState::new(self.board.clone(), self.message))?;
 
         Ok(())
     }
@@ -97,7 +101,10 @@ impl<'a> Game<'a> {
         self.en_passant = self.en_passant.next_turn_available(&self.board, &ply);
         self.mark = self.mark.invert();
         self.castling = self.castling.apply_ply(ply);
-        self.message = format!("{} turn", self.mark);
+        self.message = match self.mark {
+            Mark::White => MESSAGE_WHITE_TURN,
+            Mark::Black => MESSAGE_BLACK_TURN,
+        };
 
         self.fifty_move = if match ply {
             Ply::Move { from, to, .. } => {
@@ -129,7 +136,10 @@ impl<'a> Game<'a> {
             for ply in get_all_board_ply(&self.mark, &self.board, &self.en_passant) {
                 let board = self.board.apply_ply(&ply);
                 if is_check(&board, &self.mark) {
-                    self.message = format!("{} win", self.mark);
+                    self.message = match self.mark {
+                        Mark::White => MESSAGE_WHITE_WIN,
+                        Mark::Black => MESSAGE_BLACK_WIN,
+                    };
 
                     return true;
                 }
@@ -138,27 +148,27 @@ impl<'a> Game<'a> {
 
         // ステイルメイト
         if None == get_all_board_ply(&self.mark, &self.board, &self.en_passant).next() {
-            self.message = "Draw - stalemate".to_string();
+            self.message = MESSAGE_STALEMATE;
 
             return true;
         }
 
         // 駒がチェックメイトに充分
         if is_enough_for_checkmate(&self.board) {
-            self.message = "Draw - insufficient material".to_string();
+            self.message = MESSAGE_INSUFFICIENT_MATERIAL;
 
             return true;
         }
 
         if self.fifty_move > 100 {
-            self.message = "Draw - fifty-move rule".to_string();
+            self.message = MESSAGE_FIFTY_MOVE;
 
             return true;
         }
 
         for (_, num) in &self.threefold {
             if num >= &3 {
-                self.message = "Draw - threefold repetition".to_string();
+                self.message = MESSAGE_THREEFOLD_REPETITION;
 
                 return true;
             }

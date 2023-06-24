@@ -12,11 +12,11 @@ use self::{board::Board, mark::Mark};
 pub struct GameState {
     board: Board,
 
-    message: String,
+    message: &'static str,
 }
 
 impl GameState {
-    pub fn new(board: Board, message: String) -> GameState {
+    pub fn new(board: Board, message: &'static str) -> GameState {
         GameState { board, message }
     }
 }
