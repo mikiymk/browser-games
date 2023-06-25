@@ -17,14 +17,25 @@ use std::fmt::{Debug, Display};
 pub struct Position(usize);
 
 impl Position {
-    pub const BLACK_KING: Position = Position::new(0, 4);
-    pub const BLACK_ROOK_KING_SIDE: Position = Position::new(0, 7);
-    pub const BLACK_ROOK_QUEEN_SIDE: Position = Position::new(0, 0);
-    pub const WHITE_KING: Position = Position::new(7, 4);
-    pub const WHITE_ROOK_KING_SIDE: Position = Position::new(7, 7);
-    pub const WHITE_ROOK_QUEEN_SIDE: Position = Position::new(7, 0);
+    /// Black Rook Queen side (a8 = 0, 0)
+    pub const B_RQ: Position = Position::new(0, 0);
+    pub const B_NQ: Position = Position::new(0, 1);
+    pub const B_BQ: Position = Position::new(0, 2);
+    pub const B_Q: Position = Position::new(0, 3);
+    pub const B_K: Position = Position::new(0, 4);
+    pub const B_BK: Position = Position::new(0, 5);
+    pub const B_NK: Position = Position::new(0, 6);
+    pub const B_RK: Position = Position::new(0, 7);
+    pub const W_RQ: Position = Position::new(7, 0);
+    pub const W_NQ: Position = Position::new(7, 1);
+    pub const W_BQ: Position = Position::new(7, 2);
+    pub const W_Q: Position = Position::new(7, 3);
+    pub const W_K: Position = Position::new(7, 4);
+    pub const W_BK: Position = Position::new(7, 5);
+    pub const W_NK: Position = Position::new(7, 6);
+    pub const W_RK: Position = Position::new(7, 7);
 
-    const fn new_from_position(pos: usize) -> Position {
+    pub const fn new_from_position(pos: usize) -> Position {
         Position(pos)
     }
 

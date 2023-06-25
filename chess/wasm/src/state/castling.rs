@@ -20,29 +20,23 @@ impl CastlingType {
         Position, // rook to
     ) {
         match self {
-            CastlingType::BlackQueen => (
-                Position::new(0, 4),
-                Position::new(0, 2),
-                Position::new(0, 0),
-                Position::new(0, 3),
-            ),
+            CastlingType::BlackQueen => {
+                (Position::B_K, Position::B_BQ, Position::B_RQ, Position::B_Q)
+            }
             CastlingType::BlackKing => (
-                Position::new(0, 4),
-                Position::new(0, 6),
-                Position::new(0, 7),
-                Position::new(0, 5),
+                Position::B_K,
+                Position::B_NK,
+                Position::B_RK,
+                Position::B_BK,
             ),
-            CastlingType::WhiteQueen => (
-                Position::new(7, 4),
-                Position::new(7, 2),
-                Position::new(7, 0),
-                Position::new(7, 3),
-            ),
+            CastlingType::WhiteQueen => {
+                (Position::W_K, Position::W_BQ, Position::W_RQ, Position::W_Q)
+            }
             CastlingType::WhiteKing => (
-                Position::new(7, 4),
-                Position::new(7, 6),
-                Position::new(7, 7),
-                Position::new(7, 5),
+                Position::W_K,
+                Position::W_NK,
+                Position::W_RK,
+                Position::W_BK,
             ),
         }
     }
@@ -50,12 +44,7 @@ impl CastlingType {
 
 impl Display for CastlingType {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        let (king, rook) = match self {
-            CastlingType::BlackQueen => (Position::new(0, 4), Position::new(0, 0)),
-            CastlingType::BlackKing => (Position::new(0, 4), Position::new(0, 7)),
-            CastlingType::WhiteQueen => (Position::new(7, 4), Position::new(7, 0)),
-            CastlingType::WhiteKing => (Position::new(7, 4), Position::new(7, 7)),
-        };
+        let (king, _, rook, _) = self.get_move_indexes();
 
         write!(f, "{} {}", king, rook)
     }
@@ -115,12 +104,11 @@ impl Castling {
         match ply {
             Ply::Castling(CastlingType::BlackKing | CastlingType::BlackQueen)
             | Ply::Move {
-                from: Position::BLACK_KING,
+                from: Position::B_K,
                 ..
             }
             | Ply::Move {
-                to: Position::BLACK_KING,
-                ..
+                to: Position::B_K, ..
             } => {
                 clone.set(CastlingType::BlackKing);
                 clone.set(CastlingType::BlackQueen);
@@ -128,57 +116,52 @@ impl Castling {
 
             Ply::Castling(CastlingType::WhiteKing | CastlingType::WhiteQueen)
             | Ply::Move {
-                from: Position::WHITE_KING,
+                from: Position::W_K,
                 ..
             }
             | Ply::Move {
-                to: Position::WHITE_KING,
-                ..
+                to: Position::W_K, ..
             } => {
                 clone.set(CastlingType::WhiteKing);
                 clone.set(CastlingType::WhiteQueen);
             }
 
             Ply::Move {
-                from: Position::BLACK_ROOK_QUEEN_SIDE,
+                from: Position::B_RQ,
                 ..
             }
             | Ply::Move {
-                to: Position::BLACK_ROOK_QUEEN_SIDE,
-                ..
+                to: Position::B_RQ, ..
             } => {
                 clone.set(CastlingType::BlackQueen);
             }
 
             Ply::Move {
-                from: Position::BLACK_ROOK_KING_SIDE,
+                from: Position::B_RK,
                 ..
             }
             | Ply::Move {
-                to: Position::BLACK_ROOK_KING_SIDE,
-                ..
+                to: Position::B_RK, ..
             } => {
                 clone.set(CastlingType::BlackKing);
             }
 
             Ply::Move {
-                from: Position::WHITE_ROOK_QUEEN_SIDE,
+                from: Position::W_RQ,
                 ..
             }
             | Ply::Move {
-                to: Position::WHITE_ROOK_QUEEN_SIDE,
-                ..
+                to: Position::W_RQ, ..
             } => {
                 clone.set(CastlingType::WhiteQueen);
             }
 
             Ply::Move {
-                from: Position::WHITE_ROOK_KING_SIDE,
+                from: Position::W_RK,
                 ..
             }
             | Ply::Move {
-                to: Position::WHITE_ROOK_KING_SIDE,
-                ..
+                to: Position::W_RK, ..
             } => {
                 clone.set(CastlingType::WhiteKing);
             }

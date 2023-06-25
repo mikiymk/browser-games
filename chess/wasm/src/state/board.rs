@@ -142,7 +142,7 @@ impl Board {
         self.squares
             .iter()
             .enumerate()
-            .map(|(i, s)| (Position::new((i / 8) as u8, (i % 8) as u8), *s))
+            .map(|(i, s)| (Position::new_from_position(i), *s))
     }
 }
 

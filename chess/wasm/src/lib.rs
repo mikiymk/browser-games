@@ -75,7 +75,7 @@ pub fn get_selected_piece_moves(
         None => Vec::new(),
     };
 
-    if from == Position::BLACK_KING || from == Position::WHITE_KING {
+    if from == Position::B_K || from == Position::W_K {
         let mut castling_vec = get_castling_ply(&mark, &board, &castling);
 
         ply_vec.append(&mut castling_vec);
