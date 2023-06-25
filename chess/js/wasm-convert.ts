@@ -161,8 +161,10 @@ export const convertPositionToIndex = (posString: PositionString) => {
 };
 
 export const convertWasmMoveToMove = (
-  wasmMove: WasmMove,
+  value: string,
 ): MoveTypeMove | MoveTypeCastling | MoveTypeEnPassant | MoveTypePromotion => {
+  const wasmMove = value.split(" ") as WasmMove;
+
   if (wasmMove[0] === "m") {
     return generateMoveMove(convertPositionToIndex(wasmMove[1]), convertPositionToIndex(wasmMove[2]));
   }

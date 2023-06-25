@@ -90,7 +90,7 @@ pub fn get_all_board_ply<'a>(
 ) -> AllPlyIterator<'a> {
     let mut ply_iter_vec = Vec::new();
 
-    for (position, square) in board.square_iter() {
+    for (position, square) in board.square_position_iter() {
         if square.mark() == Some(*mark) {
             if let Some(ply) = get_ply(board, &position, en_passant) {
                 ply_iter_vec.push(ply)

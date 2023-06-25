@@ -1,10 +1,52 @@
 use std::collections::HashMap;
 
 use crate::{
+    get_ply::get_all_board_ply,
+    message_const::{
+        MESSAGE_BLACK_WIN, MESSAGE_INSUFFICIENT_MATERIAL, MESSAGE_NO_BLACK_KING,
+        MESSAGE_NO_WHITE_KING, MESSAGE_STALEMATE, MESSAGE_WHITE_WIN,
+    },
     state::piece::Piece,
-    state::position::Position,
     state::{board::Board, board_square::BoardSquare, mark::Mark},
+    state::{en_passant::EnPassant, position::Position},
 };
+
+pub fn is_finish(board: &Board, mark: &Mark, en_passant: &EnPassant) -> Option<&'static str> {
+    // キングがいない
+    if board.get_king_position(&Mark::White).is_none() {
+        return Some(MESSAGE_NO_WHITE_KING);
+    } else if board.get_king_position(&Mark::Black).is_none() {
+        return Some(MESSAGE_NO_BLACK_KING);
+    }
+
+    // チェックメイト
+    if is_check(&board, &mark) {
+        for ply in get_all_board_ply(&mark, &board, &en_passant) {
+            let board = board.apply_ply(&ply);
+            if is_check(&board, &mark) {
+                return Some(match mark {
+                    Mark::White => MESSAGE_WHITE_WIN,
+                    Mark::Black => MESSAGE_BLACK_WIN,
+                });
+            }
+        }
+    }
+
+    // ステイルメイト
+    if get_all_board_ply(&mark, &board, &en_passant)
+        .next()
+        .is_none()
+    {
+        return Some(MESSAGE_STALEMATE);
+    }
+
+    // 駒がチェックメイトに充分
+    if is_enough_for_checkmate(&board) {
+        return Some(MESSAGE_INSUFFICIENT_MATERIAL);
+    }
+
+    None
+}
 
 pub fn is_check(board: &Board, mark: &Mark) -> bool {
     let king_position = match board.get_king_position(mark) {
@@ -103,8 +145,8 @@ pub fn is_attacked_there(board: &Board, mark: &Mark, position: &Position) -> boo
 
 pub fn is_enough_for_checkmate(board: &Board) -> bool {
     let mut pieces = HashMap::new();
-    for (_, square) in board.square_iter() {
-        let piece_num = pieces.get(&square);
+    for square in board.square_iter() {
+        let piece_num = pieces.get(square);
         pieces.insert(square, piece_num.map_or(1_u32, |num| num + 1));
     }
 

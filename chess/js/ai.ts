@@ -7,22 +7,19 @@ import {
   BlackPawn,
   BlackQueen,
   BlackRook,
+  Castling,
   Empty,
   GameState,
   Index,
   InputType,
   Mark,
-  MoveTypeCastling,
-  MoveTypeEnPassant,
-  MoveTypeMove,
-  MoveTypePromotion,
   MoveTypes,
   Piece,
   Player,
+  Promotion,
   PromotionPieces,
   Receiver,
   Reset,
-  Resign,
   Sender,
   WhiteBishop,
   WhiteKing,
@@ -31,21 +28,18 @@ import {
   WhiteQueen,
   WhiteRook,
 } from "./types";
-import { getCastling, getPiecesLegalMoves } from "./game/get-moves";
+import { getPiecesLegalMoves } from "./game/get-moves";
 import { generateMovePromotion } from "./game/generate-move";
 import { getMark } from "./game/mark";
 import { isFinished } from "./game/finish";
 import { getNextState } from "./game/get-next";
-import { randomSelect } from "@/common/random-select";
-import { get_selected_piece_moves } from "@/chess/wasm/pkg/chess_wasm";
+import { get_ai_ply, get_selected_piece_moves } from "@/chess/wasm/pkg/chess_wasm";
 import {
   convertMarkToWasmMark,
   convertBoardToWasmBoard,
   convertEnPassantToWasmEnPassant,
   convertCastlingToWasmCastling,
   convertWasmMoveToMove,
-  WasmMove,
-  convertPositionToIndex,
 } from "./wasm-convert";
 
 export const createMessenger = <T>(): [Sender<T>, Receiver<T>] => {
@@ -92,13 +86,13 @@ export const createHumanPlayer = (
         const movable = w_moves
           .split(":")
           .filter(Boolean)
-          .map((m) => m.split(" ") as WasmMove);
+          .map((value) => convertWasmMoveToMove(value));
 
         if (movable.length === 0) {
           continue;
         }
 
-        setMovable(movable.map((m) => convertPositionToIndex(m[2])));
+        setMovable(movable.map((move) => (move.type === Castling ? move.rook : move.to)));
 
         const to = await input();
         setMovable([]);
@@ -106,14 +100,14 @@ export const createHumanPlayer = (
           return { type: Reset };
         }
 
-        const toMove = movable.find((move) => convertPositionToIndex(move[2]) === to);
+        const toMove = movable.find((move) => (move.type === Castling ? move.rook : move.to) === to);
         if (toMove !== undefined) {
-          if (toMove[0] === "p") {
+          if (toMove.type === Promotion) {
             openPromotionMark(mark);
             const piece = await promotionInput();
             return generateMovePromotion(from, to, piece);
           }
-          return convertWasmMoveToMove(toMove);
+          return toMove;
         }
       }
     },
@@ -121,39 +115,21 @@ export const createHumanPlayer = (
 };
 
 export const aiPlayer: Player = {
-  async getMove(state: GameState): Promise<MoveTypes> {
-    await sleep(0);
-
+  getMove(state: GameState): MoveTypes {
     console.time("get move");
 
-    const moves = [
-      ...getPiecesLegalMoves(state.board, state.mark, state.enPassant),
-      ...getCastling(state.board, state.castling, state.mark),
-    ];
-
-    let maxValue = Number.NEGATIVE_INFINITY;
-    const maxMoves: (MoveTypeMove | MoveTypeEnPassant | MoveTypePromotion | MoveTypeCastling)[] = [];
-    for (const move of moves) {
-      const nextState = getNextState(state, move);
-
-      const timeout = { timeout: false };
-      setTimeout(() => (timeout.timeout = true), 400);
-      const value = await minimaxBreadthFirst(nextState, 3, timeout);
-
-      if (value > maxValue) {
-        maxValue = value;
-        maxMoves.length = 0;
-        maxMoves.push(move);
-      } else if (value === maxValue) {
-        maxMoves.push(move);
-      }
-    }
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-assignment
+    const move = get_ai_ply(
+      convertBoardToWasmBoard(state.board),
+      convertMarkToWasmMark(state.mark),
+      convertCastlingToWasmCastling(state.castling),
+      convertEnPassantToWasmEnPassant(state.enPassant),
+    );
 
     console.timeEnd("get move");
 
-    await sleep(100);
-
-    return randomSelect(maxMoves) ?? { type: Resign };
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+    return convertWasmMoveToMove(move);
   },
 };
 

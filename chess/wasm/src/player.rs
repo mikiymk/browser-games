@@ -1,3 +1,5 @@
+pub mod ai;
+
 use std::fmt::Debug;
 
 use js_sys::Promise;
@@ -151,7 +153,7 @@ impl<'a> Player<'a> {
     ) -> Result<Ply, String> {
         let mut ply_vec = Vec::new();
 
-        for (from, _) in board.square_iter() {
+        for (from, _) in board.square_position_iter() {
             if let Some(ply_iter) = get_ply(board, &from, en_passant) {
                 ply_vec.extend(ply_iter);
             }

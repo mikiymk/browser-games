@@ -138,7 +138,11 @@ impl Board {
         }
     }
 
-    pub fn square_iter(&self) -> impl Iterator<Item = (Position, BoardSquare)> + '_ {
+    pub fn square_iter(&self) -> impl Iterator<Item = &BoardSquare> + '_ {
+        self.squares.iter()
+    }
+
+    pub fn square_position_iter(&self) -> impl Iterator<Item = (Position, BoardSquare)> + '_ {
         self.squares
             .iter()
             .enumerate()
@@ -146,7 +150,7 @@ impl Board {
     }
 
     pub fn get_king_position(&self, mark: &Mark) -> Option<Position> {
-        for (position, square) in self.square_iter() {
+        for (position, square) in self.square_position_iter() {
             if square == BoardSquare::new(*mark, Piece::King) {
                 return Some(position);
             }
