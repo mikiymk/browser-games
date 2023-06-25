@@ -1,0 +1,101 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.grid {
+  margin: auto;
+  width: min-content;
+  height: min-content;
+
+  display: grid;
+
+  gap: 0;
+}
+
+.field {
+  height: 5vmin;
+  width: 5vmin;
+  border: 2px solid black;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.field-close {
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
+  border: 0.5vmin outset darkgray;
+  background-color: darkgray;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.field-open {
+  height: 100%;
+  width: 100%;
+  border: 0;
+  background-color: lightgray;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.graph {
+  height: 100%;
+  width: 100%;
+
+  fill: none;
+  stroke: black;
+  stroke-width: 0;
+}
+
+.g-bomb {
+  fill: black;
+}
+
+.g-flag {
+  fill: red;
+}
+
+.stroke {
+  fill: none;
+  stroke-width: 10px;
+}
+
+.g-n1 {
+  stroke: blue;
+}
+
+.g-n2 {
+  stroke: green;
+}
+
+.g-n3 {
+  stroke: red;
+}
+
+.g-n4 {
+  stroke: purple;
+}
+
+.g-n5 {
+  stroke: maroon;
+}
+
+.g-n6 {
+  stroke: rgb(64, 181, 224);
+}
+
+.g-n7 {
+  stroke: black;
+}
+
+.g-n8 {
+  stroke: darkgray;
+}
