@@ -1,7 +1,17 @@
 import { For, Show, createEffect } from "solid-js";
 
-import { promotionTargetPieces } from "@/chess/js/game/get-moves";
 import { createReference } from "@/chess/js/reference";
+import {
+  WhiteKnight,
+  BlackBishop,
+  BlackKnight,
+  BlackQueen,
+  BlackRook,
+  White,
+  WhiteBishop,
+  WhiteQueen,
+  WhiteRook,
+} from "@/chess/js/types";
 
 import { PieceImage } from "./piece";
 
@@ -47,4 +57,11 @@ export const PromotionPopup = (properties: PromotionPopupProperties) => {
       </Show>
     </dialog>
   );
+};
+
+const promotionTargetPieces = (mark: Mark): PromotionPieces[] => {
+  const promotionWhitePieces: PromotionPieces[] = [WhiteKnight, WhiteBishop, WhiteRook, WhiteQueen];
+  const promotionBlackPieces: PromotionPieces[] = [BlackKnight, BlackBishop, BlackRook, BlackQueen];
+
+  return mark === White ? promotionWhitePieces : promotionBlackPieces;
 };

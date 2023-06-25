@@ -90,7 +90,6 @@ export type MoveTypes =
   | MoveTypeEnPassant
   | MoveTypePromotion;
 
-export type MoveTypeGenerator = Generator<MoveTypeMove | MoveTypeEnPassant | MoveTypePromotion, void, undefined>;
 export type IsCastled = [
   black_queen_0: boolean,
   black_king_7: boolean,

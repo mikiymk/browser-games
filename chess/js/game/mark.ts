@@ -16,7 +16,7 @@ import {
   BlackKing,
 } from "@/chess/js/types";
 
-import type { Mark, Piece, BoardData, Index } from "@/chess/js/types";
+import type { Mark, Piece } from "@/chess/js/types";
 
 export const invertMark = (mark: Mark) => {
   return mark === Black ? White : Black;
@@ -46,20 +46,4 @@ export const getMark = (piece: Piece | Empty): Mark | Empty => {
       return Empty;
     }
   }
-};
-
-export const isSameMark = (board: BoardData, from: Index, to: Index): boolean => {
-  const fromMark = getMark(board[from]);
-  const toMark = getMark(board[to]);
-
-  if (fromMark === Empty || toMark === Empty) return false;
-  return fromMark === toMark;
-};
-
-export const isOtherMark = (board: BoardData, from: Index, to: Index): boolean => {
-  const fromMark = getMark(board[from]);
-  const toMark = getMark(board[to]);
-
-  if (fromMark === Empty || toMark === Empty) return false;
-  return fromMark !== toMark;
 };
