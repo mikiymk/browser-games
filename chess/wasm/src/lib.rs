@@ -6,7 +6,7 @@ mod player;
 mod state;
 
 use game::Game;
-use get_ply::{get_castling_ply, get_ply};
+use get_ply::{filter_checked_ply, get_castling_ply, get_ply};
 use js_function::JsFunction;
 use player::Player;
 use state::{
@@ -74,15 +74,17 @@ pub fn get_selected_piece_moves(
         }
         None => Vec::new(),
     };
-    let mut castling_vec = get_castling_ply(&mark, &board, &castling);
 
-    ply_vec.append(&mut castling_vec);
+    if from == Position::BLACK_KING || from == Position::WHITE_KING {
+        let mut castling_vec = get_castling_ply(&mark, &board, &castling);
 
-    Ok(
-        ply_vec
-            .into_iter()
-            .map(|ply| format!("{}", ply))
-            .collect::<Vec<_>>()
-            .join(":"),
-    )
+        ply_vec.append(&mut castling_vec);
+    }
+
+    Ok(ply_vec
+        .into_iter()
+        .filter(|ply| filter_checked_ply(ply, &mark, &board))
+        .map(|ply| format!("{}", ply))
+        .collect::<Vec<_>>()
+        .join(":"))
 }

@@ -1,5 +1,7 @@
 mod all_board;
 mod bishop;
+mod castling;
+mod check_filter;
 mod king;
 mod knight;
 mod pawn;
@@ -8,8 +10,10 @@ mod rook;
 mod runs;
 mod steps;
 
-pub use all_board::{get_all_board_ply, get_castling_ply, get_ply};
+pub use all_board::{get_all_board_ply, get_ply};
 pub use bishop::get_bishop_ply;
+pub use castling::get_castling_ply;
+pub use check_filter::filter_checked_ply;
 pub use king::get_king_ply;
 pub use knight::get_knight_ply;
 pub use pawn::get_pawn_ply;

@@ -86,7 +86,7 @@ export const enPassantToFen = (enPassant: false | Index): string => {
   return enPassant === false ? "-" : indexToAlgebraic(enPassant);
 };
 
-const indexToAlgebraic = (index: Index): string => {
+export const indexToAlgebraic = (index: Index): string => {
   const rank = Math.floor(index / 8);
   const file = index % 8;
 

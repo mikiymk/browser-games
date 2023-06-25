@@ -2,6 +2,7 @@ use crate::{state::board::Board, state::piece::Piece, state::ply::Ply, state::po
 
 use super::board_square::BoardSquare;
 
+/// if pawn e6 -> e5 -> e4, notes en passant (e5)
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub struct EnPassant(Option<Position>);
 
