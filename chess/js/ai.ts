@@ -5,7 +5,6 @@ import { getMark } from "./game/mark";
 import { Reset } from "./types";
 import {
   convertBoardToWasmBoard,
-  convertCastlingToWasmCastling,
   convertWasmMoveToMove,
   convertPositionToIndex,
   convertIndexToPosition,
@@ -53,7 +52,7 @@ export const createHumanPlayer = (
           mark,
           convertBoardToWasmBoard(board),
           enPassant,
-          convertCastlingToWasmCastling(castling),
+          castling,
         );
 
         const movable = w_moves
@@ -96,12 +95,7 @@ export const aiPlayer: Player = {
     console.time("get move");
 
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-assignment
-    const move = get_ai_ply(
-      convertBoardToWasmBoard(state.board),
-      state.mark,
-      convertCastlingToWasmCastling(state.castling),
-      state.enPassant,
-    );
+    const move = get_ai_ply(convertBoardToWasmBoard(state.board), state.mark, state.castling, state.enPassant);
 
     console.timeEnd("get move");
 

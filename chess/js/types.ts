@@ -84,12 +84,7 @@ export type MoveTypes =
   | MoveTypeEnPassant
   | MoveTypePromotion;
 
-export type IsCastled = [
-  black_queen_0: boolean,
-  black_king_7: boolean,
-  white_queen_56: boolean,
-  white_king_64: boolean,
-];
+export type IsCastled = number;
 
 export type EnPassantTarget = number | undefined;
 

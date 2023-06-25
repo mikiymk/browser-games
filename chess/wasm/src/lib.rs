@@ -10,11 +10,7 @@ use get_ply::{filter_checked_ply, get_all_board_ply, get_castling_ply, get_ply};
 
 use player::ai::mini_max;
 use state::{
-    board::Board,
-    castling::{Castling, CastlingType},
-    en_passant::EnPassant,
-    mark::Mark,
-    position::Position,
+    board::Board, castling::Castling, en_passant::EnPassant, mark::Mark, position::Position,
 };
 use wasm_bindgen::prelude::*;
 
@@ -39,13 +35,13 @@ pub fn get_selected_piece_moves(
     mark: u8,
     board: &[u8],
     en_passant: Option<u8>,
-    castling: &[u8],
+    castling: u8,
 ) -> Result<String, String> {
     let mark = Mark::try_from_u8(mark).ok_or("mark")?;
     let from = Position::try_from_u8(from).ok_or("from")?;
     let board = Board::try_from_slice(board).ok_or("board")?;
     let en_passant = EnPassant::try_from_u8(en_passant).ok_or("en passant")?;
-    let castling = Castling::try_from_slice(castling).ok_or("castling")?;
+    let castling = Castling::new(castling);
 
     let mut ply_vec = match get_ply(&board, &from, &en_passant) {
         Some(ply_iter) => {
@@ -80,18 +76,13 @@ pub fn get_next_board(board: &[u8], ply: &str) -> Result<Vec<u8>, String> {
 }
 
 #[wasm_bindgen]
-pub fn get_next_castling(castling: &[u8], ply: &str) -> Result<Vec<u8>, String> {
-    let castling = Castling::try_from_slice(castling).ok_or("castling")?;
+pub fn get_next_castling(castling: u8, ply: &str) -> Result<u8, String> {
+    let castling = Castling::new(castling);
     let ply = Ply::try_from_str(ply).ok_or("ply")?;
 
     let castling = castling.apply_ply(&ply);
 
-    Ok(vec![
-        castling.get(CastlingType::BlackKing) as u8,
-        castling.get(CastlingType::BlackQueen) as u8,
-        castling.get(CastlingType::WhiteKing) as u8,
-        castling.get(CastlingType::WhiteQueen) as u8,
-    ])
+    Ok(castling.as_u8())
 }
 
 #[wasm_bindgen]
@@ -121,12 +112,12 @@ pub fn is_finished(
 pub fn get_ai_ply(
     board: &[u8],
     mark: u8,
-    castling: &[u8],
+    castling: u8,
     en_passant: Option<u8>,
 ) -> Result<String, String> {
     let board = Board::try_from_slice(board).ok_or("board")?;
     let mark = Mark::try_from_u8(mark).ok_or("mark")?;
-    let castling = Castling::try_from_slice(castling).ok_or("castling")?;
+    let castling = Castling::new(castling);
     let en_passant = EnPassant::try_from_u8(en_passant).ok_or("en_passant")?;
 
     let mut best_ply = None;

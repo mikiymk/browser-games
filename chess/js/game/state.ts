@@ -60,7 +60,7 @@ export const generateState = (): GameState => {
   return {
     board,
     mark: White,
-    castling: [true, true, true, true],
+    castling: 0,
     enPassant: undefined,
     fiftyMove: 0,
     threefold: new Map(),

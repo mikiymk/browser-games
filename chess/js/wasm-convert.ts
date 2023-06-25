@@ -25,16 +25,12 @@ export const convertWasmBoardToBoard = (board: Uint8Array | undefined): BoardDat
   return [...board] as BoardData;
 };
 
-export const convertCastlingToWasmCastling = (castling: IsCastled): Uint8Array => {
-  return new Uint8Array(castling.map(Number));
-};
-
-export const convertWasmCastlingToCastling = (castling: Uint8Array | undefined): IsCastled => {
-  if (castling === undefined || castling.length !== 4) {
+export const convertWasmCastlingToCastling = (castling: number | undefined): IsCastled => {
+  if (castling === undefined) {
     throw new Error("castling is empty");
   }
 
-  return [castling[0] !== 0, castling[1] !== 0, castling[2] !== 0, castling[3] !== 0];
+  return castling;
 };
 
 export const convertIndexToPosition = (index: Index): PositionString => {

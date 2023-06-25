@@ -17,7 +17,6 @@ import type {
 
 import {
   convertBoardToWasmBoard,
-  convertCastlingToWasmCastling,
   convertPositionToIndex,
   convertWasmBoardToBoard,
   convertWasmCastlingToCastling,
@@ -35,7 +34,7 @@ export const getNextState = (
   );
   const nextCastling = convertWasmCastlingToCastling(
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-argument
-    get_next_castling(convertCastlingToWasmCastling(state.castling), wasmMove),
+    get_next_castling(state.castling, wasmMove),
   );
   const nextEnPassant =
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-argument

@@ -53,31 +53,8 @@ impl Display for CastlingType {
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub struct Castling(u8);
 impl Castling {
-    pub fn new() -> Castling {
-        Castling(0)
-    }
-
-    pub fn try_from_slice(value: &[u8]) -> Option<Self> {
-        if value.len() < 4 {
-            return None;
-        }
-
-        let mut castling = Self::new();
-
-        if value[0] != 0 {
-            castling.set(CastlingType::BlackKing);
-        }
-        if value[1] != 0 {
-            castling.set(CastlingType::BlackQueen);
-        }
-        if value[2] != 0 {
-            castling.set(CastlingType::WhiteKing);
-        }
-        if value[3] != 0 {
-            castling.set(CastlingType::WhiteQueen);
-        }
-
-        Some(castling)
+    pub fn new(value: u8) -> Self {
+        Self(value)
     }
 
     pub fn set(&mut self, pos: CastlingType) {
@@ -96,6 +73,10 @@ impl Castling {
             CastlingType::WhiteKing => self.0 & 0b0010 != 0,
             CastlingType::WhiteQueen => self.0 & 0b0001 != 0,
         }
+    }
+
+    pub fn as_u8(&self) -> u8 {
+        self.0
     }
 
     pub fn apply_ply(&self, ply: &Ply) -> Castling {

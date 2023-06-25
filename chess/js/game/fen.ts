@@ -74,7 +74,10 @@ export const markToFen = (mark: Mark): string => {
 
 const castlingToFen = (castling: IsCastled): string => {
   return (
-    (castling[3] ? "K" : "") + (castling[2] ? "Q" : "") + (castling[1] ? "k" : "") + (castling[0] ? "q" : "") || "-"
+    (castling & 0b0010 ? "K" : "") +
+      (castling & 0b0001 ? "Q" : "") +
+      (castling & 0b1000 ? "k" : "") +
+      (castling & 0b0100 ? "q" : "") || "-"
   );
 };
 
