@@ -5,5 +5,5 @@ type ControllerProperties = {
 };
 
 export const Controller = (properties: ControllerProperties) => {
-  return <></>;
+  return <div onClick={() => properties.setHeight(10)}>click</div>;
 };
