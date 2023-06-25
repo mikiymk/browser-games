@@ -23,7 +23,7 @@ export const gameLoop = async (
 
     const move = await players[state().mark].getMove(state());
 
-    if (move.type === Reset || move.type === Resign) {
+    if (move[0] === Reset || move[0] === Resign) {
       break;
     }
 

@@ -19,12 +19,12 @@ export const WhiteKing = 126;
 export const Black = 110;
 export const White = 120;
 
-export const Reset = 131;
-export const Move = 132;
-export const Castling = 133;
-export const EnPassant = 134;
-export const Promotion = 135;
-export const Resign = 136;
+export const Reset = "reset";
+const Move = "m";
+const Castling = "c";
+const EnPassant = "e";
+const Promotion = "p";
+export const Resign = "resign";
 
 // 盤のサイズ
 export const BoardLength = 64;
@@ -45,10 +45,10 @@ export type Piece =
   | typeof WhiteKing;
 export type Empty = typeof Empty;
 export type Reset = typeof Reset;
-export type Move = typeof Move;
-export type Castling = typeof Castling;
-export type EnPassant = typeof EnPassant;
-export type Promotion = typeof Promotion;
+type Move = typeof Move;
+type Castling = typeof Castling;
+type EnPassant = typeof EnPassant;
+type Promotion = typeof Promotion;
 export type Resign = typeof Resign;
 
 export type BoardData = Tuple<Piece | Empty, 64>;
@@ -75,12 +75,17 @@ export type GameState = {
 // 2 | 48 49 50 51 52 53 54 55
 // 1 | 56 57 58 59 60 61 62 63
 
-type MoveTypeReset = { type: Reset };
-type MoveTypeResign = { type: Resign };
-export type MoveTypeMove = { type: Move; from: Index; to: Index };
-export type MoveTypeCastling = { type: Castling; rook: 0 | 7 | 56 | 63 };
-export type MoveTypeEnPassant = { type: EnPassant; from: Index; to: Index; capture: Index };
-export type MoveTypePromotion = { type: Promotion; from: Index; to: Index; piece: Piece };
+type PositionFile = "a" | "b" | "c" | "d" | "e" | "f" | "g" | "h";
+type PositionRank = "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8";
+export type PositionString = `${PositionFile}${PositionRank}`;
+export type WasmPiece = "P" | "N" | "B" | "R" | "Q" | "K";
+
+type MoveTypeReset = [Reset];
+type MoveTypeResign = [Resign];
+export type MoveTypeMove = [Move, PositionString, PositionString];
+export type MoveTypeCastling = [Castling, PositionString, PositionString];
+export type MoveTypeEnPassant = [EnPassant, PositionString, PositionString, PositionString];
+export type MoveTypePromotion = [Promotion, PositionString, PositionString, WasmPiece];
 
 export type MoveTypes =
   | MoveTypeReset

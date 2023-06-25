@@ -1,26 +1,32 @@
-import { Castling, EnPassant, Move, Promotion } from "@/chess/js/types";
-
 import type {
-  Index,
   MoveTypeCastling,
   MoveTypeEnPassant,
   MoveTypeMove,
   MoveTypePromotion,
-  Piece,
+  PositionString,
+  WasmPiece,
 } from "@/chess/js/types";
 
-export const generateMoveMove = (from: Index, to: Index): MoveTypeMove => {
-  return { type: Move, from, to };
+export const generateMoveMove = (from: PositionString, to: PositionString): MoveTypeMove => {
+  return ["m", from, to];
 };
 
-export const generateMoveCastling = (rook: 0 | 7 | 56 | 63): MoveTypeCastling => {
-  return { type: Castling, rook };
+export const generateMoveCastling = (king: PositionString, rook: PositionString): MoveTypeCastling => {
+  return ["c", king, rook];
 };
 
-export const generateMoveEnPassant = (from: Index, to: Index, capture: Index): MoveTypeEnPassant => {
-  return { type: EnPassant, from, to, capture };
+export const generateMoveEnPassant = (
+  from: PositionString,
+  to: PositionString,
+  capture: PositionString,
+): MoveTypeEnPassant => {
+  return ["e", from, to, capture];
 };
 
-export const generateMovePromotion = (from: Index, to: Index, piece: Piece): MoveTypePromotion => {
-  return { type: Promotion, from, to, piece };
+export const generateMovePromotion = (
+  from: PositionString,
+  to: PositionString,
+  piece: WasmPiece,
+): MoveTypePromotion => {
+  return ["p", from, to, piece];
 };

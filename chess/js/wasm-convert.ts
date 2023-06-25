@@ -1,10 +1,4 @@
 import {
-  generateMoveMove,
-  generateMoveCastling,
-  generateMoveEnPassant,
-  generateMovePromotion,
-} from "./game/generate-move";
-import {
   White,
   Empty,
   WhitePawn,
@@ -19,9 +13,6 @@ import {
   BlackRook,
   BlackQueen,
   BlackKing,
-  Move,
-  Castling,
-  EnPassant,
 } from "./types";
 
 import type {
@@ -122,41 +113,17 @@ export const convertWasmCastlingToCastling = (castling: Uint8Array | undefined):
 export const convertMoveToWasmMove = (
   move: MoveTypeMove | MoveTypeCastling | MoveTypeEnPassant | MoveTypePromotion,
 ): WasmMove => {
-  switch (move.type) {
-    case Move: {
-      return ["m", convertIndexToPosition(move.from), convertIndexToPosition(move.to)];
-    }
-    case Castling: {
-      const king = move.rook === 0 || move.rook === 7 ? 4 : 60;
-      return ["c", convertIndexToPosition(king), convertIndexToPosition(move.rook)];
-    }
-    case EnPassant: {
-      return [
-        "e",
-        convertIndexToPosition(move.from),
-        convertIndexToPosition(move.to),
-        convertIndexToPosition(move.capture),
-      ];
-    }
-    default: {
-      return [
-        "p",
-        convertIndexToPosition(move.from),
-        convertIndexToPosition(move.to),
-        convertPieceToWasmPiece(move.piece),
-      ];
-    }
-  }
+  return move;
 };
 
-const convertIndexToPosition = (index: Index): PositionString => {
+export const convertIndexToPosition = (index: Index): PositionString => {
   const rank = Math.floor(index / 8);
   const file = index % 8;
 
   return ((["a", "b", "c", "d", "e", "f", "g", "h"][file] ?? "") + String(8 - rank)) as PositionString;
 };
 
-const convertPositionToIndex = (posString: PositionString) => {
+export const convertPositionToIndex = (posString: PositionString) => {
   const [file, rank] = [...posString] as [PositionFile, PositionRank];
   const fileValue = { a: 0, b: 1, c: 2, d: 3, e: 4, f: 5, g: 6, h: 7 }[file];
   const rankValue = 8 - Number.parseInt(rank);
@@ -169,30 +136,10 @@ export const convertWasmMoveToMove = (
 ): MoveTypeMove | MoveTypeCastling | MoveTypeEnPassant | MoveTypePromotion => {
   const wasmMove = value.split(" ") as WasmMove;
 
-  if (wasmMove[0] === "m") {
-    return generateMoveMove(convertPositionToIndex(wasmMove[1]), convertPositionToIndex(wasmMove[2]));
-  }
-
-  if (wasmMove[0] === "c") {
-    return generateMoveCastling(convertPositionToIndex(wasmMove[2]) as 0 | 7 | 56 | 63);
-  }
-
-  if (wasmMove[0] === "e") {
-    return generateMoveEnPassant(
-      convertPositionToIndex(wasmMove[1]),
-      convertPositionToIndex(wasmMove[2]),
-      convertPositionToIndex(wasmMove[3]),
-    );
-  }
-
-  return generateMovePromotion(
-    convertPositionToIndex(wasmMove[1]),
-    convertPositionToIndex(wasmMove[2]),
-    convertWasmPieceToPiece(wasmMove[3]),
-  );
+  return wasmMove;
 };
 
-const convertPieceToWasmPiece = (wasmPiece: Piece): WasmPiece => {
+export const convertPieceToWasmPiece = (wasmPiece: Piece): WasmPiece => {
   return (
     {
       [WhitePawn]: "P",
@@ -208,18 +155,5 @@ const convertPieceToWasmPiece = (wasmPiece: Piece): WasmPiece => {
       [BlackQueen]: "Q",
       [BlackKing]: "K",
     } satisfies Record<Piece, WasmPiece>
-  )[wasmPiece];
-};
-
-const convertWasmPieceToPiece = (wasmPiece: WasmPiece): Piece => {
-  return (
-    {
-      P: WhitePawn,
-      N: WhiteKnight,
-      B: WhiteBishop,
-      R: WhiteRook,
-      Q: WhiteQueen,
-      K: WhiteKing,
-    } satisfies Record<WasmPiece, Piece>
   )[wasmPiece];
 };

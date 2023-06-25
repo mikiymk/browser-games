@@ -1,4 +1,4 @@
-import { Move, Empty, EnPassant, Promotion, BlackPawn, WhitePawn, Black } from "@/chess/js/types";
+import { Empty, BlackPawn, WhitePawn, Black } from "@/chess/js/types";
 import { get_next_board, get_next_castling, get_next_en_passant } from "@/chess/wasm/pkg/chess_wasm";
 
 import { boardToFen, markToFen } from "./fen";
@@ -19,6 +19,7 @@ import {
   convertBoardToWasmBoard,
   convertCastlingToWasmCastling,
   convertMoveToWasmMove,
+  convertPositionToIndex,
   convertWasmBoardToBoard,
   convertWasmCastlingToCastling,
   convertWasmEnPassantToEnPassant,
@@ -55,15 +56,21 @@ export const getNextState = (
 };
 
 export const getNextFiftyMove = (fiftyMove: number, board: BoardData, move: MoveTypes): number => {
-  return move.type === EnPassant ||
-    move.type === Promotion ||
-    (move.type === Move &&
-      (board[move.to] !== Empty || board[move.from] === BlackPawn || board[move.from] === WhitePawn))
+  return move[0] === "e" ||
+    move[0] === "p" ||
+    (move[0] === "m" &&
+      (board[convertPositionToIndex(move[2])] !== Empty ||
+        board[convertPositionToIndex(move[1])] === BlackPawn ||
+        board[convertPositionToIndex(move[1])] === WhitePawn))
     ? 0
     : fiftyMove + 1;
 };
 
-export const getNextThreefoldMap = (threefoldMap: Map<string, number>, board: BoardData, mark: Mark): Map<string, number> => {
+export const getNextThreefoldMap = (
+  threefoldMap: Map<string, number>,
+  board: BoardData,
+  mark: Mark,
+): Map<string, number> => {
   const newMap = new Map(threefoldMap);
 
   const boardString = `${boardToFen(board)} ${markToFen(mark)}`;

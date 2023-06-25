@@ -11,7 +11,7 @@ describe("fifty moves", () => {
     const board = generateBoard({
       52: WhitePawn,
     });
-    const move = generateMoveMove(52, 44);
+    const move = generateMoveMove("e2", "e3");
 
     const result = getNextFiftyMove(1, board, move);
     const expected = 0;
@@ -24,7 +24,7 @@ describe("fifty moves", () => {
       29: BlackKnight,
       50: WhiteBishop,
     });
-    const move = generateMoveMove(50, 29);
+    const move = generateMoveMove("c2", "f5");
 
     const result = getNextFiftyMove(1, board, move);
     const expected = 0;
@@ -36,7 +36,7 @@ describe("fifty moves", () => {
     const board = generateBoard({
       50: WhiteBishop,
     });
-    const move = generateMoveMove(50, 29);
+    const move = generateMoveMove("c2", "f5");
 
     const result = getNextFiftyMove(1, board, move);
     const expected = 2;

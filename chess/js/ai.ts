@@ -2,13 +2,16 @@ import { get_ai_ply, get_selected_piece_moves } from "@/chess/wasm/pkg/chess_was
 
 import { generateMovePromotion } from "./game/generate-move";
 import { getMark } from "./game/mark";
-import { Castling, Promotion, Reset } from "./types";
+import { Reset } from "./types";
 import {
   convertMarkToWasmMark,
   convertBoardToWasmBoard,
   convertEnPassantToWasmEnPassant,
   convertCastlingToWasmCastling,
   convertWasmMoveToMove,
+  convertPositionToIndex,
+  convertIndexToPosition,
+  convertPieceToWasmPiece,
 } from "./wasm-convert";
 
 import type { GameState, Index, InputType, Mark, MoveTypes, Player, PromotionPieces, Receiver, Sender } from "./types";
@@ -39,7 +42,7 @@ export const createHumanPlayer = (
       for (;;) {
         const from = await input();
         if (from === Reset) {
-          return { type: Reset };
+          return ["reset"];
         }
 
         if (getMark(board[from]) !== mark) {
@@ -64,20 +67,24 @@ export const createHumanPlayer = (
           continue;
         }
 
-        setMovable(movable.map((move) => (move.type === Castling ? move.rook : move.to)));
+        setMovable(movable.map((move) => convertPositionToIndex(move[2])));
 
         const to = await input();
         setMovable([]);
         if (to === Reset) {
-          return { type: Reset };
+          return ["reset"];
         }
 
-        const toMove = movable.find((move) => (move.type === Castling ? move.rook : move.to) === to);
+        const toMove = movable.find((move) => convertPositionToIndex(move[2]) === to);
         if (toMove !== undefined) {
-          if (toMove.type === Promotion) {
+          if (toMove[0] === "p") {
             openPromotionMark(mark);
             const piece = await promotionInput();
-            return generateMovePromotion(from, to, piece);
+            return generateMovePromotion(
+              convertIndexToPosition(from),
+              convertIndexToPosition(to),
+              convertPieceToWasmPiece(piece),
+            );
           }
           return toMove;
         }

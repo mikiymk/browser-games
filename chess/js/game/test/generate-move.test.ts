@@ -1,33 +1,31 @@
 import { test, expect } from "vitest";
 
-import { Castling, EnPassant, Move, Promotion, WhitePawn } from "@/chess/js/types";
-
 import { generateMoveCastling, generateMoveEnPassant, generateMoveMove, generateMovePromotion } from "../generate-move";
 
 test("generate move move", () => {
-  const result = generateMoveMove(1, 5);
-  const expected = { type: Move, from: 1, to: 5 };
+  const result = generateMoveMove("a1", "b2");
+  const expected = ["m", "a1", "b2"];
 
   expect(result).toStrictEqual(expected);
 });
 
 test("generate move castling", () => {
-  const result = generateMoveCastling(7);
-  const expected = { type: Castling, rook: 7 };
+  const result = generateMoveCastling("e8", "h8");
+  const expected = ["c", "e8", "h8"];
 
   expect(result).toStrictEqual(expected);
 });
 
 test("generate move en passant", () => {
-  const result = generateMoveEnPassant(1, 5, 3);
-  const expected = { type: EnPassant, from: 1, to: 5, capture: 3 };
+  const result = generateMoveEnPassant("f5", "g6", "g5");
+  const expected = ["e", "f5", "g6", "g5"];
 
   expect(result).toStrictEqual(expected);
 });
 
 test("generate move promotion", () => {
-  const result = generateMovePromotion(1, 5, WhitePawn);
-  const expected = { type: Promotion, from: 1, to: 5, piece: WhitePawn };
+  const result = generateMovePromotion("c7", "c8", "N");
+  const expected = ["p", "c7", "c8", "N"];
 
   expect(result).toStrictEqual(expected);
 });
