@@ -162,11 +162,10 @@ mod tests {
             (1, 6) => (Black, Pawn),
             (6, 0) => (Black, Pawn),
         };
-        let en_passant = EnPassant::new();
 
         let ply = Ply::new_move(Position::new(1, 6), Position::new(3, 6));
 
-        let en_passant = en_passant.next_turn_available(&board, &ply);
+        let en_passant = EnPassant::next_turn_available(&board, &ply);
         let board = board.apply_ply(&ply);
 
         let iter_black = get_all_board_ply(&Mark::Black, &board, &en_passant);

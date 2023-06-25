@@ -113,7 +113,7 @@ impl<'a> Game<'a> {
     }
 
     fn update_state(&mut self, ply: &Ply) {
-        self.en_passant = self.en_passant.next_turn_available(&self.board, ply);
+        self.en_passant = EnPassant::next_turn_available(&self.board, ply);
         self.mark = self.mark.invert();
         self.castling = self.castling.apply_ply(ply);
         self.message = match self.mark {

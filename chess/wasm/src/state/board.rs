@@ -144,6 +144,10 @@ impl Board {
             .enumerate()
             .map(|(i, s)| (Position::new_from_position(i), *s))
     }
+
+    pub fn as_vec_u8(&self) -> Vec<u8> {
+        self.squares.iter().map(BoardSquare::as_u8).collect()
+    }
 }
 
 impl Display for Board {

@@ -18,6 +18,10 @@ impl EnPassant {
         }
     }
 
+    pub fn as_option(&self) -> Option<u8> {
+        self.0.map(|pos| pos.index() as u8)
+    }
+
     pub fn is_there(&self, position: &Position) -> bool {
         match self.0 {
             Some(en_passant_position) => *position == en_passant_position,
@@ -25,7 +29,7 @@ impl EnPassant {
         }
     }
 
-    pub fn next_turn_available(&self, board: &Board, ply: &Ply) -> Self {
+    pub fn next_turn_available(board: &Board, ply: &Ply) -> Self {
         match ply {
             Ply::Move { from, to } => match board.get_piece(from) {
                 BoardSquare::Piece(_, Piece::Pawn) => {
@@ -63,13 +67,12 @@ mod test {
         let to: Position = Position::new(3, 2);
         let expected = Position::new(2, 2);
 
-        let en_passant = EnPassant::new();
         let mut board = Board::new();
         board.set_piece(&from, BoardSquare::new(Mark::Black, Piece::Pawn));
 
         let ply = Ply::new_move(from, to);
 
-        let next_en_passant = en_passant.next_turn_available(&board, &ply);
+        let next_en_passant = EnPassant::next_turn_available(&board, &ply);
 
         assert_eq!(next_en_passant, EnPassant(Some(expected)))
     }
@@ -79,13 +82,12 @@ mod test {
         let from = Position::new(1, 2);
         let to: Position = Position::new(2, 2);
 
-        let en_passant = EnPassant::new();
         let mut board = Board::new();
         board.set_piece(&from, BoardSquare::new(Mark::Black, Piece::Pawn));
 
         let ply = Ply::new_move(from, to);
 
-        let next_en_passant = en_passant.next_turn_available(&board, &ply);
+        let next_en_passant = EnPassant::next_turn_available(&board, &ply);
 
         assert_eq!(next_en_passant, EnPassant(None))
     }

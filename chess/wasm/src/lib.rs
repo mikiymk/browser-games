@@ -10,10 +10,16 @@ use get_ply::{filter_checked_ply, get_castling_ply, get_ply};
 use js_function::JsFunction;
 use player::Player;
 use state::{
-    board::Board, castling::Castling, en_passant::EnPassant, mark::Mark, position::Position,
+    board::Board,
+    castling::{Castling, CastlingType},
+    en_passant::EnPassant,
+    mark::Mark,
+    position::Position,
     GameState,
 };
 use wasm_bindgen::prelude::*;
+
+use crate::state::ply::Ply;
 
 // When the `wee_alloc` feature is enabled, use `wee_alloc` as the global
 // allocator.
@@ -87,4 +93,39 @@ pub fn get_selected_piece_moves(
         .map(|ply| format!("{}", ply))
         .collect::<Vec<_>>()
         .join(":"))
+}
+
+#[wasm_bindgen]
+pub fn get_next_board(board: &[u8], ply: &str) -> Result<Vec<u8>, String> {
+    let board = Board::try_from_slice(board).ok_or("board")?;
+    let ply = Ply::try_from_str(ply).ok_or("ply")?;
+
+    let board = board.apply_ply(&ply);
+
+    Ok(board.as_vec_u8())
+}
+
+#[wasm_bindgen]
+pub fn get_next_castling(castling: &[u8], ply: &str) -> Result<Vec<u8>, String> {
+    let castling = Castling::try_from_slice(castling).ok_or("castling")?;
+    let ply = Ply::try_from_str(ply).ok_or("ply")?;
+
+    let castling = castling.apply_ply(&ply);
+
+    Ok(vec![
+        castling.get(CastlingType::BlackKing) as u8,
+        castling.get(CastlingType::BlackQueen) as u8,
+        castling.get(CastlingType::WhiteKing) as u8,
+        castling.get(CastlingType::WhiteQueen) as u8,
+    ])
+}
+
+#[wasm_bindgen]
+pub fn get_next_en_passant(board: &[u8], ply: &str) -> Result<Option<u8>, String> {
+    let board = Board::try_from_slice(board).ok_or("board")?;
+    let ply = Ply::try_from_str(ply).ok_or("ply")?;
+
+    let en_passant = EnPassant::next_turn_available(&board, &ply);
+
+    Ok(en_passant.as_option())
 }

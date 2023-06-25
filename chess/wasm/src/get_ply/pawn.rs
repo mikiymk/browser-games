@@ -268,11 +268,10 @@ mod test {
 
             (1, 4) => (Black, Pawn),
         };
-        let en_passant = EnPassant::new();
 
         let ply = Ply::new_move(Position::new(1, 4), Position::new(3, 4));
 
-        let en_passant = en_passant.next_turn_available(&board, &ply);
+        let en_passant = EnPassant::next_turn_available(&board, &ply);
         let board = board.apply_ply(&ply);
 
         let from = Position::new(3, 3);

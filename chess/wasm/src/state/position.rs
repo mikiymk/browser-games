@@ -57,6 +57,34 @@ impl Position {
         Position::try_new(x, y)
     }
 
+    pub fn try_from_str(value: &str) -> Option<Self> {
+        let mut bytes = value.bytes();
+        let y = match bytes.next()? {
+            b'a' => 0,
+            b'b' => 1,
+            b'c' => 2,
+            b'd' => 3,
+            b'e' => 4,
+            b'f' => 5,
+            b'g' => 6,
+            b'h' => 7,
+            _ => return None,
+        };
+        let x = match bytes.next()? {
+            b'1' => 7,
+            b'2' => 6,
+            b'3' => 5,
+            b'4' => 4,
+            b'5' => 3,
+            b'6' => 2,
+            b'7' => 1,
+            b'8' => 0,
+            _ => return None,
+        };
+
+        Position::try_new(x, y)
+    }
+
     const fn to_position_index(x: u8, y: u8) -> usize {
         (x as usize) * 8 + (y as usize)
     }

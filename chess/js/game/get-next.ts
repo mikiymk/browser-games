@@ -15,18 +15,47 @@ import {
   WhitePawn,
   Black,
   IsCastled,
+  MoveTypeCastling,
+  MoveTypeEnPassant,
+  MoveTypeMove,
+  MoveTypePromotion,
 } from "@/chess/js/types";
 import { invertMark } from "./mark";
 import { boardToFen, markToFen } from "./fen";
+import { get_next_board, get_next_castling, get_next_en_passant } from "@/chess/wasm/pkg/chess_wasm";
+import {
+  convertBoardToWasmBoard,
+  convertCastlingToWasmCastling,
+  convertMoveToWasmMove,
+  convertWasmBoardToBoard,
+  convertWasmCastlingToCastling,
+  convertWasmEnPassantToEnPassant,
+} from "../wasm-convert";
 
-export const getNextState = (state: GameState, move: MoveTypes): GameState => {
-  const nextBoard = getNextBoard(state.board, move);
+export const getNextState = (
+  state: GameState,
+  move: MoveTypeMove | MoveTypeCastling | MoveTypeEnPassant | MoveTypePromotion,
+): GameState => {
+  const wasmMove = convertMoveToWasmMove(move).join(" ");
+  const wasmBoard = convertBoardToWasmBoard(state.board);
+  const nextBoard = convertWasmBoardToBoard(
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-argument
+    get_next_board(wasmBoard, wasmMove),
+  );
+  const nextCastling = convertWasmCastlingToCastling(
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-argument
+    get_next_castling(convertCastlingToWasmCastling(state.castling), wasmMove),
+  );
+  const nextEnPassant = convertWasmEnPassantToEnPassant(
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-argument
+    get_next_en_passant(wasmBoard, wasmMove),
+  );
 
   return {
     board: nextBoard,
     mark: invertMark(state.mark),
-    castling: getNextCastling(state.castling, move),
-    enPassant: getNextEnPassant(state.board, move),
+    castling: nextCastling,
+    enPassant: nextEnPassant,
     fiftyMove: getNextFiftyMove(state.fiftyMove, state.board, move),
     threefold: getNextThreefoldMap(state.threefold, nextBoard, state.mark),
     moves: nextMoves(state.moves, state.mark),

@@ -73,6 +73,24 @@ impl BoardSquare {
             BoardSquare::Empty => BoardSquare::Empty,
         }
     }
+
+    pub fn as_u8(&self) -> u8 {
+        match self {
+            Self::Empty => 0,
+            Self::Piece(Mark::White, Piece::Pawn) => 1,
+            Self::Piece(Mark::White, Piece::Knight) => 2,
+            Self::Piece(Mark::White, Piece::Bishop) => 3,
+            Self::Piece(Mark::White, Piece::Rook) => 4,
+            Self::Piece(Mark::White, Piece::Queen) => 5,
+            Self::Piece(Mark::White, Piece::King) => 6,
+            Self::Piece(Mark::Black, Piece::Pawn) => 7,
+            Self::Piece(Mark::Black, Piece::Knight) => 8,
+            Self::Piece(Mark::Black, Piece::Bishop) => 9,
+            Self::Piece(Mark::Black, Piece::Rook) => 10,
+            Self::Piece(Mark::Black, Piece::Queen) => 11,
+            Self::Piece(Mark::Black, Piece::King) => 12,
+        }
+    }
 }
 
 impl Display for BoardSquare {

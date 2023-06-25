@@ -1,5 +1,5 @@
 import { Accessor, Setter } from "solid-js";
-import { Black, GameState, Players, Reset } from "./types";
+import { Black, GameState, Players, Reset, Resign } from "./types";
 import { isFinished } from "./game/finish";
 import { getNextState } from "./game/get-next";
 import { stateToFen } from "./game/fen";
@@ -21,7 +21,7 @@ export const gameLoop = async (
 
     const move = await players[state().mark].getMove(state());
 
-    if (move.type === Reset) {
+    if (move.type === Reset || move.type === Resign) {
       break;
     }
 

@@ -45,7 +45,7 @@ import {
   convertCastlingToWasmCastling,
   convertWasmMoveToMove,
   WasmMove,
-  parsePosition,
+  convertPositionToIndex,
 } from "./wasm-convert";
 
 export const createMessenger = <T>(): [Sender<T>, Receiver<T>] => {
@@ -98,7 +98,7 @@ export const createHumanPlayer = (
           continue;
         }
 
-        setMovable(movable.map((m) => parsePosition(m[2])));
+        setMovable(movable.map((m) => convertPositionToIndex(m[2])));
 
         const to = await input();
         setMovable([]);
@@ -106,7 +106,7 @@ export const createHumanPlayer = (
           return { type: Reset };
         }
 
-        const toMove = movable.find((move) => parsePosition(move[2]) === to);
+        const toMove = movable.find((move) => convertPositionToIndex(move[2]) === to);
         if (toMove !== undefined) {
           if (toMove[0] === "p") {
             openPromotionMark(mark);

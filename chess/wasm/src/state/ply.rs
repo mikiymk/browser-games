@@ -41,6 +41,48 @@ impl Ply {
         Ply::Promotion { from, to, piece }
     }
 
+    pub fn try_from_str(value: &str) -> Option<Self> {
+        let mut iter = value.split_ascii_whitespace();
+
+        match iter.next() {
+            Some("m") => {
+                let from = Position::try_from_str(iter.next()?)?;
+                let to = Position::try_from_str(iter.next()?)?;
+
+                Some(Self::new_move(from, to))
+            }
+            Some("c") => {
+                let from = Position::try_from_str(iter.next()?)?;
+                let to = Position::try_from_str(iter.next()?)?;
+
+                let castling_type = match (from, to) {
+                    (Position::W_K, Position::W_RK) => CastlingType::WhiteKing,
+                    (Position::W_K, Position::W_RQ) => CastlingType::WhiteQueen,
+                    (Position::B_K, Position::B_RK) => CastlingType::BlackKing,
+                    (Position::B_K, Position::B_RQ) => CastlingType::BlackQueen,
+                    _ => return None,
+                };
+
+                Some(Self::new_castling(castling_type))
+            }
+            Some("e") => {
+                let from = Position::try_from_str(iter.next()?)?;
+                let to = Position::try_from_str(iter.next()?)?;
+                let capture = Position::try_from_str(iter.next()?)?;
+
+                Some(Self::new_en_passant(from, to, capture))
+            }
+            Some("p") => {
+                let from = Position::try_from_str(iter.next()?)?;
+                let to = Position::try_from_str(iter.next()?)?;
+                let piece = Piece::try_from_str(iter.next()?)?;
+
+                Some(Self::new_promotion(from, to, piece))
+            }
+            _ => None,
+        }
+    }
+
     pub fn move_to_promotion(&self, piece: &Piece) -> Ply {
         match self {
             Ply::Move { from, to } => Ply::new_promotion(*from, *to, *piece),
