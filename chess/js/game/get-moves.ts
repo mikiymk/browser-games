@@ -1,7 +1,4 @@
 import {
-  BoardData,
-  Mark,
-  MoveTypeGenerator,
   WhitePawn,
   BlackPawn,
   WhiteKnight,
@@ -15,23 +12,31 @@ import {
   WhiteKing,
   BlackKing,
   Empty,
-  IsCastled,
-  Piece,
   Move,
-  Index,
   Black,
   White,
+} from "@/chess/js/types";
+
+import { canAttackThereByMove, isCheck } from "./finish";
+import { generateMoveCastling, generateMoveMove, generateMoveEnPassant, generateMovePromotion } from "./generate-move";
+import { getNextBoard } from "./get-next";
+import { getMark, isOtherMark, isSameMark } from "./mark";
+
+import type {
+  BoardData,
+  Mark,
+  MoveTypeGenerator,
+  IsCastled,
+  Piece,
+  Index,
   MoveTypeEnPassant,
   MoveTypeMove,
   MoveTypePromotion,
   MoveTypeCastling,
   PromotionPieces,
   MoveTypes,
+  EnPassantTarget,
 } from "@/chess/js/types";
-import { canAttackThereByMove, isCheck } from "./finish";
-import { generateMoveCastling, generateMoveMove, generateMoveEnPassant, generateMovePromotion } from "./generate-move";
-import { getMark, isOtherMark, isSameMark } from "./mark";
-import { getNextBoard } from "./get-next";
 
 const knightMoves: [number, number][] = [
   [1, 2],
@@ -83,7 +88,7 @@ const kingMoves: [number, number][] = [
 export const getPiecesLegalMoves = function* (
   board: BoardData,
   mark: Mark,
-  canEnPassant: false | Index,
+  canEnPassant: EnPassantTarget,
 ): MoveTypeGenerator {
   for (const [index, square] of board.entries()) {
     if (getMark(square) === mark) {
@@ -92,7 +97,11 @@ export const getPiecesLegalMoves = function* (
   }
 };
 
-export const getPiecesMoves = function* (board: BoardData, mark: Mark, canEnPassant: false | Index): MoveTypeGenerator {
+export const getPiecesMoves = function* (
+  board: BoardData,
+  mark: Mark,
+  canEnPassant: EnPassantTarget,
+): MoveTypeGenerator {
   for (const [index, square] of board.entries()) {
     if (getMark(square) === mark) {
       yield* getMoves(board, canEnPassant, index as Index);
@@ -100,14 +109,14 @@ export const getPiecesMoves = function* (board: BoardData, mark: Mark, canEnPass
   }
 };
 
-export const getLegalMoves = function* (board: BoardData, canEnPassant: false | Index, from: Index): MoveTypeGenerator {
+const getLegalMoves = function* (board: BoardData, canEnPassant: EnPassantTarget, from: Index): MoveTypeGenerator {
   const mark = getMark(board[from]);
   if (mark === Empty) return;
 
   yield* filterLegalMove(getMoves(board, canEnPassant, from), board, mark);
 };
 
-export const getMoves = function* (board: BoardData, canEnPassant: false | Index, from: Index): MoveTypeGenerator {
+const getMoves = function* (board: BoardData, canEnPassant: EnPassantTarget, from: Index): MoveTypeGenerator {
   const fromPiece = board[from];
 
   switch (fromPiece) {
@@ -250,7 +259,7 @@ const validateMove = (from: Index, dx: number, dy: number): Index | undefined =>
   return to as Index;
 };
 
-export const filterLegalMove = function* (moves: MoveTypeGenerator, board: BoardData, mark: Mark): MoveTypeGenerator {
+const filterLegalMove = function* (moves: MoveTypeGenerator, board: BoardData, mark: Mark): MoveTypeGenerator {
   for (const move of moves) {
     if (isLegalMove(board, move, mark)) {
       yield move;
@@ -269,7 +278,7 @@ const getPawnMove = function* (
   board: BoardData,
   from: Index,
   direction: 1 | -1,
-  canEnPassant: false | Index,
+  canEnPassant: EnPassantTarget,
 ): MoveTypeGenerator {
   const moves: (MoveTypeMove | MoveTypeEnPassant | MoveTypePromotion)[] = [];
 

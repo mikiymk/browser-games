@@ -1,5 +1,5 @@
 import { test, expect, describe } from "vitest";
-import { getMark, invertMark, isOtherMark, isSameMark } from "../mark";
+
 import {
   Black,
   BlackBishop,
@@ -9,9 +9,6 @@ import {
   BlackQueen,
   BlackRook,
   Empty,
-  Index,
-  Mark,
-  Piece,
   White,
   WhiteBishop,
   WhiteKing,
@@ -20,6 +17,10 @@ import {
   WhiteQueen,
   WhiteRook,
 } from "@/chess/js/types";
+
+import type { Index, Mark, Piece } from "@/chess/js/types";
+
+import { getMark, invertMark, isOtherMark, isSameMark } from "../mark";
 import { generateBoard } from "../state";
 
 describe("invert mark", () => {

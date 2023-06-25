@@ -1,6 +1,8 @@
-import { Setter } from "solid-js";
-import { PlayerType, PlayerTypeAI, PlayerTypeHuman } from "@/common/types";
 import { createReference } from "@/chess/js/reference";
+import { PlayerTypeAI, PlayerTypeHuman } from "@/common/types";
+
+import type { PlayerType } from "@/common/types";
+import type { Setter } from "solid-js";
 
 type ControllerProperties = {
   statusMessage: string;

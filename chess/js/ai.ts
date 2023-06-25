@@ -1,4 +1,10 @@
-import { Setter } from "solid-js";
+import { get_ai_ply, get_selected_piece_moves } from "@/chess/wasm/pkg/chess_wasm";
+
+import { isFinished } from "./game/finish";
+import { generateMovePromotion } from "./game/generate-move";
+import { getPiecesLegalMoves } from "./game/get-moves";
+import { getNextState } from "./game/get-next";
+import { getMark } from "./game/mark";
 import {
   Black,
   BlackBishop,
@@ -9,18 +15,8 @@ import {
   BlackRook,
   Castling,
   Empty,
-  GameState,
-  Index,
-  InputType,
-  Mark,
-  MoveTypes,
-  Piece,
-  Player,
   Promotion,
-  PromotionPieces,
-  Receiver,
   Reset,
-  Sender,
   WhiteBishop,
   WhiteKing,
   WhiteKnight,
@@ -28,12 +24,6 @@ import {
   WhiteQueen,
   WhiteRook,
 } from "./types";
-import { getPiecesLegalMoves } from "./game/get-moves";
-import { generateMovePromotion } from "./game/generate-move";
-import { getMark } from "./game/mark";
-import { isFinished } from "./game/finish";
-import { getNextState } from "./game/get-next";
-import { get_ai_ply, get_selected_piece_moves } from "@/chess/wasm/pkg/chess_wasm";
 import {
   convertMarkToWasmMark,
   convertBoardToWasmBoard,
@@ -41,6 +31,20 @@ import {
   convertCastlingToWasmCastling,
   convertWasmMoveToMove,
 } from "./wasm-convert";
+
+import type {
+  GameState,
+  Index,
+  InputType,
+  Mark,
+  MoveTypes,
+  Piece,
+  Player,
+  PromotionPieces,
+  Receiver,
+  Sender,
+} from "./types";
+import type { Setter } from "solid-js";
 
 export const createMessenger = <T>(): [Sender<T>, Receiver<T>] => {
   let resolveFunction = (value: T): void => void value;

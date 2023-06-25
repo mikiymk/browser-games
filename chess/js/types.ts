@@ -1,3 +1,5 @@
+import type { Awaitable, Tuple, TupleIndex } from "@/common/type-util";
+
 // マスの状況
 export const Empty = 100;
 export const BlackPawn = 111;
@@ -24,11 +26,6 @@ export const EnPassant = 134;
 export const Promotion = 135;
 export const Resign = 136;
 
-export const OddBoard = 201;
-export const WinnerBlack = 202;
-export const WinnerWhite = 203;
-export const Draw = 204;
-
 // 盤のサイズ
 export const BoardLength = 64;
 
@@ -53,16 +50,6 @@ export type Castling = typeof Castling;
 export type EnPassant = typeof EnPassant;
 export type Promotion = typeof Promotion;
 export type Resign = typeof Resign;
-export type GameEnd = typeof OddBoard | typeof WinnerWhite | typeof WinnerBlack | typeof Draw;
-
-export type Tuple<T, N, List extends T[] = []> = List["length"] extends N ? List : Tuple<T, N, [T, ...List]>;
-export type TupleIndex<T extends unknown[]> = {
-  [k in keyof T]: k extends `${number}` ? k : never;
-}[keyof T] extends infer R
-  ? R extends `${infer N extends number}`
-    ? N
-    : never
-  : never;
 
 export type BoardData = Tuple<Piece | Empty, 64>;
 export type Index = TupleIndex<BoardData>;
@@ -88,10 +75,8 @@ export type GameState = {
 // 2 | 48 49 50 51 52 53 54 55
 // 1 | 56 57 58 59 60 61 62 63
 
-export type Awaitable<T> = T | Promise<T>;
-
-export type MoveTypeReset = { type: Reset };
-export type MoveTypeResign = { type: Resign };
+type MoveTypeReset = { type: Reset };
+type MoveTypeResign = { type: Resign };
 export type MoveTypeMove = { type: Move; from: Index; to: Index };
 export type MoveTypeCastling = { type: Castling; rook: 0 | 7 | 56 | 63 };
 export type MoveTypeEnPassant = { type: EnPassant; from: Index; to: Index; capture: Index };
@@ -116,8 +101,8 @@ export type IsCastled = [
 export type EnPassantTarget = Index | false;
 
 export type InputType = Index | Reset;
-export type BlackPromotionTarget = typeof BlackKnight | typeof BlackBishop | typeof BlackRook | typeof BlackQueen;
-export type WhitePromotionTarget = typeof WhiteKnight | typeof WhiteBishop | typeof WhiteRook | typeof WhiteQueen;
+type BlackPromotionTarget = typeof BlackKnight | typeof BlackBishop | typeof BlackRook | typeof BlackQueen;
+type WhitePromotionTarget = typeof WhiteKnight | typeof WhiteBishop | typeof WhiteRook | typeof WhiteQueen;
 export type PromotionPieces = BlackPromotionTarget | WhitePromotionTarget;
 
 export type Sender<T> = (value: T) => void;

@@ -36,6 +36,41 @@
         "destructuredArrayIgnorePattern": "^_"
       }
     ],
-    "@typescript-eslint/consistent-type-definitions": ["warn", "type"]
-  }
+    "@typescript-eslint/consistent-type-definitions": ["warn", "type"],
+    "@typescript-eslint/consistent-type-imports": "error",
+
+    "import/no-unused-modules": [
+      "warn",
+      {
+        "missingExports": true,
+        "unusedExports": true
+      }
+    ],
+    "import/order": [
+      "error",
+      {
+        "groups": ["external", "internal", "sibling", "type"],
+        "newlines-between": "always",
+        "alphabetize": {
+          "order": "asc",
+          "caseInsensitive": true
+        }
+      }
+    ]
+  },
+
+  "overrides": [
+    {
+      "files": "**/*.test.ts",
+      "rules": {
+        "import/no-unused-modules": [
+          "warn",
+          {
+            "missingExports": false,
+            "unusedExports": true
+          }
+        ]
+      }
+    }
+  ]
 }

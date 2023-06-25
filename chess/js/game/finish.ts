@@ -5,15 +5,9 @@ import {
   BlackPawn,
   BlackQueen,
   BlackRook,
-  BoardData,
   Empty,
   EnPassant,
-  GameState,
-  Index,
-  Mark,
   Move,
-  MoveTypes,
-  Piece,
   Promotion,
   White,
   WhiteBishop,
@@ -23,11 +17,15 @@ import {
   WhiteQueen,
   WhiteRook,
 } from "@/chess/js/types";
-import { getPiecesLegalMoves, getPiecesMoves } from "./get-moves";
-import { invertMark } from "./mark";
-import { getNextBoard } from "./get-next";
-import { Setter } from "solid-js";
 import { is_finished } from "@/chess/wasm/pkg/chess_wasm";
+
+import { getPiecesLegalMoves, getPiecesMoves } from "./get-moves";
+import { getNextBoard } from "./get-next";
+import { invertMark } from "./mark";
+
+import type { BoardData, EnPassantTarget, GameState, Index, Mark, MoveTypes, Piece } from "@/chess/js/types";
+import type { Setter } from "solid-js";
+
 import { convertBoardToWasmBoard, convertEnPassantToWasmEnPassant, convertMarkToWasmMark } from "../wasm-convert";
 
 export const isFinished = (state: GameState, setMessage?: Setter<string>): boolean => {
@@ -68,10 +66,6 @@ export const isFinished = (state: GameState, setMessage?: Setter<string>): boole
   return false;
 };
 
-export const isNoKing = (board: BoardData): boolean => {
-  return !(board.includes(WhiteKing) && board.includes(BlackKing));
-};
-
 /**
  * mark のキングがチェックされているか調べる
  * @param board
@@ -87,7 +81,7 @@ export const isCheck = (board: BoardData, mark: Mark): boolean => {
   return canAttackThereByBoard(board, invertMark(mark), false, kingIndex);
 };
 
-export const isCheckmate = (board: BoardData, mark: Mark, canEnPassant: false | Index): Mark | false => {
+export const isCheckmate = (board: BoardData, mark: Mark, canEnPassant: EnPassantTarget): Mark | false => {
   // チェックメイトの場合
   // キングの位置を探す
   // キングとその周りの位置が攻撃されているか調べる
@@ -109,7 +103,7 @@ export const isCheckmate = (board: BoardData, mark: Mark, canEnPassant: false | 
   return false;
 };
 
-export const isStalemate = (board: BoardData, mark: Mark, canEnPassant: false | Index): boolean => {
+export const isStalemate = (board: BoardData, mark: Mark, canEnPassant: EnPassantTarget): boolean => {
   // ステイルメイトの場合
 
   // キャスリング以外の動きが１つ以上あるか調べる
@@ -217,12 +211,7 @@ export const canAttackThereByMove = (moves: MoveTypes[], target: Index) => {
   return moves.some((move) => isMoveAttackThere(move, target));
 };
 
-export const canAttackThereByBoard = (
-  board: BoardData,
-  mark: Mark,
-  canEnPassant: false | Index,
-  target: Index,
-): boolean => {
+const canAttackThereByBoard = (board: BoardData, mark: Mark, canEnPassant: EnPassantTarget, target: Index): boolean => {
   for (const move of getPiecesMoves(board, mark, canEnPassant)) {
     if (isMoveAttackThere(move, target)) {
       return true;

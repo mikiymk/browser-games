@@ -1,5 +1,7 @@
-import { Accessor, Setter } from "solid-js";
-import { Players, Mark, Empty, BoardData, Reset, OMark, XMark, Index, winnerLines } from "./types";
+import { Empty, Reset, OMark, XMark, winnerLines } from "./types";
+
+import type { Players, Mark, BoardData, Index } from "./types";
+import type { Accessor, Setter } from "solid-js";
 
 export const gameLoop = async (
   players: Players,

@@ -1,9 +1,11 @@
-import { Accessor, Setter } from "solid-js";
-import { Black, GameState, Players, Reset, Resign } from "./types";
+import { stateToFen } from "./game/fen";
 import { isFinished } from "./game/finish";
 import { getNextState } from "./game/get-next";
-import { stateToFen } from "./game/fen";
 import { generateState } from "./game/state";
+import { Black, Reset, Resign } from "./types";
+
+import type { GameState, Players } from "./types";
+import type { Accessor, Setter } from "solid-js";
 
 export const gameLoop = async (
   players: Players,

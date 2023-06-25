@@ -1,24 +1,20 @@
+import type { BoardData, Mark, IsCastled, Index, Piece, GameState, EnPassantTarget } from "../types";
+
 import {
-  BoardData,
   Empty,
-  Mark,
   White,
-  IsCastled,
-  Index,
   BlackBishop,
   BlackKing,
   BlackKnight,
   BlackPawn,
   BlackQueen,
   BlackRook,
-  Piece,
   WhiteBishop,
   WhiteKing,
   WhiteKnight,
   WhitePawn,
   WhiteQueen,
   WhiteRook,
-  GameState,
 } from "../types";
 
 const charsMap: Record<Piece | Empty, string> = {
@@ -76,17 +72,17 @@ export const markToFen = (mark: Mark): string => {
   return mark === White ? "w" : "b";
 };
 
-export const castlingToFen = (castling: IsCastled): string => {
+const castlingToFen = (castling: IsCastled): string => {
   return (
     (castling[3] ? "K" : "") + (castling[2] ? "Q" : "") + (castling[1] ? "k" : "") + (castling[0] ? "q" : "") || "-"
   );
 };
 
-export const enPassantToFen = (enPassant: false | Index): string => {
+const enPassantToFen = (enPassant: EnPassantTarget): string => {
   return enPassant === false ? "-" : indexToAlgebraic(enPassant);
 };
 
-export const indexToAlgebraic = (index: Index): string => {
+const indexToAlgebraic = (index: Index): string => {
   const rank = Math.floor(index / 8);
   const file = index % 8;
 

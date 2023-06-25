@@ -1,8 +1,11 @@
 import { For, Show, createEffect } from "solid-js";
-import { Mark, PromotionPieces, Sender } from "@/chess/js/types";
+
 import { promotionTargetPieces } from "@/chess/js/game/get-moves";
-import { PieceImage } from "./piece";
 import { createReference } from "@/chess/js/reference";
+
+import { PieceImage } from "./piece";
+
+import type { Mark, PromotionPieces, Sender } from "@/chess/js/types";
 
 type PromotionPopupProperties = {
   mark: Mark | undefined;

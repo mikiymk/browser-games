@@ -1,11 +1,17 @@
 import { createSignal } from "solid-js";
-import { Board } from "./board";
-import { Black, Index, InputType, Mark, PromotionPieces, Reset, White } from "@/chess/js/types";
-import { Controller } from "./controller";
-import { PlayerType, PlayerTypeAI, PlayerTypeHuman, selectPlayer } from "@/common/types";
-import { gameLoop } from "@/chess/js/game";
+
 import { aiPlayer, createHumanPlayer, createMessenger } from "@/chess/js/ai";
+import { gameLoop } from "@/chess/js/game";
+import { Black, Reset, White } from "@/chess/js/types";
+import { PlayerTypeAI, PlayerTypeHuman, selectPlayer } from "@/common/types";
+
+import { Board } from "./board";
+import { Controller } from "./controller";
 import { PromotionPopup } from "./promotion-popup";
+
+import type { Index, InputType, Mark, PromotionPieces } from "@/chess/js/types";
+import type { PlayerType } from "@/common/types";
+
 import { generateState } from "../game/state";
 
 export const App = () => {

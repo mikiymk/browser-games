@@ -1,8 +1,6 @@
 import {
-  Mark,
   Black,
   White,
-  Piece,
   Empty,
   WhitePawn,
   WhiteKnight,
@@ -16,9 +14,9 @@ import {
   BlackRook,
   BlackQueen,
   BlackKing,
-  BoardData,
-  Index,
 } from "@/chess/js/types";
+
+import type { Mark, Piece, BoardData, Index } from "@/chess/js/types";
 
 export const invertMark = (mark: Mark) => {
   return mark === Black ? White : Black;

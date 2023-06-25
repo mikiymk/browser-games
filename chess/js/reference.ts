@@ -1,4 +1,4 @@
-export type Reference<T> = {
+type Reference<T> = {
   value: T | undefined;
   setValue: (value: T) => void;
 };

@@ -1,4 +1,5 @@
 import { test, expect, describe } from "vitest";
+
 import {
   Black,
   BlackBishop,
@@ -7,9 +8,6 @@ import {
   BlackPawn,
   BlackQueen,
   BlackRook,
-  BoardData,
-  Index,
-  Mark,
   White,
   WhiteBishop,
   WhiteKing,
@@ -18,8 +16,11 @@ import {
   WhiteQueen,
   WhiteRook,
 } from "@/chess/js/types";
-import { generateBoard } from "../state";
+
+import type { BoardData, EnPassantTarget, Mark } from "@/chess/js/types";
+
 import { existsCheckmatePieces, isCheckmate, isStalemate } from "../finish";
+import { generateBoard } from "../state";
 
 describe("checkmate", () => {
   const checkmateCases: [BoardData][] = [
@@ -120,7 +121,7 @@ describe("checkmate", () => {
     expect(result).toStrictEqual(expected);
   });
 
-  const enPassantCases: [canEnPassant: false | Index, isCheckmate: false | Mark][] = [
+  const enPassantCases: [canEnPassant: EnPassantTarget, isCheckmate: false | Mark][] = [
     [false, Black],
     [27, false],
   ];

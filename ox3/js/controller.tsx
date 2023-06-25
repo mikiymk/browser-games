@@ -1,5 +1,7 @@
-import { Setter } from "solid-js";
-import { PlayerType, PlayerTypeHuman, PlayerTypeAI } from "@/common/types";
+import { PlayerTypeHuman, PlayerTypeAI } from "@/common/types";
+
+import type { PlayerType } from "@/common/types";
+import type { Setter } from "solid-js";
 
 type ControllerProperties = {
   statusMessage: string;

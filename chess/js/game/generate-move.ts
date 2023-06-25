@@ -1,14 +1,12 @@
-import {
-  Castling,
-  EnPassant,
+import { Castling, EnPassant, Move, Promotion } from "@/chess/js/types";
+
+import type {
   Index,
-  Move,
   MoveTypeCastling,
   MoveTypeEnPassant,
   MoveTypeMove,
   MoveTypePromotion,
   Piece,
-  Promotion,
 } from "@/chess/js/types";
 
 export const generateMoveMove = (from: Index, to: Index): MoveTypeMove => {

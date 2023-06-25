@@ -1,13 +1,14 @@
+/* eslint-disable import/no-unused-modules */
 /* eslint-disable unicorn/prefer-module */
 
-import { resolve } from "node:path";
-
 // eslint-disable-next-line import/no-unresolved
-import { defineConfig } from "vitest/config";
 
 import solidPlugin from "vite-plugin-solid";
-import wasmPlugin from "vite-plugin-wasm";
 import topLevelAwaitPlugin from "vite-plugin-top-level-await";
+import wasmPlugin from "vite-plugin-wasm";
+import { defineConfig } from "vitest/config";
+
+import { resolve } from "node:path";
 
 export default defineConfig({
   base: "/js-html-game/",

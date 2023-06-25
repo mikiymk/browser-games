@@ -5,9 +5,7 @@ import {
   generateMovePromotion,
 } from "./game/generate-move";
 import {
-  Mark,
   White,
-  BoardData,
   Empty,
   WhitePawn,
   WhiteKnight,
@@ -21,6 +19,14 @@ import {
   BlackRook,
   BlackQueen,
   BlackKing,
+  Move,
+  Castling,
+  EnPassant,
+} from "./types";
+
+import type {
+  Mark,
+  BoardData,
   IsCastled,
   MoveTypeMove,
   MoveTypeCastling,
@@ -28,16 +34,14 @@ import {
   MoveTypePromotion,
   Piece,
   Index,
-  Move,
-  Castling,
-  EnPassant,
+  EnPassantTarget,
 } from "./types";
 
-export type PositionFile = "a" | "b" | "c" | "d" | "e" | "f" | "g" | "h";
-export type PositionRank = "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8";
-export type PositionString = `${PositionFile}${PositionRank}`;
-export type WasmPiece = "P" | "N" | "B" | "R" | "Q" | "K";
-export type WasmMove =
+type PositionFile = "a" | "b" | "c" | "d" | "e" | "f" | "g" | "h";
+type PositionRank = "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8";
+type PositionString = `${PositionFile}${PositionRank}`;
+type WasmPiece = "P" | "N" | "B" | "R" | "Q" | "K";
+type WasmMove =
   | ["m", PositionString, PositionString]
   | ["c", PositionString, PositionString]
   | ["e", PositionString, PositionString, PositionString]
@@ -95,11 +99,11 @@ export const convertWasmBoardToBoard = (board: Uint8Array | undefined): BoardDat
   ) as BoardData;
 };
 
-export const convertEnPassantToWasmEnPassant = (enPassant: Index | false): number | undefined => {
+export const convertEnPassantToWasmEnPassant = (enPassant: EnPassantTarget): number | undefined => {
   return enPassant === false ? undefined : enPassant;
 };
 
-export const convertWasmEnPassantToEnPassant = (enPassant: number | undefined): Index | false => {
+export const convertWasmEnPassantToEnPassant = (enPassant: number | undefined): EnPassantTarget => {
   return enPassant === undefined ? false : (enPassant as Index);
 };
 
@@ -145,14 +149,14 @@ export const convertMoveToWasmMove = (
   }
 };
 
-export const convertIndexToPosition = (index: Index): PositionString => {
+const convertIndexToPosition = (index: Index): PositionString => {
   const rank = Math.floor(index / 8);
   const file = index % 8;
 
   return ((["a", "b", "c", "d", "e", "f", "g", "h"][file] ?? "") + String(8 - rank)) as PositionString;
 };
 
-export const convertPositionToIndex = (posString: PositionString) => {
+const convertPositionToIndex = (posString: PositionString) => {
   const [file, rank] = [...posString] as [PositionFile, PositionRank];
   const fileValue = { a: 0, b: 1, c: 2, d: 3, e: 4, f: 5, g: 6, h: 7 }[file];
   const rankValue = 8 - Number.parseInt(rank);

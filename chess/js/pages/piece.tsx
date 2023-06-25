@@ -1,4 +1,6 @@
 import { Switch, Match } from "solid-js";
+
+import { getMark } from "@/chess/js/game/mark";
 import {
   Black,
   BlackBishop,
@@ -7,8 +9,6 @@ import {
   BlackPawn,
   BlackQueen,
   BlackRook,
-  Empty,
-  Piece,
   White,
   WhiteBishop,
   WhiteKing,
@@ -17,7 +17,8 @@ import {
   WhiteQueen,
   WhiteRook,
 } from "@/chess/js/types";
-import { getMark } from "@/chess/js/game/mark";
+
+import type { Empty, Piece } from "@/chess/js/types";
 
 export const PieceImage = (properties: { mark: Piece | Empty }) => {
   return (

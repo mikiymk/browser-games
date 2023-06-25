@@ -1,28 +1,34 @@
 import {
-  BoardData,
-  MoveTypes,
   Reset,
   Move,
   Empty,
   Castling,
   EnPassant,
   Promotion,
-  Index,
   Resign,
-  GameState,
-  Mark,
   BlackPawn,
   WhitePawn,
   Black,
+} from "@/chess/js/types";
+import { get_next_board, get_next_castling, get_next_en_passant } from "@/chess/wasm/pkg/chess_wasm";
+
+import { boardToFen, markToFen } from "./fen";
+import { invertMark } from "./mark";
+
+import type {
+  BoardData,
+  MoveTypes,
+  Index,
+  GameState,
+  Mark,
   IsCastled,
   MoveTypeCastling,
   MoveTypeEnPassant,
   MoveTypeMove,
   MoveTypePromotion,
+  EnPassantTarget,
 } from "@/chess/js/types";
-import { invertMark } from "./mark";
-import { boardToFen, markToFen } from "./fen";
-import { get_next_board, get_next_castling, get_next_en_passant } from "@/chess/wasm/pkg/chess_wasm";
+
 import {
   convertBoardToWasmBoard,
   convertCastlingToWasmCastling,
@@ -195,7 +201,7 @@ export const getNextCastling = (castling: IsCastled, move: MoveTypes): IsCastled
   return nextCastling;
 };
 
-export const getNextEnPassant = (board: BoardData, move: MoveTypes): false | Index => {
+export const getNextEnPassant = (board: BoardData, move: MoveTypes): EnPassantTarget => {
   // ポーンが縦に２つ進んでいる場合、アンパサン可能とする
   if (
     move.type === Move &&

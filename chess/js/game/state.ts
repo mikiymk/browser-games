@@ -5,12 +5,8 @@ import {
   BlackPawn,
   BlackQueen,
   BlackRook,
-  BoardData,
   BoardLength,
   Empty,
-  GameState,
-  Index,
-  Piece,
   White,
   WhiteBishop,
   WhiteKing,
@@ -19,6 +15,8 @@ import {
   WhiteQueen,
   WhiteRook,
 } from "@/chess/js/types";
+
+import type { BoardData, GameState, Index, Piece } from "@/chess/js/types";
 
 export const generateState = (): GameState => {
   const board = generateBoard({

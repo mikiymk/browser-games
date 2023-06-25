@@ -1,4 +1,5 @@
 import { test, expect, describe } from "vitest";
+
 import {
   Black,
   BlackBishop,
@@ -19,8 +20,9 @@ import {
   WhiteQueen,
   WhiteRook,
 } from "@/chess/js/types";
-import { generateBoard } from "../state";
+
 import { getCastling, getPiecesMoves } from "../get-moves";
+import { generateBoard } from "../state";
 
 describe("pawn", () => {
   test("white pawn", () => {

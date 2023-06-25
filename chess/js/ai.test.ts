@@ -1,9 +1,11 @@
 import { test, expect, describe } from "vitest";
+
 import { Black, BlackKing, BlackPawn, BlackQueen, White, WhiteKing, WhitePawn, WhiteQueen } from "@/chess/js/types";
-import { generateBoard, generateState } from "./game/state";
+
 import { alphaBeta, minimaxBreadthFirst } from "./ai";
-import { getNextState } from "./game/get-next";
 import { generateMoveMove } from "./game/generate-move";
+import { getNextState } from "./game/get-next";
+import { generateBoard, generateState } from "./game/state";
 
 describe("alpha-beta evaluation", () => {
   test("for white, black pawn more advantageous than black queen", () => {

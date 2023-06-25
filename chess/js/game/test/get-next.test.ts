@@ -1,4 +1,5 @@
 import { test, expect, describe } from "vitest";
+
 import {
   Black,
   BlackKing,
@@ -6,7 +7,6 @@ import {
   BlackPawn,
   BlackQueen,
   BlackRook,
-  IsCastled,
   Reset,
   White,
   WhiteBishop,
@@ -15,7 +15,9 @@ import {
   WhiteQueen,
   WhiteRook,
 } from "@/chess/js/types";
-import { generateBoard } from "../state";
+
+import type { IsCastled } from "@/chess/js/types";
+
 import { generateMoveCastling, generateMoveEnPassant, generateMoveMove, generateMovePromotion } from "../generate-move";
 import {
   getNextBoard,
@@ -25,6 +27,7 @@ import {
   nextMoves,
   getNextThreefoldMap,
 } from "../get-next";
+import { generateBoard } from "../state";
 
 test("reset, no move", () => {
   const board = generateBoard({
