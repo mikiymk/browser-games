@@ -145,6 +145,16 @@ impl Board {
             .map(|(i, s)| (Position::new_from_position(i), *s))
     }
 
+    pub fn get_king_position(&self, mark: &Mark) -> Option<Position> {
+        for (position, square) in self.square_iter() {
+            if square == BoardSquare::new(*mark, Piece::King) {
+                return Some(position);
+            }
+        }
+
+        None
+    }
+
     pub fn as_vec_u8(&self) -> Vec<u8> {
         self.squares.iter().map(BoardSquare::as_u8).collect()
     }

@@ -5,9 +5,16 @@ mod message_const;
 mod player;
 mod state;
 
-use game::Game;
-use get_ply::{filter_checked_ply, get_castling_ply, get_ply};
+use game::{
+    finish::{is_check, is_enough_for_checkmate},
+    Game,
+};
+use get_ply::{filter_checked_ply, get_all_board_ply, get_castling_ply, get_ply};
 use js_function::JsFunction;
+use message_const::{
+    MESSAGE_BLACK_WIN, MESSAGE_INSUFFICIENT_MATERIAL, MESSAGE_NO_BLACK_KING, MESSAGE_NO_WHITE_KING,
+    MESSAGE_STALEMATE, MESSAGE_WHITE_WIN,
+};
 use player::Player;
 use state::{
     board::Board,
@@ -128,4 +135,53 @@ pub fn get_next_en_passant(board: &[u8], ply: &str) -> Result<Option<u8>, String
     let en_passant = EnPassant::next_turn_available(&board, &ply);
 
     Ok(en_passant.as_option())
+}
+
+#[wasm_bindgen]
+pub fn is_finished(
+    board: &[u8],
+    mark: u8,
+    en_passant: Option<u8>,
+) -> Result<Option<String>, String> {
+    let board = Board::try_from_slice(board).ok_or("board")?;
+    let mark = Mark::try_from_u8(mark).ok_or("mark")?;
+    let en_passant = EnPassant::try_from_u8(en_passant).ok_or("en_passant")?;
+
+    // キングがいない
+    if board.get_king_position(&Mark::White).is_none() {
+        return Ok(Some(MESSAGE_NO_WHITE_KING.to_string()));
+    } else if board.get_king_position(&Mark::Black).is_none() {
+        return Ok(Some(MESSAGE_NO_BLACK_KING.to_string()));
+    }
+
+    // チェックメイト
+    if is_check(&board, &mark) {
+        for ply in get_all_board_ply(&mark, &board, &en_passant) {
+            let board = board.apply_ply(&ply);
+            if is_check(&board, &mark) {
+                return Ok(Some(
+                    match mark {
+                        Mark::White => MESSAGE_WHITE_WIN,
+                        Mark::Black => MESSAGE_BLACK_WIN,
+                    }
+                    .to_string(),
+                ));
+            }
+        }
+    }
+
+    // ステイルメイト
+    if get_all_board_ply(&mark, &board, &en_passant)
+        .next()
+        .is_none()
+    {
+        return Ok(Some(MESSAGE_STALEMATE.to_string()));
+    }
+
+    // 駒がチェックメイトに充分
+    if is_enough_for_checkmate(&board) {
+        return Ok(Some(MESSAGE_INSUFFICIENT_MATERIAL.to_string()));
+    }
+
+    Ok(None)
 }

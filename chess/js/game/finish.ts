@@ -1,5 +1,4 @@
 import {
-  Black,
   BlackBishop,
   BlackKing,
   BlackKnight,
@@ -28,40 +27,25 @@ import { getPiecesLegalMoves, getPiecesMoves } from "./get-moves";
 import { invertMark } from "./mark";
 import { getNextBoard } from "./get-next";
 import { Setter } from "solid-js";
+import { is_finished } from "@/chess/wasm/pkg/chess_wasm";
+import { convertBoardToWasmBoard, convertEnPassantToWasmEnPassant, convertMarkToWasmMark } from "../wasm-convert";
 
 export const isFinished = (state: GameState, setMessage?: Setter<string>): boolean => {
   const message = (message: string) => {
     setMessage?.(message);
   };
 
-  if (isNoKing(state.board)) {
-    return true;
-  }
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
+  const finishMessage = is_finished(
+    convertBoardToWasmBoard(state.board),
+    convertMarkToWasmMark(state.mark),
+    convertEnPassantToWasmEnPassant(state.enPassant),
+  );
 
-  const checkmate = isCheckmate(state.board, state.mark, state.enPassant);
-  if (checkmate === White) {
-    console.log("white win");
+  if (finishMessage !== undefined) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+    message(finishMessage);
 
-    message("White win");
-    return true;
-  } else if (checkmate === Black) {
-    console.log("black win");
-
-    message("Black win");
-    return true;
-  }
-
-  if (isStalemate(state.board, state.mark, state.enPassant)) {
-    console.log("stalemate");
-
-    message("Draw - stalemate");
-    return true;
-  }
-
-  if (!existsCheckmatePieces(state.board)) {
-    console.log("no checkmate pieces");
-
-    message("Draw - insufficient material");
     return true;
   }
 

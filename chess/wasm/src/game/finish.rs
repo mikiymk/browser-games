@@ -7,14 +7,7 @@ use crate::{
 };
 
 pub fn is_check(board: &Board, mark: &Mark) -> bool {
-    let mut king_position = None;
-    for (position, square) in board.square_iter() {
-        if square == BoardSquare::new(*mark, Piece::King) {
-            king_position = Some(position);
-        }
-    }
-
-    let king_position = match king_position {
+    let king_position = match board.get_king_position(mark) {
         Some(position) => position,
         None => return false,
     };
