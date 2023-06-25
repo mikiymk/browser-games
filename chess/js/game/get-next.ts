@@ -21,12 +21,10 @@ import type {
   Index,
   GameState,
   Mark,
-  IsCastled,
   MoveTypeCastling,
   MoveTypeEnPassant,
   MoveTypeMove,
   MoveTypePromotion,
-  EnPassantTarget,
 } from "@/chess/js/types";
 
 import {
@@ -162,55 +160,6 @@ export const getNextBoard = (board: BoardData, move: MoveTypes): BoardData => {
       return newBoard;
     }
   }
-};
-
-export const getNextCastling = (castling: IsCastled, move: MoveTypes): IsCastled => {
-  const nextCastling: IsCastled = [...castling];
-
-  if (move.type === Castling) {
-    if (move.rook === 0 || move.rook === 7) {
-      nextCastling[0] = false;
-      nextCastling[1] = false;
-    } else {
-      nextCastling[2] = false;
-      nextCastling[3] = false;
-    }
-  } else if (move.type === Move) {
-    if (move.from === 4 || move.to === 4) {
-      nextCastling[0] = false;
-      nextCastling[1] = false;
-    }
-    if (move.from === 60 || move.to === 60) {
-      nextCastling[2] = false;
-      nextCastling[3] = false;
-    }
-    if (move.from === 0 || move.to === 0) {
-      nextCastling[0] = false;
-    }
-    if (move.from === 7 || move.to === 7) {
-      nextCastling[1] = false;
-    }
-    if (move.from === 56 || move.to === 56) {
-      nextCastling[2] = false;
-    }
-    if (move.from === 63 || move.to === 63) {
-      nextCastling[3] = false;
-    }
-  }
-
-  return nextCastling;
-};
-
-export const getNextEnPassant = (board: BoardData, move: MoveTypes): EnPassantTarget => {
-  // ポーンが縦に２つ進んでいる場合、アンパサン可能とする
-  if (
-    move.type === Move &&
-    Math.abs(move.from - move.to) === 16 &&
-    (board[move.from] === BlackPawn || board[move.from] === WhitePawn)
-  ) {
-    return move.to;
-  }
-  return false;
 };
 
 export const getNextFiftyMove = (fiftyMove: number, board: BoardData, move: MoveTypes): number => {

@@ -1,29 +1,8 @@
 import { get_ai_ply, get_selected_piece_moves } from "@/chess/wasm/pkg/chess_wasm";
 
-import { isFinished } from "./game/finish";
 import { generateMovePromotion } from "./game/generate-move";
-import { getPiecesLegalMoves } from "./game/get-moves";
-import { getNextState } from "./game/get-next";
 import { getMark } from "./game/mark";
-import {
-  Black,
-  BlackBishop,
-  BlackKing,
-  BlackKnight,
-  BlackPawn,
-  BlackQueen,
-  BlackRook,
-  Castling,
-  Empty,
-  Promotion,
-  Reset,
-  WhiteBishop,
-  WhiteKing,
-  WhiteKnight,
-  WhitePawn,
-  WhiteQueen,
-  WhiteRook,
-} from "./types";
+import { Castling, Promotion, Reset } from "./types";
 import {
   convertMarkToWasmMark,
   convertBoardToWasmBoard,
@@ -32,18 +11,7 @@ import {
   convertWasmMoveToMove,
 } from "./wasm-convert";
 
-import type {
-  GameState,
-  Index,
-  InputType,
-  Mark,
-  MoveTypes,
-  Piece,
-  Player,
-  PromotionPieces,
-  Receiver,
-  Sender,
-} from "./types";
+import type { GameState, Index, InputType, Mark, MoveTypes, Player, PromotionPieces, Receiver, Sender } from "./types";
 import type { Setter } from "solid-js";
 
 export const createMessenger = <T>(): [Sender<T>, Receiver<T>] => {
@@ -135,101 +103,4 @@ export const aiPlayer: Player = {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     return convertWasmMoveToMove(move);
   },
-};
-
-const sleep = (millisecond: number) => new Promise<void>((resolve) => setTimeout(() => resolve(), millisecond));
-
-export const alphaBeta = (
-  state: GameState,
-  depth: number,
-  alpha: number = Number.NEGATIVE_INFINITY,
-  beta: number = Number.POSITIVE_INFINITY,
-): number => {
-  if (depth === 0 || isFinished(state)) {
-    const value = evaluateState(state);
-
-    // 白の手番＝黒の動きの結果なので色と計算が逆になる
-    return value * (state.mark === Black ? 1 : -1);
-  }
-
-  for (const move of getPiecesLegalMoves(state.board, state.mark, state.enPassant)) {
-    const value = alphaBeta(getNextState(state, move), depth - 1, -beta, -alpha);
-    alpha = Math.max(alpha, -value);
-    if (alpha >= beta) {
-      break;
-    }
-  }
-
-  return alpha;
-};
-
-export const minimaxBreadthFirst = async (
-  state: GameState,
-  depth: number,
-  timeout?: { timeout: boolean },
-): Promise<number> => {
-  const queue: [state: GameState, depth: number, max: boolean][] = [[state, depth, state.mark === Black]];
-
-  let node;
-  let maxValue = Number.NEGATIVE_INFINITY;
-  let minValue = Number.POSITIVE_INFINITY;
-  while ((node = queue.shift())) {
-    await sleep(0);
-
-    const [state, depth, max] = node;
-
-    const value = evaluateState(state);
-
-    if (max) {
-      maxValue = Math.max(maxValue, value);
-    } else {
-      minValue = Math.min(minValue, value);
-    }
-
-    if ((depth <= 0 && (timeout?.timeout ?? true)) || isFinished(state)) {
-      continue;
-    }
-
-    for (const move of getPiecesLegalMoves(state.board, state.mark, state.enPassant)) {
-      const nextState = getNextState(state, move);
-      queue.push([nextState, depth - 1, false]);
-    }
-
-    if (maxValue >= minValue) {
-      break;
-    }
-  }
-
-  return state.mark === Black ? maxValue : -minValue;
-};
-
-const pieceCosts: Record<Piece | Empty, number> = {
-  [Empty]: 0,
-  [WhitePawn]: 1,
-  [WhiteKnight]: 3,
-  [WhiteBishop]: 3,
-  [WhiteRook]: 5,
-  [WhiteQueen]: 9,
-  [WhiteKing]: 100,
-  [BlackPawn]: -1,
-  [BlackKnight]: -3,
-  [BlackBishop]: -3,
-  [BlackRook]: -5,
-  [BlackQueen]: -9,
-  [BlackKing]: -100,
-};
-
-/**
- * 白有利が+
- * 黒有利が-
- * @param state
- * @returns
- */
-const evaluateState = (state: GameState): number => {
-  let sum = 0;
-  for (const square of state.board) {
-    sum += pieceCosts[square];
-  }
-
-  return sum;
 };

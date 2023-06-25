@@ -8,7 +8,6 @@ import {
   BlackPawn,
   BlackQueen,
   BlackRook,
-  Castling,
   EnPassant,
   Move,
   Promotion,
@@ -21,7 +20,7 @@ import {
   WhiteRook,
 } from "@/chess/js/types";
 
-import { getCastling, getPiecesMoves } from "../get-moves";
+import { getPiecesMoves } from "../get-moves";
 import { generateBoard } from "../state";
 
 describe("pawn", () => {
@@ -379,103 +378,5 @@ describe("king", () => {
     expect(result).toContainEqual({ type: Move, from: 27, to: 34 });
     expect(result).toContainEqual({ type: Move, from: 27, to: 35 });
     expect(result).toContainEqual({ type: Move, from: 27, to: 36 });
-  });
-});
-
-describe("castling", () => {
-  test("black king, queen side", () => {
-    const board = generateBoard({
-      4: BlackKing,
-      0: BlackRook,
-    });
-    const result = [...getCastling(board, [true, false, false, false], Black)];
-    const expected = { type: Castling, rook: 0 };
-
-    expect(result).toContainEqual(expected);
-  });
-
-  test("black king, king side", () => {
-    const board = generateBoard({
-      4: BlackKing,
-      7: BlackRook,
-    });
-    const result = [...getCastling(board, [false, true, false, false], Black)];
-    const expected = { type: Castling, rook: 7 };
-
-    expect(result).toContainEqual(expected);
-  });
-
-  test("white king, queen side", () => {
-    const board = generateBoard({
-      60: WhiteKing,
-      56: WhiteRook,
-    });
-    const result = [...getCastling(board, [false, false, true, false], White)];
-    const expected = { type: Castling, rook: 56 };
-
-    expect(result).toContainEqual(expected);
-  });
-
-  test("white king, king side", () => {
-    const board = generateBoard({
-      60: WhiteKing,
-      63: WhiteRook,
-    });
-    const result = [...getCastling(board, [false, false, false, true], White)];
-    const expected = { type: Castling, rook: 63 };
-
-    expect(result).toContainEqual(expected);
-  });
-
-  test("black king, queen side, king is in check", () => {
-    const board = generateBoard({
-      28: WhiteRook,
-
-      4: BlackKing,
-      0: BlackRook,
-    });
-    const result = [...getCastling(board, [true, false, false, false], Black)];
-    const expected = { type: Castling, rook: 0 };
-
-    expect(result).not.toContainEqual(expected);
-  });
-
-  test("black king, king side, piece betweens king and rook", () => {
-    const board = generateBoard({
-      6: BlackKnight,
-
-      4: BlackKing,
-      7: BlackRook,
-    });
-    const result = [...getCastling(board, [false, true, false, false], Black)];
-    const expected = { type: Castling, rook: 7 };
-
-    expect(result).not.toContainEqual(expected);
-  });
-
-  test("white king, queen side, king passing square is attacked", () => {
-    const board = generateBoard({
-      43: BlackRook,
-
-      60: WhiteKing,
-      56: WhiteRook,
-    });
-    const result = [...getCastling(board, [false, false, true, false], White)];
-    const expected = { type: Castling, rook: 56 };
-
-    expect(result).not.toContainEqual(expected);
-  });
-
-  test("white king, king side, king finish square is attacked", () => {
-    const board = generateBoard({
-      46: BlackRook,
-
-      60: WhiteKing,
-      63: WhiteRook,
-    });
-    const result = [...getCastling(board, [false, false, false, true], White)];
-    const expected = { type: Castling, rook: 63 };
-
-    expect(result).not.toContainEqual(expected);
   });
 });

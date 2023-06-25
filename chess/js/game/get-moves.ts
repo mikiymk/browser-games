@@ -13,28 +13,22 @@ import {
   BlackKing,
   Empty,
   Move,
-  Black,
   White,
 } from "@/chess/js/types";
 
-import { canAttackThereByMove, isCheck } from "./finish";
-import { generateMoveCastling, generateMoveMove, generateMoveEnPassant, generateMovePromotion } from "./generate-move";
-import { getNextBoard } from "./get-next";
+import { generateMoveMove, generateMoveEnPassant, generateMovePromotion } from "./generate-move";
 import { getMark, isOtherMark, isSameMark } from "./mark";
 
 import type {
   BoardData,
   Mark,
   MoveTypeGenerator,
-  IsCastled,
   Piece,
   Index,
   MoveTypeEnPassant,
   MoveTypeMove,
   MoveTypePromotion,
-  MoveTypeCastling,
   PromotionPieces,
-  MoveTypes,
   EnPassantTarget,
 } from "@/chess/js/types";
 
@@ -85,18 +79,6 @@ const kingMoves: [number, number][] = [
   [-1, 0],
 ];
 
-export const getPiecesLegalMoves = function* (
-  board: BoardData,
-  mark: Mark,
-  canEnPassant: EnPassantTarget,
-): MoveTypeGenerator {
-  for (const [index, square] of board.entries()) {
-    if (getMark(square) === mark) {
-      yield* getLegalMoves(board, canEnPassant, index as Index);
-    }
-  }
-};
-
 export const getPiecesMoves = function* (
   board: BoardData,
   mark: Mark,
@@ -107,13 +89,6 @@ export const getPiecesMoves = function* (
       yield* getMoves(board, canEnPassant, index as Index);
     }
   }
-};
-
-const getLegalMoves = function* (board: BoardData, canEnPassant: EnPassantTarget, from: Index): MoveTypeGenerator {
-  const mark = getMark(board[from]);
-  if (mark === Empty) return;
-
-  yield* filterLegalMove(getMoves(board, canEnPassant, from), board, mark);
 };
 
 const getMoves = function* (board: BoardData, canEnPassant: EnPassantTarget, from: Index): MoveTypeGenerator {
@@ -166,84 +141,6 @@ const getMoves = function* (board: BoardData, canEnPassant: EnPassantTarget, fro
   }
 };
 
-export const getCastling = function* (
-  board: BoardData,
-  castling: IsCastled,
-  mark: Mark,
-): Generator<MoveTypeCastling, void, undefined> {
-  switch (mark) {
-    case Black: {
-      // アンパサンはキングを攻撃することはないから false
-      const whiteMoves = [...getPiecesMoves(board, White, false)];
-
-      // black queen
-      if (
-        castling[0] &&
-        board[0] === BlackRook &&
-        board[1] === Empty &&
-        board[2] === Empty &&
-        board[3] === Empty &&
-        board[4] === BlackKing &&
-        !canAttackThereByMove(whiteMoves, 2) &&
-        !canAttackThereByMove(whiteMoves, 3) &&
-        !canAttackThereByMove(whiteMoves, 4)
-      ) {
-        yield generateMoveCastling(0);
-      }
-
-      // black king
-      if (
-        castling[1] &&
-        board[4] === BlackKing &&
-        board[5] === Empty &&
-        board[6] === Empty &&
-        board[7] === BlackRook &&
-        !canAttackThereByMove(whiteMoves, 4) &&
-        !canAttackThereByMove(whiteMoves, 5) &&
-        !canAttackThereByMove(whiteMoves, 6)
-      ) {
-        yield generateMoveCastling(7);
-      }
-      break;
-    }
-
-    case White: {
-      // アンパサンはキングを攻撃することはないから false
-      const blackMoves = [...getPiecesMoves(board, Black, false)];
-
-      // white queen
-      if (
-        castling[2] &&
-        board[56] === WhiteRook &&
-        board[57] === Empty &&
-        board[58] === Empty &&
-        board[59] === Empty &&
-        board[60] === WhiteKing &&
-        !canAttackThereByMove(blackMoves, 58) &&
-        !canAttackThereByMove(blackMoves, 59) &&
-        !canAttackThereByMove(blackMoves, 60)
-      ) {
-        yield generateMoveCastling(56);
-      }
-
-      // white king
-      if (
-        castling[3] &&
-        board[60] === WhiteKing &&
-        board[61] === Empty &&
-        board[62] === Empty &&
-        board[63] === WhiteRook &&
-        !canAttackThereByMove(blackMoves, 60) &&
-        !canAttackThereByMove(blackMoves, 61) &&
-        !canAttackThereByMove(blackMoves, 62)
-      ) {
-        yield generateMoveCastling(63);
-      }
-      break;
-    }
-  }
-};
-
 const validateMove = (from: Index, dx: number, dy: number): Index | undefined => {
   const to = from + dx * 8 + dy;
 
@@ -257,21 +154,6 @@ const validateMove = (from: Index, dx: number, dy: number): Index | undefined =>
   }
 
   return to as Index;
-};
-
-const filterLegalMove = function* (moves: MoveTypeGenerator, board: BoardData, mark: Mark): MoveTypeGenerator {
-  for (const move of moves) {
-    if (isLegalMove(board, move, mark)) {
-      yield move;
-    }
-  }
-};
-
-const isLegalMove = (board: BoardData, move: MoveTypes, mark: Mark): boolean => {
-  // 自分のキングをチェックさせる動きをフィルターする
-  const nextBoard = getNextBoard(board, move);
-
-  return !isCheck(nextBoard, mark);
 };
 
 const getPawnMove = function* (
