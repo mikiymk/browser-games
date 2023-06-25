@@ -57,7 +57,7 @@ impl Display for CastlingType {
             CastlingType::WhiteKing => (Position::new(7, 4), Position::new(7, 7)),
         };
 
-        write!(f, "{} <=> {}", king, rook)
+        write!(f, "{} {}", king, rook)
     }
 }
 
@@ -66,6 +66,29 @@ pub struct Castling(u8);
 impl Castling {
     pub fn new() -> Castling {
         Castling(0)
+    }
+
+    pub fn try_from_slice(value: &[u8]) -> Option<Self> {
+        if value.len() < 4 {
+            return None;
+        }
+
+        let mut castling = Self::new();
+
+        if value[0] != 0 {
+            castling.set(CastlingType::BlackKing);
+        }
+        if value[1] != 0 {
+            castling.set(CastlingType::BlackQueen);
+        }
+        if value[2] != 0 {
+            castling.set(CastlingType::WhiteKing);
+        }
+        if value[3] != 0 {
+            castling.set(CastlingType::WhiteQueen);
+        }
+
+        Some(castling)
     }
 
     pub fn set(&mut self, pos: CastlingType) {

@@ -7,6 +7,14 @@ pub enum Mark {
 }
 
 impl Mark {
+    pub fn try_from_u8(value: u8) -> Option<Self> {
+        match value {
+            0 => Some(Mark::White),
+            1 => Some(Mark::Black),
+            _ => None,
+        }
+    }
+
     pub fn invert(&self) -> Mark {
         use Mark::{Black, White};
 

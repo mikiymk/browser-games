@@ -52,10 +52,10 @@ impl Ply {
 impl Display for Ply {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
-            Ply::Move { from, to } => write!(f, "{} => {}", from, to),
-            Ply::Castling(ty) => write!(f, "{}", ty),
-            Ply::EnPassant { from, to, capture } => write!(f, "{} => {} cap {}", from, to, capture),
-            Ply::Promotion { from, to, piece } => write!(f, "{} => {} * {}", from, to, piece),
+            Ply::Move { from, to } => write!(f, "m {} {}", from, to),
+            Ply::Castling(ty) => write!(f, "c {}", ty),
+            Ply::EnPassant { from, to, capture } => write!(f, "e {} {} {}", from, to, capture),
+            Ply::Promotion { from, to, piece } => write!(f, "p {} {} {}", from, to, piece),
         }
     }
 }

@@ -16,12 +16,12 @@ impl Display for Piece {
             f,
             "{}",
             match self {
-                Piece::Pawn => "Pawn",
-                Piece::Knight => "Knight",
-                Piece::Bishop => "Bishop",
-                Piece::Rook => "Rook",
-                Piece::Queen => "Queen",
-                Piece::King => "King",
+                Piece::Pawn => "P",
+                Piece::Knight => "K",
+                Piece::Bishop => "B",
+                Piece::Rook => "R",
+                Piece::Queen => "Q",
+                Piece::King => "K",
             }
         )
     }

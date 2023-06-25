@@ -18,6 +18,20 @@ impl Board {
         }
     }
 
+    pub fn try_from_slice(value: &[u8]) -> Option<Board> {
+        let mut squares = [BoardSquare::Empty; 64];
+
+        for (i, value) in value.iter().enumerate() {
+            if i >= 64 {
+                break;
+            }
+
+            squares[i] = BoardSquare::try_from_u8(*value)?;
+        }
+
+        Some(Board { squares })
+    }
+
     pub fn initial() -> Board {
         use Mark::{Black, White};
         use Piece::{Bishop, King, Knight, Pawn, Queen, Rook};

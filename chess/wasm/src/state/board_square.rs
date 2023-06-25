@@ -11,8 +11,28 @@ pub enum BoardSquare {
 }
 
 impl BoardSquare {
-    pub fn new(mark: Mark, piece: Piece) -> Self {
+    pub const fn new(mark: Mark, piece: Piece) -> Self {
         BoardSquare::Piece(mark, piece)
+    }
+
+    pub fn try_from_u8(value: u8) -> Option<Self> {
+        match value {
+            0 => Some(Self::Empty),
+            1 => Some(Self::new(Mark::White, Piece::Pawn)),
+            2 => Some(Self::new(Mark::White, Piece::Knight)),
+            3 => Some(Self::new(Mark::White, Piece::Bishop)),
+            4 => Some(Self::new(Mark::White, Piece::Rook)),
+            5 => Some(Self::new(Mark::White, Piece::Queen)),
+            6 => Some(Self::new(Mark::White, Piece::King)),
+            7 => Some(Self::new(Mark::Black, Piece::Pawn)),
+            8 => Some(Self::new(Mark::Black, Piece::Knight)),
+            9 => Some(Self::new(Mark::Black, Piece::Bishop)),
+            10 => Some(Self::new(Mark::Black, Piece::Rook)),
+            11 => Some(Self::new(Mark::Black, Piece::Queen)),
+            12 => Some(Self::new(Mark::Black, Piece::King)),
+
+            _ => None,
+        }
     }
 
     pub fn mark(&self) -> Option<Mark> {

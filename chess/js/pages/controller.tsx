@@ -22,7 +22,7 @@ export const Controller = (properties: ControllerProperties) => {
         playerWhite={properties.playerWhite}
         playerBlack={properties.playerBlack}
         setPlayerWhite={properties.setPlayerWhite}
-        setPlayerBlack={properties.setPlayerWhite}
+        setPlayerBlack={properties.setPlayerBlack}
       />
     </div>
   );
@@ -75,9 +75,10 @@ const SettingPlayerSelect = (properties: SettingPlayerSelectProperties) => {
   return (
     <select
       value={properties.player}
-      onChange={(event) =>
-        properties.setPlayer(Number(event.currentTarget.value) === PlayerTypeHuman ? PlayerTypeHuman : PlayerTypeAI)
-      }
+      onChange={(event) => {
+        console.log(event.currentTarget.value);
+        properties.setPlayer(Number(event.currentTarget.value) === PlayerTypeHuman ? PlayerTypeHuman : PlayerTypeAI);
+      }}
     >
       <option value={PlayerTypeHuman}>Human</option>
       <option value={PlayerTypeAI}>AI</option>

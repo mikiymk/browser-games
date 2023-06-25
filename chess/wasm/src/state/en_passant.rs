@@ -10,6 +10,13 @@ impl EnPassant {
         EnPassant(None)
     }
 
+    pub fn try_from_u8(value: Option<u8>) -> Option<Self> {
+        match value {
+            Some(i) => Some(EnPassant(Some(Position::try_from_u8(i)?))),
+            None => Some(EnPassant(None)),
+        }
+    }
+
     pub fn is_there(&self, position: &Position) -> bool {
         match self.0 {
             Some(en_passant_position) => *position == en_passant_position,

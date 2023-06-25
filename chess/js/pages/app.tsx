@@ -7,7 +7,6 @@ import { gameLoop } from "@/chess/js/game";
 import { aiPlayer, createHumanPlayer, createMessenger } from "@/chess/js/ai";
 import { PromotionPopup } from "./promotion-popup";
 import { generateState } from "../game/state";
-import { add, game } from "@/chess/wasm/pkg/chess_wasm";
 
 export const App = () => {
   const [state, setState] = createSignal(generateState());
@@ -20,13 +19,7 @@ export const App = () => {
   const [humanInputSender, humanInputReceiver] = createMessenger<InputType>();
   const [humanPromotionSender, humanPromotionReceiver] = createMessenger<PromotionPieces>();
 
-  const humanPlayer = createHumanPlayer(
-    // humanInputReceiver,
-    () => Promise.reject(),
-    setMovable,
-    humanPromotionReceiver,
-    setPromotionMark,
-  );
+  const humanPlayer = createHumanPlayer(humanInputReceiver, setMovable, humanPromotionReceiver, setPromotionMark);
 
   const reset = () => {
     humanInputSender(Reset);
@@ -40,20 +33,6 @@ export const App = () => {
       [Black]: selectPlayer(playerBlack(), humanPlayer, aiPlayer),
     };
     console.log(playerWhite(), playerBlack());
-
-    void game(
-      0,
-      1,
-      (state: unknown) => {
-        console.log("set state", state);
-      },
-      (highlight: unknown) => {
-        console.log("highlight", highlight);
-
-        setMovable(highlight as Index[]);
-      },
-      humanInputReceiver,
-    );
 
     void gameLoop(players, state, setState, setStatus);
   };
@@ -70,7 +49,6 @@ export const App = () => {
         setPlayerBlack={setPlayerBlack}
       />
       <PromotionPopup mark={promotionMark()} setInput={humanPromotionSender} />
-      {1} + {2} = {add(1, 2)}
     </>
   );
 };

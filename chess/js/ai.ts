@@ -7,10 +7,12 @@ import {
   BlackPawn,
   BlackQueen,
   BlackRook,
+  BoardData,
   Empty,
   GameState,
   Index,
   InputType,
+  IsCastled,
   Mark,
   MoveTypeCastling,
   MoveTypeEnPassant,
@@ -25,6 +27,7 @@ import {
   Reset,
   Resign,
   Sender,
+  White,
   WhiteBishop,
   WhiteKing,
   WhiteKnight,
@@ -38,6 +41,7 @@ import { getMark } from "./game/mark";
 import { isFinished } from "./game/finish";
 import { getNextState } from "./game/get-next";
 import { randomSelect } from "@/common/random-select";
+import { get_selected_piece_moves } from "@/chess/wasm/pkg/chess_wasm";
 
 export const createMessenger = <T>(): [Sender<T>, Receiver<T>] => {
   let resolveFunction = (value: T): void => void value;
@@ -51,6 +55,59 @@ export const createMessenger = <T>(): [Sender<T>, Receiver<T>] => {
   };
 
   return [sender, receiver];
+};
+
+type PositionFile = "a" | "b" | "c" | "d" | "e" | "f" | "g" | "h";
+type PositionRank = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
+type PositionString = `${PositionFile}${PositionRank}`;
+type WasmPiece = "P" | "N" | "B" | "R" | "Q" | "K";
+type WasmMove =
+  | ["m", PositionString, PositionString]
+  | ["c", PositionString, PositionString]
+  | ["e", PositionString, PositionString, PositionString]
+  | ["p", PositionString, PositionString, WasmPiece];
+
+const convertMarkToWasmMark = (mark: Mark): number => {
+  return mark === White ? 0 : 1;
+};
+
+const convertBoardToWasmBoard = (board: BoardData): Uint8Array => {
+  return new Uint8Array(
+    board.map(
+      (value) =>
+        ({
+          [Empty]: 0,
+          [WhitePawn]: 1,
+          [WhiteKnight]: 2,
+          [WhiteBishop]: 3,
+          [WhiteRook]: 4,
+          [WhiteQueen]: 5,
+          [WhiteKing]: 6,
+          [BlackPawn]: 7,
+          [BlackKnight]: 8,
+          [BlackBishop]: 9,
+          [BlackRook]: 10,
+          [BlackQueen]: 11,
+          [BlackKing]: 12,
+        }[value]),
+    ),
+  );
+};
+
+const convertEnPassantToWasmEnPassant = (enPassant: Index | false): number | undefined => {
+  return enPassant === false ? undefined : enPassant;
+};
+
+const convertCastlingToWasmCastling = (castling: IsCastled): Uint8Array => {
+  return new Uint8Array(castling.map(Number));
+};
+
+const parsePosition = (posString: PositionString) => {
+  const [file, rank] = [...posString];
+  const fileValue = { a: 0, b: 1, c: 2, d: 3, e: 4, f: 5, g: 6, h: 7 }[file ?? ""] ?? -1;
+  const rankValue = Number.parseInt(rank ?? "") + 1;
+
+  return rankValue * 8 + fileValue;
 };
 
 export const createHumanPlayer = (
@@ -74,11 +131,25 @@ export const createHumanPlayer = (
         const moves = [...getLegalMoves(board, enPassant, from)];
         const castlingMoves = from === 4 || from === 60 ? [...getCastling(board, castling, mark)] : [];
 
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-assignment
+        const w_moves: string = get_selected_piece_moves(
+          from,
+          convertMarkToWasmMark(mark),
+          convertBoardToWasmBoard(board),
+          convertEnPassantToWasmEnPassant(enPassant),
+          convertCastlingToWasmCastling(castling),
+        );
+
+        const w_moves_split = w_moves.split(":").map((m) => m.split(" ") as WasmMove);
+        console.log(w_moves_split);
+
+        const movable = w_moves_split.map((m) => parsePosition(m[2]));
+
         if (moves.length === 0 && castlingMoves.length === 0) {
           continue;
         }
 
-        setMovable([...moves.map((move) => move.to), ...castlingMoves.map((move) => move.rook)]);
+        setMovable(movable as Index[]);
 
         const to = await input();
         setMovable([]);

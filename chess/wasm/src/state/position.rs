@@ -40,6 +40,12 @@ impl Position {
         }
     }
 
+    pub fn try_from_u8(value: u8) -> Option<Self> {
+        let x = value / 8;
+        let y = value % 8;
+        Position::try_new(x, y)
+    }
+
     const fn to_position_index(x: u8, y: u8) -> usize {
         (x as usize) * 8 + (y as usize)
     }
@@ -68,7 +74,21 @@ impl Position {
 
 impl Display for Position {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "({}, {})", self.x(), self.y())
+        let file = match self.y() {
+            0 => 'a',
+            1 => 'b',
+            2 => 'c',
+            3 => 'd',
+            4 => 'e',
+            5 => 'f',
+            6 => 'g',
+            7 => 'h',
+            _ => 'x',
+        };
+
+        let rank = 8 - self.x();
+
+        write!(f, "{}{}", file, rank)
     }
 }
 
