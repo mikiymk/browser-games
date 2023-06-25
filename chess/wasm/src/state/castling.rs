@@ -68,10 +68,10 @@ impl Castling {
 
     pub fn get(&self, pos: CastlingType) -> bool {
         match pos {
-            CastlingType::BlackKing => self.0 & 0b1000 != 0,
-            CastlingType::BlackQueen => self.0 & 0b0100 != 0,
-            CastlingType::WhiteKing => self.0 & 0b0010 != 0,
-            CastlingType::WhiteQueen => self.0 & 0b0001 != 0,
+            CastlingType::BlackKing => self.0 & 0b1000 == 0,
+            CastlingType::BlackQueen => self.0 & 0b0100 == 0,
+            CastlingType::WhiteKing => self.0 & 0b0010 == 0,
+            CastlingType::WhiteQueen => self.0 & 0b0001 == 0,
         }
     }
 

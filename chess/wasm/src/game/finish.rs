@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 
 use crate::{
-    get_ply::get_all_board_ply,
+    get_ply::{filter_checked_ply, get_all_board_ply},
     message_const::{
         MESSAGE_BLACK_WIN, MESSAGE_INSUFFICIENT_MATERIAL, MESSAGE_NO_BLACK_KING,
         MESSAGE_NO_WHITE_KING, MESSAGE_STALEMATE, MESSAGE_WHITE_WIN,
@@ -20,16 +20,14 @@ pub fn is_finish(board: &Board, mark: &Mark, en_passant: &EnPassant) -> Option<&
     }
 
     // チェックメイト
-    if is_check(board, mark) {
-        for ply in get_all_board_ply(mark, board, en_passant) {
-            let board = board.apply_ply(&ply);
-            if is_check(&board, mark) {
-                return Some(match mark {
-                    Mark::White => MESSAGE_WHITE_WIN,
-                    Mark::Black => MESSAGE_BLACK_WIN,
-                });
-            }
-        }
+    if is_check(board, mark)
+        && !get_all_board_ply(mark, board, en_passant)
+            .any(|ply| filter_checked_ply(&ply, mark, board))
+    {
+        return Some(match mark {
+            Mark::White => MESSAGE_BLACK_WIN,
+            Mark::Black => MESSAGE_WHITE_WIN,
+        });
     }
 
     // ステイルメイト
