@@ -16,13 +16,13 @@ import {
   BlackKing,
 } from "@/chess/js/types";
 
-import type { Mark, Piece } from "@/chess/js/types";
+import type { Mark, Square } from "@/chess/js/types";
 
 export const invertMark = (mark: Mark) => {
   return mark === Black ? White : Black;
 };
 
-export const getMark = (piece: Piece | Empty): Mark | Empty => {
+export const getMark = (piece: Square): Mark | Empty => {
   switch (piece) {
     case WhitePawn:
     case WhiteKnight:

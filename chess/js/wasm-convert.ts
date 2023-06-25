@@ -1,68 +1,20 @@
-import {
-  White,
-  Empty,
-  WhitePawn,
-  WhiteKnight,
-  WhiteBishop,
-  WhiteRook,
-  WhiteQueen,
-  WhiteKing,
-  BlackPawn,
-  BlackKnight,
-  BlackBishop,
-  BlackRook,
-  BlackQueen,
-  BlackKing,
-} from "./types";
-
 import type {
-  Mark,
   BoardData,
   IsCastled,
   MoveTypeMove,
   MoveTypeCastling,
   MoveTypeEnPassant,
   MoveTypePromotion,
-  Piece,
   Index,
-  EnPassantTarget,
+  PositionString,
+  WasmPiece,
+  PositionFile,
+  PositionRank,
+  PromotionPieces,
 } from "./types";
 
-type PositionFile = "a" | "b" | "c" | "d" | "e" | "f" | "g" | "h";
-type PositionRank = "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8";
-type PositionString = `${PositionFile}${PositionRank}`;
-type WasmPiece = "P" | "N" | "B" | "R" | "Q" | "K";
-type WasmMove =
-  | ["m", PositionString, PositionString]
-  | ["c", PositionString, PositionString]
-  | ["e", PositionString, PositionString, PositionString]
-  | ["p", PositionString, PositionString, WasmPiece];
-
-export const convertMarkToWasmMark = (mark: Mark): number => {
-  return mark === White ? 0 : 1;
-};
-
 export const convertBoardToWasmBoard = (board: BoardData): Uint8Array => {
-  return new Uint8Array(
-    board.map(
-      (value) =>
-        ({
-          [Empty]: 0,
-          [WhitePawn]: 1,
-          [WhiteKnight]: 2,
-          [WhiteBishop]: 3,
-          [WhiteRook]: 4,
-          [WhiteQueen]: 5,
-          [WhiteKing]: 6,
-          [BlackPawn]: 7,
-          [BlackKnight]: 8,
-          [BlackBishop]: 9,
-          [BlackRook]: 10,
-          [BlackQueen]: 11,
-          [BlackKing]: 12,
-        }[value]),
-    ),
-  );
+  return new Uint8Array(board);
 };
 
 export const convertWasmBoardToBoard = (board: Uint8Array | undefined): BoardData => {
@@ -70,32 +22,7 @@ export const convertWasmBoardToBoard = (board: Uint8Array | undefined): BoardDat
     throw new Error("board is empty");
   }
 
-  return [...board].map(
-    (value) =>
-      ({
-        0: Empty,
-        1: WhitePawn,
-        2: WhiteKnight,
-        3: WhiteBishop,
-        4: WhiteRook,
-        5: WhiteQueen,
-        6: WhiteKing,
-        7: BlackPawn,
-        8: BlackKnight,
-        9: BlackBishop,
-        10: BlackRook,
-        11: BlackQueen,
-        12: BlackKing,
-      }[value] ?? Empty),
-  ) as BoardData;
-};
-
-export const convertEnPassantToWasmEnPassant = (enPassant: EnPassantTarget): number | undefined => {
-  return enPassant === false ? undefined : enPassant;
-};
-
-export const convertWasmEnPassantToEnPassant = (enPassant: number | undefined): EnPassantTarget => {
-  return enPassant === undefined ? false : (enPassant as Index);
+  return [...board] as BoardData;
 };
 
 export const convertCastlingToWasmCastling = (castling: IsCastled): Uint8Array => {
@@ -108,12 +35,6 @@ export const convertWasmCastlingToCastling = (castling: Uint8Array | undefined):
   }
 
   return [castling[0] !== 0, castling[1] !== 0, castling[2] !== 0, castling[3] !== 0];
-};
-
-export const convertMoveToWasmMove = (
-  move: MoveTypeMove | MoveTypeCastling | MoveTypeEnPassant | MoveTypePromotion,
-): WasmMove => {
-  return move;
 };
 
 export const convertIndexToPosition = (index: Index): PositionString => {
@@ -134,26 +55,9 @@ export const convertPositionToIndex = (posString: PositionString) => {
 export const convertWasmMoveToMove = (
   value: string,
 ): MoveTypeMove | MoveTypeCastling | MoveTypeEnPassant | MoveTypePromotion => {
-  const wasmMove = value.split(" ") as WasmMove;
-
-  return wasmMove;
+  return value.split(" ") as MoveTypeMove | MoveTypeCastling | MoveTypeEnPassant | MoveTypePromotion;
 };
 
-export const convertPieceToWasmPiece = (wasmPiece: Piece): WasmPiece => {
-  return (
-    {
-      [WhitePawn]: "P",
-      [WhiteKnight]: "N",
-      [WhiteBishop]: "B",
-      [WhiteRook]: "R",
-      [WhiteQueen]: "Q",
-      [WhiteKing]: "K",
-      [BlackPawn]: "P",
-      [BlackKnight]: "N",
-      [BlackBishop]: "B",
-      [BlackRook]: "R",
-      [BlackQueen]: "Q",
-      [BlackKing]: "K",
-    } satisfies Record<Piece, WasmPiece>
-  )[wasmPiece];
+export const convertPieceToWasmPiece = (wasmPiece: PromotionPieces): WasmPiece => {
+  return wasmPiece;
 };

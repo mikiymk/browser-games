@@ -1,23 +1,26 @@
 import type { Awaitable, Tuple, TupleIndex } from "@/common/type-util";
 
 // マスの状況
-export const Empty = 100;
-export const BlackPawn = 111;
-export const BlackKnight = 112;
-export const BlackBishop = 113;
-export const BlackRook = 114;
-export const BlackQueen = 115;
-export const BlackKing = 116;
+export type Square = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
+export const Empty = 0;
 
-export const WhitePawn = 121;
-export const WhiteKnight = 122;
-export const WhiteBishop = 123;
-export const WhiteRook = 124;
-export const WhiteQueen = 125;
-export const WhiteKing = 126;
+export const WhitePawn = 1;
+export const WhiteKnight = 2;
+export const WhiteBishop = 3;
+export const WhiteRook = 4;
+export const WhiteQueen = 5;
+export const WhiteKing = 6;
 
-export const Black = 110;
-export const White = 120;
+export const BlackPawn = 7;
+export const BlackKnight = 8;
+export const BlackBishop = 9;
+export const BlackRook = 10;
+export const BlackQueen = 11;
+export const BlackKing = 12;
+
+export type Mark = 0 | 1;
+export const Black = 1;
+export const White = 0;
 
 export const Reset = "reset";
 const Move = "m";
@@ -29,20 +32,6 @@ export const Resign = "resign";
 // 盤のサイズ
 export const BoardLength = 64;
 
-export type Mark = typeof Black | typeof White;
-export type Piece =
-  | typeof BlackPawn
-  | typeof BlackKnight
-  | typeof BlackBishop
-  | typeof BlackRook
-  | typeof BlackQueen
-  | typeof BlackKing
-  | typeof WhitePawn
-  | typeof WhiteKnight
-  | typeof WhiteBishop
-  | typeof WhiteRook
-  | typeof WhiteQueen
-  | typeof WhiteKing;
 export type Empty = typeof Empty;
 export type Reset = typeof Reset;
 type Move = typeof Move;
@@ -51,7 +40,7 @@ type EnPassant = typeof EnPassant;
 type Promotion = typeof Promotion;
 export type Resign = typeof Resign;
 
-export type BoardData = Tuple<Piece | Empty, 64>;
+export type BoardData = Tuple<Square, 64>;
 export type Index = TupleIndex<BoardData>;
 
 export type GameState = {
@@ -75,8 +64,8 @@ export type GameState = {
 // 2 | 48 49 50 51 52 53 54 55
 // 1 | 56 57 58 59 60 61 62 63
 
-type PositionFile = "a" | "b" | "c" | "d" | "e" | "f" | "g" | "h";
-type PositionRank = "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8";
+export type PositionFile = "a" | "b" | "c" | "d" | "e" | "f" | "g" | "h";
+export type PositionRank = "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8";
 export type PositionString = `${PositionFile}${PositionRank}`;
 export type WasmPiece = "P" | "N" | "B" | "R" | "Q" | "K";
 
@@ -102,12 +91,10 @@ export type IsCastled = [
   white_king_64: boolean,
 ];
 
-export type EnPassantTarget = Index | false;
+export type EnPassantTarget = number | undefined;
 
 export type InputType = Index | Reset;
-type BlackPromotionTarget = typeof BlackKnight | typeof BlackBishop | typeof BlackRook | typeof BlackQueen;
-type WhitePromotionTarget = typeof WhiteKnight | typeof WhiteBishop | typeof WhiteRook | typeof WhiteQueen;
-export type PromotionPieces = BlackPromotionTarget | WhitePromotionTarget;
+export type PromotionPieces = "N" | "B" | "R" | "Q";
 
 export type Sender<T> = (value: T) => void;
 export type Receiver<T> = () => Promise<T>;

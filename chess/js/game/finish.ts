@@ -3,7 +3,7 @@ import { is_finished } from "@/chess/wasm/pkg/chess_wasm";
 import type { GameState } from "@/chess/js/types";
 import type { Setter } from "solid-js";
 
-import { convertBoardToWasmBoard, convertEnPassantToWasmEnPassant, convertMarkToWasmMark } from "../wasm-convert";
+import { convertBoardToWasmBoard } from "../wasm-convert";
 
 export const isFinished = (state: GameState, setMessage?: Setter<string>): boolean => {
   const message = (message: string) => {
@@ -11,11 +11,7 @@ export const isFinished = (state: GameState, setMessage?: Setter<string>): boole
   };
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
-  const finishMessage = is_finished(
-    convertBoardToWasmBoard(state.board),
-    convertMarkToWasmMark(state.mark),
-    convertEnPassantToWasmEnPassant(state.enPassant),
-  );
+  const finishMessage = is_finished(convertBoardToWasmBoard(state.board), state.mark, state.enPassant);
 
   if (finishMessage !== undefined) {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument

@@ -18,9 +18,9 @@ import {
   WhiteRook,
 } from "@/chess/js/types";
 
-import type { Empty, Piece } from "@/chess/js/types";
+import type { Square } from "@/chess/js/types";
 
-export const PieceImage = (properties: { mark: Piece | Empty }) => {
+export const PieceImage = (properties: { mark: Square }) => {
   return (
     <span
       classList={{

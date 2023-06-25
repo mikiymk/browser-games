@@ -4,7 +4,7 @@ import { Empty } from "@/chess/js/types";
 
 import { PieceImage } from "./piece";
 
-import type { BoardData, Index, InputType, Piece, Sender } from "@/chess/js/types";
+import type { BoardData, Index, InputType, Sender, Square } from "@/chess/js/types";
 
 type BoardProperties = {
   board: BoardData;
@@ -19,7 +19,7 @@ export const Board = (properties: BoardProperties) => {
       <For each={properties.board}>
         {(square, index) => {
           return (
-            <Square
+            <BoardSquare
               square={square}
               index={index() as Index}
               setInput={properties.setInput}
@@ -32,14 +32,14 @@ export const Board = (properties: BoardProperties) => {
   );
 };
 
-type SquareProperties = {
-  square: Piece | Empty;
+type BoardSquareProperties = {
+  square: Square;
   index: Index;
 
   setInput: Sender<InputType>;
   movable: boolean;
 };
-const Square = (properties: SquareProperties) => {
+const BoardSquare = (properties: BoardSquareProperties) => {
   const isCellWhite = () => {
     const index = properties.index;
     return index % 16 >= 8 ? index % 2 !== 0 : index % 2 === 0;

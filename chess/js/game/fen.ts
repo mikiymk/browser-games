@@ -1,4 +1,4 @@
-import type { BoardData, Mark, IsCastled, Index, Piece, GameState, EnPassantTarget } from "../types";
+import type { BoardData, Mark, IsCastled, GameState, EnPassantTarget, Square } from "../types";
 
 import {
   Empty,
@@ -17,7 +17,7 @@ import {
   WhiteRook,
 } from "../types";
 
-const charsMap: Record<Piece | Empty, string> = {
+const charsMap: Record<Square, string> = {
   [Empty]: "E",
   [BlackPawn]: "p",
   [BlackKnight]: "n",
@@ -79,10 +79,10 @@ const castlingToFen = (castling: IsCastled): string => {
 };
 
 const enPassantToFen = (enPassant: EnPassantTarget): string => {
-  return enPassant === false ? "-" : indexToAlgebraic(enPassant);
+  return enPassant === undefined ? "-" : indexToAlgebraic(enPassant);
 };
 
-const indexToAlgebraic = (index: Index): string => {
+const indexToAlgebraic = (index: number): string => {
   const rank = Math.floor(index / 8);
   const file = index % 8;
 

@@ -16,7 +16,7 @@ import {
   WhiteRook,
 } from "@/chess/js/types";
 
-import type { BoardData, GameState, Index, Piece } from "@/chess/js/types";
+import type { BoardData, GameState, Index, Square } from "@/chess/js/types";
 
 export const generateState = (): GameState => {
   const board = generateBoard({
@@ -61,15 +61,15 @@ export const generateState = (): GameState => {
     board,
     mark: White,
     castling: [true, true, true, true],
-    enPassant: false,
+    enPassant: undefined,
     fiftyMove: 0,
     threefold: new Map(),
     moves: 1,
   };
 };
 
-export const generateBoard = (pieces: Partial<Record<Index, Piece>>): BoardData => {
-  return Array.from<never, Piece | Empty>({ length: BoardLength }, (_, key) => {
+export const generateBoard = (pieces: Partial<Record<Index, Square>>): BoardData => {
+  return Array.from<never, Square>({ length: BoardLength }, (_, key) => {
     const piece = pieces[key as Index];
     return piece ?? Empty;
   }) as BoardData;

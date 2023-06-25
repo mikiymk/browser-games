@@ -15,7 +15,7 @@ import {
 
 import { PieceImage } from "./piece";
 
-import type { Mark, PromotionPieces, Sender } from "@/chess/js/types";
+import type { Mark, PromotionPieces, Sender, Square } from "@/chess/js/types";
 
 type PromotionPopupProperties = {
   mark: Mark | undefined;
@@ -36,7 +36,7 @@ export const PromotionPopup = (properties: PromotionPopupProperties) => {
     <dialog class="promotion" ref={dialog.setValue}>
       <Show when={properties.mark}>
         {(mark) => (
-          <For each={promotionTargetPieces(mark())}>
+          <For each={promotionTargetPieces}>
             {(piece, index) => (
               <div
                 classList={{
@@ -49,7 +49,7 @@ export const PromotionPopup = (properties: PromotionPopupProperties) => {
                   dialog.value?.close();
                 }}
               >
-                <PieceImage mark={piece} />
+                <PieceImage mark={getMark(mark(), piece)} />
               </div>
             )}
           </For>
@@ -59,9 +59,40 @@ export const PromotionPopup = (properties: PromotionPopupProperties) => {
   );
 };
 
-const promotionTargetPieces = (mark: Mark): PromotionPieces[] => {
-  const promotionWhitePieces: PromotionPieces[] = [WhiteKnight, WhiteBishop, WhiteRook, WhiteQueen];
-  const promotionBlackPieces: PromotionPieces[] = [BlackKnight, BlackBishop, BlackRook, BlackQueen];
+const promotionTargetPieces: PromotionPieces[] = ["N", "B", "R", "Q"];
 
-  return mark === White ? promotionWhitePieces : promotionBlackPieces;
+const getMark = (mark: Mark, piece: PromotionPieces): Square => {
+  if (mark === White) {
+    switch (piece) {
+      case "N": {
+        return WhiteKnight;
+      }
+      case "B": {
+        return WhiteBishop;
+      }
+      case "R": {
+        return WhiteRook;
+      }
+      case "Q": {
+        return WhiteQueen;
+      }
+      // No default
+    }
+  } else {
+    switch (piece) {
+      case "N": {
+        return BlackKnight;
+      }
+      case "B": {
+        return BlackBishop;
+      }
+      case "R": {
+        return BlackRook;
+      }
+      case "Q": {
+        return BlackQueen;
+      }
+      // No default
+    }
+  }
 };

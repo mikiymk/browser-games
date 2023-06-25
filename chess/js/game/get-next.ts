@@ -18,18 +18,16 @@ import type {
 import {
   convertBoardToWasmBoard,
   convertCastlingToWasmCastling,
-  convertMoveToWasmMove,
   convertPositionToIndex,
   convertWasmBoardToBoard,
   convertWasmCastlingToCastling,
-  convertWasmEnPassantToEnPassant,
 } from "../wasm-convert";
 
 export const getNextState = (
   state: GameState,
   move: MoveTypeMove | MoveTypeCastling | MoveTypeEnPassant | MoveTypePromotion,
 ): GameState => {
-  const wasmMove = convertMoveToWasmMove(move).join(" ");
+  const wasmMove = move.join(" ");
   const wasmBoard = convertBoardToWasmBoard(state.board);
   const nextBoard = convertWasmBoardToBoard(
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-argument
@@ -39,10 +37,9 @@ export const getNextState = (
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-argument
     get_next_castling(convertCastlingToWasmCastling(state.castling), wasmMove),
   );
-  const nextEnPassant = convertWasmEnPassantToEnPassant(
+  const nextEnPassant =
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-argument
-    get_next_en_passant(wasmBoard, wasmMove),
-  );
+    get_next_en_passant(wasmBoard, wasmMove);
 
   return {
     board: nextBoard,
