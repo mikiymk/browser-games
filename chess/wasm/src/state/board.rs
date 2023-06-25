@@ -13,65 +13,23 @@ pub struct Board {
 
 impl Board {
     pub fn new() -> Board {
-        Board {
+        Self {
             squares: [BoardSquare::Empty; 64],
         }
     }
 
-    pub fn try_from_slice(value: &[u8]) -> Option<Board> {
-        let mut squares = [BoardSquare::Empty; 64];
+    pub fn try_from_slice(value: &[u8]) -> Option<Self> {
+        let mut board = Self::new();
 
         for (i, value) in value.iter().enumerate() {
             if i >= 64 {
                 break;
             }
 
-            squares[i] = BoardSquare::try_from_u8(*value)?;
+            board.squares[i] = BoardSquare::try_from_u8(*value)?;
         }
 
-        Some(Board { squares })
-    }
-
-    pub fn initial() -> Board {
-        use Mark::{Black, White};
-        use Piece::{Bishop, King, Knight, Pawn, Queen, Rook};
-
-        let mut board = Board::new();
-
-        board.squares[0] = BoardSquare::new(Black, Rook);
-        board.squares[1] = BoardSquare::new(Black, Knight);
-        board.squares[2] = BoardSquare::new(Black, Bishop);
-        board.squares[3] = BoardSquare::new(Black, Queen);
-        board.squares[4] = BoardSquare::new(Black, King);
-        board.squares[5] = BoardSquare::new(Black, Bishop);
-        board.squares[6] = BoardSquare::new(Black, Knight);
-        board.squares[7] = BoardSquare::new(Black, Rook);
-        board.squares[8] = BoardSquare::new(Black, Pawn);
-        board.squares[9] = BoardSquare::new(Black, Pawn);
-        board.squares[10] = BoardSquare::new(Black, Pawn);
-        board.squares[11] = BoardSquare::new(Black, Pawn);
-        board.squares[12] = BoardSquare::new(Black, Pawn);
-        board.squares[13] = BoardSquare::new(Black, Pawn);
-        board.squares[14] = BoardSquare::new(Black, Pawn);
-        board.squares[15] = BoardSquare::new(Black, Pawn);
-        board.squares[48] = BoardSquare::new(White, Pawn);
-        board.squares[49] = BoardSquare::new(White, Pawn);
-        board.squares[50] = BoardSquare::new(White, Pawn);
-        board.squares[51] = BoardSquare::new(White, Pawn);
-        board.squares[52] = BoardSquare::new(White, Pawn);
-        board.squares[53] = BoardSquare::new(White, Pawn);
-        board.squares[54] = BoardSquare::new(White, Pawn);
-        board.squares[55] = BoardSquare::new(White, Pawn);
-        board.squares[56] = BoardSquare::new(White, Rook);
-        board.squares[57] = BoardSquare::new(White, Knight);
-        board.squares[58] = BoardSquare::new(White, Bishop);
-        board.squares[59] = BoardSquare::new(White, Queen);
-        board.squares[60] = BoardSquare::new(White, King);
-        board.squares[61] = BoardSquare::new(White, Bishop);
-        board.squares[62] = BoardSquare::new(White, Knight);
-        board.squares[63] = BoardSquare::new(White, Rook);
-
-        board
+        Some(board)
     }
 
     pub fn is_same_mark(&self, left: &Position, right: &Position) -> bool {
@@ -95,7 +53,7 @@ impl Board {
         self.set_piece(from, BoardSquare::Empty);
     }
 
-    pub fn apply_ply(&self, ply: &Ply) -> Board {
+    pub fn apply_ply(&self, ply: &Ply) -> Self {
         match ply {
             Ply::Move { from, to } => {
                 let mut clone = self.clone();

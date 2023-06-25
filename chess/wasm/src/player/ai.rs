@@ -30,7 +30,7 @@ pub fn mini_max(
     let mut min_value = f64::INFINITY;
 
     while let Some((board, mark, castling, en_passant, depth, is_max)) = queue.pop_front() {
-        if depth <= 0 || is_finish(&board, &mark, &en_passant).is_some() {
+        if depth == 0 || is_finish(&board, &mark, &en_passant).is_some() {
             let value = evaluate_function(&board, &mark, &castling, &en_passant);
 
             if is_max {
@@ -67,6 +67,7 @@ pub fn mini_max(
     }
 }
 
+#[allow(dead_code)]
 pub fn alpha_beta(
     board: &Board,
     mark: &Mark,

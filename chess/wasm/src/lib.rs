@@ -5,18 +5,16 @@ mod message_const;
 mod player;
 mod state;
 
-use game::{finish::is_finish, Game};
+use game::finish::is_finish;
 use get_ply::{filter_checked_ply, get_all_board_ply, get_castling_ply, get_ply};
-use js_function::JsFunction;
 
-use player::{ai::mini_max, Player};
+use player::ai::mini_max;
 use state::{
     board::Board,
     castling::{Castling, CastlingType},
     en_passant::EnPassant,
     mark::Mark,
     position::Position,
-    GameState,
 };
 use wasm_bindgen::prelude::*;
 
@@ -33,31 +31,6 @@ extern "C" {
     #[wasm_bindgen(js_namespace = console)]
     pub fn log(s: &str);
 
-}
-
-#[wasm_bindgen]
-pub fn add(left: u32, right: u32) -> u32 {
-    left + right
-}
-
-#[wasm_bindgen]
-pub async fn game(
-    player_white: u8,
-    player_black: u8,
-    set_state: &js_sys::Function,
-    set_highlight: &js_sys::Function,
-    player_input: &js_sys::Function,
-) -> Result<(), String> {
-    let set_highlight: JsFunction<'_, Vec<usize>> = JsFunction::new(set_highlight);
-    let player_white = Player::try_new(player_white, player_input, &set_highlight)?;
-    let player_black = Player::try_new(player_black, player_input, &set_highlight)?;
-    let set_state: JsFunction<'_, GameState> = JsFunction::new(set_state);
-
-    let mut game = Game::new(player_white, player_black, set_state);
-
-    game.run().await?;
-
-    Ok(())
 }
 
 #[wasm_bindgen]
@@ -141,10 +114,7 @@ pub fn is_finished(
     let mark = Mark::try_from_u8(mark).ok_or("mark")?;
     let en_passant = EnPassant::try_from_u8(en_passant).ok_or("en_passant")?;
 
-    Ok(match is_finish(&board, &mark, &en_passant) {
-        Some(s) => Some(s.to_string()),
-        None => None,
-    })
+    Ok(is_finish(&board, &mark, &en_passant).map(|s| s.to_string()))
 }
 
 #[wasm_bindgen]

@@ -2,7 +2,7 @@ use std::fmt::Display;
 
 use crate::state::piece::Piece;
 
-use crate::state::Mark;
+use crate::state::mark::Mark;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum BoardSquare {
@@ -38,13 +38,6 @@ impl BoardSquare {
     pub fn mark(&self) -> Option<Mark> {
         match self {
             BoardSquare::Piece(m, _) => Some(*m),
-            BoardSquare::Empty => None,
-        }
-    }
-
-    pub fn piece(&self) -> Option<Piece> {
-        match self {
-            BoardSquare::Piece(_, p) => Some(*p),
             BoardSquare::Empty => None,
         }
     }

@@ -7,14 +7,22 @@ use super::board_square::BoardSquare;
 pub struct EnPassant(Option<Position>);
 
 impl EnPassant {
-    pub fn new() -> Self {
-        EnPassant(None)
+    pub(crate) fn new(pos: Option<Position>) -> Self {
+        Self(pos)
+    }
+
+    pub(crate) fn new_none() -> Self {
+        Self(None)
+    }
+
+    pub(crate) fn new_position(pos: Position) -> Self {
+        Self(Some(pos))
     }
 
     pub fn try_from_u8(value: Option<u8>) -> Option<Self> {
         match value {
-            Some(i) => Some(EnPassant(Some(Position::try_from_u8(i)?))),
-            None => Some(EnPassant(None)),
+            Some(i) => Some(Self::new_position(Position::try_from_u8(i)?)),
+            None => Some(Self::new_none()),
         }
     }
 
@@ -39,14 +47,14 @@ impl EnPassant {
                         let x = (from.x() + to.x()) / 2;
                         let y = from.y();
 
-                        EnPassant(Position::try_new(x, y))
+                        Self::new(Position::try_new(x, y))
                     } else {
-                        EnPassant(None)
+                        Self::new_none()
                     }
                 }
-                _ => EnPassant(None),
+                _ => Self::new_none(),
             },
-            _ => EnPassant(None),
+            _ => Self::new_none(),
         }
     }
 }
@@ -74,7 +82,7 @@ mod test {
 
         let next_en_passant = EnPassant::next_turn_available(&board, &ply);
 
-        assert_eq!(next_en_passant, EnPassant(Some(expected)))
+        assert_eq!(next_en_passant, EnPassant::new_position(expected))
     }
 
     #[test]
@@ -89,6 +97,6 @@ mod test {
 
         let next_en_passant = EnPassant::next_turn_available(&board, &ply);
 
-        assert_eq!(next_en_passant, EnPassant(None))
+        assert_eq!(next_en_passant, EnPassant::new_none())
     }
 }

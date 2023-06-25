@@ -20,10 +20,10 @@ pub fn is_finish(board: &Board, mark: &Mark, en_passant: &EnPassant) -> Option<&
     }
 
     // チェックメイト
-    if is_check(&board, &mark) {
-        for ply in get_all_board_ply(&mark, &board, &en_passant) {
+    if is_check(board, mark) {
+        for ply in get_all_board_ply(mark, board, en_passant) {
             let board = board.apply_ply(&ply);
-            if is_check(&board, &mark) {
+            if is_check(&board, mark) {
                 return Some(match mark {
                     Mark::White => MESSAGE_WHITE_WIN,
                     Mark::Black => MESSAGE_BLACK_WIN,
@@ -33,15 +33,12 @@ pub fn is_finish(board: &Board, mark: &Mark, en_passant: &EnPassant) -> Option<&
     }
 
     // ステイルメイト
-    if get_all_board_ply(&mark, &board, &en_passant)
-        .next()
-        .is_none()
-    {
+    if get_all_board_ply(mark, board, en_passant).next().is_none() {
         return Some(MESSAGE_STALEMATE);
     }
 
     // 駒がチェックメイトに充分
-    if is_enough_for_checkmate(&board) {
+    if is_enough_for_checkmate(board) {
         return Some(MESSAGE_INSUFFICIENT_MATERIAL);
     }
 

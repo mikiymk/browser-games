@@ -177,7 +177,7 @@ mod test {
 
         let from = Position::new(6, 3);
         let mark = Mark::White;
-        let en_passant = EnPassant::new();
+        let en_passant = EnPassant::new_none();
 
         let mut iter = get_pawn_ply(&board, &from, &mark, &en_passant);
 
@@ -210,7 +210,7 @@ mod test {
 
         let from = Position::new(4, 3);
         let mark = Mark::White;
-        let en_passant = EnPassant::new();
+        let en_passant = EnPassant::new_none();
 
         let mut iter = get_pawn_ply(&board, &from, &mark, &en_passant);
 
@@ -243,7 +243,7 @@ mod test {
 
         let from = Position::new(6, 3);
         let mark = Mark::White;
-        let en_passant = EnPassant::new();
+        let en_passant = EnPassant::new_none();
 
         let mut iter = get_pawn_ply(&board, &from, &mark, &en_passant);
 
@@ -310,7 +310,7 @@ mod test {
 
         let from = Position::new(1, 3);
         let mark = Mark::White;
-        let en_passant = EnPassant::new();
+        let en_passant = EnPassant::new_none();
 
         let mut iter = get_pawn_ply(&board, &from, &mark, &en_passant);
 
