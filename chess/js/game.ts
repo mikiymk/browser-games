@@ -19,6 +19,8 @@ export const gameLoop = async (
   console.log(stateToFen(state()));
 
   for (;;) {
+    await sleep(50);
+
     setMessage(state().mark === Black ? "Black turn" : "White turn");
 
     const move = await players[state().mark].getMove(state());
@@ -37,3 +39,9 @@ export const gameLoop = async (
 
   console.log("end game");
 };
+
+const sleep = (time: number) : Promise<void> => {
+  return new Promise((resolve) => {
+    setTimeout(() => resolve(), time);
+  });
+}
