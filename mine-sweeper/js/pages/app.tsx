@@ -3,7 +3,7 @@ import { For, createEffect, createSignal } from "solid-js";
 import { Controller } from "./controller";
 import { MineField } from "./field";
 
-import { FieldBomb, FieldFlag, FieldNoOpen } from "../consts";
+import { Bombed, Clear, FieldBomb, FieldFlag, FieldNoOpen, FirstClick, Playing } from "../consts";
 
 export const App = () => {
   const [height, setHeight] = createSignal(10);
@@ -12,24 +12,21 @@ export const App = () => {
   const [minesAmount, setMinesAmount] = createSignal(10);
 
   const [fields, setFields] = createSignal(Array.from({ length: 100 }, (_, n) => (n % 12) - 3));
-  const [mines, setMines] = createSignal([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+  const mines = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
-  const [clear, setClear] = createSignal(false);
-  const [bomb, setBomb] = createSignal(false);
+  const [gameState, setGameState] = createSignal(FirstClick);
 
   const reset = () => {
     const length = height() * width();
-    setClear(false);
-    setBomb(false);
+    setGameState(FirstClick);
     setFields(Array.from({ length }, () => FieldNoOpen));
-    setMines(Array.from({ length: minesAmount() }, () => Math.floor(Math.random() * length)));
   };
 
   const message = () => {
     let flagCount = 0;
-    if (bomb()) {
+    if (gameState() === Bombed) {
       return "bombed";
-    } else if (clear()) {
+    } else if (gameState() === Clear) {
       return "cleared";
     }
 
@@ -47,19 +44,33 @@ export const App = () => {
   });
 
   const openField = (index: number) => {
-    if (clear() || bomb() || fields().length <= index) {
+    if (gameState() === Bombed || gameState() === Clear || fields().length <= index) {
       return;
+    }
+
+    if (gameState() === FirstClick) {
+      mines.length = 0;
+      const around = new Set([index, ...getAround(height(), width(), index)]);
+      const length = height() * width();
+      const amount = minesAmount();
+
+      while (mines.length !== amount) {
+        const index = Math.floor(Math.random() * length);
+        if (!around.has(index)) mines.push(index);
+      }
+
+      setGameState(Playing);
     }
 
     let clickResult = FieldNoOpen;
 
-    if (mines().includes(index)) {
-      setBomb(true);
+    if (mines.includes(index)) {
+      setGameState(Bombed);
       clickResult = FieldBomb;
     } else {
       clickResult = 0;
       for (const aroundIndex of getAround(height(), width(), index)) {
-        if (mines().includes(aroundIndex)) {
+        if (mines.includes(aroundIndex)) {
           clickResult++;
         }
       }
@@ -81,8 +92,8 @@ export const App = () => {
       }
     }
 
-    if (isClear(fields(), mines())) {
-      setClear(true);
+    if (isClear(fields(), mines)) {
+      setGameState(Clear);
     }
   };
 
