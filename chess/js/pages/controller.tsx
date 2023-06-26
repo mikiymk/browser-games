@@ -1,4 +1,4 @@
-import { createReference } from "@/chess/js/reference";
+import { createReference } from "@/common/reference";
 import { PlayerTypeAI, PlayerTypeHuman } from "@/common/types";
 
 import type { PlayerType } from "@/common/types";

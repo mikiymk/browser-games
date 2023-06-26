@@ -1,6 +1,5 @@
 import { For, Show, createEffect } from "solid-js";
 
-import { createReference } from "@/chess/js/reference";
 import {
   WhiteKnight,
   BlackBishop,
@@ -12,6 +11,7 @@ import {
   WhiteQueen,
   WhiteRook,
 } from "@/chess/js/types";
+import { createReference } from "@/common/reference";
 
 import { PieceImage } from "./piece";
 

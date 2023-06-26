@@ -5,6 +5,7 @@ body {
 
 .grid {
   margin: auto;
+  padding: 1vmin;
   width: min-content;
   height: min-content;
 
@@ -89,7 +90,7 @@ body {
 }
 
 .g-n6 {
-  stroke: rgb(64, 181, 224);
+  stroke: darkturquoise;
 }
 
 .g-n7 {

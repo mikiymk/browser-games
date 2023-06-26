@@ -20,10 +20,19 @@ import {
 type MineFieldProperties = {
   field: number;
   onClick: () => void;
+  onContextMenu: () => boolean;
 };
 export const MineField = (properties: MineFieldProperties) => {
   return (
-    <div class="field" onClick={() => properties.onClick()}>
+    <div
+      class="field"
+      onClick={() => properties.onClick()}
+      onContextMenu={(event) => {
+        if (properties.onContextMenu()) {
+          event.preventDefault();
+        }
+      }}
+    >
       <Switch>
         <Match when={properties.field == FieldBomb}>
           <div class="field-close">
