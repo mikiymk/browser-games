@@ -1,3 +1,4 @@
+import { SettingModal } from "@/common/setting-modal";
 import { PlayerTypeHuman, PlayerTypeAI } from "@/common/types";
 
 import type { PlayerType } from "@/common/types";
@@ -18,42 +19,7 @@ export const Controller = (properties: ControllerProperties) => {
       status:
       <output>{properties.statusMessage}</output>
       <button onClick={() => properties.onReset()}>reset</button>
-      <SettingModal
-        playerO={properties.playerO}
-        playerX={properties.playerX}
-        setPlayerO={properties.setPlayerO}
-        setPlayerX={properties.setPlayerX}
-      />
-    </div>
-  );
-};
-
-type SettingModalProperties = {
-  playerO: PlayerType;
-  playerX: PlayerType;
-  setPlayerO: Setter<PlayerType>;
-  setPlayerX: Setter<PlayerType>;
-};
-const SettingModal = (properties: SettingModalProperties) => {
-  let dialog: HTMLDialogElement | undefined;
-  const dialogReference = (element: HTMLDialogElement) => {
-    dialog = element;
-  };
-
-  const openSettings = () => {
-    dialog?.showModal();
-  };
-
-  const closeSettings = () => {
-    dialog?.close();
-  };
-
-  return (
-    <>
-      <button onClick={openSettings}>open settings</button>
-      <dialog ref={dialogReference}>
-        <h3>Settings</h3>
-
+      <SettingModal>
         <div>
           ◯ player
           <SettingPlayerSelect player={properties.playerO} setPlayer={properties.setPlayerO} />
@@ -62,10 +28,8 @@ const SettingModal = (properties: SettingModalProperties) => {
           ✗ player
           <SettingPlayerSelect player={properties.playerX} setPlayer={properties.setPlayerX} />
         </div>
-
-        <button onClick={closeSettings}>Close</button>
-      </dialog>
-    </>
+      </SettingModal>
+    </div>
   );
 };
 

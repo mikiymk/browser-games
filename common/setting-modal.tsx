@@ -24,7 +24,7 @@ export const SettingModal = (properties: SettingModalProperties) => {
 
         {properties.children}
 
-        <button onClick={closeSettings}>Close</button>
+        <button onClick={closeSettings}>close settings</button>
       </dialog>
     </>
   );

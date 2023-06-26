@@ -40,8 +40,8 @@ export const gameLoop = async (
   console.log("end game");
 };
 
-const sleep = (time: number) : Promise<void> => {
+const sleep = (time: number): Promise<void> => {
   return new Promise((resolve) => {
     setTimeout(() => resolve(), time);
   });
-}
+};

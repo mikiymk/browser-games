@@ -1,4 +1,4 @@
-import { createReference } from "@/common/reference";
+import { SettingModal } from "@/common/setting-modal";
 import { PlayerTypeAI, PlayerTypeHuman } from "@/common/types";
 
 import type { PlayerType } from "@/common/types";
@@ -20,40 +20,7 @@ export const Controller = (properties: ControllerProperties) => {
       status:
       <output>{properties.statusMessage}</output>
       <button onClick={() => properties.reset()}>reset</button>
-      <Settings
-        playerWhite={properties.playerWhite}
-        playerBlack={properties.playerBlack}
-        setPlayerWhite={properties.setPlayerWhite}
-        setPlayerBlack={properties.setPlayerBlack}
-      />
-    </div>
-  );
-};
-
-type SettingsProperties = {
-  playerWhite: PlayerType;
-  playerBlack: PlayerType;
-  setPlayerWhite: Setter<PlayerType>;
-  setPlayerBlack: Setter<PlayerType>;
-};
-const Settings = (properties: SettingsProperties) => {
-  const dialog = createReference<HTMLDialogElement>();
-
-  const openSettings = () => {
-    dialog.value?.showModal();
-  };
-
-  const closeSettings = () => {
-    dialog.value?.close();
-  };
-
-  return (
-    <>
-      <button onClick={openSettings}>open settings</button>
-
-      <dialog ref={dialog.setValue}>
-        <h3>Settings</h3>
-
+      <SettingModal>
         <div>
           Black player
           <SettingPlayerSelect player={properties.playerBlack} setPlayer={properties.setPlayerBlack} />
@@ -62,10 +29,8 @@ const Settings = (properties: SettingsProperties) => {
           White player
           <SettingPlayerSelect player={properties.playerWhite} setPlayer={properties.setPlayerWhite} />
         </div>
-
-        <button onClick={closeSettings}>Close</button>
-      </dialog>
-    </>
+      </SettingModal>
+    </div>
   );
 };
 
