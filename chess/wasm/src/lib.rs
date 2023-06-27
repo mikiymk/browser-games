@@ -22,14 +22,6 @@ use crate::state::ply::Ply;
 static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
 
 #[wasm_bindgen]
-extern "C" {
-
-    #[wasm_bindgen(js_namespace = console)]
-    pub fn log(s: &str);
-
-}
-
-#[wasm_bindgen]
 pub fn get_selected_piece_moves(
     from: u8,
     mark: u8,
@@ -131,8 +123,6 @@ pub fn get_ai_ply(
         let en_passant = EnPassant::next_turn_available(&board, &ply);
 
         let value = mini_max(&board, &mark, &castling, &en_passant, 2);
-
-        log(&format!("{} : {}", ply, value));
 
         if eval_value < value {
             eval_value = value;
