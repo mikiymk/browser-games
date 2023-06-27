@@ -1,17 +1,17 @@
 use crate::{
     state::piece::Piece,
     state::ply::Ply,
-    state::position::Position,
     state::{board::Board, board_square::BoardSquare, en_passant::EnPassant, mark::Mark},
+    state::{castling::Castling, position::Position},
 };
 
 use super::{
-    get_bishop_ply, get_king_ply, get_knight_ply, get_pawn_ply, get_queen_ply, get_rook_ply,
-    pawn::PawnPlyIterator, runs::RunPlyIterator, steps::StepPlyIterator,
+    get_bishop_ply, get_castling_ply, get_king_ply, get_knight_ply, get_pawn_ply, get_queen_ply,
+    get_rook_ply, runs::RunPlyIterator, steps::StepPlyIterator,
 };
 
 pub enum PlyIterator<'a> {
-    PawnMoves(PawnPlyIterator),
+    Vec(std::vec::IntoIter<Ply>),
     Steps(StepPlyIterator<'a>),
     Runs(RunPlyIterator<'a>),
 }
@@ -21,7 +21,7 @@ impl Iterator for PlyIterator<'_> {
 
     fn next(&mut self) -> Option<Self::Item> {
         match self {
-            PlyIterator::PawnMoves(iter) => iter.next(),
+            PlyIterator::Vec(iter) => iter.next(),
             PlyIterator::Steps(iter) => iter.next(),
             PlyIterator::Runs(iter) => iter.next(),
         }
@@ -67,9 +67,9 @@ pub fn get_ply<'a>(
     en_passant: &EnPassant,
 ) -> Option<PlyIterator<'a>> {
     match board.get_piece(from) {
-        BoardSquare::Piece(mark, Piece::Pawn) => Some(PlyIterator::PawnMoves(get_pawn_ply(
-            board, from, &mark, en_passant,
-        ))),
+        BoardSquare::Piece(mark, Piece::Pawn) => Some(PlyIterator::Vec(
+            get_pawn_ply(board, from, &mark, en_passant).into_iter(),
+        )),
         BoardSquare::Piece(_, Piece::Knight) => {
             Some(PlyIterator::Steps(get_knight_ply(board, *from)))
         }
@@ -86,6 +86,7 @@ pub fn get_ply<'a>(
 pub fn get_all_board_ply<'a>(
     mark: &Mark,
     board: &'a Board,
+    castling: &Castling,
     en_passant: &EnPassant,
 ) -> AllPlyIterator<'a> {
     let mut ply_iter_vec = Vec::new();
@@ -97,6 +98,10 @@ pub fn get_all_board_ply<'a>(
             }
         }
     }
+
+    ply_iter_vec.push(PlyIterator::Vec(
+        get_castling_ply(mark, board, castling).into_iter(),
+    ));
 
     AllPlyIterator::new(ply_iter_vec)
 }
@@ -167,9 +172,10 @@ mod tests {
 
         let en_passant = EnPassant::get_next(&board, &ply);
         let board = board.get_next(&ply);
+        let castling = Castling::new(0b1111);
 
-        let iter_black = get_all_board_ply(&Mark::Black, &board, &en_passant);
-        let iter_white = get_all_board_ply(&Mark::White, &board, &en_passant);
+        let iter_black = get_all_board_ply(&Mark::Black, &board, &castling, &en_passant);
+        let iter_white = get_all_board_ply(&Mark::White, &board, &castling, &en_passant);
         let vec_white: Vec<_> = iter_white.collect();
         let vec_black: Vec<_> = iter_black.collect();
 

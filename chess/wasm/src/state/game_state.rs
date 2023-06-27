@@ -33,11 +33,11 @@ impl GameState {
     }
 
     pub fn is_finish(&self) -> bool {
-        is_finish(&self.board, &self.mark, &self.en_passant).is_some()
+        is_finish(&self.board, &self.mark, &self.castling, &self.en_passant).is_some()
     }
 
     pub fn get_legal_plies(&self) -> impl Iterator<Item = Ply> + '_ {
-        get_all_board_ply(&self.mark, &self.board, &self.en_passant)
+        get_all_board_ply(&self.mark, &self.board, &self.castling, &self.en_passant)
             .filter(|ply| filter_checked_ply(ply, &self.mark, &self.board))
     }
 }

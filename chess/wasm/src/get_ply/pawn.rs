@@ -10,7 +10,7 @@ pub fn get_pawn_ply(
     from: &Position,
     mark: &Mark,
     en_passant: &EnPassant,
-) -> PawnPlyIterator {
+) -> Vec<Ply> {
     let mut plies = Vec::new();
 
     let mark_direction = mark.front_direction();
@@ -47,7 +47,7 @@ pub fn get_pawn_ply(
         }
     }
 
-    PawnPlyIterator::new(plies.iter().flat_map(|ply| promotion(mark, ply)).collect())
+    plies.iter().flat_map(|ply| promotion(mark, ply)).collect()
 }
 
 fn promotion(mark: &Mark, ply: &Ply) -> Vec<Ply> {
@@ -85,29 +85,6 @@ fn is_on_promotion_rank(mark: Mark, ply: Ply) -> bool {
     };
 
     pos.x() == other_end_rank
-}
-
-pub struct PawnPlyIterator {
-    vec: Vec<Ply>,
-
-    count: usize,
-}
-
-impl PawnPlyIterator {
-    fn new(vec: Vec<Ply>) -> Self {
-        PawnPlyIterator { vec, count: 0 }
-    }
-}
-
-impl Iterator for PawnPlyIterator {
-    type Item = Ply;
-
-    fn next(&mut self) -> Option<Self::Item> {
-        let ply = self.vec.get(self.count);
-        self.count += 1;
-
-        ply.copied()
-    }
 }
 
 #[cfg(test)]
@@ -179,7 +156,8 @@ mod test {
         let mark = Mark::White;
         let en_passant = EnPassant::new_none();
 
-        let mut iter = get_pawn_ply(&board, &from, &mark, &en_passant);
+        let vec = get_pawn_ply(&board, &from, &mark, &en_passant);
+        let mut iter = vec.into_iter();
 
         assert_eq!(iter.next(), Some(Ply::new_move(from, Position::new(5, 3))));
         assert_eq!(iter.next(), Some(Ply::new_move(from, Position::new(4, 3))));
@@ -212,7 +190,8 @@ mod test {
         let mark = Mark::White;
         let en_passant = EnPassant::new_none();
 
-        let mut iter = get_pawn_ply(&board, &from, &mark, &en_passant);
+        let vec = get_pawn_ply(&board, &from, &mark, &en_passant);
+        let mut iter = vec.into_iter();
 
         assert_eq!(iter.next(), Some(Ply::new_move(from, Position::new(3, 3))));
         assert_eq!(iter.next(), Some(Ply::new_move(from, Position::new(3, 2))));
@@ -245,7 +224,8 @@ mod test {
         let mark = Mark::White;
         let en_passant = EnPassant::new_none();
 
-        let mut iter = get_pawn_ply(&board, &from, &mark, &en_passant);
+        let vec = get_pawn_ply(&board, &from, &mark, &en_passant);
+        let mut iter = vec.into_iter();
 
         assert_eq!(iter.next(), None);
     }
@@ -277,7 +257,8 @@ mod test {
         let from = Position::new(3, 3);
         let mark = Mark::White;
 
-        let mut iter = get_pawn_ply(&board, &from, &mark, &en_passant);
+        let vec = get_pawn_ply(&board, &from, &mark, &en_passant);
+        let mut iter = vec.into_iter();
 
         assert_eq!(iter.next(), Some(Ply::new_move(from, Position::new(2, 3))));
         assert_eq!(
@@ -312,7 +293,8 @@ mod test {
         let mark = Mark::White;
         let en_passant = EnPassant::new_none();
 
-        let mut iter = get_pawn_ply(&board, &from, &mark, &en_passant);
+        let vec = get_pawn_ply(&board, &from, &mark, &en_passant);
+        let mut iter = vec.into_iter();
 
         assert_eq!(
             iter.next(),

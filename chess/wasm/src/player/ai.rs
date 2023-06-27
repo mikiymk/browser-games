@@ -1,7 +1,7 @@
 use std::collections::VecDeque;
 
 use crate::{
-    get_ply::{get_all_board_ply, get_castling_ply},
+    get_ply::{filter_checked_ply, get_all_board_ply},
     state::{
         board::Board, board_square::BoardSquare, castling::Castling, en_passant::EnPassant,
         game_state::GameState, mark::Mark, piece::Piece,
@@ -130,6 +130,7 @@ fn count_pieces(board: &Board) -> f64 {
 }
 
 fn count_movable(board: &Board, mark: &Mark, castling: &Castling, en_passant: &EnPassant) -> f64 {
-    (get_all_board_ply(mark, board, en_passant).count()
-        + get_castling_ply(mark, board, castling).len()) as f64
+    get_all_board_ply(mark, board, castling, en_passant)
+        .filter(|ply| filter_checked_ply(ply, mark, board))
+        .count() as f64
 }

@@ -6,12 +6,17 @@ use crate::{
         MESSAGE_BLACK_WIN, MESSAGE_INSUFFICIENT_MATERIAL, MESSAGE_NO_BLACK_KING,
         MESSAGE_NO_WHITE_KING, MESSAGE_STALEMATE, MESSAGE_WHITE_WIN,
     },
-    state::piece::Piece,
     state::{board::Board, board_square::BoardSquare, mark::Mark},
+    state::{castling::Castling, piece::Piece},
     state::{en_passant::EnPassant, position::Position},
 };
 
-pub fn is_finish(board: &Board, mark: &Mark, en_passant: &EnPassant) -> Option<&'static str> {
+pub fn is_finish(
+    board: &Board,
+    mark: &Mark,
+    castling: &Castling,
+    en_passant: &EnPassant,
+) -> Option<&'static str> {
     // キングがいない
     if board.get_king_position(&Mark::White).is_none() {
         return Some(MESSAGE_NO_WHITE_KING);
@@ -21,7 +26,7 @@ pub fn is_finish(board: &Board, mark: &Mark, en_passant: &EnPassant) -> Option<&
 
     // チェックメイト
     if is_check(board, mark)
-        && !get_all_board_ply(mark, board, en_passant)
+        && !get_all_board_ply(mark, board, castling, en_passant)
             .any(|ply| filter_checked_ply(&ply, mark, board))
     {
         return Some(match mark {
@@ -31,7 +36,10 @@ pub fn is_finish(board: &Board, mark: &Mark, en_passant: &EnPassant) -> Option<&
     }
 
     // ステイルメイト
-    if get_all_board_ply(mark, board, en_passant).next().is_none() {
+    if get_all_board_ply(mark, board, castling, en_passant)
+        .next()
+        .is_none()
+    {
         return Some(MESSAGE_STALEMATE);
     }
 

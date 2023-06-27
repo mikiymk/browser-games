@@ -11,7 +11,7 @@ export const isFinished = (state: GameState, setMessage?: Setter<string>): boole
   };
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
-  const finishMessage = is_finished(convertBoardToWasmBoard(state.board), state.mark, state.enPassant);
+  const finishMessage = is_finished(convertBoardToWasmBoard(state.board), state.mark, state.castling, state.enPassant);
 
   if (finishMessage !== undefined) {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument

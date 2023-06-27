@@ -92,13 +92,15 @@ pub fn get_next_en_passant(board: &[u8], ply: &str) -> Result<Option<u8>, String
 pub fn is_finished(
     board: &[u8],
     mark: u8,
+    castling: u8,
     en_passant: Option<u8>,
 ) -> Result<Option<String>, String> {
     let board = Board::try_from_slice(board).ok_or("board")?;
     let mark = Mark::try_from_u8(mark).ok_or("mark")?;
+    let castling = Castling::new(castling);
     let en_passant = EnPassant::try_from_u8(en_passant).ok_or("en_passant")?;
 
-    Ok(is_finish(&board, &mark, &en_passant).map(|s| s.to_string()))
+    Ok(is_finish(&board, &mark, &castling, &en_passant).map(|s| s.to_string()))
 }
 
 #[wasm_bindgen]
@@ -118,7 +120,7 @@ pub fn get_ai_ply(
 
     let mut best_ply = None;
     let mut eval_value = f64::NEG_INFINITY;
-    for ply in get_all_board_ply(&mark, &state.board, &en_passant)
+    for ply in get_all_board_ply(&mark, &state.board, &castling, &en_passant)
         .filter(|ply| filter_checked_ply(ply, &mark, &state.board))
     {
         let state = state.get_next(&ply);
