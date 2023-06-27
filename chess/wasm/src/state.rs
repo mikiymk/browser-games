@@ -2,6 +2,7 @@ pub mod board;
 pub mod board_square;
 pub mod castling;
 pub mod en_passant;
+pub mod game_state;
 pub mod mark;
 pub mod piece;
 pub mod ply;

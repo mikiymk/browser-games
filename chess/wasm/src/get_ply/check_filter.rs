@@ -4,7 +4,7 @@ use crate::{
 };
 
 pub fn filter_checked_ply(ply: &Ply, mark: &Mark, board: &Board) -> bool {
-    let board = board.apply_ply(ply);
+    let board = board.get_next(ply);
 
     !is_check(&board, mark)
 }

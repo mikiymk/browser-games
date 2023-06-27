@@ -10,7 +10,8 @@ use get_ply::{filter_checked_ply, get_all_board_ply, get_castling_ply, get_ply};
 
 use player::ai::neg_max_recursion;
 use state::{
-    board::Board, castling::Castling, en_passant::EnPassant, mark::Mark, position::Position,
+    board::Board, castling::Castling, en_passant::EnPassant, game_state::GameState, mark::Mark,
+    position::Position,
 };
 use wasm_bindgen::prelude::*;
 
@@ -62,7 +63,7 @@ pub fn get_next_board(board: &[u8], ply: &str) -> Result<Vec<u8>, String> {
     let board = Board::try_from_slice(board).ok_or("board")?;
     let ply = Ply::try_from_str(ply).ok_or("ply")?;
 
-    let board = board.apply_ply(&ply);
+    let board = board.get_next(&ply);
 
     Ok(board.as_vec_u8())
 }
@@ -72,7 +73,7 @@ pub fn get_next_castling(castling: u8, ply: &str) -> Result<u8, String> {
     let castling = Castling::new(castling);
     let ply = Ply::try_from_str(ply).ok_or("ply")?;
 
-    let castling = castling.apply_ply(&ply);
+    let castling = castling.get_next(&ply);
 
     Ok(castling.as_u8())
 }
@@ -82,7 +83,7 @@ pub fn get_next_en_passant(board: &[u8], ply: &str) -> Result<Option<u8>, String
     let board = Board::try_from_slice(board).ok_or("board")?;
     let ply = Ply::try_from_str(ply).ok_or("ply")?;
 
-    let en_passant = EnPassant::next_turn_available(&board, &ply);
+    let en_passant = EnPassant::get_next(&board, &ply);
 
     Ok(en_passant.as_option())
 }
@@ -113,17 +114,16 @@ pub fn get_ai_ply(
     let castling = Castling::new(castling);
     let en_passant = EnPassant::try_from_u8(en_passant).ok_or("en_passant")?;
 
+    let state = GameState::new(board, mark, castling, en_passant);
+
     let mut best_ply = None;
     let mut eval_value = f64::NEG_INFINITY;
-    for ply in get_all_board_ply(&mark, &board, &en_passant)
-        .filter(|ply| filter_checked_ply(ply, &mark, &board))
+    for ply in get_all_board_ply(&mark, &state.board, &en_passant)
+        .filter(|ply| filter_checked_ply(ply, &mark, &state.board))
     {
-        let board = board.apply_ply(&ply);
-        let mark = mark.invert();
-        let castling = castling.apply_ply(&ply);
-        let en_passant = EnPassant::next_turn_available(&board, &ply);
+        let state = state.get_next(&ply);
 
-        let value = neg_max_recursion(&board, &mark, &castling, &en_passant, depth);
+        let value = neg_max_recursion(&state, depth);
 
         if eval_value < value {
             eval_value = value;

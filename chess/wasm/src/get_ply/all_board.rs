@@ -165,8 +165,8 @@ mod tests {
 
         let ply = Ply::new_move(Position::new(1, 6), Position::new(3, 6));
 
-        let en_passant = EnPassant::next_turn_available(&board, &ply);
-        let board = board.apply_ply(&ply);
+        let en_passant = EnPassant::get_next(&board, &ply);
+        let board = board.get_next(&ply);
 
         let iter_black = get_all_board_ply(&Mark::Black, &board, &en_passant);
         let iter_white = get_all_board_ply(&Mark::White, &board, &en_passant);

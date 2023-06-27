@@ -271,8 +271,8 @@ mod test {
 
         let ply = Ply::new_move(Position::new(1, 4), Position::new(3, 4));
 
-        let en_passant = EnPassant::next_turn_available(&board, &ply);
-        let board = board.apply_ply(&ply);
+        let en_passant = EnPassant::get_next(&board, &ply);
+        let board = board.get_next(&ply);
 
         let from = Position::new(3, 3);
         let mark = Mark::White;

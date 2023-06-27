@@ -37,7 +37,7 @@ impl EnPassant {
         }
     }
 
-    pub fn next_turn_available(board: &Board, ply: &Ply) -> Self {
+    pub fn get_next(board: &Board, ply: &Ply) -> Self {
         match ply {
             Ply::Move { from, to } => match board.get_piece(from) {
                 BoardSquare::Piece(_, Piece::Pawn) => {
@@ -80,7 +80,7 @@ mod test {
 
         let ply = Ply::new_move(from, to);
 
-        let next_en_passant = EnPassant::next_turn_available(&board, &ply);
+        let next_en_passant = EnPassant::get_next(&board, &ply);
 
         assert_eq!(next_en_passant, EnPassant::new_position(expected))
     }
@@ -95,7 +95,7 @@ mod test {
 
         let ply = Ply::new_move(from, to);
 
-        let next_en_passant = EnPassant::next_turn_available(&board, &ply);
+        let next_en_passant = EnPassant::get_next(&board, &ply);
 
         assert_eq!(next_en_passant, EnPassant::new_none())
     }

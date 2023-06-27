@@ -53,7 +53,7 @@ impl Board {
         self.set_piece(from, BoardSquare::Empty);
     }
 
-    pub fn apply_ply(&self, ply: &Ply) -> Self {
+    pub fn get_next(&self, ply: &Ply) -> Self {
         match ply {
             Ply::Move { from, to } => {
                 let mut clone = self.clone();
