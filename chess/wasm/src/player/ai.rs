@@ -9,12 +9,46 @@ use crate::{
     },
 };
 
-pub fn mini_max(
+#[allow(dead_code)]
+pub fn neg_max_recursion(
     board: &Board,
     mark: &Mark,
     castling: &Castling,
     en_passant: &EnPassant,
-    depth: usize,
+    depth: u8,
+) -> f64 {
+    if depth == 0 || is_finish(board, mark, en_passant).is_some() {
+        return -evaluate_function(board, mark, castling, en_passant);
+    }
+
+    let mut max = f64::NEG_INFINITY;
+
+    for ply in get_all_board_ply(mark, board, en_passant)
+        .filter(|ply| filter_checked_ply(ply, mark, board))
+    {
+        let value = -neg_max_recursion(
+            &board.apply_ply(&ply),
+            &mark.invert(),
+            &castling.apply_ply(&ply),
+            &EnPassant::next_turn_available(board, &ply),
+            depth - 1,
+        );
+
+        if value > max {
+            max = value;
+        }
+    }
+
+    max
+}
+
+#[allow(dead_code)]
+pub fn neg_max_loop(
+    board: &Board,
+    mark: &Mark,
+    castling: &Castling,
+    en_passant: &EnPassant,
+    depth: u8,
 ) -> f64 {
     let mut queue = VecDeque::new();
     queue.push_back((
@@ -111,9 +145,12 @@ fn evaluate_function(
     castling: &Castling,
     en_passant: &EnPassant,
 ) -> f64 {
-    1.0 * count_pieces(board)
-        + 0.7 * count_movable(board, mark, castling, en_passant)
-        + -0.7 * count_movable(board, &mark.invert(), castling, en_passant)
+    (match mark {
+        Mark::White => 1.0,
+        Mark::Black => -1.0,
+    }) * count_pieces(board)
+        + 0.2 * count_movable(board, mark, castling, en_passant)
+        + -0.1 * count_movable(board, &mark.invert(), castling, en_passant)
 }
 
 fn count_pieces(board: &Board) -> f64 {

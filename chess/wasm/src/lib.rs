@@ -8,7 +8,7 @@ mod state;
 use game::finish::is_finish;
 use get_ply::{filter_checked_ply, get_all_board_ply, get_castling_ply, get_ply};
 
-use player::ai::mini_max;
+use player::ai::neg_max_recursion;
 use state::{
     board::Board, castling::Castling, en_passant::EnPassant, mark::Mark, position::Position,
 };
@@ -106,6 +106,7 @@ pub fn get_ai_ply(
     mark: u8,
     castling: u8,
     en_passant: Option<u8>,
+    depth: u8,
 ) -> Result<String, String> {
     let board = Board::try_from_slice(board).ok_or("board")?;
     let mark = Mark::try_from_u8(mark).ok_or("mark")?;
@@ -122,7 +123,7 @@ pub fn get_ai_ply(
         let castling = castling.apply_ply(&ply);
         let en_passant = EnPassant::next_turn_available(&board, &ply);
 
-        let value = mini_max(&board, &mark, &castling, &en_passant, 2);
+        let value = neg_max_recursion(&board, &mark, &castling, &en_passant, depth);
 
         if eval_value < value {
             eval_value = value;
