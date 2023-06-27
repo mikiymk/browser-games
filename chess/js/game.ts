@@ -1,3 +1,5 @@
+import { sleep } from "@/common/sleep";
+
 import { stateToFen } from "./game/fen";
 import { isFinished } from "./game/finish";
 import { getNextState } from "./game/get-next";
@@ -38,10 +40,4 @@ export const gameLoop = async (
   }
 
   console.log("end game");
-};
-
-const sleep = (time: number): Promise<void> => {
-  return new Promise((resolve) => {
-    setTimeout(() => resolve(), time);
-  });
 };
