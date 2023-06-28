@@ -1,14 +1,16 @@
+mod ai;
 mod game;
 mod get_ply;
 mod js_function;
 mod message_const;
-mod player;
 mod state;
+#[cfg(test)]
+mod test_utils;
 
+use ai::neg_max::neg_max_recursion;
 use game::finish::is_finish;
 use get_ply::{filter_checked_ply, get_all_board_ply, get_castling_ply, get_ply};
 
-use player::ai::neg_max_recursion;
 use state::{
     board::Board, castling::Castling, en_passant::EnPassant, game_state::GameState, mark::Mark,
     position::Position,
