@@ -18,10 +18,9 @@ pub fn get_bishop_ply(board: &Board, from: Position) -> RunPlyIterator<'_> {
 #[cfg(test)]
 mod test {
     use crate::{
-        state::piece::Piece,
         state::ply::Ply,
         state::position::Position,
-        state::{board::Board, board_square::BoardSquare, mark::Mark},
+        state::{board::Board, board_square::Square},
     };
 
     use super::get_bishop_ply;
@@ -40,18 +39,9 @@ mod test {
         // 7 | . * . . . . . .
 
         let mut board = Board::new();
-        board.set_piece(
-            &Position::new(4, 4),
-            BoardSquare::new(Mark::White, Piece::Bishop),
-        );
-        board.set_piece(
-            &Position::new(1, 1),
-            BoardSquare::new(Mark::White, Piece::Pawn),
-        );
-        board.set_piece(
-            &Position::new(6, 6),
-            BoardSquare::new(Mark::Black, Piece::Pawn),
-        );
+        board.set_piece(&Position::new(4, 4), Square::WHITE_BISHOP);
+        board.set_piece(&Position::new(1, 1), Square::WHITE_PAWN);
+        board.set_piece(&Position::new(6, 6), Square::BLACK_PAWN);
 
         let from = Position::new(4, 4);
 

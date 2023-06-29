@@ -18,10 +18,9 @@ pub fn get_king_ply(board: &Board, from: Position) -> StepPlyIterator<'_> {
 #[cfg(test)]
 mod test {
     use crate::{
-        state::piece::Piece,
         state::ply::Ply,
         state::position::Position,
-        state::{board::Board, board_square::BoardSquare, mark::Mark},
+        state::{board::Board, board_square::Square},
     };
 
     use super::get_king_ply;
@@ -40,18 +39,9 @@ mod test {
         // 7 | . . . . . . . .
 
         let mut board = Board::new();
-        board.set_piece(
-            &Position::new(4, 4),
-            BoardSquare::new(Mark::White, Piece::King),
-        );
-        board.set_piece(
-            &Position::new(3, 5),
-            BoardSquare::new(Mark::White, Piece::Pawn),
-        );
-        board.set_piece(
-            &Position::new(5, 3),
-            BoardSquare::new(Mark::Black, Piece::Pawn),
-        );
+        board.set_piece(&Position::new(4, 4), Square::WHITE_KING);
+        board.set_piece(&Position::new(3, 5), Square::WHITE_PAWN);
+        board.set_piece(&Position::new(5, 3), Square::BLACK_PAWN);
 
         let from = Position::new(4, 4);
 

@@ -1,7 +1,7 @@
 use crate::{
     state::piece::Piece,
     state::ply::Ply,
-    state::{board::Board, board_square::BoardSquare, en_passant::EnPassant, mark::Mark},
+    state::{board::Board, board_square::Square, en_passant::EnPassant, mark::Mark},
     state::{castling::Castling, position::Position},
 };
 
@@ -67,19 +67,15 @@ pub fn get_ply<'a>(
     en_passant: &EnPassant,
 ) -> Option<PlyIterator<'a>> {
     match board.get_piece(from) {
-        BoardSquare::Piece(mark, Piece::Pawn) => Some(PlyIterator::Vec(
+        Square::Piece(mark, Piece::Pawn) => Some(PlyIterator::Vec(
             get_pawn_ply(board, from, &mark, en_passant).into_iter(),
         )),
-        BoardSquare::Piece(_, Piece::Knight) => {
-            Some(PlyIterator::Steps(get_knight_ply(board, *from)))
-        }
-        BoardSquare::Piece(_, Piece::Bishop) => {
-            Some(PlyIterator::Runs(get_bishop_ply(board, *from)))
-        }
-        BoardSquare::Piece(_, Piece::Rook) => Some(PlyIterator::Runs(get_rook_ply(board, *from))),
-        BoardSquare::Piece(_, Piece::Queen) => Some(PlyIterator::Runs(get_queen_ply(board, *from))),
-        BoardSquare::Piece(_, Piece::King) => Some(PlyIterator::Steps(get_king_ply(board, *from))),
-        BoardSquare::Empty => None,
+        Square::Piece(_, Piece::Knight) => Some(PlyIterator::Steps(get_knight_ply(board, *from))),
+        Square::Piece(_, Piece::Bishop) => Some(PlyIterator::Runs(get_bishop_ply(board, *from))),
+        Square::Piece(_, Piece::Rook) => Some(PlyIterator::Runs(get_rook_ply(board, *from))),
+        Square::Piece(_, Piece::Queen) => Some(PlyIterator::Runs(get_queen_ply(board, *from))),
+        Square::Piece(_, Piece::King) => Some(PlyIterator::Steps(get_king_ply(board, *from))),
+        Square::Empty => None,
     }
 }
 
@@ -150,7 +146,7 @@ mod tests {
                 let mut board = Board::new();
 
                 $(
-                    board.set_piece(&Position::new($x, $y), BoardSquare::new($mark, $piece));
+                    board.set_piece(&Position::new($x, $y), Square::new($mark, $piece));
                 )*
 
                 board

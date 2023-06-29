@@ -93,7 +93,7 @@ mod test {
         state::piece::Piece,
         state::ply::Ply,
         state::position::Position,
-        state::{board::Board, board_square::BoardSquare, en_passant::EnPassant, mark::Mark},
+        state::{board::Board, board_square::Square, en_passant::EnPassant, mark::Mark},
     };
 
     use super::get_pawn_ply;
@@ -125,7 +125,7 @@ mod test {
             let mut board = Board::new();
 
             $(
-                board.set_piece(&Position::new($x, $y), BoardSquare::new($mark, $piece));
+                board.set_piece(&Position::new($x, $y), Square::new($mark, $piece));
             )*
 
             board

@@ -1,6 +1,6 @@
 use crate::{state::board::Board, state::piece::Piece, state::ply::Ply, state::position::Position};
 
-use super::board_square::BoardSquare;
+use super::board_square::Square;
 
 /// if pawn e6 -> e5 -> e4, notes en passant (e5)
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
@@ -40,7 +40,7 @@ impl EnPassant {
     pub fn get_next(board: &Board, ply: &Ply) -> Self {
         match ply {
             Ply::Move { from, to } => match board.get_piece(from) {
-                BoardSquare::Piece(_, Piece::Pawn) => {
+                Square::Piece(_, Piece::Pawn) => {
                     let diff_x = from.x().abs_diff(to.x());
 
                     if diff_x == 2 && from.y() == to.y() {
@@ -63,10 +63,9 @@ impl EnPassant {
 mod test {
     use super::EnPassant;
     use crate::{
-        state::piece::Piece,
         state::ply::Ply,
         state::position::Position,
-        state::{board::Board, board_square::BoardSquare, mark::Mark},
+        state::{board::Board, board_square::Square},
     };
 
     #[test]
@@ -76,7 +75,7 @@ mod test {
         let expected = Position::new(2, 2);
 
         let mut board = Board::new();
-        board.set_piece(&from, BoardSquare::new(Mark::Black, Piece::Pawn));
+        board.set_piece(&from, Square::BLACK_PAWN);
 
         let ply = Ply::new_move(from, to);
 
@@ -91,7 +90,7 @@ mod test {
         let to: Position = Position::new(2, 2);
 
         let mut board = Board::new();
-        board.set_piece(&from, BoardSquare::new(Mark::Black, Piece::Pawn));
+        board.set_piece(&from, Square::BLACK_PAWN);
 
         let ply = Ply::new_move(from, to);
 

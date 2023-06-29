@@ -4,17 +4,17 @@ use serde::{ser::SerializeSeq, Serialize};
 
 use crate::{state::mark::Mark, state::piece::Piece, state::ply::Ply, state::position::Position};
 
-use super::board_square::BoardSquare;
+use super::board_square::Square;
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub struct Board {
-    squares: [BoardSquare; 64],
+    squares: [Square; 64],
 }
 
 impl Board {
     pub fn new() -> Board {
         Self {
-            squares: [BoardSquare::Empty; 64],
+            squares: [Square::Empty; 64],
         }
     }
 
@@ -26,7 +26,7 @@ impl Board {
                 break;
             }
 
-            board.squares[i] = BoardSquare::try_from_u8(*value)?;
+            board.squares[i] = Square::try_from_u8(*value)?;
         }
 
         Some(board)
@@ -40,17 +40,17 @@ impl Board {
         self.get_piece(left).is_other_mark(&self.get_piece(right))
     }
 
-    pub fn set_piece(&mut self, pos: &Position, square: BoardSquare) {
+    pub fn set_piece(&mut self, pos: &Position, square: Square) {
         self.squares[pos.index()] = square;
     }
 
-    pub fn get_piece(&self, pos: &Position) -> BoardSquare {
+    pub fn get_piece(&self, pos: &Position) -> Square {
         self.squares[pos.index()]
     }
 
     fn move_piece(&mut self, from: &Position, to: &Position) {
         self.set_piece(to, self.get_piece(from));
-        self.set_piece(from, BoardSquare::Empty);
+        self.set_piece(from, Square::Empty);
     }
 
     pub fn get_next(&self, ply: &Ply) -> Self {
@@ -78,7 +78,7 @@ impl Board {
                 let mut clone = self.clone();
 
                 clone.move_piece(from, to);
-                clone.squares[capture.index()] = BoardSquare::Empty;
+                clone.squares[capture.index()] = Square::Empty;
 
                 clone
             }
@@ -96,11 +96,11 @@ impl Board {
         }
     }
 
-    pub fn square_iter(&self) -> impl Iterator<Item = &BoardSquare> + '_ {
+    pub fn square_iter(&self) -> impl Iterator<Item = &Square> + '_ {
         self.squares.iter()
     }
 
-    pub fn square_position_iter(&self) -> impl Iterator<Item = (Position, BoardSquare)> + '_ {
+    pub fn square_position_iter(&self) -> impl Iterator<Item = (Position, Square)> + '_ {
         self.squares
             .iter()
             .enumerate()
@@ -109,7 +109,7 @@ impl Board {
 
     pub fn get_king_position(&self, mark: &Mark) -> Option<Position> {
         for (position, square) in self.square_position_iter() {
-            if square == BoardSquare::new(*mark, Piece::King) {
+            if square == Square::new(*mark, Piece::King) {
                 return Some(position);
             }
         }
@@ -118,7 +118,7 @@ impl Board {
     }
 
     pub fn as_vec_u8(&self) -> Vec<u8> {
-        self.squares.iter().map(BoardSquare::as_u8).collect()
+        self.squares.iter().map(Square::as_u8).collect()
     }
 }
 
@@ -143,19 +143,19 @@ impl Serialize for Board {
         let mut s = serializer.serialize_seq(Some(64))?;
         for element in &self.squares {
             let element_number = match element {
-                BoardSquare::Empty => 0,
-                BoardSquare::Piece(Mark::White, Piece::Pawn) => 1,
-                BoardSquare::Piece(Mark::White, Piece::Knight) => 2,
-                BoardSquare::Piece(Mark::White, Piece::Bishop) => 3,
-                BoardSquare::Piece(Mark::White, Piece::Rook) => 4,
-                BoardSquare::Piece(Mark::White, Piece::Queen) => 5,
-                BoardSquare::Piece(Mark::White, Piece::King) => 6,
-                BoardSquare::Piece(Mark::Black, Piece::Pawn) => 7,
-                BoardSquare::Piece(Mark::Black, Piece::Knight) => 8,
-                BoardSquare::Piece(Mark::Black, Piece::Bishop) => 9,
-                BoardSquare::Piece(Mark::Black, Piece::Rook) => 10,
-                BoardSquare::Piece(Mark::Black, Piece::Queen) => 11,
-                BoardSquare::Piece(Mark::Black, Piece::King) => 12,
+                Square::Empty => 0,
+                Square::Piece(Mark::White, Piece::Pawn) => 1,
+                Square::Piece(Mark::White, Piece::Knight) => 2,
+                Square::Piece(Mark::White, Piece::Bishop) => 3,
+                Square::Piece(Mark::White, Piece::Rook) => 4,
+                Square::Piece(Mark::White, Piece::Queen) => 5,
+                Square::Piece(Mark::White, Piece::King) => 6,
+                Square::Piece(Mark::Black, Piece::Pawn) => 7,
+                Square::Piece(Mark::Black, Piece::Knight) => 8,
+                Square::Piece(Mark::Black, Piece::Bishop) => 9,
+                Square::Piece(Mark::Black, Piece::Rook) => 10,
+                Square::Piece(Mark::Black, Piece::Queen) => 11,
+                Square::Piece(Mark::Black, Piece::King) => 12,
             };
             s.serialize_element(&element_number)?;
         }

@@ -6,7 +6,7 @@ use crate::{
         MESSAGE_BLACK_WIN, MESSAGE_INSUFFICIENT_MATERIAL, MESSAGE_NO_BLACK_KING,
         MESSAGE_NO_WHITE_KING, MESSAGE_STALEMATE, MESSAGE_WHITE_WIN,
     },
-    state::{board::Board, board_square::BoardSquare, mark::Mark},
+    state::{board::Board, board_square::Square, mark::Mark},
     state::{castling::Castling, piece::Piece},
     state::{en_passant::EnPassant, position::Position},
 };
@@ -66,7 +66,7 @@ pub fn is_attacked_there(board: &Board, mark: &Mark, position: &Position) -> boo
         // ポーン
         if let Some(position) = position.rel_new(dx, dy) {
             let square = board.get_piece(&position);
-            if square == BoardSquare::new(mark.invert(), Piece::Pawn) {
+            if square == Square::new(mark.invert(), Piece::Pawn) {
                 return true;
             }
         }
@@ -89,7 +89,7 @@ pub fn is_attacked_there(board: &Board, mark: &Mark, position: &Position) -> boo
         // キング
         if let Some(position) = position.rel_new(dx, dy) {
             let square = board.get_piece(&position);
-            if square == BoardSquare::new(mark.invert(), Piece::King) {
+            if square == Square::new(mark.invert(), Piece::King) {
                 return true;
             }
         }
@@ -99,8 +99,8 @@ pub fn is_attacked_there(board: &Board, mark: &Mark, position: &Position) -> boo
         while let Some(new_pos) = position.rel_new(dx, dy) {
             position = new_pos;
             let square = board.get_piece(&position);
-            if square == BoardSquare::new(mark.invert(), Piece::Bishop)
-                || square == BoardSquare::new(mark.invert(), Piece::Queen)
+            if square == Square::new(mark.invert(), Piece::Bishop)
+                || square == Square::new(mark.invert(), Piece::Queen)
             {
                 return true;
             } else if !square.is_empty() {
@@ -113,7 +113,7 @@ pub fn is_attacked_there(board: &Board, mark: &Mark, position: &Position) -> boo
         // キング
         if let Some(position) = position.rel_new(dx, dy) {
             let square = board.get_piece(&position);
-            if square == BoardSquare::new(mark.invert(), Piece::King) {
+            if square == Square::new(mark.invert(), Piece::King) {
                 return true;
             }
         }
@@ -123,8 +123,8 @@ pub fn is_attacked_there(board: &Board, mark: &Mark, position: &Position) -> boo
         while let Some(new_pos) = position.rel_new(dx, dy) {
             position = new_pos;
             let square = board.get_piece(&position);
-            if square == BoardSquare::new(mark.invert(), Piece::Rook)
-                || square == BoardSquare::new(mark.invert(), Piece::Queen)
+            if square == Square::new(mark.invert(), Piece::Rook)
+                || square == Square::new(mark.invert(), Piece::Queen)
             {
                 return true;
             } else if !square.is_empty() {
@@ -137,7 +137,7 @@ pub fn is_attacked_there(board: &Board, mark: &Mark, position: &Position) -> boo
         // ナイト
         if let Some(position) = position.rel_new(dx, dy) {
             let square = board.get_piece(&position);
-            if square == BoardSquare::new(mark.invert(), Piece::Knight) {
+            if square == Square::new(mark.invert(), Piece::Knight) {
                 return true;
             }
         }
@@ -153,20 +153,17 @@ pub fn is_enough_for_checkmate(board: &Board) -> bool {
         pieces.insert(square, piece_num.map_or(1_u32, |num| num + 1));
     }
 
-    use Mark::*;
-    use Piece::*;
+    let black_pawn = *pieces.get(&Square::BLACK_PAWN).unwrap_or(&0);
+    let black_knight = *pieces.get(&Square::BLACK_KNIGHT).unwrap_or(&0);
+    let black_bishop = *pieces.get(&Square::BLACK_BISHOP).unwrap_or(&0);
+    let black_rook = *pieces.get(&Square::BLACK_ROOK).unwrap_or(&0);
+    let black_queen = *pieces.get(&Square::BLACK_QUEEN).unwrap_or(&0);
 
-    let black_pawn = *pieces.get(&BoardSquare::new(Black, Pawn)).unwrap_or(&0);
-    let black_knight = *pieces.get(&BoardSquare::new(Black, Knight)).unwrap_or(&0);
-    let black_bishop = *pieces.get(&BoardSquare::new(Black, Bishop)).unwrap_or(&0);
-    let black_rook = *pieces.get(&BoardSquare::new(Black, Rook)).unwrap_or(&0);
-    let black_queen = *pieces.get(&BoardSquare::new(Black, Queen)).unwrap_or(&0);
-
-    let white_pawn = *pieces.get(&BoardSquare::new(White, Pawn)).unwrap_or(&0);
-    let white_knight = *pieces.get(&BoardSquare::new(White, Knight)).unwrap_or(&0);
-    let white_bishop = *pieces.get(&BoardSquare::new(White, Bishop)).unwrap_or(&0);
-    let white_rook = *pieces.get(&BoardSquare::new(White, Rook)).unwrap_or(&0);
-    let white_queen = *pieces.get(&BoardSquare::new(White, Queen)).unwrap_or(&0);
+    let white_pawn = *pieces.get(&Square::WHITE_PAWN).unwrap_or(&0);
+    let white_knight = *pieces.get(&Square::WHITE_KNIGHT).unwrap_or(&0);
+    let white_bishop = *pieces.get(&Square::WHITE_BISHOP).unwrap_or(&0);
+    let white_rook = *pieces.get(&Square::WHITE_ROOK).unwrap_or(&0);
+    let white_queen = *pieces.get(&Square::WHITE_QUEEN).unwrap_or(&0);
 
     if black_pawn == 0
         && black_knight == 0

@@ -1,7 +1,7 @@
 use crate::{
     get_ply::{filter_checked_ply, get_all_board_ply},
     state::{
-        board::Board, board_square::BoardSquare, castling::Castling, en_passant::EnPassant,
+        board::Board, board_square::Square, castling::Castling, en_passant::EnPassant,
         game_state::GameState, mark::Mark, piece::Piece,
     },
 };
@@ -28,19 +28,19 @@ fn count_pieces(board: &Board) -> f64 {
     let mut sum = 0.0;
     for square in board.square_iter() {
         sum += match square {
-            BoardSquare::Piece(Mark::White, Piece::Pawn) => 1.0,
-            BoardSquare::Piece(Mark::White, Piece::Knight) => 3.0,
-            BoardSquare::Piece(Mark::White, Piece::Bishop) => 3.0,
-            BoardSquare::Piece(Mark::White, Piece::Rook) => 5.0,
-            BoardSquare::Piece(Mark::White, Piece::Queen) => 9.0,
-            BoardSquare::Piece(Mark::White, Piece::King) => 1.0e7,
-            BoardSquare::Piece(Mark::Black, Piece::Pawn) => -1.0,
-            BoardSquare::Piece(Mark::Black, Piece::Knight) => -3.0,
-            BoardSquare::Piece(Mark::Black, Piece::Bishop) => -3.0,
-            BoardSquare::Piece(Mark::Black, Piece::Rook) => -5.0,
-            BoardSquare::Piece(Mark::Black, Piece::Queen) => -9.0,
-            BoardSquare::Piece(Mark::Black, Piece::King) => -1.0e7,
-            BoardSquare::Empty => 0.0,
+            Square::Piece(Mark::White, Piece::Pawn) => 1.0,
+            Square::Piece(Mark::White, Piece::Knight) => 3.0,
+            Square::Piece(Mark::White, Piece::Bishop) => 3.0,
+            Square::Piece(Mark::White, Piece::Rook) => 5.0,
+            Square::Piece(Mark::White, Piece::Queen) => 9.0,
+            Square::Piece(Mark::White, Piece::King) => 1.0e7,
+            Square::Piece(Mark::Black, Piece::Pawn) => -1.0,
+            Square::Piece(Mark::Black, Piece::Knight) => -3.0,
+            Square::Piece(Mark::Black, Piece::Bishop) => -3.0,
+            Square::Piece(Mark::Black, Piece::Rook) => -5.0,
+            Square::Piece(Mark::Black, Piece::Queen) => -9.0,
+            Square::Piece(Mark::Black, Piece::King) => -1.0e7,
+            Square::Empty => 0.0,
         };
     }
 
