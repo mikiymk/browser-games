@@ -1,5 +1,6 @@
 use crate::state::{board::Board, board_square::Square, position::Position};
 
+#[allow(dead_code)]
 pub fn initial_board() -> Board {
     let mut board = Board::new();
 
@@ -21,17 +22,17 @@ pub fn initial_board() -> Board {
     board.set_piece(&Position::new(1, 6), Square::BLACK_PAWN);
     board.set_piece(&Position::new(1, 7), Square::BLACK_PAWN);
 
-    board.set_piece(&Position::new(7, 0), Square::WHITE_PAWN);
-    board.set_piece(&Position::new(7, 1), Square::WHITE_PAWN);
-    board.set_piece(&Position::new(7, 2), Square::WHITE_PAWN);
-    board.set_piece(&Position::new(7, 3), Square::WHITE_PAWN);
-    board.set_piece(&Position::new(7, 4), Square::WHITE_PAWN);
-    board.set_piece(&Position::new(7, 5), Square::WHITE_PAWN);
-    board.set_piece(&Position::new(7, 6), Square::WHITE_PAWN);
-    board.set_piece(&Position::new(7, 7), Square::WHITE_PAWN);
+    board.set_piece(&Position::new(6, 0), Square::WHITE_PAWN);
+    board.set_piece(&Position::new(6, 1), Square::WHITE_PAWN);
+    board.set_piece(&Position::new(6, 2), Square::WHITE_PAWN);
+    board.set_piece(&Position::new(6, 3), Square::WHITE_PAWN);
+    board.set_piece(&Position::new(6, 4), Square::WHITE_PAWN);
+    board.set_piece(&Position::new(6, 5), Square::WHITE_PAWN);
+    board.set_piece(&Position::new(6, 6), Square::WHITE_PAWN);
+    board.set_piece(&Position::new(6, 7), Square::WHITE_PAWN);
 
-    board.set_piece(&Position::W_RQ, Square::WHITE_ROOK);
-    board.set_piece(&Position::W_NQ, Square::WHITE_KNIGHT);
+    board.set_piece(&Position::WHITE_ROOK_QUEENSIDE, Square::WHITE_ROOK);
+    board.set_piece(&Position::WHITE_KNIGHT_QUEENSIDE, Square::WHITE_KNIGHT);
     board.set_piece(&Position::W_BQ, Square::WHITE_BISHOP);
     board.set_piece(&Position::W_Q, Square::WHITE_QUEEN);
     board.set_piece(&Position::W_K, Square::WHITE_KING);

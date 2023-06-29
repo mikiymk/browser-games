@@ -57,7 +57,7 @@ impl Ply {
 
                 let castling_type = match (from, to) {
                     (Position::W_K, Position::W_RK) => CastlingType::WhiteKing,
-                    (Position::W_K, Position::W_RQ) => CastlingType::WhiteQueen,
+                    (Position::W_K, Position::WHITE_ROOK_QUEENSIDE) => CastlingType::WhiteQueen,
                     (Position::B_K, Position::B_RK) => CastlingType::BlackKing,
                     (Position::B_K, Position::B_RQ) => CastlingType::BlackQueen,
                     _ => return None,

@@ -52,3 +52,70 @@ fn count_movable(board: &Board, mark: &Mark, castling: &Castling, en_passant: &E
         .filter(|ply| filter_checked_ply(ply, mark, board))
         .count() as f64
 }
+
+#[cfg(test)]
+mod tests {
+    use crate::{
+        state::{castling::Castling, en_passant::EnPassant},
+        test_utils::initial_board,
+    };
+
+    use super::*;
+
+    #[test]
+    fn test_count_pieces_1() {
+        let board = Board::new();
+
+        let result = count_pieces(&board);
+
+        assert_eq!(result, 0.0);
+    }
+
+    #[test]
+    fn test_count_pieces_2() {
+        let board = initial_board();
+
+        let result = count_pieces(&board);
+
+        assert_eq!(result, 0.0);
+    }
+
+    #[test]
+    fn test_count_movable_white() {
+        let board = initial_board();
+        let mark = Mark::White;
+        let castling = Castling::new(0);
+        let en_passant = EnPassant::new(None);
+
+        let result = count_movable(&board, &mark, &castling, &en_passant);
+
+        assert_eq!(result, 20.0);
+    }
+
+    #[test]
+    fn test_count_movable_black() {
+        let board = initial_board();
+        let mark = Mark::Black;
+        let castling = Castling::new(0);
+        let en_passant = EnPassant::new(None);
+
+        let result = count_movable(&board, &mark, &castling, &en_passant);
+
+        assert_eq!(result, 20.0);
+    }
+
+    #[test]
+    fn test_evaluate_function_1() {
+        let board = initial_board();
+
+        let mark = Mark::White;
+        let castling = Castling::new(0);
+        let en_passant = EnPassant::new(None);
+        let state = GameState::new(board, mark, castling, en_passant);
+
+        let result = evaluate_function(&state);
+
+        // 1 * 0 + 0.2 * 20 - 0.1 * 20
+        assert_eq!(result, 2.0);
+    }
+}

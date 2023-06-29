@@ -30,7 +30,7 @@ impl CastlingType {
                 Position::B_BK,
             ),
             CastlingType::WhiteQueen => {
-                (Position::W_K, Position::W_BQ, Position::W_RQ, Position::W_Q)
+                (Position::W_K, Position::W_BQ, Position::WHITE_ROOK_QUEENSIDE, Position::W_Q)
             }
             CastlingType::WhiteKing => (
                 Position::W_K,
@@ -128,11 +128,11 @@ impl Castling {
             }
 
             Ply::Move {
-                from: Position::W_RQ,
+                from: Position::WHITE_ROOK_QUEENSIDE,
                 ..
             }
             | Ply::Move {
-                to: Position::W_RQ, ..
+                to: Position::WHITE_ROOK_QUEENSIDE, ..
             } => {
                 clone.set(CastlingType::WhiteQueen);
             }

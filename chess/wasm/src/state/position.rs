@@ -26,8 +26,8 @@ impl Position {
     pub const B_BK: Position = Position::new(0, 5);
     pub const B_NK: Position = Position::new(0, 6);
     pub const B_RK: Position = Position::new(0, 7);
-    pub const W_RQ: Position = Position::new(7, 0);
-    pub const W_NQ: Position = Position::new(7, 1);
+    pub const WHITE_ROOK_QUEENSIDE: Position = Position::new(7, 0);
+    pub const WHITE_KNIGHT_QUEENSIDE: Position = Position::new(7, 1);
     pub const W_BQ: Position = Position::new(7, 2);
     pub const W_Q: Position = Position::new(7, 3);
     pub const W_K: Position = Position::new(7, 4);
