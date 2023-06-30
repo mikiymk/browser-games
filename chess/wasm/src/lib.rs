@@ -7,7 +7,7 @@ mod state;
 #[cfg(test)]
 mod test_utils;
 
-use ai::neg_max::neg_max_recursion;
+use ai::neg_max::neg_max_loop;
 use game::finish::is_finish;
 use get_ply::{filter_checked_ply, get_all_board_ply, get_castling_ply, get_ply};
 
@@ -127,7 +127,7 @@ pub fn get_ai_ply(
     {
         let state = state.get_next(&ply);
 
-        let value = neg_max_recursion(&state, depth);
+        let value = neg_max_loop(&state, depth);
 
         if eval_value < value {
             eval_value = value;

@@ -14,7 +14,9 @@ pub fn get_castling_ply(mark: &Mark, board: &Board, castling: &Castling) -> Vec<
     match mark {
         Mark::White => {
             if castling.get(CastlingType::WhiteQueen)
-                && board.get_piece(&Position::WHITE_KNIGHT_QUEENSIDE).is_empty()
+                && board
+                    .get_piece(&Position::WHITE_KNIGHT_QUEENSIDE)
+                    .is_empty()
                 && board.get_piece(&Position::W_BQ).is_empty()
                 && board.get_piece(&Position::W_Q).is_empty()
                 && !is_attacked_there(board, mark, &Position::W_BQ)

@@ -93,7 +93,8 @@ mod test {
         state::piece::Piece,
         state::ply::Ply,
         state::position::Position,
-        state::{en_passant::EnPassant, mark::Mark}, test_utils::set_board_pieces,
+        state::{en_passant::EnPassant, mark::Mark},
+        test_utils::set_board_pieces,
     };
 
     use super::get_pawn_ply;
