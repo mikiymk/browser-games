@@ -93,44 +93,10 @@ mod test {
         state::piece::Piece,
         state::ply::Ply,
         state::position::Position,
-        state::{board::Board, board_square::Square, en_passant::EnPassant, mark::Mark},
+        state::{en_passant::EnPassant, mark::Mark}, test_utils::set_board_pieces,
     };
 
     use super::get_pawn_ply;
-
-    /// initialize board
-    ///
-    /// ## param
-    ///
-    /// ```rust
-    /// macro set_board!((x: u8, y: u8) => (mark: Mark, piece: Piece), ...) -> Board
-    /// ```
-    ///
-    /// ## usage
-    ///
-    /// ```rust
-    /// let board = set_board!{
-    ///     (1, 2) => (White, Rook),
-    ///     (3, 4) => (Black, King),
-    /// };
-    /// ```
-    macro_rules! set_board {
-        { $( ( $x:expr , $y:expr ) => ( $mark:expr , $piece:expr ) ),* $(,)? } => {{
-            #[allow(unused_imports)]
-            use Mark::{Black, White};
-
-            #[allow(unused_imports)]
-            use Piece::{Pawn, Knight, Bishop, Rook, Queen, King};
-
-            let mut board = Board::new();
-
-            $(
-                board.set_piece(&Position::new($x, $y), Square::new($mark, $piece));
-            )*
-
-            board
-        }};
-    }
 
     #[test]
     fn test_pawn_first_rank() {
@@ -145,7 +111,7 @@ mod test {
         // 6 | . . . P . . . .
         // 7 | . . . . . . . .
 
-        let board = set_board! {
+        let board = set_board_pieces! {
             (6, 3) => (White, Pawn),
 
             (5, 2) => (Black, Rook),
@@ -179,7 +145,7 @@ mod test {
         // 6 | . . . . . . . .
         // 7 | . . . . . . . .
 
-        let board = set_board! {
+        let board = set_board_pieces! {
             (4, 3) => (White, Pawn),
 
             (3, 2) => (Black, Bishop),
@@ -212,7 +178,7 @@ mod test {
         // 6 | . . . P . . . .
         // 7 | . . . . . . . .
 
-        let board = set_board! {
+        let board = set_board_pieces! {
             (6, 3) => (White, Pawn),
             (5, 2) => (White, Queen),
             (5, 4) => (White, King),
@@ -243,7 +209,7 @@ mod test {
         // 6 | . . . . . . . .
         // 7 | . . . . . . . .
 
-        let board = set_board! {
+        let board = set_board_pieces! {
             (3, 3) => (White, Pawn),
 
             (1, 4) => (Black, Pawn),
@@ -285,7 +251,7 @@ mod test {
         // 6 | . . . . . . . .
         // 7 | . . . . . . . .
 
-        let board = set_board! {
+        let board = set_board_pieces! {
             (1, 3) => (White, Pawn),
         };
 

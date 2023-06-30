@@ -1,5 +1,47 @@
 use crate::state::{board::Board, board_square::Square, position::Position};
 
+/// initialize board
+///
+/// ## param
+///
+/// ```rust
+/// macro set_board!((x: u8, y: u8) => (mark: Mark, piece: Piece), ...) -> Board
+/// ```
+///
+/// ## usage
+///
+/// ```rust
+/// let board = set_board!{
+///     (1, 2) => (White, Rook),
+///     (3, 4) => (Black, King),
+/// };
+/// ```
+macro_rules! set_board_pieces {
+    { $( ( $x:expr , $y:expr ) => ( $mark:expr , $piece:expr ) ),* $(,)? } => {{
+        use crate::state::mark::Mark;
+        use crate::state::piece::Piece;
+        use crate::state::board::Board;
+        use crate::state::position::Position;
+        use crate::state::board_square::Square;
+
+        #[allow(unused_imports)]
+        use Mark::{Black, White};
+
+        #[allow(unused_imports)]
+        use Piece::{Pawn, Knight, Bishop, Rook, Queen, King};
+
+        let mut board = Board::new();
+
+        $(
+            board.set_piece(&Position::new($x, $y), Square::new($mark, $piece));
+        )*
+
+        board
+    }};
+}
+
+pub(crate) use set_board_pieces;
+
 #[allow(dead_code)]
 pub fn initial_board() -> Board {
     let mut board = Board::new();
