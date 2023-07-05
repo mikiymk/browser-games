@@ -28,6 +28,7 @@ export default defineConfig({
         ox3: resolve(__dirname, "ox3/index.html"),
         chess: resolve(__dirname, "chess/index.html"),
         "mine-sweeper": resolve(__dirname, "mine-sweeper/index.html"),
+        "knight-tour": resolve(__dirname, "knight-tour/index.html"),
       },
     },
   },
