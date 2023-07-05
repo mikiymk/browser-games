@@ -34,5 +34,5 @@ jobs:
           # Optional version of wasm-pack to install(eg. 'v0.9.1', 'latest')
           version: 'latest'
 
-      - name: Build
-        run: npm run build
+      - name: check codes
+        run: npm run ci
