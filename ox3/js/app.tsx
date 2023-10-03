@@ -14,7 +14,7 @@ import type { PlayerType } from "@/common/types";
 const initialBoardData: BoardData = [Empty, Empty, Empty, Empty, Empty, Empty, Empty, Empty, Empty];
 
 export const App = () => {
-  const { board, setBoardData } = createBoard();
+  const [board, setBoardData] = createSignal<BoardData>(initialBoardData);
   const [playerO, setPlayerO] = createSignal<PlayerType>(PlayerTypeHuman);
   const [playerX, setPlayerX] = createSignal<PlayerType>(PlayerTypeAI);
   const [status, setStatus] = createSignal("");
@@ -48,13 +48,4 @@ export const App = () => {
       />
     </>
   );
-};
-
-const createBoard = () => {
-  const [board, setBoardData] = createSignal<BoardData>(initialBoardData);
-
-  return {
-    board,
-    setBoardData,
-  };
 };
