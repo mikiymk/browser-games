@@ -5,7 +5,7 @@ import type {
   MoveTypePromotion,
   PositionString,
   WasmPiece,
-} from "@/chess/js/types";
+} from "@/games/chess/types";
 
 export const generateMoveMove = (from: PositionString, to: PositionString): MoveTypeMove => {
   return ["m", from, to];

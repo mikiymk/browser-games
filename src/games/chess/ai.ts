@@ -1,7 +1,7 @@
-import { get_ai_ply, get_selected_piece_moves } from "@/chess/wasm/pkg/chess_wasm";
+import { get_ai_ply, get_selected_piece_moves } from "./wasm/pkg/chess_wasm";
 
-import { generateMovePromotion } from "./game/generate-move";
-import { getMark } from "./game/mark";
+import { generateMovePromotion } from "./generate-move";
+import { getMark } from "./mark";
 import { Reset } from "./types";
 import {
   convertBoardToWasmBoard,

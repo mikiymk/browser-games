@@ -1,9 +1,9 @@
-import { sleep } from "@/common/sleep";
+import { sleep } from "@/scripts/sleep";
 
-import { stateToFen } from "./game/fen";
-import { isFinished } from "./game/finish";
-import { getNextState } from "./game/get-next";
-import { generateState } from "./game/state";
+import { stateToFen } from "./fen";
+import { isFinished } from "./finish";
+import { getNextState } from "./get-next";
+import { generateState } from "./state";
 import { Black, Reset, Resign } from "./types";
 
 import type { Accessor, Setter } from "solid-js";

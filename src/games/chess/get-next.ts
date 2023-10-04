@@ -1,5 +1,5 @@
-import { Black, BlackPawn, Empty, WhitePawn } from "@/chess/js/types";
-import { get_next_board, get_next_castling, get_next_en_passant } from "@/chess/wasm/pkg/chess_wasm";
+import { Black, BlackPawn, Empty, WhitePawn } from "@/games/chess/types";
+import { get_next_board, get_next_castling, get_next_en_passant } from "./wasm/pkg/chess_wasm";
 
 import { boardToFen, markToFen } from "./fen";
 import { invertMark } from "./mark";
@@ -13,14 +13,14 @@ import type {
   MoveTypeMove,
   MoveTypePromotion,
   MoveTypes,
-} from "@/chess/js/types";
+} from "@/games/chess/types";
 
 import {
   convertBoardToWasmBoard,
   convertPositionToIndex,
   convertWasmBoardToBoard,
   convertWasmCastlingToCastling,
-} from "../wasm-convert";
+} from "./wasm-convert";
 
 export const getNextState = (
   state: GameState,

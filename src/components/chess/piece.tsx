@@ -1,6 +1,6 @@
 import { Match, Switch } from "solid-js";
 
-import { getMark } from "@/chess/js/game/mark";
+import { getMark } from "@/games/chess/mark";
 import {
   Black,
   BlackBishop,
@@ -16,9 +16,9 @@ import {
   WhitePawn,
   WhiteQueen,
   WhiteRook,
-} from "@/chess/js/types";
+} from "@/games/chess/types";
 
-import type { Square } from "@/chess/js/types";
+import type { Square } from "@/games/chess/types";
 
 export const PieceImage = (properties: { mark: Square }) => {
   return (

@@ -1,18 +1,18 @@
 import { createSignal } from "solid-js";
 
-import { aiPlayer, createHumanPlayer, createMessenger } from "@/chess/js/ai";
-import { gameLoop } from "@/chess/js/game";
-import { Black, Reset, White } from "@/chess/js/types";
-import { PlayerTypeAI, PlayerTypeHuman, selectPlayer } from "@/common/types";
+import { aiPlayer, createHumanPlayer, createMessenger } from "@/games/chess/ai";
+import { gameLoop } from "@/games/chess/game";
+import { Black, Reset, White } from "@/games/chess/types";
+import { PlayerTypeAI, PlayerTypeHuman, selectPlayer } from "@/scripts/player";
 
 import { Board } from "./board";
 import { Controller } from "./controller";
 import { PromotionPopup } from "./promotion-popup";
 
-import type { Index, InputType, Mark, PromotionPieces } from "@/chess/js/types";
-import type { PlayerType } from "@/common/types";
+import type { Index, InputType, Mark, PromotionPieces } from "@/games/chess/types";
+import type { PlayerType } from "@/scripts/player";
 
-import { generateState } from "../game/state";
+import { generateState } from "@/games/chess/state";
 
 export const App = () => {
   const [state, setState] = createSignal(generateState());

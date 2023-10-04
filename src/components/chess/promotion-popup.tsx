@@ -10,12 +10,12 @@ import {
   WhiteKnight,
   WhiteQueen,
   WhiteRook,
-} from "@/chess/js/types";
-import { createReference } from "@/common/reference";
+} from "@/games/chess/types";
+import { createReference } from "@/scripts/reference";
 
 import { PieceImage } from "./piece";
 
-import type { Mark, PromotionPieces, Sender, Square } from "@/chess/js/types";
+import type { Mark, PromotionPieces, Sender, Square } from "@/games/chess/types";
 
 type PromotionPopupProperties = {
   mark: Mark | undefined;

@@ -14,9 +14,9 @@ import {
   WhitePawn,
   WhiteQueen,
   WhiteRook,
-} from "@/chess/js/types";
+} from "@/games/chess/types";
 
-import type { Mark, Square } from "@/chess/js/types";
+import type { Mark, Square } from "@/games/chess/types";
 
 export const invertMark = (mark: Mark) => {
   return mark === Black ? White : Black;

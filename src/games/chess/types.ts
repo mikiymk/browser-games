@@ -1,4 +1,4 @@
-import type { Awaitable, Tuple, TupleIndex } from "@/common/type-util";
+import type { Awaitable, Tuple, TupleIndex } from "@/scripts/type";
 
 // マスの状況
 export type Square = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
