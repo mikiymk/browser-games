@@ -1,15 +1,15 @@
 import { createSignal, onMount } from "solid-js";
 
-import { PlayerTypeAI, PlayerTypeHuman } from "@/common/types";
+import { Controller } from "./controller";
+import { Board } from "./board";
 
-import { GameAiPromise, aiPlayer, humanPlayer } from "../../games/ox3/ai";
-import { Board } from "../../games/ox3./../components/ox3/board";
-import { Controller } from "../../games/ox3./../components/ox3/controller";
-import { gameLoop } from "../../games/ox3/game";
-import { Empty, OMark, Reset, XMark } from "../../games/ox3/types";
+import type { BoardData } from "@/games/ox3/types";
+import type { PlayerType } from "@/scripts/player";
 
-import type { PlayerType } from "@/common/types";
-import type { BoardData } from "../../games/ox3/types";
+import { PlayerTypeAI, PlayerTypeHuman } from "@/scripts/player";
+import { GameAiPromise, aiPlayer, humanPlayer } from "@/games/ox3/ai";
+import { gameLoop } from "@/games/ox3/game";
+import { Empty, OMark, Reset, XMark } from "@/games/ox3/types";
 
 const initialBoardData: BoardData = [Empty, Empty, Empty, Empty, Empty, Empty, Empty, Empty, Empty];
 

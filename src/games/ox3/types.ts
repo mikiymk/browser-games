@@ -1,4 +1,4 @@
-import type { Awaitable, Tuple } from "@/common/type-util";
+import type { Awaitable, Tuple } from "@/scripts/type";
 import type { Accessor } from "solid-js";
 
 export const Empty = -1;

@@ -1,4 +1,4 @@
-import { randomSelect } from "@/common/random-select";
+import { randomSelect } from "@/scripts/random-select";
 
 import { invertMark } from "./game";
 import { Empty, Reset, winnerLines } from "./types";

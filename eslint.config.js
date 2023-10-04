@@ -1,6 +1,7 @@
 import js from "@eslint/js";
 import typescript from "@typescript-eslint/eslint-plugin";
 import typescriptParser from "@typescript-eslint/parser";
+import typescriptResolver from "eslint-import-resolver-typescript";
 import pluginImport from "eslint-plugin-import";
 import solid from "eslint-plugin-solid";
 import unicorn from "eslint-plugin-unicorn";
@@ -29,13 +30,13 @@ export default [
       parser: typescriptParser,
       parserOptions: {
         sourceType: "module",
-        project: ["./tsconfig.json"],
+        project: true,
         tsconfigRootDir: "./",
       },
     },
 
     settings: {
-      "import/resolver": "typescript",
+      "import/resolver": typescriptResolver,
     },
 
     rules: {
