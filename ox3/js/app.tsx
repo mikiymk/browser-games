@@ -1,6 +1,6 @@
 import { createSignal, onMount } from "solid-js";
 
-import { PlayerTypeHuman, PlayerTypeAI } from "@/common/types";
+import { PlayerTypeAI, PlayerTypeHuman } from "@/common/types";
 
 import { GameAiPromise, aiPlayer, humanPlayer } from "./ai";
 import { Board } from "./board";
@@ -8,8 +8,8 @@ import { Controller } from "./controller";
 import { gameLoop } from "./game";
 import { Empty, OMark, Reset, XMark } from "./types";
 
-import type { BoardData } from "./types";
 import type { PlayerType } from "@/common/types";
+import type { BoardData } from "./types";
 
 const initialBoardData: BoardData = [Empty, Empty, Empty, Empty, Empty, Empty, Empty, Empty, Empty];
 

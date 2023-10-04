@@ -1,16 +1,16 @@
 import type {
   BoardData,
+  Index,
   IsCastled,
-  MoveTypeMove,
   MoveTypeCastling,
   MoveTypeEnPassant,
+  MoveTypeMove,
   MoveTypePromotion,
-  Index,
-  PositionString,
-  WasmPiece,
   PositionFile,
   PositionRank,
+  PositionString,
   PromotionPieces,
+  WasmPiece,
 } from "./types";
 
 export const convertBoardToWasmBoard = (board: BoardData): Uint8Array => {

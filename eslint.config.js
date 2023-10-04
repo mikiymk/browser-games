@@ -1,9 +1,9 @@
 import js from "@eslint/js";
-import typescriptParser from "@typescript-eslint/parser";
 import typescript from "@typescript-eslint/eslint-plugin";
+import typescriptParser from "@typescript-eslint/parser";
 import pluginImport from "eslint-plugin-import";
-import unicorn from "eslint-plugin-unicorn";
 import solid from "eslint-plugin-solid";
+import unicorn from "eslint-plugin-unicorn";
 import vitest from "eslint-plugin-vitest";
 import globals from "globals";
 
@@ -69,10 +69,6 @@ export default [
         {
           groups: ["external", "internal", "sibling", "type"],
           "newlines-between": "always",
-          alphabetize: {
-            order: "asc",
-            caseInsensitive: true,
-          },
         },
       ],
     },
@@ -92,7 +88,7 @@ export default [
         "warn",
         {
           missingExports: true,
-          unusedExports: true,
+          // unusedExports: true,
         },
       ],
     },
@@ -110,9 +106,9 @@ export default [
     rules: {
       "import/no-unused-modules": [
         "warn",
-        {
-          unusedExports: true,
-        },
+        // {
+        //   unusedExports: true,
+        // },
       ],
     },
   },

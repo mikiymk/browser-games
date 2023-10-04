@@ -1,14 +1,14 @@
-import type { BoardData, Mark, IsCastled, GameState, EnPassantTarget, Square } from "../types";
+import type { BoardData, EnPassantTarget, GameState, IsCastled, Mark, Square } from "../types";
 
 import {
-  Empty,
-  White,
   BlackBishop,
   BlackKing,
   BlackKnight,
   BlackPawn,
   BlackQueen,
   BlackRook,
+  Empty,
+  White,
   WhiteBishop,
   WhiteKing,
   WhiteKnight,

@@ -1,4 +1,4 @@
-import { Switch, Match } from "solid-js";
+import { Match, Switch } from "solid-js";
 
 import { getMark } from "@/chess/js/game/mark";
 import {

@@ -11,5 +11,8 @@
     "editor.defaultFormatter": "biomejs.biome"
   },
 
-  "eslint.experimental.useFlatConfig": true
+  "eslint.experimental.useFlatConfig": true,
+  "[javascript]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  }
 }

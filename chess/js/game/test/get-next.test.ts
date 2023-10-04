@@ -1,9 +1,9 @@
-import { test, expect, describe } from "vitest";
+import { describe, expect, test } from "vitest";
 
 import { Black, BlackKing, BlackKnight, White, WhiteBishop, WhiteKing, WhitePawn } from "@/chess/js/types";
 
 import { generateMoveMove } from "../generate-move";
-import { getNextFiftyMove, nextMoves, getNextThreefoldMap } from "../get-next";
+import { getNextFiftyMove, getNextThreefoldMap, nextMoves } from "../get-next";
 import { generateBoard } from "../state";
 
 describe("fifty moves", () => {

@@ -1,4 +1,4 @@
-import { Empty, BlackPawn, WhitePawn, Black } from "@/chess/js/types";
+import { Black, BlackPawn, Empty, WhitePawn } from "@/chess/js/types";
 import { get_next_board, get_next_castling, get_next_en_passant } from "@/chess/wasm/pkg/chess_wasm";
 
 import { boardToFen, markToFen } from "./fen";
@@ -6,13 +6,13 @@ import { invertMark } from "./mark";
 
 import type {
   BoardData,
-  MoveTypes,
   GameState,
   Mark,
   MoveTypeCastling,
   MoveTypeEnPassant,
   MoveTypeMove,
   MoveTypePromotion,
+  MoveTypes,
 } from "@/chess/js/types";
 
 import {

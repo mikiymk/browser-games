@@ -5,14 +5,14 @@ import { getMark } from "./game/mark";
 import { Reset } from "./types";
 import {
   convertBoardToWasmBoard,
-  convertWasmMoveToMove,
-  convertPositionToIndex,
   convertIndexToPosition,
   convertPieceToWasmPiece,
+  convertPositionToIndex,
+  convertWasmMoveToMove,
 } from "./wasm-convert";
 
-import type { GameState, Index, InputType, Mark, MoveTypes, Player, PromotionPieces, Receiver, Sender } from "./types";
 import type { Setter } from "solid-js";
+import type { GameState, Index, InputType, Mark, MoveTypes, Player, PromotionPieces, Receiver, Sender } from "./types";
 
 export const createMessenger = <T>(): [Sender<T>, Receiver<T>] => {
   let resolveFunction = (value: T): void => void value;

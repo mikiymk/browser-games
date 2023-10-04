@@ -1,13 +1,13 @@
 import { For, Show, createEffect } from "solid-js";
 
 import {
-  WhiteKnight,
   BlackBishop,
   BlackKnight,
   BlackQueen,
   BlackRook,
   White,
   WhiteBishop,
+  WhiteKnight,
   WhiteQueen,
   WhiteRook,
 } from "@/chess/js/types";

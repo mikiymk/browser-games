@@ -6,8 +6,8 @@ import { getNextState } from "./game/get-next";
 import { generateState } from "./game/state";
 import { Black, Reset, Resign } from "./types";
 
-import type { GameState, Players } from "./types";
 import type { Accessor, Setter } from "solid-js";
+import type { GameState, Players } from "./types";
 
 export const gameLoop = async (
   players: Players,
