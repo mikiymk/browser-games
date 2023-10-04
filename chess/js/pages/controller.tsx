@@ -19,7 +19,12 @@ export const Controller = (properties: ControllerProperties) => {
     <div>
       status:
       <output>{properties.statusMessage}</output>
-      <button type="button" onClick={() => properties.reset()}>
+      <button
+        type="button"
+        onClick={() => {
+          properties.reset();
+        }}
+      >
         reset
       </button>
       <SettingModal>

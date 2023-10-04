@@ -40,7 +40,7 @@ export default [
 
     rules: {
       ...js.configs.recommended.rules,
-      ...typescript.configs["eslint-recommended"].rules,
+      ...typescript.configs["eslint-recommended"].overrides[0].rules,
       ...typescript.configs["recommended-type-checked"].rules,
       ...typescript.configs["strict-type-checked"].rules,
       ...typescript.configs["stylistic-type-checked"].rules,

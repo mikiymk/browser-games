@@ -27,7 +27,9 @@ export const MineField = (properties: MineFieldProperties) => {
     // biome-ignore lint/a11y/useKeyWithClickEvents: fix it later
     <div
       class="field"
-      onClick={() => properties.onClick()}
+      onClick={() => {
+        properties.onClick();
+      }}
       onContextMenu={(event) => {
         if (properties.onContextMenu()) {
           event.preventDefault();

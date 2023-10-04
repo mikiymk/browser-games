@@ -18,7 +18,12 @@ export const Controller = (properties: ControllerProperties) => {
     <div>
       status:
       <output>{properties.message}</output>
-      <button type="button" onClick={() => properties.reset()}>
+      <button
+        type="button"
+        onClick={() => {
+          properties.reset();
+        }}
+      >
         reset
       </button>
       <SettingModal>
@@ -29,7 +34,9 @@ export const Controller = (properties: ControllerProperties) => {
               type="number"
               min={4}
               value={properties.height}
-              onChange={(event) => properties.setHeight(Number(event.currentTarget.value))}
+              onChange={(event) => {
+                properties.setHeight(Number(event.currentTarget.value));
+              }}
             />
           </label>
           <br />
@@ -42,7 +49,9 @@ export const Controller = (properties: ControllerProperties) => {
               type="number"
               min={4}
               value={properties.width}
-              onChange={(event) => properties.setWidth(Number(event.currentTarget.value))}
+              onChange={(event) => {
+                properties.setWidth(Number(event.currentTarget.value));
+              }}
             />
           </label>
           <br />
@@ -56,7 +65,9 @@ export const Controller = (properties: ControllerProperties) => {
               min={1}
               max={properties.height * properties.width - 9}
               value={properties.mineAmount}
-              onChange={(event) => properties.setMineAmount(Number(event.currentTarget.value))}
+              onChange={(event) => {
+                properties.setMineAmount(Number(event.currentTarget.value));
+              }}
             />
           </label>
           <br />
