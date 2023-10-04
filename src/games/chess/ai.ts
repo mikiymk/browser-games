@@ -1,4 +1,4 @@
-import { get_ai_ply, get_selected_piece_moves } from "./wasm/pkg/chess_wasm";
+import { get_ai_ply, get_selected_piece_moves } from "@/wasms/chess/pkg/chess_wasm";
 
 import { generateMovePromotion } from "./generate-move";
 import { getMark } from "./mark";

@@ -1,7 +1,5 @@
 import { Match, Switch } from "solid-js";
 
-import { Bomb, Flag, Number1, Number2, Number3, Number4, Number5, Number6, Number7, Number8 } from "./graphic";
-
 import {
   FieldBomb,
   FieldFlag,
@@ -16,6 +14,8 @@ import {
   FieldNumber7,
   FieldNumber8,
 } from "@/games/mine-sweeper/consts";
+
+import { Bomb, Flag, Number1, Number2, Number3, Number4, Number5, Number6, Number7, Number8 } from "./graphic";
 
 type MineFieldProperties = {
   field: number;

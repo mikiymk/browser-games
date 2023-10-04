@@ -1,7 +1,6 @@
 import js from "@eslint/js";
 import typescript from "@typescript-eslint/eslint-plugin";
 import typescriptParser from "@typescript-eslint/parser";
-import typescriptResolver from "eslint-import-resolver-typescript";
 import pluginImport from "eslint-plugin-import";
 import solid from "eslint-plugin-solid";
 import unicorn from "eslint-plugin-unicorn";
@@ -11,7 +10,7 @@ import globals from "globals";
 export default [
   {
     files: ["**/*.ts", "**/*.tsx"],
-    ignores: ["**/wasm/pkg/*", "vite.config.ts"],
+    ignores: ["src/wasms/**/*", "vite.config.ts"],
 
     plugins: {
       "@typescript-eslint": typescript,
@@ -36,7 +35,7 @@ export default [
     },
 
     settings: {
-      "import/resolver": typescriptResolver,
+      "import/resolver": "typescript",
     },
 
     rules: {
@@ -78,7 +77,7 @@ export default [
   // not test
   {
     files: ["**/*.ts", "**/*.tsx"],
-    ignores: ["**/wasm/pkg/*", "vite.config.ts", "**/*.test.ts", "**/*.test.tsx"],
+    ignores: ["src/wasms/**/*", "vite.config.ts", "**/*.test.ts", "**/*.test.tsx"],
 
     plugins: {
       import: pluginImport,
@@ -98,7 +97,7 @@ export default [
   // test
   {
     files: ["**/*.test.ts", "**/*.test.tsx"],
-    ignores: ["**/wasm/pkg/*"],
+    ignores: ["src/wasms/**/*"],
 
     plugins: {
       import: pluginImport,

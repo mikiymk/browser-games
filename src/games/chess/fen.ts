@@ -1,5 +1,3 @@
-import type { BoardData, EnPassantTarget, GameState, IsCastled, Mark, Square } from "./types";
-
 import {
   BlackBishop,
   BlackKing,
@@ -16,6 +14,8 @@ import {
   WhiteQueen,
   WhiteRook,
 } from "./types";
+
+import type { BoardData, EnPassantTarget, GameState, IsCastled, Mark, Square } from "./types";
 
 const charsMap: Record<Square, string> = {
   [Empty]: "E",

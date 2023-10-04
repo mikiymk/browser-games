@@ -1,10 +1,10 @@
+import solidJs from "@astrojs/solid-js";
 import { defineConfig } from "astro/config";
 import solidPlugin from "vite-plugin-solid";
 import topLevelAwaitPlugin from "vite-plugin-top-level-await";
 import wasmPlugin from "vite-plugin-wasm";
-import solidJs from "@astrojs/solid-js";
 
-import { resolve, dirname } from "node:path";
+import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 

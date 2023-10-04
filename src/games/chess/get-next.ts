@@ -1,8 +1,14 @@
 import { Black, BlackPawn, Empty, WhitePawn } from "@/games/chess/types";
-import { get_next_board, get_next_castling, get_next_en_passant } from "./wasm/pkg/chess_wasm";
+import { get_next_board, get_next_castling, get_next_en_passant } from "@/wasms/chess/pkg/chess_wasm";
 
 import { boardToFen, markToFen } from "./fen";
 import { invertMark } from "./mark";
+import {
+  convertBoardToWasmBoard,
+  convertPositionToIndex,
+  convertWasmBoardToBoard,
+  convertWasmCastlingToCastling,
+} from "./wasm-convert";
 
 import type {
   BoardData,
@@ -14,13 +20,6 @@ import type {
   MoveTypePromotion,
   MoveTypes,
 } from "@/games/chess/types";
-
-import {
-  convertBoardToWasmBoard,
-  convertPositionToIndex,
-  convertWasmBoardToBoard,
-  convertWasmCastlingToCastling,
-} from "./wasm-convert";
 
 export const getNextState = (
   state: GameState,

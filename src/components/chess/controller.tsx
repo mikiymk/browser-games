@@ -1,4 +1,4 @@
-import { SettingModal } from "@/components/common/SettingModal";
+import { SettingModal } from "@/components/common/setting-modal";
 import { PlayerTypeAI, PlayerTypeHuman } from "@/scripts/player";
 
 import type { PlayerType } from "@/scripts/player";

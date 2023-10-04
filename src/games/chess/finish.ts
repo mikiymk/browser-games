@@ -1,9 +1,9 @@
-import { is_finished } from "./wasm/pkg/chess_wasm";
+import { is_finished } from "@/wasms/chess/pkg/chess_wasm";
+
+import { convertBoardToWasmBoard } from "./wasm-convert";
 
 import type { GameState } from "@/games/chess/types";
 import type { Setter } from "solid-js";
-
-import { convertBoardToWasmBoard } from "./wasm-convert";
 
 export const isFinished = (state: GameState, setMessage?: Setter<string>): boolean => {
   const message = (message: string) => {

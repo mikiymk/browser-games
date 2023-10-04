@@ -1,4 +1,4 @@
-import { SettingModal } from "@/components/common/SettingModal";
+import { SettingModal } from "@/components/common/setting-modal";
 
 type ControllerProperties = {
   height: number;
