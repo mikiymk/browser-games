@@ -1,5 +1,10 @@
 {
   "svg.preview.background": "transparent",
   "cSpell.words": ["wasm_bindgen"],
-  "rust-analyzer.check.command": "clippy"
+  "rust-analyzer.check.command": "clippy",
+
+  "editor.defaultFormatter": "biomejs.biome",
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  }
 }

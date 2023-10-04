@@ -1,0 +1,10 @@
+{
+  "files": {
+    "ignore": ["node_modules", "dist", "target", "**/wasm/pkg"]
+  },
+  "formatter": {
+    "indentStyle": "space",
+    "lineWidth": 120,
+    "ignore": []
+  }
+}
