@@ -14,5 +14,8 @@
   "eslint.experimental.useFlatConfig": true,
   "[javascript]": {
     "editor.defaultFormatter": "biomejs.biome"
+  },
+  "[astro]": {
+    "editor.defaultFormatter": "astro-build.astro-vscode"
   }
 }
