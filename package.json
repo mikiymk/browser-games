@@ -26,7 +26,9 @@
     "check-all:js": "run-z format:biome lint:biome lint:eslint lint:typescript test:vitest build-js:astro",
     "check-all:wasm": "run-z format:wasm build-wasm lint:wasm test:wasm",
     "check-all": "run-z check-all:wasm check-all:js",
-    "ci": "run-z lint test build",
+    "ci": "run-z ci:wasm ci:js",
+    "ci:js": "run-z lint:format lint:eslint lint:typescript test:vitest build-js:astro",
+    "ci:wasm": "run-z lint:format-wasm lint:wasm test:wasm build-wasm",
     "serve": "astro dev"
   },
   "repository": {
