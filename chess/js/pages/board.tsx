@@ -46,6 +46,7 @@ const BoardSquare = (properties: BoardSquareProperties) => {
   };
 
   return (
+    // biome-ignore lint/a11y/useKeyWithClickEvents: fix it later
     <div
       classList={{
         square: true,
@@ -61,7 +62,9 @@ const BoardSquare = (properties: BoardSquareProperties) => {
       <span
         draggable={properties.square !== Empty}
         onDragStart={(event) => {
-          event.dataTransfer && (event.dataTransfer.effectAllowed = "move");
+          if (event.dataTransfer) {
+            event.dataTransfer.effectAllowed = "move";
+          }
           properties.setInput(properties.index);
         }}
       >

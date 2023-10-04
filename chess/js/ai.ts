@@ -22,7 +22,9 @@ export const createMessenger = <T>(): [Sender<T>, Receiver<T>] => {
   };
 
   const receiver = () => {
-    return new Promise<T>((resolve) => (resolveFunction = resolve));
+    return new Promise<T>((resolve) => {
+      resolveFunction = resolve;
+    });
   };
 
   return [sender, receiver];

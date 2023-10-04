@@ -26,6 +26,7 @@ const Cell = (properties: CellProperties) => {
     GameAiPromise.resolve(properties.index);
   };
   return (
+    // biome-ignore lint/a11y/useKeyWithClickEvents: fix it later
     <div class="cell" onClick={onClick}>
       <Switch fallback="">
         <Match when={properties.mark === OMark}>
@@ -42,6 +43,7 @@ const Cell = (properties: CellProperties) => {
 const OMarkSVG = () => {
   return (
     <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" class="char">
+      <title>○</title>
       <circle cx="100" cy="100" r="70" class="char-o" />
     </svg>
   );
@@ -50,6 +52,7 @@ const OMarkSVG = () => {
 const XMarkSVG = () => {
   return (
     <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" class="char">
+      <title>❌</title>
       <path d="M30,30 170,170 M30,170 170,30" class="char-x" />
     </svg>
   );

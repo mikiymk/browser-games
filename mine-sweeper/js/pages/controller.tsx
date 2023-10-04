@@ -18,7 +18,9 @@ export const Controller = (properties: ControllerProperties) => {
     <div>
       status:
       <output>{properties.message}</output>
-      <button onClick={() => properties.reset()}>reset</button>
+      <button type="button" onClick={() => properties.reset()}>
+        reset
+      </button>
       <SettingModal>
         <p>
           <label>

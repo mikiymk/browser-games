@@ -38,6 +38,7 @@ export const PromotionPopup = (properties: PromotionPopupProperties) => {
         {(mark) => (
           <For each={promotionTargetPieces}>
             {(piece, index) => (
+              // biome-ignore lint/a11y/useKeyWithClickEvents: fix it later
               <div
                 classList={{
                   square: true,

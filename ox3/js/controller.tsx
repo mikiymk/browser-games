@@ -18,7 +18,9 @@ export const Controller = (properties: ControllerProperties) => {
     <div>
       status:
       <output>{properties.statusMessage}</output>
-      <button onClick={() => properties.onReset()}>reset</button>
+      <button type="button" onClick={() => properties.onReset()}>
+        reset
+      </button>
       <SettingModal>
         <div>
           ◯ player
