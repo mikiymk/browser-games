@@ -10,7 +10,7 @@ import globals from "globals";
 export default [
   {
     files: ["**/*.ts", "**/*.tsx"],
-    ignores: ["src/wasms/**/*", "vite.config.ts"],
+    ignores: ["src/wasms/**/*", "vite.config.ts", "src/env.d.ts"],
 
     plugins: {
       "@typescript-eslint": typescript,

@@ -8,7 +8,7 @@
     "test": "run-z test:vitest test:wasm",
     "test:vitest": "vitest run",
     "test:wasm": "cargo test",
-    "lint": "run-z lint:format lint:eslint lint:biome lint:typescript lint:wasm",
+    "lint": "run-z lint:format lint:eslint lint:biome lint:typescript lint:format-wasm lint:wasm",
     "lint:format": "biome ci .",
     "lint:eslint": "eslint src --cache",
     "lint:biome": "biome check .",
@@ -26,7 +26,7 @@
     "check-all:js": "run-z format:biome lint:biome lint:eslint lint:typescript test:vitest build-js:astro",
     "check-all:wasm": "run-z format:wasm build-wasm lint:wasm test:wasm",
     "check-all": "run-z check-all:wasm check-all:js",
-    "ci": "run-z lint:format-wasm build-wasm lint:format lint test build-js:astro",
+    "ci": "run-z lint test build",
     "serve": "astro dev"
   },
   "repository": {
