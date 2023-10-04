@@ -22,7 +22,9 @@ export const createMessenger = <T>(): [Sender<T>, Receiver<T>] => {
   };
 
   const receiver = () => {
-    return new Promise<T>((resolve) => (resolveFunction = resolve));
+    return new Promise<T>((resolve) => {
+      resolveFunction = resolve;
+    });
   };
 
   return [sender, receiver];
@@ -32,7 +34,7 @@ export const createHumanPlayer = (
   input: Receiver<InputType>,
   setMovable: Setter<Index[]>,
   promotionInput: Receiver<PromotionPieces>,
-  openPromotionMark: Setter<Mark>,
+  openPromotionMark: Setter<Mark | undefined>,
 ): Player => {
   return {
     async getMove({ board, mark, castling, enPassant }: GameState): Promise<MoveTypes> {

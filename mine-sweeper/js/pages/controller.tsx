@@ -18,7 +18,14 @@ export const Controller = (properties: ControllerProperties) => {
     <div>
       status:
       <output>{properties.message}</output>
-      <button onClick={() => properties.reset()}>reset</button>
+      <button
+        type="button"
+        onClick={() => {
+          properties.reset();
+        }}
+      >
+        reset
+      </button>
       <SettingModal>
         <p>
           <label>
@@ -27,10 +34,13 @@ export const Controller = (properties: ControllerProperties) => {
               type="number"
               min={4}
               value={properties.height}
-              onChange={(event) => properties.setHeight(Number(event.currentTarget.value))}
+              onChange={(event) => {
+                properties.setHeight(Number(event.currentTarget.value));
+              }}
             />
           </label>
-          <br />4 ～
+          <br />
+          4 ～
         </p>
         <p>
           <label>
@@ -39,10 +49,13 @@ export const Controller = (properties: ControllerProperties) => {
               type="number"
               min={4}
               value={properties.width}
-              onChange={(event) => properties.setWidth(Number(event.currentTarget.value))}
+              onChange={(event) => {
+                properties.setWidth(Number(event.currentTarget.value));
+              }}
             />
           </label>
-          <br />4 ～
+          <br />
+          4 ～
         </p>
         <p>
           <label>
@@ -52,10 +65,13 @@ export const Controller = (properties: ControllerProperties) => {
               min={1}
               max={properties.height * properties.width - 9}
               value={properties.mineAmount}
-              onChange={(event) => properties.setMineAmount(Number(event.currentTarget.value))}
+              onChange={(event) => {
+                properties.setMineAmount(Number(event.currentTarget.value));
+              }}
             />
           </label>
-          <br />1 ～ {properties.height * properties.width - 9}
+          <br />
+          1 ～ {properties.height * properties.width - 9}
         </p>
       </SettingModal>
     </div>

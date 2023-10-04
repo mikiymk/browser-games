@@ -18,13 +18,17 @@ export const SettingModal = (properties: SettingModalProperties) => {
 
   return (
     <>
-      <button onClick={openSettings}>open settings</button>
+      <button type="button" onClick={openSettings}>
+        open settings
+      </button>
       <dialog ref={dialog.setValue}>
         <h3>Settings</h3>
 
         {properties.children}
 
-        <button onClick={closeSettings}>close settings</button>
+        <button type="button" onClick={closeSettings}>
+          close settings
+        </button>
       </dialog>
     </>
   );

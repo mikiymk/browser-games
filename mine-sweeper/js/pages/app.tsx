@@ -104,7 +104,13 @@ export const App = () => {
       >
         <For each={fields()}>
           {(field, index) => (
-            <MineField field={field} onClick={() => openField(index())} onContextMenu={() => flagField(index())} />
+            <MineField
+              field={field}
+              onClick={() => {
+                openField(index());
+              }}
+              onContextMenu={() => flagField(index())}
+            />
           )}
         </For>
       </div>

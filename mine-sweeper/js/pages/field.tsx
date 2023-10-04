@@ -24,9 +24,12 @@ type MineFieldProperties = {
 };
 export const MineField = (properties: MineFieldProperties) => {
   return (
+    // biome-ignore lint/a11y/useKeyWithClickEvents: fix it later
     <div
       class="field"
-      onClick={() => properties.onClick()}
+      onClick={() => {
+        properties.onClick();
+      }}
       onContextMenu={(event) => {
         if (properties.onContextMenu()) {
           event.preventDefault();
@@ -34,58 +37,58 @@ export const MineField = (properties: MineFieldProperties) => {
       }}
     >
       <Switch>
-        <Match when={properties.field == FieldBomb}>
+        <Match when={properties.field === FieldBomb}>
           <div class="field-close">
             <Bomb />
           </div>
         </Match>
-        <Match when={properties.field == FieldFlag}>
+        <Match when={properties.field === FieldFlag}>
           <div class="field-close">
             <Flag />
           </div>
         </Match>
-        <Match when={properties.field == FieldNoOpen}>
+        <Match when={properties.field === FieldNoOpen}>
           <div class="field-close" />
         </Match>
-        <Match when={properties.field == FieldNumber0}>
+        <Match when={properties.field === FieldNumber0}>
           <div class="field-open" />
         </Match>
-        <Match when={properties.field == FieldNumber1}>
+        <Match when={properties.field === FieldNumber1}>
           <div class="field-open">
             <Number1 />
           </div>
         </Match>
-        <Match when={properties.field == FieldNumber2}>
+        <Match when={properties.field === FieldNumber2}>
           <div class="field-open">
             <Number2 />
           </div>
         </Match>
-        <Match when={properties.field == FieldNumber3}>
+        <Match when={properties.field === FieldNumber3}>
           <div class="field-open">
             <Number3 />
           </div>
         </Match>
-        <Match when={properties.field == FieldNumber4}>
+        <Match when={properties.field === FieldNumber4}>
           <div class="field-open">
             <Number4 />
           </div>
         </Match>
-        <Match when={properties.field == FieldNumber5}>
+        <Match when={properties.field === FieldNumber5}>
           <div class="field-open">
             <Number5 />
           </div>
         </Match>
-        <Match when={properties.field == FieldNumber6}>
+        <Match when={properties.field === FieldNumber6}>
           <div class="field-open">
             <Number6 />
           </div>
         </Match>
-        <Match when={properties.field == FieldNumber7}>
+        <Match when={properties.field === FieldNumber7}>
           <div class="field-open">
             <Number7 />
           </div>
         </Match>
-        <Match when={properties.field == FieldNumber8}>
+        <Match when={properties.field === FieldNumber8}>
           <div class="field-open">
             <Number8 />
           </div>

@@ -29,7 +29,7 @@ export const isFinished = (state: GameState, setMessage?: Setter<string>): boole
 
   for (const [boardString, value] of state.threefold) {
     if (value >= 3) {
-      console.log("threefold repetition " + boardString);
+      console.log(`threefold repetition ${boardString}`);
 
       message("Draw - threefold repetition");
       return true;

@@ -46,6 +46,7 @@ const BoardSquare = (properties: BoardSquareProperties) => {
   };
 
   return (
+    // biome-ignore lint/a11y/useKeyWithClickEvents: fix it later
     <div
       classList={{
         square: true,
@@ -53,15 +54,25 @@ const BoardSquare = (properties: BoardSquareProperties) => {
         "square-black": !isCellWhite(),
         movable: properties.movable,
       }}
-      onClick={() => properties.setInput(properties.index)}
-      onDragEnter={(event) => event.preventDefault()}
-      onDragOver={(event) => event.preventDefault()}
-      onDrop={() => properties.setInput(properties.index)}
+      onClick={() => {
+        properties.setInput(properties.index);
+      }}
+      onDragEnter={(event) => {
+        event.preventDefault();
+      }}
+      onDragOver={(event) => {
+        event.preventDefault();
+      }}
+      onDrop={() => {
+        properties.setInput(properties.index);
+      }}
     >
       <span
         draggable={properties.square !== Empty}
         onDragStart={(event) => {
-          event.dataTransfer && (event.dataTransfer.effectAllowed = "move");
+          if (event.dataTransfer) {
+            event.dataTransfer.effectAllowed = "move";
+          }
           properties.setInput(properties.index);
         }}
       >
