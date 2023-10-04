@@ -1,9 +1,9 @@
 import { For, Match, Switch } from "solid-js";
 
-import { GameAiPromise } from "./ai";
-import { OMark, XMark } from "./types";
+import { GameAiPromise } from "../../games/ox3/ai";
+import { OMark, XMark } from "../../games/ox3/types";
 
-import type { BoardData, Empty, Index, Mark } from "./types";
+import type { BoardData, Empty, Index, Mark } from "../../games/ox3/types";
 
 type BoardProperties = {
   board: BoardData;

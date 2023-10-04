@@ -1,4 +1,4 @@
-import { Bombed, Clear, FieldFlag, FieldNoOpen } from "./consts";
+import { Bombed, Clear, FieldFlag, FieldNoOpen } from "./js/consts";
 
 const diffArray: [number, number][] = [
   [1, 0],
