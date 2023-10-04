@@ -22,7 +22,7 @@
     "build": "run-z build-wasm build-js:vite",
     "build-js:vite": "vite build",
     "build-wasm": "run-z build-wasm:chess",
-    "build-wasm:chess": "wasm-pack build chess/wasm --release",
+    "build-wasm:chess": "wasm-pack build src/wasms/chess --release",
     "check-all:js": "run-z format:biome lint:biome lint:eslint lint:typescript test:vitest build-js:vite",
     "check-all:wasm": "run-z format:wasm build-wasm lint:wasm test:wasm",
     "check-all": "run-z check-all:wasm check-all:js",
