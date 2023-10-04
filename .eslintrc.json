@@ -23,7 +23,7 @@
     "tsconfigRootDir": "./"
   },
 
-  "ignorePatterns": ["**/wasm/pkg/*"],
+  "ignorePatterns": ["**/wasm/pkg/*", "vite.config.ts"],
 
   "rules": {
     "unicorn/prefer-query-selector": "off",
