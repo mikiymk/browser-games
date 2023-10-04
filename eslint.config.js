@@ -92,7 +92,7 @@ export default [
         "warn",
         {
           missingExports: true,
-          // unusedExports: true,
+          unusedExports: true,
         },
       ],
     },
@@ -110,9 +110,9 @@ export default [
     rules: {
       "import/no-unused-modules": [
         "warn",
-        // {
-        //   unusedExports: true,
-        // },
+        {
+          unusedExports: true,
+        },
       ],
     },
   },
