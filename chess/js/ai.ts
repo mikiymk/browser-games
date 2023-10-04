@@ -32,7 +32,7 @@ export const createHumanPlayer = (
   input: Receiver<InputType>,
   setMovable: Setter<Index[]>,
   promotionInput: Receiver<PromotionPieces>,
-  openPromotionMark: Setter<Mark>,
+  openPromotionMark: Setter<Mark | undefined>,
 ): Player => {
   return {
     async getMove({ board, mark, castling, enPassant }: GameState): Promise<MoveTypes> {
