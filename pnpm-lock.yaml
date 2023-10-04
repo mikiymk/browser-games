@@ -46,6 +46,9 @@ devDependencies:
   eslint-plugin-vitest:
     specifier: ^0.3.2
     version: 0.3.2(@typescript-eslint/eslint-plugin@6.7.4)(eslint@8.50.0)(typescript@5.2.2)(vitest@0.34.6)
+  globals:
+    specifier: ^13.22.0
+    version: 13.22.0
   jsdom:
     specifier: ^22.1.0
     version: 22.1.0
