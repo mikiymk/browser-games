@@ -1,3 +1,7 @@
+---
+import "@/styles/mine-sweeper.css";
+---
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -6,10 +10,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="shortcut icon" type="image/x-icon" href="../img/favicon.svg" />
     <title>Mine Sweeper</title>
-    <link href="./style.css" rel="stylesheet" />
   </head>
 
   <body>
-    <script type="module" src="./main.ts"></script>
+    <script>
+      import { App } from "../components/mine-sweeper/app";
+      import { render } from "solid-js/web";
+
+      render(App, document.body);
+    </script>
   </body>
 </html>

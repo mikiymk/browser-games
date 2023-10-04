@@ -3,8 +3,8 @@ import { For, batch, createEffect, createSignal } from "solid-js";
 import { Controller } from "./controller";
 import { MineField } from "./field";
 
-import { Bombed, Clear, FieldBomb, FieldFlag, FieldNoOpen, FirstClick, Playing } from "../consts";
-import { getAround, initializeField, isClear, message, resetMines } from "../field";
+import { Bombed, Clear, FieldBomb, FieldFlag, FieldNoOpen, FirstClick, Playing } from "@/games/mine-sweeper/consts";
+import { getAround, initializeField, isClear, message, resetMines } from "@/games/mine-sweeper/field";
 
 export const App = () => {
   const [height, setHeight] = createSignal(10);

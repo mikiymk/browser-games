@@ -15,7 +15,7 @@ import {
   FieldNumber6,
   FieldNumber7,
   FieldNumber8,
-} from "../consts";
+} from "@/games/mine-sweeper/consts";
 
 type MineFieldProperties = {
   field: number;
