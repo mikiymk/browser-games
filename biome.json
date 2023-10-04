@@ -6,5 +6,8 @@
     "indentStyle": "space",
     "lineWidth": 120,
     "ignore": []
+  },
+  "linter": {
+    "rules": {}
   }
 }
