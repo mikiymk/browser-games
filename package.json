@@ -8,26 +8,26 @@
     "test": "run-z test:vitest test:wasm",
     "test:vitest": "vitest run",
     "test:wasm": "cargo test",
-    "lint": "run-z lint:format lint:eslint lint:biome lint:typescript lint:wasm",
+    "lint": "run-z lint:format lint:eslint lint:biome lint:typescript lint:format-wasm lint:wasm",
     "lint:format": "biome ci .",
-    "lint:eslint": "eslint chess mine-sweeper ox3 --cache",
-    "lint:biome": "biome lint .",
+    "lint:eslint": "eslint src --cache",
+    "lint:biome": "biome check .",
     "lint:typescript": "tsc",
     "lint:format-wasm": "cargo fmt --check",
     "lint:wasm": "cargo clippy",
-    "lint-fix:eslint": "eslint chess mine-sweeper ox3 --cache --fix",
-    "lint-fix:biome": "biome lint . --apply",
+    "lint-fix:eslint": "eslint src --cache --fix",
+    "lint-fix:biome": "biome check . --apply",
     "format:biome": "biome format . --write",
     "format:wasm": "cargo fmt",
-    "build": "run-z build-wasm build-js:vite",
-    "build-js:vite": "vite build",
+    "build": "run-z build-wasm build-js:astro",
+    "build-js:astro": "astro build",
     "build-wasm": "run-z build-wasm:chess",
-    "build-wasm:chess": "wasm-pack build chess/wasm --release",
-    "check-all:js": "run-z format:biome lint:biome lint:eslint lint:typescript test:vitest build-js:vite",
+    "build-wasm:chess": "wasm-pack build src/wasms/chess --release",
+    "check-all:js": "run-z format:biome lint:biome lint:eslint lint:typescript test:vitest build-js:astro",
     "check-all:wasm": "run-z format:wasm build-wasm lint:wasm test:wasm",
     "check-all": "run-z check-all:wasm check-all:js",
-    "ci": "run-z lint:format-wasm build-wasm lint:format lint test build-js:vite",
-    "serve": "vite"
+    "ci": "run-z lint test build",
+    "serve": "astro dev"
   },
   "repository": {
     "type": "git",
@@ -63,6 +63,8 @@
     "vitest": "^0.34.6"
   },
   "dependencies": {
+    "@astrojs/solid-js": "^3.0.1",
+    "astro": "^3.2.2",
     "solid-js": "^1.7.12"
   }
 }

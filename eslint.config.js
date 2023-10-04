@@ -1,16 +1,16 @@
 import js from "@eslint/js";
-import typescriptParser from "@typescript-eslint/parser";
 import typescript from "@typescript-eslint/eslint-plugin";
+import typescriptParser from "@typescript-eslint/parser";
 import pluginImport from "eslint-plugin-import";
-import unicorn from "eslint-plugin-unicorn";
 import solid from "eslint-plugin-solid";
+import unicorn from "eslint-plugin-unicorn";
 import vitest from "eslint-plugin-vitest";
 import globals from "globals";
 
 export default [
   {
     files: ["**/*.ts", "**/*.tsx"],
-    ignores: ["**/wasm/pkg/*", "vite.config.ts"],
+    ignores: ["src/wasms/**/*", "vite.config.ts", "src/env.d.ts"],
 
     plugins: {
       "@typescript-eslint": typescript,
@@ -29,7 +29,7 @@ export default [
       parser: typescriptParser,
       parserOptions: {
         sourceType: "module",
-        project: ["./tsconfig.json"],
+        project: true,
         tsconfigRootDir: "./",
       },
     },
@@ -69,10 +69,6 @@ export default [
         {
           groups: ["external", "internal", "sibling", "type"],
           "newlines-between": "always",
-          alphabetize: {
-            order: "asc",
-            caseInsensitive: true,
-          },
         },
       ],
     },
@@ -81,7 +77,7 @@ export default [
   // not test
   {
     files: ["**/*.ts", "**/*.tsx"],
-    ignores: ["**/wasm/pkg/*", "vite.config.ts", "**/*.test.ts", "**/*.test.tsx"],
+    ignores: ["src/wasms/**/*", "vite.config.ts", "**/*.test.ts", "**/*.test.tsx"],
 
     plugins: {
       import: pluginImport,
@@ -92,7 +88,7 @@ export default [
         "warn",
         {
           missingExports: true,
-          unusedExports: true,
+          // unusedExports: true,
         },
       ],
     },
@@ -101,7 +97,7 @@ export default [
   // test
   {
     files: ["**/*.test.ts", "**/*.test.tsx"],
-    ignores: ["**/wasm/pkg/*"],
+    ignores: ["src/wasms/**/*"],
 
     plugins: {
       import: pluginImport,
@@ -110,9 +106,9 @@ export default [
     rules: {
       "import/no-unused-modules": [
         "warn",
-        {
-          unusedExports: true,
-        },
+        // {
+        //   unusedExports: true,
+        // },
       ],
     },
   },

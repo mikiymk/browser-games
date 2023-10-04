@@ -10,9 +10,9 @@
 
     "baseUrl": "./",
     "paths": {
-      "@/*": ["*"]
+      "@/*": ["src/*"]
     }
   },
   "include": ["**/*.ts", "**/*.tsx"],
-  "exclude": ["./vite.config.ts"]
+  "exclude": ["./vitest.config.ts"]
 }
