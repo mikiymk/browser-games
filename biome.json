@@ -1,0 +1,13 @@
+{
+  "files": {
+    "ignore": ["node_modules", "dist", "target", "src/wasms"]
+  },
+  "formatter": {
+    "indentStyle": "space",
+    "lineWidth": 120,
+    "ignore": []
+  },
+  "linter": {
+    "rules": {}
+  }
+}
