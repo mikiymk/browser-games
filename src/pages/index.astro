@@ -1,5 +1,10 @@
 ---
-
+const pages = [
+    { title: "OX3", name: "ox3" },
+    { title: "Chess", name: "chess" },
+    { title: "Mine Sweeper", name: "mine-sweeper" },
+    { title: "Knight's Tour", name: "knight-tour" },
+];
 ---
 
 <!doctype html>
@@ -8,20 +13,20 @@
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link
-            rel="shortcut icon"
-            type="image/x-icon"
-            href="./favicon.svg"
-        />
-        <title>games</title>
+        <link rel="shortcut icon" type="image/x-icon" href="./favicon.svg" />
+        <title>Games</title>
     </head>
 
     <body>
+        <h1>Games</h1>
         <ul>
-            <li><a href="./ox3/">OX3</a></li>
-            <li><a href="./chess/">Chess</a></li>
-            <li><a href="./mine-sweeper/">Mine Sweeper</a></li>
-            <li><a href="./knight-tour/">Knight's Tour</a></li>
+            {
+                pages.map(({ title, name }) => (
+                    <li>
+                        <a href={`./${name}/`}>{title}</a>{" "}
+                    </li>
+                ))
+            }
         </ul>
     </body>
 </html>

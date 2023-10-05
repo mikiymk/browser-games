@@ -6,16 +6,23 @@ import wasmPlugin from "vite-plugin-wasm";
 
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 // https://astro.build/config
 export default defineConfig({
   site: "https://mikiymk.github.io/",
   base: "js-html-game/",
-  integrations: [solidJs()],
+  integrations: [solidJs({})],
+
+  compressHTML: false,
 
   vite: {
-    plugins: [solidPlugin(), wasmPlugin(), topLevelAwaitPlugin()],
+    plugins: [
+      // solidPlugin(),
+      wasmPlugin(),
+      topLevelAwaitPlugin(),
+    ],
 
     build: {
       modulePreload: {
