@@ -3,6 +3,7 @@ import { defineConfig } from "astro/config";
 import solidPlugin from "vite-plugin-solid";
 import topLevelAwaitPlugin from "vite-plugin-top-level-await";
 import wasmPlugin from "vite-plugin-wasm";
+import {vanillaExtractPlugin} from "@vanilla-extract/vite-plugin";
 
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -20,6 +21,7 @@ export default defineConfig({
   vite: {
     plugins: [
       // solidPlugin(),
+      vanillaExtractPlugin(),
       wasmPlugin(),
       topLevelAwaitPlugin(),
     ],
