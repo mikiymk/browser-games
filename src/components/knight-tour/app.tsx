@@ -3,11 +3,13 @@ import { For, Match, Switch, createSignal, onMount } from "solid-js";
 import { boardStyle, cellButtonStyle, cellStyle } from "@/styles/knight-tour.css";
 import knight from "@/images/chess/knight-black.svg";
 import cross from "@/images/symbol/cross-black.svg";
+import circle from "@/images/symbol/circle-black.svg";
 import { randomRange } from "@/scripts/random-select";
 
 const CellUnvisited = 0;
 const CellVisited = 1;
 const CellKnight = 2;
+const CellMovable = 3;
 
 const BoardLength = 64;
 
@@ -18,21 +20,63 @@ export const App = () => {
     const rand = randomRange(0, BoardLength);
     const board = Array.from({ length: BoardLength }, () => CellUnvisited);
     board[rand] = CellKnight;
+    for (const index of getLegalMove(board)) {
+      board[index] ||= CellMovable;
+    }
 
     setBoard(board);
   };
 
   const handleClick = (index: number) => {
     setBoard((board) => {
-      const newBoard = [...board];
+      const newBoard = board.map((cell) => {
+        return cell === CellMovable ? CellUnvisited : cell;
+      });
 
       const previousKnightIndex = newBoard.indexOf(CellKnight);
 
       newBoard[previousKnightIndex] = CellVisited;
       newBoard[index] = CellKnight;
 
+      for (const index of getLegalMove(newBoard)) {
+        newBoard[index] ||= CellMovable;
+      }
+
       return newBoard;
     });
+  };
+
+  const getLegalMove = (currentBoard: number[] = board()) => {
+    /// . A . B .
+    /// C . . . D
+    /// . . N . .
+    /// E . . . F
+    /// . G . H .
+
+    const currentKnightIndex = currentBoard.indexOf(CellKnight);
+    const currentKnightFile = currentKnightIndex % 8;
+    const currentKnightRank = Math.floor(currentKnightIndex / 8);
+
+    const moveSteps: [number, number][] = [
+      [2, 1],
+      [2, -1],
+      [-2, 1],
+      [-2, -1],
+      [1, 2],
+      [-1, 2],
+      [1, -2],
+      [-1, -2],
+    ];
+
+    return moveSteps
+      .filter(
+        ([x, y]) =>
+          x - 1 < currentKnightRank &&
+          currentKnightRank < 8 + x &&
+          y - 1 < currentKnightFile &&
+          currentKnightFile < 8 + y,
+      )
+      .map(([x, y]) => (currentKnightRank - x) * 8 + (currentKnightFile - y));
   };
 
   onMount(reset);
@@ -54,6 +98,9 @@ export const App = () => {
                 <Switch>
                   <Match when={cell === CellVisited}>
                     <img src={cross.src} alt="visited" />
+                  </Match>
+                  <Match when={cell === CellMovable}>
+                    <img src={circle.src} alt="movable" />
                   </Match>
                   <Match when={cell === CellKnight}>
                     <img src={knight.src} alt="knight" />
