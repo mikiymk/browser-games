@@ -1,5 +1,5 @@
 {
-  "svg.preview.background": "transparent",
+  "svg.preview.background": "dark-transparent",
   "cSpell.words": ["wasm_bindgen"],
   "rust-analyzer.check.command": "clippy",
 
@@ -29,5 +29,8 @@
   },
   "[html]": {
     "editor.defaultFormatter": "vscode.html-language-features"
+  },
+  "[svg]": {
+    "editor.defaultFormatter": "jock.svg"
   }
 }

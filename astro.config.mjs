@@ -1,10 +1,9 @@
 import solidJs from "@astrojs/solid-js";
 import { defineConfig } from "astro/config";
-import solidPlugin from "vite-plugin-solid";
+import compress from "astro-compress";
 import topLevelAwaitPlugin from "vite-plugin-top-level-await";
 import wasmPlugin from "vite-plugin-wasm";
-import {vanillaExtractPlugin} from "@vanilla-extract/vite-plugin";
-
+import { vanillaExtractPlugin } from "@vanilla-extract/vite-plugin";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -14,7 +13,14 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 export default defineConfig({
   site: "https://mikiymk.github.io/",
   base: "js-html-game/",
-  integrations: [solidJs({})],
+  integrations: [
+    solidJs({}),
+    compress({
+      SVG: {
+        multipass: true,
+      },
+    }),
+  ],
 
   compressHTML: false,
 

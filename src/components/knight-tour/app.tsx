@@ -1,6 +1,8 @@
 import { For, Match, Switch, createSignal } from "solid-js";
 
 import { boardStyle, cellButtonStyle, cellStyle } from "@/styles/knight-tour.css";
+import knight from "@/images/chess/knight-black.svg";
+import cross from "@/images/symbol/cross-black.svg";
 
 const CellUnvisited = 0;
 const CellVisited = 1;
@@ -30,8 +32,12 @@ export const App = () => {
                 }}
               >
                 <Switch>
-                  <Match when={cell === CellVisited}>✗</Match>
-                  <Match when={cell === CellKnight}>♞</Match>
+                  <Match when={cell === CellVisited}>
+                    <img src={cross.src} alt="knight" />
+                  </Match>
+                  <Match when={cell === CellKnight}>
+                    <img src={knight.src} alt="knight" />
+                  </Match>
                 </Switch>
               </button>
             </span>
