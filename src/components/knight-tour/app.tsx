@@ -29,6 +29,10 @@ export const App = () => {
 
   const handleClick = (index: number) => {
     setBoard((board) => {
+      if (board[index] !== CellMovable) {
+        return board;
+      }
+
       const newBoard = board.map((cell) => {
         return cell === CellMovable ? CellUnvisited : cell;
       });
