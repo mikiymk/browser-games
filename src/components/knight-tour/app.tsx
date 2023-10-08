@@ -19,10 +19,13 @@ export const App = () => {
   const reset = () => {
     const rand = randomRange(0, BoardLength);
     const board = Array.from({ length: BoardLength }, () => CellUnvisited);
-    board[rand] = CellKnight;
-    for (const index of getLegalMove(board)) {
-      board[index] ||= CellMovable;
+    for (const index of getLegalMove(board, rand)) {
+      if (board[index] === CellUnvisited) {
+        board[index] = CellMovable;
+      }
     }
+
+    board[rand] = CellKnight;
 
     setBoard(board);
   };
@@ -39,48 +42,17 @@ export const App = () => {
 
       const previousKnightIndex = newBoard.indexOf(CellKnight);
 
-      newBoard[previousKnightIndex] = CellVisited;
-      newBoard[index] = CellKnight;
-
-      for (const index of getLegalMove(newBoard)) {
-        newBoard[index] ||= CellMovable;
+      for (const movableIndex of getLegalMove(newBoard, index)) {
+        if (newBoard[movableIndex] === CellUnvisited) {
+          newBoard[movableIndex] = CellMovable;
+        }
       }
+
+      newBoard[index] = CellKnight;
+      newBoard[previousKnightIndex] = CellVisited;
 
       return newBoard;
     });
-  };
-
-  const getLegalMove = (currentBoard: number[] = board()) => {
-    /// . A . B .
-    /// C . . . D
-    /// . . N . .
-    /// E . . . F
-    /// . G . H .
-
-    const currentKnightIndex = currentBoard.indexOf(CellKnight);
-    const currentKnightFile = currentKnightIndex % 8;
-    const currentKnightRank = Math.floor(currentKnightIndex / 8);
-
-    const moveSteps: [number, number][] = [
-      [2, 1],
-      [2, -1],
-      [-2, 1],
-      [-2, -1],
-      [1, 2],
-      [-1, 2],
-      [1, -2],
-      [-1, -2],
-    ];
-
-    return moveSteps
-      .filter(
-        ([x, y]) =>
-          x - 1 < currentKnightRank &&
-          currentKnightRank < 8 + x &&
-          y - 1 < currentKnightFile &&
-          currentKnightFile < 8 + y,
-      )
-      .map(([x, y]) => (currentKnightRank - x) * 8 + (currentKnightFile - y));
   };
 
   onMount(reset);
@@ -95,7 +67,6 @@ export const App = () => {
                 type="button"
                 class={cellButtonStyle}
                 onClick={() => {
-                  console.log(`click ${index()}`);
                   handleClick(index());
                 }}
               >
@@ -105,6 +76,7 @@ export const App = () => {
                   </Match>
                   <Match when={cell === CellMovable}>
                     <img src={circle.src} alt="movable" />
+                    {getLegalMove(board(), index()).length}
                   </Match>
                   <Match when={cell === CellKnight}>
                     <img src={knight.src} alt="knight" />
@@ -117,4 +89,37 @@ export const App = () => {
       </div>
     </>
   );
+};
+
+const getLegalMove = (board: number[], index: number): number[] => {
+  /// . A . B .
+  /// C . . . D
+  /// . . N . .
+  /// E . . . F
+  /// . G . H .
+
+  const currentKnightFile = index % 8;
+  const currentKnightRank = Math.floor(index / 8);
+
+  const moveSteps: [number, number][] = [
+    [2, 1],
+    [2, -1],
+    [-2, 1],
+    [-2, -1],
+    [1, 2],
+    [-1, 2],
+    [1, -2],
+    [-1, -2],
+  ];
+
+  return moveSteps
+    .filter(
+      ([x, y]) =>
+        x - 1 < currentKnightRank &&
+        currentKnightRank < 8 + x &&
+        y - 1 < currentKnightFile &&
+        currentKnightFile < 8 + y,
+    )
+    .map(([x, y]) => (currentKnightRank - x) * 8 + (currentKnightFile - y))
+    .filter((index) => board[index] !== CellVisited && board[index] !== CellKnight);
 };
