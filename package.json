@@ -29,7 +29,8 @@
     "ci": "run-z ci:wasm ci:js",
     "ci:js": "run-z lint:format lint:eslint lint:typescript test:vitest build-js:astro",
     "ci:wasm": "run-z lint:format-wasm lint:wasm test:wasm build-wasm",
-    "serve": "astro dev"
+    "serve": "astro dev",
+    "serve-preview": "astro preview"
   },
   "repository": {
     "type": "git",

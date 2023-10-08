@@ -1,9 +1,18 @@
-import { For, Match, Switch, createSignal, onMount } from "solid-js";
+import { For, Match, Show, Switch, createMemo, createSignal, onMount } from "solid-js";
 
 import { boardStyle, cellButtonStyle, cellStyle } from "@/styles/knight-tour.css";
 import knight from "@/images/chess/knight-black.svg";
 import cross from "@/images/symbol/cross-black.svg";
 import circle from "@/images/symbol/circle-black.svg";
+import number0 from "@/images/number/0-black.svg";
+import number1 from "@/images/number/1-black.svg";
+import number2 from "@/images/number/2-black.svg";
+import number3 from "@/images/number/3-black.svg";
+import number4 from "@/images/number/4-black.svg";
+import number5 from "@/images/number/5-black.svg";
+import number6 from "@/images/number/6-black.svg";
+import number7 from "@/images/number/7-black.svg";
+import number8 from "@/images/number/8-black.svg";
 import { randomRange } from "@/scripts/random-select";
 
 const CellUnvisited = 0;
@@ -15,6 +24,7 @@ const BoardLength = 64;
 
 export const App = () => {
   const [board, setBoard] = createSignal<number[]>([]);
+  const [hintMode, setHintMode] = createSignal(false);
 
   const reset = () => {
     const rand = randomRange(0, BoardLength);
@@ -61,31 +71,73 @@ export const App = () => {
     <>
       <div class={boardStyle}>
         <For each={board()}>
-          {(cell, index) => (
-            <span class={cellStyle}>
-              <button
-                type="button"
-                class={cellButtonStyle}
-                onClick={() => {
-                  handleClick(index());
-                }}
-              >
-                <Switch>
-                  <Match when={cell === CellVisited}>
-                    <img src={cross.src} alt="visited" />
-                  </Match>
-                  <Match when={cell === CellMovable}>
-                    <img src={circle.src} alt="movable" />
-                    {getLegalMove(board(), index()).length}
-                  </Match>
-                  <Match when={cell === CellKnight}>
-                    <img src={knight.src} alt="knight" />
-                  </Match>
-                </Switch>
-              </button>
-            </span>
-          )}
+          {(cell, index) => {
+            const getMovableCount = createMemo(() => getLegalMove(board(), index()).length);
+
+            return (
+              <span class={cellStyle}>
+                <button
+                  type="button"
+                  class={cellButtonStyle}
+                  onClick={() => {
+                    handleClick(index());
+                  }}
+                >
+                  <Switch>
+                    <Match when={cell === CellVisited}>
+                      <img src={cross.src} alt="visited" />
+                    </Match>
+
+                    <Match when={cell === CellMovable}>
+                      <Show when={hintMode()} fallback={<img src={circle.src} alt="movable" />}>
+                        <Switch>
+                          <Match when={getMovableCount() === 0}>
+                            <img src={number0.src} alt="movable 0" />
+                          </Match>
+                          <Match when={getMovableCount() === 1}>
+                            <img src={number1.src} alt="movable 1" />
+                          </Match>
+                          <Match when={getMovableCount() === 2}>
+                            <img src={number2.src} alt="movable 2" />
+                          </Match>
+                          <Match when={getMovableCount() === 3}>
+                            <img src={number3.src} alt="movable 3" />
+                          </Match>
+                          <Match when={getMovableCount() === 4}>
+                            <img src={number4.src} alt="movable 4" />
+                          </Match>
+                          <Match when={getMovableCount() === 5}>
+                            <img src={number5.src} alt="movable 5" />
+                          </Match>
+                          <Match when={getMovableCount() === 6}>
+                            <img src={number6.src} alt="movable 6" />
+                          </Match>
+                          <Match when={getMovableCount() === 7}>
+                            <img src={number7.src} alt="movable 7" />
+                          </Match>
+                          <Match when={getMovableCount() === 8}>
+                            <img src={number8.src} alt="movable 8" />
+                          </Match>
+                        </Switch>
+                      </Show>
+                    </Match>
+                    <Match when={cell === CellKnight}>
+                      <img src={knight.src} alt="knight" />
+                    </Match>
+                  </Switch>
+                </button>
+              </span>
+            );
+          }}
         </For>
+      </div>
+
+      <div>
+        <h2>Settings</h2>
+
+        <button type="button" onClick={() => setHintMode((hint) => !hint)}>
+          Show Warnsdorff's hint
+        </button>
       </div>
     </>
   );
