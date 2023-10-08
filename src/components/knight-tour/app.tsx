@@ -25,6 +25,7 @@ const BoardLength = 64;
 export const App = () => {
   const [board, setBoard] = createSignal<number[]>([]);
   const [hintMode, setHintMode] = createSignal(false);
+  const [history, setHistory] = createSignal<number[]>([]);
 
   const reset = () => {
     const rand = randomRange(0, BoardLength);
@@ -38,9 +39,11 @@ export const App = () => {
     board[rand] = CellKnight;
 
     setBoard(board);
+    setHistory([]);
   };
 
   const handleClick = (index: number) => {
+    setHistory((history) => [...history, index]);
     setBoard((board) => {
       if (board[index] !== CellMovable) {
         return board;
@@ -60,6 +63,33 @@ export const App = () => {
 
       newBoard[index] = CellKnight;
       newBoard[previousKnightIndex] = CellVisited;
+
+      return newBoard;
+    });
+  };
+
+  const backHistory = (index: number) => {
+    const currentHistory = history();
+
+    setHistory(currentHistory.slice(0, index));
+    setBoard((board) => {
+      const newBoard: number[] = board.map((cell) => {
+        return cell === CellVisited ? CellVisited : CellUnvisited;
+      });
+
+      for (const historyIndex of currentHistory.slice(index)) {
+        newBoard[historyIndex] = CellUnvisited;
+      }
+
+      const knightIndex = currentHistory[index - 1] ?? newBoard.indexOf(CellVisited);
+
+      for (const index of getLegalMove(newBoard, knightIndex)) {
+        if (newBoard[index] === CellUnvisited) {
+          newBoard[index] = CellMovable;
+        }
+      }
+
+      newBoard[knightIndex] = CellKnight;
 
       return newBoard;
     });
@@ -138,6 +168,29 @@ export const App = () => {
         <button type="button" onClick={() => setHintMode((hint) => !hint)}>
           Show Warnsdorff's hint
         </button>
+      </div>
+
+      <div>
+        <h2>History</h2>
+
+        <ul>
+          <For each={history()}>
+            {(fill, index) => (
+              <li>
+                {"abcdefgh"[fill % 8]}
+                {Math.floor(fill / 8)}
+                <button
+                  type="button"
+                  onClick={() => {
+                    backHistory(index());
+                  }}
+                >
+                  back
+                </button>
+              </li>
+            )}
+          </For>
+        </ul>
       </div>
     </>
   );
