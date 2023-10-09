@@ -1,12 +1,12 @@
 import { For, Show, createSignal, onMount } from "solid-js";
 
-import { boardStyle, cellButtonStyle, cellStyle } from "@/styles/knight-tour.css";
 import { CellKnight, CellMovable, CellVisited } from "@/games/knight-tour/consts";
-import { setKnightMovable } from "@/games/knight-tour/knight-move";
 import { createGame } from "@/games/knight-tour/create-game";
+import { setKnightMovable } from "@/games/knight-tour/knight-move";
+import { boardStyle, cellButtonStyle, cellStyle } from "@/styles/knight-tour.css";
 
-import { Square } from "./square";
 import { History } from "./history";
+import { Square } from "./square";
 
 export const App = () => {
   const { board, resetBoard, reset, history, setHistory } = createGame();
