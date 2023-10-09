@@ -23,7 +23,12 @@ type SquareProperties = {
   readonly hintMode: boolean;
 };
 export const Square = (properties: SquareProperties) => {
-  const getMovableCount = createMemo(() => getLegalMove(properties.index).length);
+  const getMovableCount = createMemo(
+    () =>
+      getLegalMove(properties.index).filter(
+        (index) => properties.board[index] !== CellVisited && properties.board[index] !== CellKnight,
+      ).length,
+  );
 
   return (
     <Switch>
