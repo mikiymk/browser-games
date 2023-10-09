@@ -1,11 +1,11 @@
-import solidJs from "@astrojs/solid-js";
-import { defineConfig } from "astro/config";
-import compress from "astro-compress";
-import topLevelAwaitPlugin from "vite-plugin-top-level-await";
-import wasmPlugin from "vite-plugin-wasm";
-import { vanillaExtractPlugin } from "@vanilla-extract/vite-plugin";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import solidJs from "@astrojs/solid-js";
+import { vanillaExtractPlugin } from "@vanilla-extract/vite-plugin";
+import compress from "astro-compress";
+import { defineConfig } from "astro/config";
+import topLevelAwaitPlugin from "vite-plugin-top-level-await";
+import wasmPlugin from "vite-plugin-wasm";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
