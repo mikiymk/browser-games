@@ -1,6 +1,12 @@
 ---
 import "destyle.css";
 import { App } from "../components/knight-tour/app";
+import {
+    bodyStyle,
+    titleStyle,
+    ruleStyle,
+    h2Style,
+} from "../styles/knight-tour.css";
 ---
 
 <!doctype html>
@@ -13,15 +19,17 @@ import { App } from "../components/knight-tour/app";
         <title>Knight's Tour</title>
     </head>
 
-    <body>
-        <h1>Knight's Tour</h1>
+    <body class={bodyStyle}>
+        <h1 class={titleStyle}>Knight's Tour</h1>
         <App client:load />
 
-        <h2>rule</h2>
-        <p>
-            Knight's Tour is a puzzle using an 8 x 8 chess board and one knight
-            piece. The player moves the knight and wins if he crosses every
-            square on the board exactly once.
-        </p>
+        <div class={ruleStyle}>
+            <h2 class={h2Style}>Rule</h2>
+            <p>
+                Knight's Tour is a puzzle using an 8 x 8 chess board and one
+                knight piece. The player moves the knight and wins if he crosses
+                every square on the board exactly once.
+            </p>
+        </div>
     </body>
 </html>

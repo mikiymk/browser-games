@@ -3,7 +3,7 @@ import { For, Show, createSignal, onMount } from "solid-js";
 import { CellKnight, CellMovable, CellVisited } from "@/games/knight-tour/consts";
 import { createGame } from "@/games/knight-tour/create-game";
 import { setKnightMovable } from "@/games/knight-tour/knight-move";
-import { boardStyle, cellButtonStyle, cellStyle } from "@/styles/knight-tour.css";
+import { boardStyle, cellButtonStyle, cellStyle, settingStyle, h2Style } from "@/styles/knight-tour.css";
 
 import { History } from "./history";
 import { Square } from "./square";
@@ -36,6 +36,9 @@ export const App = () => {
               <button
                 type="button"
                 class={cellButtonStyle}
+                style={{
+                  cursor: cell === CellMovable ? "pointer" : "default",
+                }}
                 onClick={() => {
                   handleClick(index());
                 }}
@@ -47,8 +50,8 @@ export const App = () => {
         </For>
       </div>
 
-      <div>
-        <h2>Settings</h2>
+      <div class={settingStyle}>
+        <h2 class={h2Style}>Settings</h2>
 
         <Show when={hintMode()}>☑</Show>
         <button type="button" onClick={() => setHintMode((hint) => !hint)}>
