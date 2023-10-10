@@ -9,7 +9,7 @@ import { History } from "./history";
 import { Square } from "./square";
 
 export const App = () => {
-  const { board, resetBoard, reset, history, setHistory } = createGame();
+  const { board, history, resetBoard, reset, setHistory, backHistory } = createGame();
   const [hintMode, setHintMode] = createSignal(false);
 
   const handleClick = (index: number) => {
@@ -56,7 +56,7 @@ export const App = () => {
         </button>
       </div>
 
-      <History history={history()} setHistory={setHistory} resetBoard={resetBoard} />
+      <History history_={history()} back_={backHistory} />
     </>
   );
 };

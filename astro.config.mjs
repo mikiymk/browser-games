@@ -29,10 +29,8 @@ export default defineConfig({
       topLevelAwaitPlugin(),
     ],
 
-    build: {
-      modulePreload: {
-        polyfill: false,
-      },
-    },
+    esbuild: {
+      mangleProps: /_$/
+    }
   },
 });

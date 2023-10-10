@@ -1,37 +1,16 @@
 import { For } from "solid-js";
 
-import { CellUnvisited, CellVisited } from "@/games/knight-tour/consts";
-import { setKnightMovable } from "@/games/knight-tour/knight-move";
-
-import type { Setter } from "solid-js";
-
 type HistoryProperties = {
-  history: number[];
-  setHistory: Setter<number[]>;
-  resetBoard: (callback: (board: number[]) => number[]) => void;
+  history_: number[];
+  back_: (index: number) => void;
 };
 export const History = (properties: HistoryProperties) => {
-  const backHistory = (index: number) => {
-    const currentHistory = properties.history;
-
-    properties.setHistory(currentHistory.slice(0, index));
-    properties.resetBoard((board) => {
-      for (const historyIndex of currentHistory.slice(index)) {
-        board[historyIndex] = CellUnvisited;
-      }
-
-      const knightIndex = currentHistory[index - 1] ?? board.indexOf(CellVisited);
-
-      return setKnightMovable(board, knightIndex);
-    });
-  };
-
   return (
     <div>
       <h2>History</h2>
 
       <ul>
-        <For each={properties.history}>
+        <For each={properties.history_}>
           {(fill, index) => (
             <li>
               {"abcdefgh"[fill % 8]}
@@ -39,7 +18,7 @@ export const History = (properties: HistoryProperties) => {
               <button
                 type="button"
                 onClick={() => {
-                  backHistory(index());
+                  properties.back_(index());
                 }}
               >
                 back
