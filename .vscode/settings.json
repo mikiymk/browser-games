@@ -1,5 +1,5 @@
 {
-  "svg.preview.background": "transparent",
+  "svg.preview.background": "dark-transparent",
   "cSpell.words": ["wasm_bindgen"],
   "rust-analyzer.check.command": "clippy",
 
@@ -23,5 +23,17 @@
   },
   "[json]": {
     "editor.defaultFormatter": "biomejs.biome"
+  },
+  "[css]": {
+    "editor.defaultFormatter": "vscode.css-language-features"
+  },
+  "[html]": {
+    "editor.defaultFormatter": "vscode.html-language-features"
+  },
+  "[svg]": {
+    "editor.defaultFormatter": "jock.svg"
+  },
+  "[yaml]": {
+    "editor.defaultFormatter": "redhat.vscode-yaml"
   }
 }

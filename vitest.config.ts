@@ -12,12 +12,24 @@ import { resolve } from "node:path";
 
 export default defineConfig({
   base: "/js-html-game/",
-
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
   plugins: [solidPlugin(), wasmPlugin(), topLevelAwaitPlugin()],
 
   resolve: {
     alias: [{ find: /^@\/(.*)/, replacement: resolve(__dirname, "src/$1") }],
+  },
+
+  build: {
+    modulePreload: {
+      polyfill: false,
+    },
+    rollupOptions: {
+      input: {
+        main: resolve(__dirname, "index.html"),
+        ox3: resolve(__dirname, "ox3/index.html"),
+        chess: resolve(__dirname, "chess/index.html"),
+        "mine-sweeper": resolve(__dirname, "mine-sweeper/index.html"),
+      },
+    },
   },
 
   test: {
