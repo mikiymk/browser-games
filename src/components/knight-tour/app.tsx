@@ -3,16 +3,16 @@ import { For, Show, createSignal, onMount } from "solid-js";
 import { CellKnight, CellMovable, CellVisited } from "@/games/knight-tour/consts";
 import { createGame } from "@/games/knight-tour/create-game";
 import { setKnightMovable } from "@/games/knight-tour/knight-move";
+import checked from "@/images/symbol/check-box-checked-black.svg";
+import unchecked from "@/images/symbol/check-box-unchecked-black.svg";
 import {
   boardStyle,
   cellButtonStyle,
   cellStyle,
-  settingStyle,
   h2Style,
   settingCheckStyle,
+  settingStyle,
 } from "@/styles/knight-tour.css";
-import checked from "@/images/symbol/check-box-checked-black.svg";
-import unchecked from "@/images/symbol/check-box-unchecked-black.svg";
 
 import { History } from "./history";
 import { Square } from "./square";

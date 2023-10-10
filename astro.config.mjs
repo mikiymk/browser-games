@@ -30,7 +30,7 @@ export default defineConfig({
     ],
 
     esbuild: {
-      mangleProps: /_$/
-    }
+      mangleProps: /_$/,
+    },
   },
 });
