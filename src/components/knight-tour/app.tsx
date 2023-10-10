@@ -3,7 +3,16 @@ import { For, Show, createSignal, onMount } from "solid-js";
 import { CellKnight, CellMovable, CellVisited } from "@/games/knight-tour/consts";
 import { createGame } from "@/games/knight-tour/create-game";
 import { setKnightMovable } from "@/games/knight-tour/knight-move";
-import { boardStyle, cellButtonStyle, cellStyle, settingStyle, h2Style } from "@/styles/knight-tour.css";
+import {
+  boardStyle,
+  cellButtonStyle,
+  cellStyle,
+  settingStyle,
+  h2Style,
+  settingCheckStyle,
+} from "@/styles/knight-tour.css";
+import checked from "@/images/symbol/check-box-checked-black.svg";
+import unchecked from "@/images/symbol/check-box-unchecked-black.svg";
 
 import { History } from "./history";
 import { Square } from "./square";
@@ -53,10 +62,17 @@ export const App = () => {
       <div class={settingStyle}>
         <h2 class={h2Style}>Settings</h2>
 
-        <Show when={hintMode()}>☑</Show>
-        <button type="button" onClick={() => setHintMode((hint) => !hint)}>
-          Show Warnsdorff's hint
-        </button>
+        <label>
+          <Show
+            when={hintMode()}
+            fallback={<img class={settingCheckStyle} src={unchecked.src} alt="hint mode disabled" />}
+          >
+            <img class={settingCheckStyle} src={checked.src} alt="hint mode enabled" />
+          </Show>
+          <button type="button" onClick={() => setHintMode((hint) => !hint)}>
+            Show Warnsdorff's hint
+          </button>
+        </label>
       </div>
 
       <History history_={history()} back_={backHistory} />

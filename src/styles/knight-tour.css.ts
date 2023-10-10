@@ -59,6 +59,12 @@ export const settingStyle = style({
   gridArea: "st",
 });
 
+export const settingCheckStyle = style({
+  display: "inline",
+
+  height: "1rem",
+});
+
 export const historyStyle = style({
   gridArea: "ht",
 
