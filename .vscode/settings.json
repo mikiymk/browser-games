@@ -32,5 +32,8 @@
   },
   "[svg]": {
     "editor.defaultFormatter": "jock.svg"
+  },
+  "[yaml]": {
+    "editor.defaultFormatter": "redhat.vscode-yaml"
   }
 }
