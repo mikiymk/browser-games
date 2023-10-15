@@ -36,6 +36,8 @@ export const boardStyle = style({
   height: "min(60vmax, 80vmin)",
   width: "min(60vmax, 80vmin)",
 
+  backgroundColor: "#2bd92b",
+
   display: "grid",
   gridTemplateColumns: "repeat(8, 1fr)",
 
