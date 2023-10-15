@@ -16,6 +16,8 @@ export default defineConfig({
       SVG: {
         multipass: true,
       },
+
+      Logger: 1,
     }),
   ],
 

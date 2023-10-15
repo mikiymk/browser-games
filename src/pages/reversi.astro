@@ -1,0 +1,50 @@
+---
+import "destyle.css";
+import { App } from "../components/reversi/app";
+import {
+    bodyStyle,
+    titleStyle,
+    ruleStyle,
+    h2Style,
+} from "../styles/reversi.css";
+---
+
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="shortcut icon" type="image/x-icon" href="../favicon.svg" />
+        <title>Reversi</title>
+    </head>
+
+    <body class={bodyStyle}>
+        <h1 class={titleStyle}>Reversi</h1>
+        <App client:load />
+
+        <div class={ruleStyle}>
+            <h2 class={h2Style}>Rule</h2>
+            <p>
+                Reversi is a puzzle that uses a board with 8 x 8 squares and
+                stones with black and white on the front and back. Two players,
+                black and white, take turns placing stones of their color, and
+                the player with the most stones of their color at the end wins.
+            </p>
+            <p>
+                First, place the black and white stones in a 2x2 square in the
+                center so that they cross each other. At this time, make sure
+                that black is at the top right and bottom left. Players hit
+                stones so that their opponent's stones are sandwiched between
+                the stones of their own color that have already been placed and
+                the stones they are hitting. After that, turn over the
+                opponent's stone that is sandwiched between the stone you hit
+                and the stone that has already been placed, and make it your own
+                stone. If there is no place to place a stone, it is your
+                opponent's turn without placing a stone. The game ends when no
+                stones of either color can be placed. At the end, count the
+                stones of each color and the player with the most stones wins.
+            </p>
+        </div>
+    </body>
+</html>
