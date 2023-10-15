@@ -4,6 +4,7 @@ import blackStone from "@/images/reversi/stone-black.svg";
 import whiteStone from "@/images/reversi/stone-white.svg";
 import { cellStyle } from "@/styles/knight-tour.css";
 import { boardStyle } from "@/styles/reversi.css";
+import { add } from "@/wasms/reversi/pkg";
 
 const CellEmpty = 0;
 const CellBlack = 1;
@@ -18,6 +19,7 @@ export const App = () => {
 
   onMount(() => {
     setBoard(Array.from({ length: 64 }, () => CellEmpty));
+    console.log(add(2, 3));
   });
 
   return (
