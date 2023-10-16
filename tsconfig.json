@@ -3,10 +3,13 @@
   "extends": "@tsconfig/strictest/tsconfig.json",
   "compilerOptions": {
     "target": "ESNext",
+    "module": "ESNext",
     "moduleResolution": "bundler",
     "jsx": "preserve",
     "jsxImportSource": "solid-js",
     "noEmit": true,
+
+    "noPropertyAccessFromIndexSignature": false,
 
     "baseUrl": "./",
     "paths": {

@@ -4,7 +4,6 @@ import blackStone from "@/images/reversi/stone-black.svg";
 import whiteStone from "@/images/reversi/stone-white.svg";
 import { cellStyle } from "@/styles/knight-tour.css";
 import { boardStyle } from "@/styles/reversi.css";
-import { add } from "@/wasms/reversi/pkg";
 
 const CellEmpty = 0;
 const CellBlack = 1;
@@ -19,7 +18,13 @@ export const App = () => {
 
   onMount(() => {
     setBoard(Array.from({ length: 64 }, () => CellEmpty));
-    console.log(add(2, 3));
+
+    void (async () => {
+      const wasm = await WebAssembly.instantiateStreaming(fetch(`${import.meta.env.BASE_URL}/wasm/reversi.wasm`));
+      const add = wasm.instance.exports.add as (a: number, b: number) => number;
+      console.log(wasm);
+      console.log(add(2, 3));
+    })();
   });
 
   return (

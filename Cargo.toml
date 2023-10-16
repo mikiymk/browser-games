@@ -1,6 +1,6 @@
 [workspace]
 
-members = ["src/wasms/chess", "src/wasms/reversi"]
+members = ["src/wasms/chess"]
 resolver = "2"
 
 [profile.release]
