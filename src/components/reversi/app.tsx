@@ -21,9 +21,19 @@ export const App = () => {
 
     void (async () => {
       const wasm = await WebAssembly.instantiateStreaming(fetch(`${import.meta.env.BASE_URL}/wasm/reversi.wasm`));
+      console.log(wasm.instance.exports);
+
       const add = wasm.instance.exports.add as (a: number, b: number) => number;
-      console.log(wasm);
+      const init = wasm.instance.exports.init as () => number;
+      const deinit = wasm.instance.exports.destroyBoard as (p: number) => void;
+      const getBlack = wasm.instance.exports.getBlack as (p: number) => bigint;
+
       console.log(add(2, 3));
+
+      const board = init();
+      console.log(board);
+      console.log(getBlack(board).toString(2));
+      deinit(board);
     })();
   });
 
