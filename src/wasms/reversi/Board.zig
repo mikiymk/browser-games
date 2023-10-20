@@ -20,10 +20,16 @@ nextColor: Color = .black,
 pub const Color = enum { black, white };
 
 pub fn init() Board {
-    return .{
-        .black = 0b00000000_00000000_00000000_00001000_00010000_00000000_00000000_00000000,
-        .white = 0b00000000_00000000_00000000_00010000_00001000_00000000_00000000_00000000,
-    };
+    return comptime fromString(
+        \\........
+        \\........
+        \\........
+        \\...xo...
+        \\...ox...
+        \\........
+        \\........
+        \\........
+    );
 }
 
 /// find a place to put it.
@@ -45,56 +51,126 @@ pub fn isEnd(b: *Board) bool {
     @panic("not implemented yet");
 }
 
-fn createBitBoardFromString(comptime str: []const u8, piece_symbol: u8) u64 {
-    var board = 0;
-
-    if (str.len != 64 + 7) {
-        @compileError("invalid length");
-    }
-
-    var char_count = 0;
-    var bit_count = 0;
-    for (0..8) |n| {
-        for (0..8) |_| {
-            const char = str[char_count];
-
-            if (char == piece_symbol) {
-                board |= 1 << bit_count;
-            }
-
-            char_count += 1;
-            bit_count += 1;
-        }
-
-        if (n == 7) {
-            break;
-        }
-
-        if (str[char_count] != '\n') {
-            @compileError("invalid character");
-        }
-
-        char_count += 1;
-    }
-
-    return board;
-}
-
-fn createBoardFromString(comptime str: []const u8) Board {
+fn fromString(comptime str: []const u8) Board {
     return .{
-        .black = createBitBoardFromString(str, 'o'),
-        .white = createBitBoardFromString(str, 'x'),
+        .black = bit_board.fromString(str, 'o'),
+        .white = bit_board.fromString(str, 'x'),
     };
 }
 
-test "createBitBoardFromString" {
+const bit_board = struct {
+    fn fromString(comptime str: []const u8, piece_symbol: u8) u64 {
+        var board: u64 = 0;
+
+        comptime {
+            if (str.len != 64 + 7) {
+                @compileError("invalid length");
+            }
+
+            for (1..8) |i| {
+                if (str[9 * i - 1] != '\n') {
+                    @compileError("invalid character");
+                }
+            }
+        }
+
+        var char_count: u8 = 0;
+        var bit_count: u6 = 0;
+        for (0..8) |n| {
+            for (0..8) |_| {
+                const char = str[char_count];
+
+                if (char == piece_symbol) {
+                    board |= @as(u64, 1) << bit_count;
+                }
+
+                char_count += 1;
+                bit_count +|= 1;
+            }
+
+            if (n == 7) {
+                break;
+            }
+
+            char_count += 1;
+        }
+
+        return board;
+    }
+
+    fn toString(board: u64, piece_symbol: u8, empty_symbol: u8) [71]u8 {
+        var str: [64 + 7]u8 = .{0} ** (64 + 7);
+
+        var char_count: u8 = 0;
+        var bit_count: u6 = 0;
+        for (0..8) |l| {
+            for (0..8) |_| {
+                if (board & @as(u64, 1) << bit_count != 0) {
+                    str[char_count] = piece_symbol;
+                } else {
+                    str[char_count] = empty_symbol;
+                }
+
+                char_count += 1;
+                bit_count +|= 1;
+            }
+
+            if (l == 7) {
+                break;
+            }
+
+            str[char_count] = '\n';
+            char_count += 1;
+        }
+
+        return str;
+    }
+};
+
+test "bit-board from string" {
+    const testing = std.testing;
+
+    var expected: u64 = 0x00_00_00_00_00_aa_55_aa;
+    var actual = comptime bit_board.fromString(
+        \\.o.o.o.o
+        \\o.o.o.o.
+        \\.o.o.o.o
+        \\........
+        \\........
+        \\x.x.x.x.
+        \\.x.x.x.x
+        \\x.x.x.x.
+    , 'o');
+
+    try testing.expectEqualDeep(expected, actual);
+}
+
+test "bit-board to string" {
+    const testing = std.testing;
+
+    var expected =
+        \\.o.o.o.o
+        \\o.o.o.o.
+        \\.o.o.o.o
+        \\........
+        \\........
+        \\........
+        \\........
+        \\........
+    ;
+    var actual = comptime bit_board.toString(0x00_00_00_00_00_aa_55_aa, 'o', '.');
+
+    try testing.expectEqualStrings(expected, &actual);
+}
+
+test "board from string" {
     const testing = std.testing;
 
     var expected = Board{
         .black = 0x00_00_00_00_00_aa_55_aa,
         .white = 0x55_aa_55_00_00_00_00_00,
     };
-    var actual = comptime createBoardFromString(
+    var actual = comptime fromString(
         \\.o.o.o.o
         \\o.o.o.o.
         \\.o.o.o.o
