@@ -20,11 +20,11 @@ black: u64 = 0,
 white: u64 = 0,
 nextColor: Color = .black,
 
-pub const Color = enum {
+pub const Color = enum(u1) {
     black,
     white,
 
-    fn turn(c: Color) Color {
+    pub fn turn(c: Color) Color {
         return switch (c) {
             .black => .white,
             .white => .black,
@@ -62,10 +62,101 @@ pub fn getOpponent(b: *const Board) u64 {
 /// find a place to put it.
 /// - b - board pointer
 /// - isBlack - if next place player is black
-pub fn move(b: *Board, place: u6) void {
-    _ = b;
-    _ = place;
-    @panic("not implemented yet");
+pub fn move(b: *Board, place: u64) void {
+    const player_board: u64 = b.getPlayer();
+    const opponent_board: u64 = b.getOpponent();
+
+    const mask: u64 = opponent_board & comptime bit_board.fromString(
+        \\.oooooo.
+        \\.oooooo.
+        \\.oooooo.
+        \\.oooooo.
+        \\.oooooo.
+        \\.oooooo.
+        \\.oooooo.
+        \\.oooooo.
+    , 'o');
+
+    var flip: u64 = moveDir(player_board, place, mask, 1) |
+        moveDir(player_board, place, opponent_board, 8) |
+        moveDir(player_board, place, mask, 7) |
+        moveDir(player_board, place, mask, 9);
+
+    b.black ^= flip;
+    b.white ^= flip;
+    if (b.nextColor == .black) {
+        b.black |= place;
+    } else {
+        b.white |= place;
+    }
+}
+
+fn moveDir(player_board: u64, place: u64, mask: u64, dir: u6) u64 {
+    var flip_m: u64 = (place << dir) & mask;
+    flip_m |= (flip_m << dir) & mask;
+    flip_m |= (flip_m << dir) & mask;
+    flip_m |= (flip_m << dir) & mask;
+    flip_m |= (flip_m << dir) & mask;
+    flip_m |= (flip_m << dir) & mask;
+
+    var flip_l: u64 = (place >> dir) & mask;
+    flip_l |= (flip_l >> dir) & mask;
+    flip_l |= (flip_l >> dir) & mask;
+    flip_l |= (flip_l >> dir) & mask;
+    flip_l |= (flip_l >> dir) & mask;
+    flip_l |= (flip_l >> dir) & mask;
+
+    var flip: u64 = 0;
+
+    if (player_board & (flip_m << dir) != 0) {
+        flip |= flip_m;
+    }
+    if (player_board & (flip_l >> dir) != 0) {
+        flip |= flip_l;
+    }
+
+    return flip;
+}
+
+test "move black" {
+    const testing = std.testing;
+
+    var board = comptime fromString(
+        \\o..o..o.
+        \\.x.x.x..
+        \\..xxx...
+        \\oxx.xxxo
+        \\..xxx...
+        \\.x.x.x..
+        \\o..x..x.
+        \\...o...o
+    );
+
+    const place = bit_board.fromString(
+        \\........
+        \\........
+        \\........
+        \\...o....
+        \\........
+        \\........
+        \\........
+        \\........
+    , 'o');
+
+    const expected = comptime fromString(
+        \\o..o..o.
+        \\.o.o.o..
+        \\..ooo...
+        \\oooooooo
+        \\..ooo...
+        \\.o.o.o..
+        \\o..o..o.
+        \\...o...o
+    );
+
+    board.move(place);
+
+    try testing.expectEqualDeep(expected, board);
 }
 
 pub fn getValidMoves(b: *const Board) u64 {
@@ -91,14 +182,14 @@ pub fn getValidMoves(b: *const Board) u64 {
 }
 
 fn getDirMoves(board: u64, mask: u64, dir: u6) u64 {
-    var line_board: u64 = board;
-    line_board = ((line_board << dir) | (line_board >> dir)) & mask;
-    line_board |= ((line_board << dir) | (line_board >> dir)) & mask;
-    line_board |= ((line_board << dir) | (line_board >> dir)) & mask;
-    line_board |= ((line_board << dir) | (line_board >> dir)) & mask;
-    line_board |= ((line_board << dir) | (line_board >> dir)) & mask;
-    line_board |= ((line_board << dir) | (line_board >> dir)) & mask;
-    return (line_board << dir) | (line_board >> dir);
+    var flip: u64 = board;
+    flip = ((flip << dir) | (flip >> dir)) & mask;
+    flip |= ((flip << dir) | (flip >> dir)) & mask;
+    flip |= ((flip << dir) | (flip >> dir)) & mask;
+    flip |= ((flip << dir) | (flip >> dir)) & mask;
+    flip |= ((flip << dir) | (flip >> dir)) & mask;
+    flip |= ((flip << dir) | (flip >> dir)) & mask;
+    return (flip << dir) | (flip >> dir);
 }
 
 test "get valid move" {

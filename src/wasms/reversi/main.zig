@@ -54,7 +54,13 @@ export fn isGameEnd(b: *Board) bool {
 ///
 /// ゲームボードの現在状態が更新される。
 export fn move(b: *Board, place: u8) void {
-    b.move(@truncate(place));
+    b.move(@as(u64, 1) << @truncate(place));
+
+    b.nextColor = b.nextColor.turn();
+
+    if (b.getValidMoves() == 0) {
+        b.nextColor = b.nextColor.turn();
+    }
 }
 
 /// 現在プレイヤーの有効手を取得する。
