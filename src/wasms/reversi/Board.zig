@@ -13,6 +13,8 @@ const std = @import("std");
 
 const Board = @This();
 
+// properties
+
 black: u64 = 0,
 white: u64 = 0,
 nextColor: Color = .black,
@@ -32,6 +34,20 @@ pub fn init() Board {
     );
 }
 
+pub fn getPlayer(b: *const Board) u64 {
+    return switch (b.nextColor) {
+        .black => b.black,
+        .white => b.white,
+    };
+}
+
+pub fn getOpponent(b: *const Board) u64 {
+    return switch (b.nextColor) {
+        .black => b.white,
+        .white => b.black,
+    };
+}
+
 /// find a place to put it.
 /// - b - board pointer
 /// - isBlack - if next place player is black
@@ -41,12 +57,300 @@ pub fn move(b: *Board, place: u6) void {
     @panic("not implemented yet");
 }
 
-pub fn getValidMoves(b: *Board) u64 {
-    _ = b;
-    @panic("not implemented yet");
+pub fn getValidMoves(b: *const Board) u64 {
+    const player_board = b.getPlayer();
+    const opponent_board = b.getOpponent();
+
+    const mask: u64 = opponent_board & comptime bit_board.fromString(
+        \\.oooooo.
+        \\.oooooo.
+        \\.oooooo.
+        \\.oooooo.
+        \\.oooooo.
+        \\.oooooo.
+        \\.oooooo.
+        \\.oooooo.
+    , 'o');
+
+    return (getDirMoves(player_board, mask, 1) |
+        getDirMoves(player_board, opponent_board, 8) |
+        getDirMoves(player_board, mask, 7) |
+        getDirMoves(player_board, mask, 9)) &
+        ~(player_board | opponent_board);
 }
 
-pub fn isEnd(b: *Board) bool {
+fn getDirMoves(board: u64, mask: u64, dir: u6) u64 {
+    var line_board: u64 = board;
+    line_board = ((line_board << dir) | (line_board >> dir)) & mask;
+    line_board |= ((line_board << dir) | (line_board >> dir)) & mask;
+    line_board |= ((line_board << dir) | (line_board >> dir)) & mask;
+    line_board |= ((line_board << dir) | (line_board >> dir)) & mask;
+    line_board |= ((line_board << dir) | (line_board >> dir)) & mask;
+    line_board |= ((line_board << dir) | (line_board >> dir)) & mask;
+    return (line_board << dir) | (line_board >> dir);
+}
+
+test "get valid move" {
+    const testing = std.testing;
+
+    // 現在のボード状態
+    const board = comptime fromString(
+        \\...x..x.
+        \\.x.x.x..
+        \\..xxx...
+        \\.xxoxxxx
+        \\...x....
+        \\.x.x.x..
+        \\.xxxxxxo
+        \\........
+    );
+
+    // マスク
+    // 相手の石があるところだけ + 端をループしないように止める
+    const mask: u64 = board.white & comptime bit_board.fromString(
+        \\.oooooo.
+        \\.oooooo.
+        \\.oooooo.
+        \\.oooooo.
+        \\.oooooo.
+        \\.oooooo.
+        \\.oooooo.
+        \\.oooooo.
+    , 'o');
+
+    try testing.expectEqualStrings(
+        \\...x..x.
+        \\.x.x.x..
+        \\..xxx...
+        \\.xx.xxx.
+        \\...x....
+        \\.x.x.x..
+        \\.xxxxxx.
+        \\........
+    , &bit_board.toString(mask, 'x', '.'));
+
+    var flip = board.black;
+    const dir = 1;
+
+    try testing.expectEqualStrings(
+        \\........
+        \\........
+        \\........
+        \\...o....
+        \\........
+        \\........
+        \\.......o
+        \\........
+    , &bit_board.toString(flip, 'o', '.'));
+
+    // dirで決められた方向に向けて石を置く
+    // 正の方向と負の方向の2方向を同時に進める
+    flip = ((flip << dir) | (flip >> dir)) & mask;
+
+    try testing.expectEqualStrings(
+        \\........
+        \\........
+        \\........
+        \\..o.o...
+        \\........
+        \\........
+        \\......o.
+        \\........
+    , &bit_board.toString(flip, 'o', '.'));
+
+    // さらに進めたものを前回のものとORで重ねる
+    flip |= ((flip << dir) | (flip >> dir)) & mask;
+
+    try testing.expectEqualStrings(
+        \\........
+        \\........
+        \\........
+        \\.oo.oo..
+        \\........
+        \\........
+        \\.....oo.
+        \\........
+    , &bit_board.toString(flip, 'o', '.'));
+
+    // 合計で6回進める
+    flip |= ((flip << dir) | (flip >> dir)) & mask;
+    flip |= ((flip << dir) | (flip >> dir)) & mask;
+    flip |= ((flip << dir) | (flip >> dir)) & mask;
+    flip |= ((flip << dir) | (flip >> dir)) & mask;
+
+    try testing.expectEqualStrings(
+        \\........
+        \\........
+        \\........
+        \\.oo.ooo.
+        \\........
+        \\........
+        \\.oooooo.
+        \\........
+    , &bit_board.toString(flip, 'o', '.'));
+
+    // 最後にマスクなしで進める
+    // 自分の石の隣に相手の石が繋がっているものの一番先頭
+
+    flip = (flip << dir) | (flip >> dir);
+
+    try testing.expectEqualStrings(
+        \\........
+        \\........
+        \\........
+        \\oooooooo
+        \\........
+        \\........
+        \\oooooooo
+        \\........
+    , &bit_board.toString(flip, 'o', '.'));
+
+    // これを「石が置かれていない場所」でマスク
+    flip = flip & ~(board.black | board.white);
+
+    try testing.expectEqualStrings(
+        \\........
+        \\........
+        \\........
+        \\o.......
+        \\........
+        \\........
+        \\o.......
+        \\........
+    , &bit_board.toString(flip, 'o', '.'));
+
+    // これを縦横斜めの4方向に向ける
+    const moves = board.getValidMoves();
+
+    try testing.expectEqualStrings(
+        \\o.......
+        \\........
+        \\........
+        \\o.......
+        \\........
+        \\........
+        \\o.......
+        \\...o....
+    , &bit_board.toString(moves, 'o', '.'));
+}
+
+test "get valid move 1" {
+    const testing = std.testing;
+
+    const board = comptime fromString(
+        \\.ox.....
+        \\........
+        \\........
+        \\.oxxx...
+        \\........
+        \\......ox
+        \\........
+        \\oxxxxxx.
+    );
+    const actual = bit_board.toString(board.getValidMoves(), 'o', '.');
+
+    const expected =
+        \\...o....
+        \\........
+        \\........
+        \\.....o..
+        \\........
+        \\........
+        \\........
+        \\.......o
+    ;
+
+    try testing.expectEqualStrings(expected, &actual);
+}
+
+test "get valid move 2" {
+    const testing = std.testing;
+
+    const board = comptime fromString(
+        \\.o...x..
+        \\.x.o.o.x
+        \\...x...x
+        \\...x...x
+        \\...x...x
+        \\o......x
+        \\.......x
+        \\.......o
+    );
+    const actual = bit_board.toString(board.getValidMoves(), 'o', '.');
+
+    const expected =
+        \\.......o
+        \\........
+        \\.o......
+        \\........
+        \\........
+        \\...o....
+        \\........
+        \\........
+    ;
+
+    try testing.expectEqualStrings(expected, &actual);
+}
+
+test "get valid move 3" {
+    const testing = std.testing;
+
+    const board = comptime fromString(
+        \\o.......
+        \\.x...o..
+        \\..x...x.
+        \\...x....
+        \\....x...
+        \\.x...x..
+        \\..x...x.
+        \\o..o....
+    );
+    const actual = bit_board.toString(board.getValidMoves(), 'o', '.');
+
+    const expected =
+        \\........
+        \\........
+        \\........
+        \\.......o
+        \\o.......
+        \\........
+        \\........
+        \\.......o
+    ;
+
+    try testing.expectEqualStrings(expected, &actual);
+}
+
+test "get valid move 4" {
+    const testing = std.testing;
+
+    const board = comptime fromString(
+        \\..x.....
+        \\.x....x.
+        \\o....x..
+        \\....x..o
+        \\...x..x.
+        \\..x..x..
+        \\.x..x...
+        \\o.......
+    );
+    const actual = bit_board.toString(board.getValidMoves(), 'o', '.');
+
+    const expected =
+        \\.......o
+        \\........
+        \\........
+        \\........
+        \\........
+        \\........
+        \\........
+        \\...o....
+    ;
+
+    try testing.expectEqualStrings(expected, &actual);
+}
+
+pub fn isEnd(b: *const Board) bool {
     _ = b;
     @panic("not implemented yet");
 }
@@ -60,7 +364,9 @@ fn fromString(comptime str: []const u8) Board {
 
 const bit_board = struct {
     fn fromString(comptime str: []const u8, piece_symbol: u8) u64 {
-        var board: u64 = 0;
+        if (!@inComptime() and @import("builtin").mode != .Debug) {
+            @compileError("bit-board.fromString is use only debug or comptime");
+        }
 
         comptime {
             if (str.len != 64 + 7) {
@@ -73,6 +379,8 @@ const bit_board = struct {
                 }
             }
         }
+
+        var board: u64 = 0;
 
         var char_count: u8 = 0;
         var bit_count: u6 = 0;
