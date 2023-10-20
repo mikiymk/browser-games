@@ -1,4 +1,5 @@
 const std = @import("std");
+const builtin = @import("builtin");
 
 // 1 << n
 //
@@ -19,7 +20,17 @@ black: u64 = 0,
 white: u64 = 0,
 nextColor: Color = .black,
 
-pub const Color = enum { black, white };
+pub const Color = enum {
+    black,
+    white,
+
+    fn turn(c: Color) Color {
+        return switch (c) {
+            .black => .white,
+            .white => .black,
+        };
+    }
+};
 
 pub fn init() Board {
     return comptime fromString(
@@ -351,8 +362,57 @@ test "get valid move 4" {
 }
 
 pub fn isEnd(b: *const Board) bool {
-    _ = b;
-    @panic("not implemented yet");
+    if (b.getValidMoves() != 0) {
+        return false;
+    }
+
+    const pass_board = Board{
+        .black = b.black,
+        .white = b.white,
+        .nextColor = b.nextColor.turn(),
+    };
+
+    return pass_board.getValidMoves() == 0;
+}
+
+test "game is end" {
+    const testing = std.testing;
+
+    const board = comptime fromString(
+        \\oooooooo
+        \\xxxxxxxx
+        \\oooooooo
+        \\xxxxxxxx
+        \\oooooooo
+        \\xxxxxxxx
+        \\oooooooo
+        \\xxxxxxxx
+    );
+
+    const actual = board.isEnd();
+    const expected = true;
+
+    try testing.expectEqual(expected, actual);
+}
+
+test "game is not end" {
+    const testing = std.testing;
+
+    const board = comptime fromString(
+        \\oooooooo
+        \\xxxxxxxx
+        \\oooooooo
+        \\xxxxxxxx
+        \\ooo.oooo
+        \\xxxxxxxx
+        \\oooooooo
+        \\xxxxxxxx
+    );
+
+    const actual = board.isEnd();
+    const expected = false;
+
+    try testing.expectEqual(expected, actual);
 }
 
 fn fromString(comptime str: []const u8) Board {
@@ -364,7 +424,7 @@ fn fromString(comptime str: []const u8) Board {
 
 const bit_board = struct {
     fn fromString(comptime str: []const u8, piece_symbol: u8) u64 {
-        if (!@inComptime() and @import("builtin").mode != .Debug) {
+        if (!@inComptime() and builtin.mode != .Debug) {
             @compileError("bit-board.fromString is use only debug or comptime");
         }
 
