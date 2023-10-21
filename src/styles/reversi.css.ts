@@ -80,3 +80,13 @@ export const historyStyle = style({
     },
   },
 });
+
+export const radioStyle = style({
+  display: "inline-block",
+  width: "5rem",
+  boxSizing: "border-box",
+});
+
+export const checkedRadioStyle = style({
+  border: "solid black 2px",
+});
