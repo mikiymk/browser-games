@@ -2,15 +2,17 @@ import { For, Match, Switch, createSignal, onMount } from "solid-js";
 
 import blackStone from "@/images/reversi/stone-black.svg";
 import whiteStone from "@/images/reversi/stone-white.svg";
+import smallWhiteStone from "@/images/reversi/stone-white-small.svg";
+import smallBlackStone from "@/images/reversi/stone-black-small.svg";
 import { cellStyle } from "@/styles/knight-tour.css";
 import { boardStyle } from "@/styles/reversi.css";
 
-const CellEmpty = 0;
-const CellBlack = 1;
-const CellWhite = 2;
+import { CellBlack, CellCanMoveBlack, CellCanMoveWhite, CellEmpty, CellWhite } from "./const";
+import { getReversiWasm, type BoardPtr } from "./get-wasm";
 
 export const App = () => {
   const [board, setBoard] = createSignal<number[]>([]);
+  let bp: BoardPtr | 0 = 0;
 
   const handleStart = () => {
     setBoard(Array.from({ length: 64 }, (_, index) => index % 3));
@@ -20,20 +22,10 @@ export const App = () => {
     setBoard(Array.from({ length: 64 }, () => CellEmpty));
 
     void (async () => {
-      const wasm = await WebAssembly.instantiateStreaming(fetch(`${import.meta.env.BASE_URL}/wasm/reversi.wasm`));
-      console.log(wasm.instance.exports);
+      const { init, deinit, getBoard } = await getReversiWasm();
+      bp = init();
 
-      const add = wasm.instance.exports.add as (a: number, b: number) => number;
-      const init = wasm.instance.exports.init as () => number;
-      const deinit = wasm.instance.exports.destroyBoard as (p: number) => void;
-      const getBlack = wasm.instance.exports.getBlack as (p: number) => bigint;
-
-      console.log(add(2, 3));
-
-      const board = init();
-      console.log(board);
-      console.log(getBlack(board).toString(2));
-      deinit(board);
+      setBoard(getBoard(bp));
     })();
   });
 
@@ -44,14 +36,23 @@ export const App = () => {
           {(square) => {
             return (
               <span class={cellStyle}>
-                <Switch>
-                  <Match when={square === CellBlack}>
-                    <img src={blackStone.src} alt="black stone" />
-                  </Match>
-                  <Match when={square === CellWhite}>
-                    <img src={whiteStone.src} alt="white stone" />
-                  </Match>
-                </Switch>
+                <button type="button">
+                  <Switch>
+                    <Match when={square === CellBlack}>
+                      <img src={blackStone.src} alt="black stone" height="60" />
+                    </Match>
+                    <Match when={square === CellWhite}>
+                      <img src={whiteStone.src} alt="white stone" height="60" />
+                    </Match>
+
+                    <Match when={square === CellCanMoveBlack}>
+                      <img src={smallBlackStone.src} alt="can put black stone" height="60" />
+                    </Match>
+                    <Match when={square === CellCanMoveWhite}>
+                      <img src={smallWhiteStone.src} alt="can put white stone" height="60" />
+                    </Match>
+                  </Switch>
+                </button>
               </span>
             );
           }}

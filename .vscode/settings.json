@@ -1,6 +1,9 @@
 {
   "svg.preview.background": "dark-transparent",
-  "cSpell.words": ["wasm_bindgen"],
+  "cSpell.words": [
+    "Reversi",
+    "wasm_bindgen"
+  ],
   "rust-analyzer.check.command": "clippy",
 
   "editor.defaultFormatter": "biomejs.biome",

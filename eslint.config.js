@@ -52,6 +52,7 @@ export default [
 
       // my custom
       "unicorn/prefer-query-selector": "off",
+
       "@typescript-eslint/no-unused-vars": [
         "warn",
         {
