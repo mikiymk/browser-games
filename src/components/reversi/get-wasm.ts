@@ -1,7 +1,7 @@
 import { CellBlack, CellCanMoveBlack, CellCanMoveWhite, CellEmpty, CellWhite } from "./const";
 
 export type BoardPtr = number & { __unique: "Wasm pointer of Board struct" };
-export type ReversiWasm = {
+type ReversiWasm = {
   init: () => BoardPtr;
   deinit: (bp: BoardPtr) => void;
   getBlack: (bp: BoardPtr) => bigint;
@@ -13,7 +13,17 @@ export type ReversiWasm = {
   getAiMove: (bp: BoardPtr) => number;
 };
 
-export const getReversiWasm = async () => {
+export type ReversiWasmConnect = {
+  init: () => BoardPtr;
+  deinit: (bp: BoardPtr) => void;
+  getBoard: (bp: BoardPtr) => number[];
+  isBlack: (bp: BoardPtr) => boolean;
+  move: (bp: BoardPtr, place: number) => void;
+  isEnd: (bp: BoardPtr) => boolean;
+  ai: (bp: BoardPtr) => number;
+};
+
+export const getReversiWasm = async (): Promise<ReversiWasmConnect> => {
   const wasm = await WebAssembly.instantiateStreaming(fetch(`${import.meta.env.BASE_URL}/wasm/reversi.wasm`), {
     env: { random: Math.random },
   });
@@ -43,7 +53,11 @@ export const getReversiWasm = async () => {
   return {
     init: exports.init,
     deinit: exports.deinit,
-    getBoard,
     move: exports.move,
+    isBlack: exports.isNextBlack,
+    isEnd: exports.isGameEnd,
+    ai: exports.getAiMove,
+
+    getBoard,
   };
 };

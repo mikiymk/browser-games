@@ -2,25 +2,32 @@ import { For, createResource, createSignal } from "solid-js";
 
 import { cellStyle } from "@/styles/knight-tour.css";
 import { boardStyle } from "@/styles/reversi.css";
+import { MultiPromise } from "@/scripts/multi-promise";
 
-import { CellCanMoveBlack, CellCanMoveWhite, CellEmpty } from "./const";
-import { getReversiWasm, type BoardPtr } from "./get-wasm";
+import { AiPlayer, CellCanMoveBlack, CellCanMoveWhite, CellEmpty, HumanPlayer } from "./const";
+import { getReversiWasm } from "./get-wasm";
 import { CellImage } from "./cell-image";
+import { gameLoop } from "./game-loop";
 
 export const App = () => {
   const [board, setBoard] = createSignal(Array.from({ length: 64 }, () => CellEmpty));
+  const [blackPlayer, setBlackPlayer] = createSignal(HumanPlayer);
+  const [whitePlayer, setWhitePlayer] = createSignal(AiPlayer);
   const [wasm] = createResource(getReversiWasm);
 
-  let bp: BoardPtr | 0 = 0;
+  // eslint-disable-next-line unicorn/consistent-function-scoping
+  let resolve = (_: number) => {
+    // empty
+  };
+  const humanInput = new MultiPromise<number>((r) => {
+    resolve = r;
+  });
 
   const handleStart = () => {
     const exports = wasm();
     if (exports === undefined) return;
 
-    const { init, getBoard } = exports;
-    bp = init();
-
-    setBoard(getBoard(bp));
+    gameLoop(exports, setBoard, humanInput, { black: blackPlayer(), white: whitePlayer() });
   };
 
   const handleClick = (square: number, index: number) => {
@@ -28,15 +35,7 @@ export const App = () => {
       return;
     }
 
-    if (bp === 0) return;
-
-    const exports = wasm();
-    if (exports === undefined) return;
-
-    const { move, getBoard } = exports;
-
-    move(bp, index);
-    setBoard(getBoard(bp));
+    resolve(index);
   };
 
   return (
