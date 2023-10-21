@@ -506,15 +506,15 @@ test "game is not end" {
     try testing.expectEqual(expected, actual);
 }
 
-fn fromString(comptime str: []const u8) Board {
+pub fn fromString(comptime str: []const u8) Board {
     return .{
         .black = bit_board.fromString(str, 'o'),
         .white = bit_board.fromString(str, 'x'),
     };
 }
 
-const bit_board = struct {
-    fn fromString(comptime str: []const u8, piece_symbol: u8) u64 {
+pub const bit_board = struct {
+    pub fn fromString(comptime str: []const u8, piece_symbol: u8) u64 {
         if (!@inComptime() and builtin.mode != .Debug) {
             @compileError("bit-board.fromString is use only debug or comptime");
         }
@@ -557,7 +557,7 @@ const bit_board = struct {
         return board;
     }
 
-    fn toString(board: u64, piece_symbol: u8, empty_symbol: u8) [71]u8 {
+    pub fn toString(board: u64, piece_symbol: u8, empty_symbol: u8) [71]u8 {
         var str: [64 + 7]u8 = .{0} ** (64 + 7);
 
         var char_count: u8 = 0;

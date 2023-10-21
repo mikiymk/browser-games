@@ -1,8 +1,24 @@
 const std = @import("std");
 const builtin = @import("builtin");
 const Board = @import("./Board.zig");
+const ai = @import("./ai.zig");
 
 const allocator = if (builtin.target.isWasm()) std.heap.wasm_allocator else std.heap.page_allocator;
+
+extern fn random() f64;
+
+pub fn getRandom() f64 {
+    if (builtin.target.isWasm()) {
+        return random();
+    } else {
+        const S = struct {
+            var rand_gen = std.rand.Xoroshiro128.init(0xfe_dc_ba_98_76_54_32_10);
+            var rand = rand_gen.random();
+        };
+
+        return S.rand.float(f64);
+    }
+}
 
 /// WASMテスト用の関数。
 /// 2つの整数を足した合計の数を返す。
@@ -71,9 +87,7 @@ export fn getValidMoves(b: *Board) u64 {
 
 /// 現在のゲームボードからAIの考えた手を取得する。
 export fn getAiMove(b: *Board) u8 {
-    _ = b;
-
-    @panic("not implemented yet");
+    return ai.getAiMove(b.*);
 }
 
 test "test test" {
