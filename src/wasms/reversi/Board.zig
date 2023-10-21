@@ -16,14 +16,22 @@ const Board = @This();
 
 // properties
 
+/// 黒のビットボード
 black: u64 = 0,
+
+/// 白のビットボード
 white: u64 = 0,
+
+/// 次に打つ色
 nextColor: Color = .black,
 
+/// プレイヤーの色のリスト。黒か白か
 pub const Color = enum(u1) {
     black,
     white,
 
+    /// 黒なら白、白なら黒。
+    /// 現在の逆の色を返す
     pub fn turn(c: Color) Color {
         return switch (c) {
             .black => .white,
@@ -32,6 +40,7 @@ pub const Color = enum(u1) {
     }
 };
 
+/// ボードの初期状態を作る
 pub fn init() Board {
     return comptime fromString(
         \\........
@@ -45,6 +54,7 @@ pub fn init() Board {
     );
 }
 
+/// 現在のプレイヤー側のビットボードを取得する
 pub fn getPlayer(b: *const Board) u64 {
     return switch (b.nextColor) {
         .black => b.black,
@@ -52,6 +62,7 @@ pub fn getPlayer(b: *const Board) u64 {
     };
 }
 
+/// 現在の相手側のビットボードを取得する
 pub fn getOpponent(b: *const Board) u64 {
     return switch (b.nextColor) {
         .black => b.white,
@@ -59,9 +70,8 @@ pub fn getOpponent(b: *const Board) u64 {
     };
 }
 
-/// find a place to put it.
-/// - b - board pointer
-/// - isBlack - if next place player is black
+/// Placeで示された場所に石を置く。
+/// 既に置いてある石でひっくり返す石がある場合は、それをひっくり返す。
 pub fn move(b: *Board, place: u64) void {
     const player_board: u64 = b.getPlayer();
     const opponent_board: u64 = b.getOpponent();
@@ -77,9 +87,14 @@ pub fn move(b: *Board, place: u64) void {
         \\.oooooo.
     , 'o');
 
-    var flip: u64 = moveDir(player_board, place, mask, 1) |
+    var flip: u64 =
+        // 横方向を探索する
+        moveDir(player_board, place, mask, 1) |
+        // 縦方向を探索する
         moveDir(player_board, place, opponent_board, 8) |
+        // 右上-左下方向を探索する
         moveDir(player_board, place, mask, 7) |
+        // 左上-右下方向を探索する
         moveDir(player_board, place, mask, 9);
 
     b.black ^= flip;
@@ -91,7 +106,10 @@ pub fn move(b: *Board, place: u64) void {
     }
 }
 
+/// Dirで示された方向の前後にひっくり返す石を探す。
 fn moveDir(player_board: u64, place: u64, mask: u64, dir: u6) u64 {
+
+    // MSB側の探索
     var flip_m: u64 = (place << dir) & mask;
     flip_m |= (flip_m << dir) & mask;
     flip_m |= (flip_m << dir) & mask;
@@ -99,6 +117,7 @@ fn moveDir(player_board: u64, place: u64, mask: u64, dir: u6) u64 {
     flip_m |= (flip_m << dir) & mask;
     flip_m |= (flip_m << dir) & mask;
 
+    // LSB側の探索
     var flip_l: u64 = (place >> dir) & mask;
     flip_l |= (flip_l >> dir) & mask;
     flip_l |= (flip_l >> dir) & mask;
@@ -106,12 +125,15 @@ fn moveDir(player_board: u64, place: u64, mask: u64, dir: u6) u64 {
     flip_l |= (flip_l >> dir) & mask;
     flip_l |= (flip_l >> dir) & mask;
 
+    // 返せる石
     var flip: u64 = 0;
 
     if (player_board & (flip_m << dir) != 0) {
+        // もしMSB側の先にプレイヤーの石があれば、ひっくり返せる
         flip |= flip_m;
     }
     if (player_board & (flip_l >> dir) != 0) {
+        // もしLSB側の先にプレイヤーの石があれば、ひっくり返せる
         flip |= flip_l;
     }
 
@@ -159,6 +181,7 @@ test "move black" {
     try testing.expectEqualDeep(expected, board);
 }
 
+/// 石を置ける場所のリストを作成する
 pub fn getValidMoves(b: *const Board) u64 {
     const player_board = b.getPlayer();
     const opponent_board = b.getOpponent();
@@ -181,6 +204,7 @@ pub fn getValidMoves(b: *const Board) u64 {
         ~(player_board | opponent_board);
 }
 
+/// Dirで示された方向に挟める場所を探す
 fn getDirMoves(board: u64, mask: u64, dir: u6) u64 {
     var flip: u64 = board;
     flip = ((flip << dir) | (flip >> dir)) & mask;
@@ -452,6 +476,8 @@ test "get valid move 4" {
     try testing.expectEqualStrings(expected, &actual);
 }
 
+/// ゲームが終了しているか判定する。
+/// どちらのプレイヤーも置く場所がなかったら終了
 pub fn isEnd(b: *const Board) bool {
     if (b.getValidMoves() != 0) {
         return false;
@@ -506,6 +532,8 @@ test "game is not end" {
     try testing.expectEqual(expected, actual);
 }
 
+/// ボードの文字列からボード構造体を作る
+/// oが黒石、xが白石、それ以外で空白を表す。
 pub fn fromString(comptime str: []const u8) Board {
     return .{
         .black = bit_board.fromString(str, 'o'),
@@ -513,7 +541,10 @@ pub fn fromString(comptime str: []const u8) Board {
     };
 }
 
+/// ビットボードの便利な関数の名前空間
 pub const bit_board = struct {
+    /// ビットボードの文字列からビットボードを作成する。
+    /// 第二引数で石を示す文字を指定する。
     pub fn fromString(comptime str: []const u8, piece_symbol: u8) u64 {
         if (!@inComptime() and builtin.mode != .Debug) {
             @compileError("bit-board.fromString is use only debug or comptime");
@@ -557,6 +588,8 @@ pub const bit_board = struct {
         return board;
     }
 
+    /// ビットボードを文字列に変換する。
+    /// printデバッグ用
     pub fn toString(board: u64, piece_symbol: u8, empty_symbol: u8) [71]u8 {
         var str: [64 + 7]u8 = .{0} ** (64 + 7);
 
