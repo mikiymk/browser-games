@@ -41,5 +41,6 @@
   },
   "[rust]": {
     "editor.defaultFormatter": "rust-lang.rust-analyzer"
-  }
+  },
+  "zig.initialSetupDone": true
 }

@@ -44,5 +44,6 @@ export const getReversiWasm = async () => {
     init: exports.init,
     deinit: exports.deinit,
     getBoard,
+    move: exports.move,
   };
 };

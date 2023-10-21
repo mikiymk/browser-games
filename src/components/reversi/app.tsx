@@ -1,4 +1,4 @@
-import { For, Match, Switch, createSignal, onMount } from "solid-js";
+import { For, Match, Switch, createResource, createSignal, onMount } from "solid-js";
 
 import blackStone from "@/images/reversi/stone-black.svg";
 import whiteStone from "@/images/reversi/stone-white.svg";
@@ -12,31 +12,53 @@ import { getReversiWasm, type BoardPtr } from "./get-wasm";
 
 export const App = () => {
   const [board, setBoard] = createSignal<number[]>([]);
+  const [wasm] = createResource(getReversiWasm);
+
   let bp: BoardPtr | 0 = 0;
 
   const handleStart = () => {
-    setBoard(Array.from({ length: 64 }, (_, index) => index % 3));
+    const exports = wasm();
+    if (exports === undefined) return;
+
+    const { init, getBoard } = exports;
+    bp = init();
+
+    setBoard(getBoard(bp));
+  };
+
+  const handleClick = (square: number, index: number) => {
+    if (square !== CellCanMoveBlack && square !== CellCanMoveWhite) {
+      return;
+    }
+
+    if (bp === 0) return;
+
+    const exports = wasm();
+    if (exports === undefined) return;
+
+    const { move, getBoard } = exports;
+
+    move(bp, index);
+    setBoard(getBoard(bp));
   };
 
   onMount(() => {
     setBoard(Array.from({ length: 64 }, () => CellEmpty));
-
-    void (async () => {
-      const { init, deinit, getBoard } = await getReversiWasm();
-      bp = init();
-
-      setBoard(getBoard(bp));
-    })();
   });
 
   return (
     <>
       <div class={boardStyle}>
         <For each={board()}>
-          {(square) => {
+          {(square, index) => {
             return (
               <span class={cellStyle}>
-                <button type="button">
+                <button
+                  type="button"
+                  onClick={() => {
+                    handleClick(square, index());
+                  }}
+                >
                   <Switch>
                     <Match when={square === CellBlack}>
                       <img src={blackStone.src} alt="black stone" height="60" />
