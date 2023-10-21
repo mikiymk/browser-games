@@ -17,39 +17,50 @@ export const gameLoop = (
 
   const bp = init();
   let runGame = true;
-  const endGame = () => {
-    deinit(bp);
-    runGame = false;
-  };
+
+  console.log("game start id(%d)", bp);
 
   const gameMove = async () => {
     let nextMove;
     if (isHuman(isBlack(bp), players)) {
-      nextMove = await humanInput.request();
+      setBoard(getBoard(bp, true));
+
+      try {
+        nextMove = await humanInput.request();
+      } catch {
+        deinit(bp);
+        console.log("game interrupted id(%d)", bp);
+
+        return;
+      }
     } else {
+      setBoard(getBoard(bp, false));
       nextMove = ai(bp);
       await sleep(500);
     }
 
     move(bp, nextMove);
-    setBoard(getBoard(bp));
-
-    if (runGame && !isEnd(bp)) {
+    if (!runGame) {
+      deinit(bp);
+      console.log("game interrupted id(%d)", bp);
+    } else if (isEnd(bp)) {
+      deinit(bp);
+      console.log("game end id(%d)", bp);
+    } else {
       setTimeout(() => {
         void gameMove();
-      }, 100);
-    } else {
-      console.log("game end id(%d)", bp);
+      }, 0);
     }
   };
 
   setTimeout(() => {
-    setBoard(wasm.getBoard(bp));
-
     void gameMove();
   }, 0);
 
-  return endGame;
+  return () => {
+    deinit(bp);
+    runGame = false;
+  };
 };
 
 const isHuman = (isBlack: boolean, players: Players): boolean => {

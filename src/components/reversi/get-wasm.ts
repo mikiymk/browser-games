@@ -16,7 +16,7 @@ type ReversiWasm = {
 export type ReversiWasmConnect = {
   init: () => BoardPtr;
   deinit: (bp: BoardPtr) => void;
-  getBoard: (bp: BoardPtr) => number[];
+  getBoard: (bp: BoardPtr, showValidMoves: boolean) => number[];
   isBlack: (bp: BoardPtr) => boolean;
   move: (bp: BoardPtr, place: number) => void;
   isEnd: (bp: BoardPtr) => boolean;
@@ -30,12 +30,12 @@ export const getReversiWasm = async (): Promise<ReversiWasmConnect> => {
 
   const exports = wasm.instance.exports as ReversiWasm;
 
-  const getBoard = (bp: BoardPtr): number[] => {
+  const getBoard = (bp: BoardPtr, showValidMoves: boolean): number[] => {
     const black = exports.getBlack(bp);
     const white = exports.getWhite(bp);
 
     const isBlack = exports.isNextBlack(bp);
-    const validMoves = exports.getValidMoves(bp);
+    const validMoves = showValidMoves ? exports.getValidMoves(bp) : 0n;
 
     return Array.from({ length: 64 }, (_, index) => 1n << BigInt(index)).map((n) => {
       if (n & black) {

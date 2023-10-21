@@ -14,20 +14,28 @@ export const App = () => {
   const [blackPlayer, setBlackPlayer] = createSignal(HumanPlayer);
   const [whitePlayer, setWhitePlayer] = createSignal(AiPlayer);
   const [wasm] = createResource(getReversiWasm);
+  let terminateGame: (() => void) | undefined;
 
   // eslint-disable-next-line unicorn/consistent-function-scoping
   let resolve = (_: number) => {
     // empty
   };
-  const humanInput = new MultiPromise<number>((r) => {
-    resolve = r;
+  // eslint-disable-next-line unicorn/consistent-function-scoping
+  let reject = () => {
+    // empty
+  };
+  const humanInput = new MultiPromise<number>((rs, rj) => {
+    resolve = rs;
+    reject = rj;
   });
 
   const handleStart = () => {
     const exports = wasm();
     if (exports === undefined) return;
+    terminateGame?.();
+    reject();
 
-    gameLoop(exports, setBoard, humanInput, { black: blackPlayer(), white: whitePlayer() });
+    terminateGame = gameLoop(exports, setBoard, humanInput, { black: blackPlayer(), white: whitePlayer() });
   };
 
   const handleClick = (square: number, index: number) => {
