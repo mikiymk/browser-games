@@ -1,6 +1,7 @@
 {
   "svg.preview.background": "dark-transparent",
   "cSpell.words": [
+    "deinit",
     "Reversi",
     "wasm_bindgen"
   ],
@@ -42,5 +43,8 @@
   "[rust]": {
     "editor.defaultFormatter": "rust-lang.rust-analyzer"
   },
-  "zig.initialSetupDone": true
+  "zig.initialSetupDone": true,
+  "[markdown]": {
+    "editor.defaultFormatter": "yzhang.markdown-all-in-one"
+  }
 }

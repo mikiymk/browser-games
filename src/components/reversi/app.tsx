@@ -20,20 +20,15 @@ export const App = () => {
   let resolve = (_: number) => {
     // empty
   };
-  // eslint-disable-next-line unicorn/consistent-function-scoping
-  let reject = () => {
-    // empty
-  };
-  const humanInput = new MultiPromise<number>((rs, rj) => {
+
+  const humanInput = new MultiPromise<number>((rs) => {
     resolve = rs;
-    reject = rj;
   });
 
   const handleStart = () => {
     const exports = wasm();
     if (exports === undefined) return;
     terminateGame?.();
-    reject();
 
     terminateGame = gameLoop(exports, setBoard, humanInput, { black: blackPlayer(), white: whitePlayer() });
   };

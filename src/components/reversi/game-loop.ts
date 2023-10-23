@@ -15,7 +15,7 @@ export const gameLoop = (
 ) => {
   const { init, deinit, getBoard, move, isBlack, isEnd, ai } = wasm;
 
-  const bp = init();
+  let bp = init();
   let runGame = true;
 
   console.log("game start id(%d)", bp);
@@ -25,14 +25,7 @@ export const gameLoop = (
     if (isHuman(isBlack(bp), players)) {
       setBoard(getBoard(bp, true));
 
-      try {
-        nextMove = await humanInput.request();
-      } catch {
-        deinit(bp);
-        console.log("game interrupted id(%d)", bp);
-
-        return;
-      }
+      nextMove = await humanInput.request();
     } else {
       setBoard(getBoard(bp, false));
       nextMove = ai(bp);
@@ -40,13 +33,13 @@ export const gameLoop = (
     }
 
     move(bp, nextMove);
-    if (!runGame) {
-      deinit(bp);
-      console.log("game interrupted id(%d)", bp);
-    } else if (isEnd(bp)) {
-      deinit(bp);
+    setBoard(getBoard(bp, false));
+
+    if (isEnd(bp)) {
       console.log("game end id(%d)", bp);
-    } else {
+      deinit(bp);
+      bp = 0;
+    } else if (runGame) {
       setTimeout(() => {
         void gameMove();
       }, 0);
@@ -58,7 +51,9 @@ export const gameLoop = (
   }, 0);
 
   return () => {
+    console.log("game interrupted id(%d)", bp);
     deinit(bp);
+    bp = 0;
     runGame = false;
   };
 };
