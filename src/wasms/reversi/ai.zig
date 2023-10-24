@@ -7,13 +7,11 @@ pub fn getAiMove(b: Board, comptime random: *const fn () f64) u6 {
     const moves = b.getValidMoves();
 
     // ここまでの最も良い手
-    var best_place: [35]u64 = .{0} ** 35;
-    var best_place_count: u6 = 0;
+    var best_place: [32]u64 = .{0} ** 32;
+    var best_place_count: u5 = 0;
     // ここまでの最も良い手の評価点
     var best_evaluation: i32 = std.math.minInt(i32);
 
-    var count: u32 = 0;
-    var best_count: u32 = 0;
     var move_board = moves;
     while (move_board != 0) {
         const place: u64 = move_board & (~move_board + 1);
@@ -25,14 +23,10 @@ pub fn getAiMove(b: Board, comptime random: *const fn () f64) u6 {
             best_place[best_place_count] = place;
 
             best_place_count += 1;
-            best_count += 1;
         } else if (evaluation == best_evaluation) {
             best_place[0] = place;
             best_place_count = 1;
-            best_count += 1;
         }
-
-        count += 1;
 
         move_board &= move_board - 1;
     }

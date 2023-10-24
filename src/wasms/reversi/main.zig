@@ -25,12 +25,6 @@ pub fn getRandom() f64 {
     }
 }
 
-/// WASMテスト用の関数。
-/// 2つの整数を足した合計の数を返す。
-export fn add(a: u32, b: u32) u32 {
-    return a +% b;
-}
-
 /// 新しいボードをアロケートしてポインタを返す。
 /// メモリの開放に`deinit`を呼び出してください。
 export fn init() ?*Board {
@@ -93,10 +87,4 @@ export fn getValidMoves(b: *Board) u64 {
 /// 現在のゲームボードからAIの考えた手を取得する。
 export fn getAiMove(b: *Board) u8 {
     return ai.getAiMove(b.*, getRandom);
-}
-
-test "test test" {
-    const testing = std.testing;
-
-    try testing.expect(add(3, 7) == 10);
 }

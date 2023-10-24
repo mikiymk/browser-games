@@ -55,7 +55,7 @@ pub fn init() Board {
 }
 
 /// 現在のプレイヤー側のビットボードを取得する
-pub fn getPlayer(b: *const Board) u64 {
+pub fn getPlayer(b: Board) u64 {
     return switch (b.nextColor) {
         .black => b.black,
         .white => b.white,
@@ -63,7 +63,7 @@ pub fn getPlayer(b: *const Board) u64 {
 }
 
 /// 現在の相手側のビットボードを取得する
-pub fn getOpponent(b: *const Board) u64 {
+pub fn getOpponent(b: Board) u64 {
     return switch (b.nextColor) {
         .black => b.white,
         .white => b.black,
@@ -218,7 +218,7 @@ test "move black" {
 }
 
 /// 石を置ける場所のリストを作成する
-pub fn getValidMoves(b: *const Board) u64 {
+pub fn getValidMoves(b: Board) u64 {
     const player_board = b.getPlayer();
     const opponent_board = b.getOpponent();
 
@@ -514,7 +514,7 @@ test "get valid move 4" {
 
 /// ゲームが終了しているか判定する。
 /// どちらのプレイヤーも置く場所がなかったら終了
-pub fn isEnd(b: *const Board) bool {
+pub fn isEnd(b: Board) bool {
     if (b.getValidMoves() != 0) {
         return false;
     }
