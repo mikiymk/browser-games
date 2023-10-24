@@ -1,6 +1,6 @@
 import { sleep } from "@/scripts/sleep";
 
-import { HumanPlayer } from "./const";
+import { CellBlack, CellEmpty, CellWhite, HumanPlayer } from "./const";
 
 import type { MultiPromise } from "@/scripts/multi-promise";
 import type { ReversiWasmConnect } from "./get-wasm";
@@ -12,6 +12,7 @@ export const gameLoop = (
   setBoard: (board: number[]) => void,
   humanInput: MultiPromise<number>,
   players: Players,
+  onEnd: () => void,
 ) => {
   const { init, deinit, getBoard, move, isBlack, isEnd, ai } = wasm;
 
@@ -39,6 +40,7 @@ export const gameLoop = (
       console.log("game end id(%d)", bp);
       deinit(bp);
       bp = 0;
+      onEnd();
     } else if (runGame) {
       setTimeout(() => {
         void gameMove();
@@ -50,11 +52,23 @@ export const gameLoop = (
     void gameMove();
   }, 0);
 
-  return () => {
+  const terminate = () => {
     console.log("game interrupted id(%d)", bp);
     deinit(bp);
     bp = 0;
     runGame = false;
+    onEnd();
+  };
+
+  const color = (): number => {
+    if (bp === 0) return CellEmpty;
+    else if (isBlack(bp)) return CellBlack;
+    else return CellWhite;
+  };
+
+  return {
+    terminate,
+    color,
   };
 };
 

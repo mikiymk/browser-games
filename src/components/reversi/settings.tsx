@@ -1,15 +1,22 @@
+import { Show } from "solid-js";
+
 import { checkedRadioStyle, radioStyle } from "@/styles/reversi.css";
 import { h2Style } from "@/styles/common.css";
 
 import { AiPlayer, HumanPlayer } from "./const";
 
+import type { Setter } from "solid-js";
+
 type SettingsProperties = {
   start: () => void;
 
   black: number;
-  setBlack: (n: number) => void;
+  setBlack: Setter<number>;
   white: number;
-  setWhite: (n: number) => void;
+  setWhite: Setter<number>;
+
+  enableWatch: boolean;
+  setEnableWatch: Setter<boolean>;
 };
 
 export const Settings = (properties: SettingsProperties) => {
@@ -59,6 +66,19 @@ export const Settings = (properties: SettingsProperties) => {
             properties.setWhite(AiPlayer);
           }}
         />
+      </div>
+
+      <div>
+        <button
+          type="button"
+          onClick={() => {
+            properties.setEnableWatch((previous) => !previous);
+          }}
+        >
+          <Show when={properties.enableWatch} fallback={"not use game-clock"}>
+            use game-clock
+          </Show>
+        </button>
       </div>
     </div>
   );
