@@ -25,10 +25,6 @@ export const ruleStyle = style({
   gridArea: "rl",
 });
 
-export const h2Style = style({
-  font: "bold 1rem serif",
-});
-
 export const boardStyle = style({
   gridArea: "bd",
   placeSelf: "center",
