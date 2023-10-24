@@ -1,14 +1,12 @@
-import { For, createResource, createSignal } from "solid-js";
+import { createResource, createSignal } from "solid-js";
 
-import { cellStyle } from "@/styles/knight-tour.css";
-import { boardStyle } from "@/styles/reversi.css";
 import { MultiPromise } from "@/scripts/multi-promise";
 
 import { AiPlayer, CellCanMoveBlack, CellCanMoveWhite, CellEmpty, HumanPlayer } from "./const";
 import { getReversiWasm } from "./get-wasm";
-import { CellImage } from "./cell-image";
 import { gameLoop } from "./game-loop";
 import { Settings } from "./settings";
+import { Board } from "./board";
 
 export const App = () => {
   const [board, setBoard] = createSignal(Array.from({ length: 64 }, () => CellEmpty));
@@ -44,24 +42,7 @@ export const App = () => {
 
   return (
     <>
-      <div class={boardStyle}>
-        <For each={board()}>
-          {(square, index) => {
-            return (
-              <span class={cellStyle}>
-                <button
-                  type="button"
-                  onClick={() => {
-                    handleClick(square, index());
-                  }}
-                >
-                  <CellImage square={square} />
-                </button>
-              </span>
-            );
-          }}
-        </For>
-      </div>
+      <Board board={board()} click={handleClick} />
 
       <Settings
         start={handleStart}
