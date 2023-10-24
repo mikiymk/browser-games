@@ -3,7 +3,10 @@ const builtin = @import("builtin");
 const Board = @import("./Board.zig");
 const ai = @import("./ai.zig");
 
+/// アロケーター
 const allocator = if (builtin.target.isWasm()) std.heap.wasm_allocator else std.heap.page_allocator;
+
+// JavaScriptからインポートした関数
 
 extern fn random() f64;
 
@@ -72,7 +75,7 @@ export fn isGameEnd(b: *Board) bool {
 ///
 /// ゲームボードの現在状態が更新される。
 export fn move(b: *Board, place: u8) void {
-    b.move(@as(u64, 1) << @truncate(place));
+    b.moveMutate(@as(u64, 1) << @truncate(place));
 
     b.nextColor = b.nextColor.turn();
 

@@ -1,7 +1,7 @@
 import { CellBlack, CellCanMoveBlack, CellCanMoveWhite, CellEmpty, CellWhite } from "./const";
 
 export type BoardPtr = number & { __unique: "Wasm pointer of Board struct" };
-type ReversiWasm = {
+type ReversiWasm = WebAssembly.Exports & {
   init: () => BoardPtr;
   deinit: (bp: BoardPtr) => void;
   getBlack: (bp: BoardPtr) => bigint;

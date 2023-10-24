@@ -70,9 +70,8 @@ pub fn getOpponent(b: *const Board) u64 {
     };
 }
 
-/// Placeで示された場所に石を置く。
-/// 既に置いてある石でひっくり返す石がある場合は、それをひっくり返す。
-pub fn move(b: *Board, place: u64) void {
+/// 場所に置いた時、ひっくり返す石を求める
+fn getFlipSquares(b: Board, place: u64) u64 {
     const player_board: u64 = b.getPlayer();
     const opponent_board: u64 = b.getOpponent();
 
@@ -97,6 +96,15 @@ pub fn move(b: *Board, place: u64) void {
         // 左上-右下方向を探索する
         moveDir(player_board, place, mask, 9);
 
+    return flip;
+}
+
+/// Placeで示された場所に石を置く。
+/// 既に置いてある石でひっくり返す石がある場合は、それをひっくり返す。
+/// ボードを更新する
+pub fn moveMutate(b: *Board, place: u64) void {
+    const flip = b.getFlipSquares(place);
+
     b.black ^= flip;
     b.white ^= flip;
     if (b.nextColor == .black) {
@@ -104,6 +112,34 @@ pub fn move(b: *Board, place: u64) void {
     } else {
         b.white |= place;
     }
+}
+
+/// Placeで示された場所に石を置く。
+/// 既に置いてある石でひっくり返す石がある場合は、それをひっくり返す。
+/// ボードを更新する
+pub fn move(b: Board, place: u64) Board {
+    const flip = b.getFlipSquares(place);
+
+    var black = b.black ^ flip;
+    var white = b.white ^ flip;
+
+    if (b.nextColor == .black) {
+        black |= place;
+    } else {
+        white |= place;
+    }
+
+    var new_board = Board{
+        .black = black,
+        .white = white,
+        .nextColor = b.nextColor.turn(),
+    };
+
+    if (new_board.getValidMoves() == 0) {
+        new_board.nextColor = new_board.nextColor.turn();
+    }
+
+    return new_board;
 }
 
 /// Dirで示された方向の前後にひっくり返す石を探す。
@@ -176,7 +212,7 @@ test "move black" {
         \\...o...o
     );
 
-    board.move(place);
+    board.moveMutate(place);
 
     try testing.expectEqualDeep(expected, board);
 }
