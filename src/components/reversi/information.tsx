@@ -2,6 +2,17 @@ import { Match, Show, Switch, createEffect, createMemo, createSignal } from "sol
 
 import stoneBlack from "@/images/reversi/stone-black.svg";
 import stoneWhite from "@/images/reversi/stone-white.svg";
+import {
+  infoResultStyle,
+  infoStoneCountStyle,
+  infoStoneCurrentPlayerStyle,
+  infoStoneStyle,
+  infoStoneSymbolStyle,
+  infoStyle,
+  infoTimeBlackStyle,
+  infoTimeStyle,
+  infoTimeWhiteStyle,
+} from "@/styles/reversi.css";
 
 import { CellBlack, CellWhite } from "./const";
 
@@ -15,10 +26,43 @@ type InfoProperties = {
 };
 export const Info = (properties: InfoProperties) => {
   return (
-    <div>
+    <div class={infoStyle}>
+      <GameResult playing={properties.playing} board={properties.board} />
       <StoneCount playing={properties.playing} board={properties.board} color={properties.color} />
-      <Time playing={properties.playing} color={properties.color} enable={properties.enable} />
+
+      <Show when={properties.enable}>
+        <Time playing={properties.playing} color={properties.color} />
+      </Show>
     </div>
+  );
+};
+
+const GameResult = (properties: { playing: boolean; board: number[] }) => {
+  const count = (color: number) => {
+    let count = 0;
+
+    for (const square of properties.board) {
+      if (square === color) {
+        count += 1;
+      }
+    }
+
+    return count;
+  };
+  const countBlack = createMemo(() => count(CellBlack));
+  const countWhite = createMemo(() => count(CellWhite));
+
+  return (
+    <Show when={!properties.playing && (countBlack() !== 0 || countWhite() !== 0)}>
+      {/* ゲーム終了時に結果を表示する */}
+
+      <div class={infoResultStyle}>
+        <Switch fallback="Draw!">
+          <Match when={countBlack() < countWhite()}>White Win!</Match>
+          <Match when={countBlack() > countWhite()}>Black Win!</Match>
+        </Switch>
+      </div>
+    </Show>
   );
 };
 
@@ -44,22 +88,40 @@ const StoneCount = (properties: StoneProperties) => {
   const countWhite = createMemo(() => count(CellWhite));
 
   return (
-    <div>
-      <Switch>
-        <Match when={properties.playing && properties.color === CellBlack}>Black</Match>
-        <Match when={properties.playing && properties.color === CellWhite}>White</Match>
-        <Match when={!properties.playing && (countBlack() !== 0 || countWhite() !== 0)}>
-          {/* ゲーム終了時に結果を表示する */}
-          <Switch fallback="Draw!">
-            <Match when={countBlack() < countWhite()}>White Win!</Match>
-            <Match when={countBlack() > countWhite()}>Black Win!</Match>
-          </Switch>
-        </Match>
-      </Switch>
-
-      <img src={stoneBlack.src} alt="black" height="20" />
-      {countBlack()} - {countWhite()}
-      <img src={stoneWhite.src} alt="white" height="20" />
+    <div class={infoStoneStyle}>
+      <img
+        classList={{
+          [infoStoneSymbolStyle]: true,
+          [infoStoneCurrentPlayerStyle]: properties.playing && properties.color === CellBlack,
+        }}
+        src={stoneBlack.src}
+        alt="black"
+      />
+      <span
+        classList={{
+          [infoStoneCountStyle]: true,
+          [infoStoneCurrentPlayerStyle]: properties.playing && properties.color === CellBlack,
+        }}
+      >
+        {countBlack()}
+      </span>
+      <span>-</span>
+      <img
+        classList={{
+          [infoStoneSymbolStyle]: true,
+          [infoStoneCurrentPlayerStyle]: properties.playing && properties.color === CellWhite,
+        }}
+        src={stoneWhite.src}
+        alt="white"
+      />
+      <span
+        classList={{
+          [infoStoneCountStyle]: true,
+          [infoStoneCurrentPlayerStyle]: properties.playing && properties.color === CellWhite,
+        }}
+      >
+        {countWhite()}
+      </span>
     </div>
   );
 };
@@ -67,7 +129,6 @@ const StoneCount = (properties: StoneProperties) => {
 type TimeProperties = {
   playing: boolean;
   color: number | undefined;
-  enable: boolean;
 };
 const Time = (properties: TimeProperties) => {
   const [blackTime, setBlackTime] = createSignal(10 * 60 * 1000);
@@ -95,7 +156,7 @@ const Time = (properties: TimeProperties) => {
   };
 
   createEffect(() => {
-    if (properties.playing && properties.enable) {
+    if (properties.playing) {
       previousTime = 0;
       requestAnimationFrame(updateTime);
       setBlackTime(10 * 60 * 1000);
@@ -104,17 +165,9 @@ const Time = (properties: TimeProperties) => {
   });
 
   return (
-    <div>
-      <Show when={properties.enable}>
-        <div>
-          Watch
-          <img src={stoneBlack.src} alt="black" height="20" />
-          {formatTime(blackTime())}
-
-          <img src={stoneWhite.src} alt="white" height="20" />
-          {formatTime(whiteTime())}
-        </div>
-      </Show>
+    <div class={infoTimeStyle}>
+      <span class={infoTimeBlackStyle}>{formatTime(blackTime())}</span>
+      <span class={infoTimeWhiteStyle}>{formatTime(whiteTime())}</span>
     </div>
   );
 };

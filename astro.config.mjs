@@ -34,5 +34,13 @@ export default defineConfig({
     esbuild: {
       mangleProps: /_$/,
     },
+
+    build: {
+      rollupOptions: {
+        output: {
+          assetFileNames: "assets/[hash:16][extname]",
+        },
+      },
+    },
   },
 });

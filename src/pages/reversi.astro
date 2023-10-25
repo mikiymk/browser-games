@@ -1,12 +1,8 @@
 ---
 import "destyle.css";
 import { App } from "../components/reversi/app";
-import {
-    bodyStyle,
-    titleStyle,
-    ruleStyle,
-    h2Style,
-} from "../styles/reversi.css";
+import { bodyStyle, titleStyle, ruleStyle } from "../styles/reversi.css";
+import { h2Style } from "../styles/common.css";
 ---
 
 <!doctype html>
@@ -26,10 +22,11 @@ import {
         <div class={ruleStyle}>
             <h2 class={h2Style}>Rule</h2>
             <p>
-                Reversi is a puzzle that uses a board with 8 x 8 squares and
-                stones with black and white on the front and back. Two players,
-                black and white, take turns placing stones of their color, and
-                the player with the most stones of their color at the end wins.
+                <b>Reversi</b> is a puzzle that uses a board with 8 x 8 squares
+                and stones with black and white on the front and back. Two
+                players, black and white, take turns placing stones of their
+                color, and the player with the most stones of their color at the
+                end wins.
             </p>
             <p>
                 First, place the black and white stones in a 2x2 square in the
