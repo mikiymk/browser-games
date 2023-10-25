@@ -18,6 +18,7 @@ import { AiPlayer, HumanPlayer } from "./const";
 
 type SettingsProperties = {
   start: () => void;
+  end: () => void;
   playing: boolean;
 
   black: number;
@@ -42,6 +43,16 @@ export const Settings = (properties: SettingsProperties) => {
         }}
       >
         Start Game
+      </button>
+
+      <button
+        class={settingStartStyle}
+        type="button"
+        onClick={() => {
+          properties.end();
+        }}
+      >
+        End Game
       </button>
 
       <dl>

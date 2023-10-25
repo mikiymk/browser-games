@@ -9,23 +9,25 @@ import { Settings } from "./settings";
 import { Board } from "./board";
 import { Info } from "./information";
 
+const emptyFunction = () => {
+  // empty
+};
+const emptyBoard: number[] = Array.from({ length: 64 }, () => CellEmpty);
+
 export const App = () => {
   const [gamePlaying, setGamePlaying] = createSignal(false);
 
-  const [board, setBoard] = createSignal(Array.from({ length: 64 }, () => CellEmpty));
+  const [board, setBoard] = createSignal(emptyBoard);
   const [blackPlayer, setBlackPlayer] = createSignal(HumanPlayer);
   const [whitePlayer, setWhitePlayer] = createSignal(AiPlayer);
 
   const [enableWatch, setEnableWatch] = createSignal(false);
 
   const [wasm] = createResource(getReversiWasm);
-  let terminateGame: (() => void) | undefined;
+  let terminateGame: () => void = emptyFunction;
   let getColor: (() => number) | undefined;
 
-  // eslint-disable-next-line unicorn/consistent-function-scoping
-  let resolve = (_: number) => {
-    // empty
-  };
+  let resolve: (value: number) => void = emptyFunction;
 
   const humanInput = new MultiPromise<number>((rs) => {
     resolve = rs;
@@ -34,7 +36,7 @@ export const App = () => {
   const handleStart = () => {
     const exports = wasm();
     if (exports === undefined) return;
-    terminateGame?.();
+    terminateGame();
 
     const { terminate, color } = gameLoop(
       exports,
@@ -54,6 +56,11 @@ export const App = () => {
     setGamePlaying(true);
   };
 
+  const handleEnd = () => {
+    terminateGame();
+    setBoard(emptyBoard);
+  };
+
   const handleClick = (square: number, index: number) => {
     if (square !== CellCanMoveBlack && square !== CellCanMoveWhite) {
       return;
@@ -68,6 +75,7 @@ export const App = () => {
       <Info playing={gamePlaying()} board={board()} enable={enableWatch()} color={getColor?.()} />
       <Settings
         start={handleStart}
+        end={handleEnd}
         playing={gamePlaying()}
         black={blackPlayer()}
         setBlack={setBlackPlayer}
