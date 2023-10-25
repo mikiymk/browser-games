@@ -16,16 +16,15 @@ export const Board = (properties: BoardProperties) => {
       <For each={properties.board}>
         {(square, index) => {
           return (
-            <span class={cellStyle}>
-              <button
-                type="button"
-                onClick={() => {
-                  properties.click(square, index());
-                }}
-              >
-                <CellImage square={square} />
-              </button>
-            </span>
+            <button
+              type="button"
+              onClick={() => {
+                properties.click(square, index());
+              }}
+              class={cellStyle}
+            >
+              <CellImage square={square} />
+            </button>
           );
         }}
       </For>
