@@ -48,9 +48,18 @@ export const settingStyle = style({
   gridArea: "st",
 });
 
-export const settingCheckStyle = style({
-  display: "inline",
+export const settingStartStyle = style({
+  font: "bold 2rem sans-serif",
+  border: "solid black 1px",
+  background: "gray",
+  padding: "0 2rem",
+});
 
+export const settingItemStyle = style({
+  padding: "0 1rem",
+});
+
+export const settingCheckBoxStyle = style({
   height: "1rem",
 });
 
@@ -58,11 +67,15 @@ export const radioStyle = style({
   display: "inline-block",
   width: "5rem",
   boxSizing: "border-box",
+  border: "solid white 2px",
 });
 
-export const checkedRadioStyle = style({
-  border: "solid black 2px",
-});
+export const checkedRadioStyle = style([
+  radioStyle,
+  {
+    borderColor: "black",
+  },
+]);
 
 export const infoStyle = style({
   gridArea: "if",
