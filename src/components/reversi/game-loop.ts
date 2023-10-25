@@ -1,3 +1,5 @@
+import { createSignal } from "solid-js";
+
 import { sleep } from "@/scripts/sleep";
 
 import { CellBlack, CellEmpty, CellWhite, HumanPlayer } from "./const";
@@ -17,10 +19,17 @@ export const gameLoop = (
   onEnd: () => void,
 ) => {
   const { init, deinit, getBoard, move, isBlack, isEnd, ai } = wasm;
+  const [color, setColor] = createSignal(CellEmpty);
 
   let bp = init();
 
   console.log(`game start id(${bp})`);
+
+  const updateColor = (): void => {
+    if (bp === 0) setColor(CellEmpty);
+    else if (isBlack(bp)) setColor(CellBlack);
+    else setColor(CellWhite);
+  };
 
   const terminate = () => {
     console.log(`game end id(${bp})`);
@@ -43,6 +52,7 @@ export const gameLoop = (
 
     move(bp, nextMove);
     setBoard(getBoard(bp, false));
+    updateColor();
 
     if (isEnd(bp)) {
       terminate();
@@ -56,14 +66,9 @@ export const gameLoop = (
   };
 
   setTimeout(() => {
+    updateColor();
     void gameMove();
   }, 0);
-
-  const color = (): number => {
-    if (bp === 0) return CellEmpty;
-    else if (isBlack(bp)) return CellBlack;
-    else return CellWhite;
-  };
 
   return {
     terminate,
