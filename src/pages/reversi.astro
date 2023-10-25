@@ -20,27 +20,38 @@ import { h2Style } from "../styles/common.css";
         <App client:load />
 
         <div class={ruleStyle}>
+            <h2 class={h2Style}>Tools</h2>
+
+            <ul>
+                <li>8x8 board.</li>
+                <li>64 stones. One side is painted dark, the other light.</li>
+            </ul>
+
             <h2 class={h2Style}>Rule</h2>
+
+            <p>Two players, dark and light, play against each other.</p>
             <p>
-                <b>Reversi</b> is a puzzle that uses a board with 8 x 8 squares
-                and stones with black and white on the front and back. Two
-                players, black and white, take turns placing stones of their
-                color, and the player with the most stones of their color at the
-                end wins.
+                Dark and light take turns placing one stone each, aiming to have
+                more stones at the end.
             </p>
             <p>
-                First, place the black and white stones in a 2x2 square in the
-                center so that they cross each other. At this time, make sure
-                that black is at the top right and bottom left. Players hit
-                stones so that their opponent's stones are sandwiched between
-                the stones of their own color that have already been placed and
-                the stones they are hitting. After that, turn over the
-                opponent's stone that is sandwiched between the stone you hit
-                and the stone that has already been placed, and make it your own
-                stone. If there is no place to place a stone, it is your
-                opponent's turn without placing a stone. The game ends when no
-                stones of either color can be placed. At the end, count the
-                stones of each color and the player with the most stones wins.
+                Place one of your stones in a square on the board. Turn over the
+                opponent's stones that are sandwiched vertically, horizontally,
+                or diagonally between your stones already on the board and the
+                stones you have just placed, and make them your stones.
+            </p>
+            <p>
+                You cannot place a stone in a place where it cannot be
+                sandwiched.
+            </p>
+            <p>
+                If there is no place where it can be placed, it is the
+                opponent's turn without placing a stone. (Pass)
+            </p>
+            <p>
+                If neither player can place a stone, the game ends. The number
+                of stones on the board is counted, and the player with the most
+                stones wins.
             </p>
         </div>
     </body>
