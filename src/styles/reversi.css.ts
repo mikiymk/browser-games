@@ -59,6 +59,10 @@ export const settingItemStyle = style({
   padding: "0 1rem",
 });
 
+export const disableStyle = style({
+  color: "gray",
+});
+
 export const settingCheckBoxStyle = style({
   height: "1rem",
 });
@@ -76,6 +80,9 @@ export const checkedRadioStyle = style([
     borderColor: "black",
   },
 ]);
+
+export const disableRadioStyle = style([radioStyle, disableStyle]);
+export const checkedDisableRadioStyle = style([checkedRadioStyle, disableStyle]);
 
 export const infoStyle = style({
   gridArea: "if",

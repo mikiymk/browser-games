@@ -1,7 +1,10 @@
 import { Show, type Setter } from "solid-js";
 
 import {
+  checkedDisableRadioStyle,
   checkedRadioStyle,
+  disableRadioStyle,
+  disableStyle,
   radioStyle,
   settingCheckBoxStyle,
   settingItemStyle,
@@ -15,6 +18,7 @@ import { AiPlayer, HumanPlayer } from "./const";
 
 type SettingsProperties = {
   start: () => void;
+  playing: boolean;
 
   black: number;
   setBlack: Setter<number>;
@@ -46,6 +50,7 @@ export const Settings = (properties: SettingsProperties) => {
           <LabeledRadioInput
             label="Player"
             checked={properties.black === HumanPlayer}
+            enable={!properties.playing}
             check={() => {
               properties.setBlack(HumanPlayer);
             }}
@@ -53,6 +58,7 @@ export const Settings = (properties: SettingsProperties) => {
           <LabeledRadioInput
             label="CPU"
             checked={properties.black === AiPlayer}
+            enable={!properties.playing}
             check={() => {
               properties.setBlack(AiPlayer);
             }}
@@ -64,6 +70,7 @@ export const Settings = (properties: SettingsProperties) => {
           <LabeledRadioInput
             label="Player"
             checked={properties.white === HumanPlayer}
+            enable={!properties.playing}
             check={() => {
               properties.setWhite(HumanPlayer);
             }}
@@ -71,6 +78,7 @@ export const Settings = (properties: SettingsProperties) => {
           <LabeledRadioInput
             label="CPU"
             checked={properties.white === AiPlayer}
+            enable={!properties.playing}
             check={() => {
               properties.setWhite(AiPlayer);
             }}
@@ -79,9 +87,10 @@ export const Settings = (properties: SettingsProperties) => {
 
         <dt>Game Clock</dt>
         <dd class={settingItemStyle}>
-          <label>
+          <label class={properties.playing ? disableStyle : ""}>
             <input
               type="checkbox"
+              disabled={properties.playing}
               onClick={() => {
                 properties.setEnableWatch((previous) => !previous);
               }}
@@ -103,20 +112,30 @@ export const Settings = (properties: SettingsProperties) => {
 type LabeledRadioInputProperties = {
   label: string;
   checked: boolean;
+  enable: boolean;
   check: () => void;
 };
 const LabeledRadioInput = (properties: LabeledRadioInputProperties) => {
+  const styleClass = () => {
+    const enable = properties.enable;
+    const checked = properties.checked;
+    if (enable && !checked) {
+      return radioStyle;
+    } else if (enable && checked) {
+      return checkedRadioStyle;
+    } else if (!enable && !checked) {
+      return disableRadioStyle;
+    } else {
+      return checkedDisableRadioStyle;
+    }
+  };
   return (
-    <label
-      classList={{
-        [radioStyle]: !properties.checked,
-        [checkedRadioStyle]: properties.checked,
-      }}
-    >
+    <label class={styleClass()}>
       {properties.label}
       <input
         type="radio"
         checked={properties.checked}
+        disabled={!properties.enable}
         onClick={() => {
           properties.check();
         }}

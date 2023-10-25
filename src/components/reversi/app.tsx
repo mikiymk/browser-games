@@ -68,6 +68,7 @@ export const App = () => {
       <Info playing={gamePlaying()} board={board()} enable={enableWatch()} color={getColor?.()} />
       <Settings
         start={handleStart}
+        playing={gamePlaying()}
         black={blackPlayer()}
         setBlack={setBlackPlayer}
         white={whitePlayer()}
