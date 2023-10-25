@@ -25,10 +25,18 @@ type InfoProperties = {
   enable: boolean;
 };
 export const Info = (properties: InfoProperties) => {
+  const count = (color: number) => {
+    return properties.board.filter((square) => square === color).length;
+  };
+  const countBlack = createMemo(() => count(CellBlack));
+  const countWhite = createMemo(() => count(CellWhite));
+
   return (
     <div class={infoStyle}>
-      <GameResult playing={properties.playing} board={properties.board} />
-      <StoneCount playing={properties.playing} board={properties.board} color={properties.color} />
+      <Show when={!properties.playing && (countBlack() !== 0 || countWhite() !== 0)}>
+        <GameResult black={countBlack()} white={countWhite()} />
+      </Show>
+      <StoneCount playing={properties.playing} black={countBlack()} white={countWhite()} color={properties.color} />
 
       <Show when={properties.enable}>
         <Time playing={properties.playing} color={properties.color} />
@@ -37,62 +45,35 @@ export const Info = (properties: InfoProperties) => {
   );
 };
 
-const GameResult = (properties: { playing: boolean; board: number[] }) => {
-  const count = (color: number) => {
-    let count = 0;
-
-    for (const square of properties.board) {
-      if (square === color) {
-        count += 1;
-      }
-    }
-
-    return count;
-  };
-  const countBlack = createMemo(() => count(CellBlack));
-  const countWhite = createMemo(() => count(CellWhite));
-
+// ゲーム終了時に結果を表示する
+const GameResult = (properties: { black: number; white: number }) => {
   return (
-    <Show when={!properties.playing && (countBlack() !== 0 || countWhite() !== 0)}>
-      {/* ゲーム終了時に結果を表示する */}
-
-      <div class={infoResultStyle}>
-        <Switch fallback="Draw!">
-          <Match when={countBlack() < countWhite()}>White Win!</Match>
-          <Match when={countBlack() > countWhite()}>Black Win!</Match>
-        </Switch>
-      </div>
-    </Show>
+    <div class={infoResultStyle}>
+      <Switch fallback="Draw!">
+        <Match when={properties.black < properties.white}>White Win!</Match>
+        <Match when={properties.black > properties.white}>Black Win!</Match>
+      </Switch>
+    </div>
   );
 };
 
 type StoneProperties = {
   playing: boolean;
+  black: number;
+  white: number;
 
-  board: number[];
   color: number | undefined;
 };
 const StoneCount = (properties: StoneProperties) => {
-  const count = (color: number) => {
-    let count = 0;
-
-    for (const square of properties.board) {
-      if (square === color) {
-        count += 1;
-      }
-    }
-
-    return count;
-  };
-  const countBlack = createMemo(() => count(CellBlack));
-  const countWhite = createMemo(() => count(CellWhite));
+  const isBlack = () => properties.playing && properties.color === CellBlack;
+  const isWhite = () => properties.playing && properties.color === CellWhite;
 
   return (
     <div class={infoStoneStyle}>
       <img
         classList={{
           [infoStoneSymbolStyle]: true,
-          [infoStoneCurrentPlayerStyle]: properties.playing && properties.color === CellBlack,
+          [infoStoneCurrentPlayerStyle]: isBlack(),
         }}
         src={stoneBlack.src}
         alt="black"
@@ -100,16 +81,16 @@ const StoneCount = (properties: StoneProperties) => {
       <span
         classList={{
           [infoStoneCountStyle]: true,
-          [infoStoneCurrentPlayerStyle]: properties.playing && properties.color === CellBlack,
+          [infoStoneCurrentPlayerStyle]: isBlack(),
         }}
       >
-        {countBlack()}
+        {properties.black}
       </span>
       <span>-</span>
       <img
         classList={{
           [infoStoneSymbolStyle]: true,
-          [infoStoneCurrentPlayerStyle]: properties.playing && properties.color === CellWhite,
+          [infoStoneCurrentPlayerStyle]: isWhite(),
         }}
         src={stoneWhite.src}
         alt="white"
@@ -117,10 +98,10 @@ const StoneCount = (properties: StoneProperties) => {
       <span
         classList={{
           [infoStoneCountStyle]: true,
-          [infoStoneCurrentPlayerStyle]: properties.playing && properties.color === CellWhite,
+          [infoStoneCurrentPlayerStyle]: isWhite(),
         }}
       >
-        {countWhite()}
+        {properties.white}
       </span>
     </div>
   );
