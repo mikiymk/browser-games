@@ -7,10 +7,12 @@ export const gameLoop = async (
   players: Players,
   boardData: Accessor<BoardData>,
   setBoardData: Setter<BoardData>,
+  setHistory: Setter<Index[]>,
   setStatusMessage: Setter<string>,
 ) => {
   let mark: Mark = OMark;
   initializeBoard(setBoardData);
+  setHistory([]);
 
   console.log("start game");
 
@@ -26,7 +28,7 @@ export const gameLoop = async (
     }
 
     doAction(setBoardData, mark, index);
-
+    setHistory((previousHistory) => [...previousHistory, index]);
     mark = invertMark(mark);
 
     const finishMessage = isFinished(boardData);

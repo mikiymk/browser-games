@@ -7,20 +7,23 @@ import { PlayerTypeAI, PlayerTypeHuman } from "@/scripts/player";
 
 import { Board } from "./board";
 import { Controller } from "./controller";
+import { History } from "./history";
 
-import type { BoardData } from "@/games/nought-and-cross/types";
+import type { BoardData, Index } from "@/games/nought-and-cross/types";
 import type { PlayerType } from "@/scripts/player";
 
 const initialBoardData: BoardData = [Empty, Empty, Empty, Empty, Empty, Empty, Empty, Empty, Empty];
 
 export const App = () => {
   const [board, setBoardData] = createSignal<BoardData>(initialBoardData);
+  const [history, setHistory] = createSignal<Index[]>([]);
   const [playerO, setPlayerO] = createSignal<PlayerType>(PlayerTypeHuman);
   const [playerX, setPlayerX] = createSignal<PlayerType>(PlayerTypeAI);
   const [status, setStatus] = createSignal("");
 
   const reset = () => {
     setBoardData(initialBoardData);
+    setHistory([]);
 
     GameAiPromise.resolve(Reset);
 
@@ -29,7 +32,7 @@ export const App = () => {
       [XMark]: playerX() === PlayerTypeHuman ? humanPlayer : aiPlayer,
     };
 
-    void gameLoop(players, board, setBoardData, setStatus);
+    void gameLoop(players, board, setBoardData, setHistory, setStatus);
   };
 
   onMount(reset);
@@ -46,6 +49,7 @@ export const App = () => {
         setPlayerO={setPlayerO}
         setPlayerX={setPlayerX}
       />
+      <History history={history()} />
     </>
   );
 };
