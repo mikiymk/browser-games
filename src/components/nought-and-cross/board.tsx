@@ -1,7 +1,9 @@
 import { For, Match, Switch } from "solid-js";
 
 import { OMark, XMark } from "@/games/nought-and-cross/types";
-import { boardStyle, cellStyle, charOStyle, charXStyle } from "@/styles/nought-and-cross.css";
+import { boardStyle, cellStyle, oStyle, xStyle } from "@/styles/nought-and-cross.css";
+import cross from "@/images/symbol/cross.svg";
+import nought from "@/images/symbol/nought.svg";
 
 type BoardProperties = {
   board: number[];
@@ -10,19 +12,23 @@ type BoardProperties = {
 };
 export const Board = (properties: BoardProperties) => {
   return (
-    <div class={boardStyle}>
-      <For each={properties.board}>
-        {(mark, index) => (
-          <Cell
-            mark={mark}
-            index={index()}
-            click={() => {
-              properties.click(index());
-            }}
-          />
-        )}
-      </For>
-    </div>
+    <>
+      <svg viewBox="0 0 92 92" xmlns="http://www.w3.org/2000/svg" class={boardStyle}>
+        <title>noughts and crosses board</title>
+
+        <For each={properties.board}>
+          {(mark, index) => (
+            <Cell
+              mark={mark}
+              index={index()}
+              click={() => {
+                properties.click(index());
+              }}
+            />
+          )}
+        </For>
+      </svg>
+    </>
   );
 };
 
@@ -33,37 +39,32 @@ type CellProperties = {
   click: () => void;
 };
 const Cell = (properties: CellProperties) => {
-  const onClick = () => {
+  const x = () => (properties.index % 3) * 30 + 1;
+  const y = () => Math.floor(properties.index / 3) * 30 + 1;
+  const handleClick = () => {
     properties.click();
   };
+
   return (
-    <button type="button" class={cellStyle} onClick={onClick}>
-      <Switch fallback="">
+    <>
+      <Switch>
         <Match when={properties.mark === OMark}>
-          <OMarkSVG />
+          <use href={`${nought.src}#root`} x={x()} y={y()} height={30} width={30} class={xStyle} />
         </Match>
         <Match when={properties.mark === XMark}>
-          <XMarkSVG />
+          <use href={`${cross.src}#root`} x={x()} y={y()} height={30} width={30} class={oStyle} />
         </Match>
       </Switch>
-    </button>
-  );
-};
-
-const OMarkSVG = () => {
-  return (
-    <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" class={charOStyle}>
-      <title>○</title>
-      <circle cx="100" cy="100" r="70" />
-    </svg>
-  );
-};
-
-const XMarkSVG = () => {
-  return (
-    <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" class={charXStyle}>
-      <title>❌</title>
-      <path d="M30,30 170,170 M30,170 170,30" />
-    </svg>
+      <rect
+        x={x()}
+        y={y()}
+        height={30}
+        width={30}
+        class={cellStyle}
+        tabindex={0}
+        onClick={handleClick}
+        onKeyPress={handleClick}
+      />
+    </>
   );
 };

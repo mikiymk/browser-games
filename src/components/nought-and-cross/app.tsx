@@ -27,10 +27,7 @@ export const App = () => {
   let resolve: (value: number) => void = doNothingFunction;
 
   const humanInput = new MultiPromise<number>((rs) => {
-    resolve = (value: number) => {
-      console.log(`resolve ${value}`);
-      rs(value);
-    };
+    resolve = rs;
   });
 
   const handleClick = (index: number) => {
@@ -58,7 +55,7 @@ export const App = () => {
     if (isWin(board(), OMark)) {
       return "O win";
     } else if (isWin(board(), XMark)) {
-      return "O win";
+      return "X win";
     } else if (filledBoard(board())) {
       return "Draw";
     } else if (mark() === OMark) {

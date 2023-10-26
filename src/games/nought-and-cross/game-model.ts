@@ -47,6 +47,7 @@ export const gameLoop = (
 
     setBoard([...board]);
     setMark(mark);
+    setHistory((history) => [...history, index]);
 
     if (isWin(board, OMark) || isWin(board, XMark) || filledBoard(board)) {
       terminate();
