@@ -1,14 +1,14 @@
 import { createSignal, onMount } from "solid-js";
 
-import { GameAiPromise, aiPlayer, humanPlayer } from "@/games/ox3/ai";
-import { gameLoop } from "@/games/ox3/game";
-import { Empty, OMark, Reset, XMark } from "@/games/ox3/types";
+import { GameAiPromise, aiPlayer, humanPlayer } from "@/games/nought-and-cross/ai";
+import { gameLoop } from "@/games/nought-and-cross/game";
+import { Empty, OMark, Reset, XMark } from "@/games/nought-and-cross/types";
 import { PlayerTypeAI, PlayerTypeHuman } from "@/scripts/player";
 
 import { Board } from "./board";
 import { Controller } from "./controller";
 
-import type { BoardData } from "@/games/ox3/types";
+import type { BoardData } from "@/games/nought-and-cross/types";
 import type { PlayerType } from "@/scripts/player";
 
 const initialBoardData: BoardData = [Empty, Empty, Empty, Empty, Empty, Empty, Empty, Empty, Empty];

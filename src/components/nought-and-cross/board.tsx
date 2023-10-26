@@ -1,9 +1,9 @@
 import { For, Match, Switch } from "solid-js";
 
-import { GameAiPromise } from "@/games/ox3/ai";
-import { OMark, XMark } from "@/games/ox3/types";
+import { GameAiPromise } from "@/games/nought-and-cross/ai";
+import { OMark, XMark } from "@/games/nought-and-cross/types";
 
-import type { BoardData, Empty, Index, Mark } from "@/games/ox3/types";
+import type { BoardData, Empty, Index, Mark } from "@/games/nought-and-cross/types";
 
 type BoardProperties = {
   board: BoardData;
