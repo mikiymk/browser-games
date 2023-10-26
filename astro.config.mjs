@@ -16,6 +16,8 @@ export default defineConfig({
       SVG: {
         multipass: true,
       },
+
+      Logger: 1,
     }),
   ],
 
@@ -31,6 +33,14 @@ export default defineConfig({
 
     esbuild: {
       mangleProps: /_$/,
+    },
+
+    build: {
+      rollupOptions: {
+        output: {
+          assetFileNames: "_assets/[hash:16][extname]",
+        },
+      },
     },
   },
 });

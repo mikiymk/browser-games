@@ -3,9 +3,6 @@ name: check lint format and test
 
 on:
   # Runs on pushes targeting the default branch
-  push:
-    branches: ["main"]
-
   pull_request:
     branches: ["main"]
 
@@ -35,6 +32,11 @@ jobs:
         with:
           # Optional version of wasm-pack to install(eg. 'v0.9.1', 'latest')
           version: "latest"
+
+      # zig setup
+      - uses: goto-bus-stop/setup-zig@v2
+        with:
+          version: 0.11.0
 
       - name: check codes
         run: pnpm run ci

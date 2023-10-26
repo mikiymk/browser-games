@@ -43,8 +43,11 @@ jobs:
           # Optional version of wasm-pack to install(eg. 'v0.9.1', 'latest')
           version: "latest"
 
+      # zig setup
+      - uses: goto-bus-stop/setup-zig@v2
+
       - name: Build
-        run: pnpm run ci
+        run: pnpm run build
       - name: Setup Pages
         uses: actions/configure-pages@v3
       - name: Upload artifact
