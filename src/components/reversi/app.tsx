@@ -1,5 +1,6 @@
 import { createResource, createSignal } from "solid-js";
 
+
 import { MultiPromise } from "@/scripts/multi-promise";
 
 import { AiPlayer, CellCanMoveBlack, CellCanMoveWhite, CellEmpty, HumanPlayer } from "./const";
@@ -8,6 +9,7 @@ import { gameLoop } from "./game-loop";
 import { Settings } from "./settings";
 import { Board } from "./board";
 import { Info } from "./information";
+
 
 const emptyFunction = () => {
   // empty
@@ -72,10 +74,15 @@ export const App = () => {
   return (
     <>
       <Board board={board()} click={handleClick} />
-      <Info playing={gamePlaying()} board={board()} enable={enableWatch()} color={getColor?.()} />
-      <Settings
+      <Info
         start={handleStart}
         end={handleEnd}
+        playing={gamePlaying()}
+        board={board()}
+        enable={enableWatch()}
+        color={getColor?.()}
+      />
+      <Settings
         playing={gamePlaying()}
         black={blackPlayer()}
         setBlack={setBlackPlayer}

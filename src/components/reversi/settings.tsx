@@ -8,7 +8,6 @@ import {
   radioStyle,
   settingCheckBoxStyle,
   settingItemStyle,
-  settingStartStyle,
 } from "@/styles/reversi.css";
 import { h2Style } from "@/styles/common.css";
 import checkedBox from "@/images/symbol/check-box-checked-black.svg";
@@ -17,8 +16,7 @@ import uncheckedBox from "@/images/symbol/check-box-unchecked-black.svg";
 import { AiPlayer, HumanPlayer } from "./const";
 
 type SettingsProperties = {
-  start: () => void;
-  end: () => void;
+
   playing: boolean;
 
   black: number;
@@ -35,25 +33,7 @@ export const Settings = (properties: SettingsProperties) => {
     <div>
       <h2 class={h2Style}>Settings</h2>
 
-      <button
-        class={settingStartStyle}
-        type="button"
-        onClick={() => {
-          properties.start();
-        }}
-      >
-        Start Game
-      </button>
 
-      <button
-        class={settingStartStyle}
-        type="button"
-        onClick={() => {
-          properties.end();
-        }}
-      >
-        End Game
-      </button>
 
       <dl>
         <dt>Black Player</dt>

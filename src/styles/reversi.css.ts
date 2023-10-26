@@ -48,13 +48,6 @@ export const settingStyle = style({
   gridArea: "st",
 });
 
-export const settingStartStyle = style({
-  font: "bold 2rem sans-serif",
-  border: "solid black 1px",
-  background: "gray",
-  padding: "0 2rem",
-});
-
 export const settingItemStyle = style({
   padding: "0 1rem",
 });
@@ -103,6 +96,7 @@ export const infoResultStyle = style({
 });
 
 export const infoStoneStyle = style({
+  textAlign: "center",
   fontSize: "min(6vmax, 8vmin)",
 
   gridColumn: "1 / 6",
@@ -119,6 +113,7 @@ export const infoStoneCountStyle = style({
   display: "inline-block",
   width: "min(7.5vmax, 10vmin)",
   lineHeight: "min(7.5vmax, 10vmin)",
+  textAlign: "right",
 });
 
 export const infoStoneSymbolStyle = style({
@@ -141,4 +136,17 @@ export const infoTimeBlackStyle = style({
 
 export const infoTimeWhiteStyle = style({
   gridColumn: "4 / 6",
+});
+
+export const infoPlayButtonStyle = style({
+  gridColumn: "1 / 6",
+
+  font: "bold min(3vmax, 4vmin) sans-serif",
+});
+
+export const settingStartStyle = style({
+  width: "50%",
+  textAlign: "center",
+  border: "solid black 1px",
+  background: "gray",
 });

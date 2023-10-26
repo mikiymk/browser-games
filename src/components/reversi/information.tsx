@@ -3,6 +3,7 @@ import { Match, Show, Switch, createEffect, createMemo, createSignal } from "sol
 import stoneBlack from "@/images/reversi/stone-black.svg";
 import stoneWhite from "@/images/reversi/stone-white.svg";
 import {
+  infoPlayButtonStyle,
   infoResultStyle,
   infoStoneCountStyle,
   infoStoneCurrentPlayerStyle,
@@ -12,11 +13,14 @@ import {
   infoTimeBlackStyle,
   infoTimeStyle,
   infoTimeWhiteStyle,
+  settingStartStyle,
 } from "@/styles/reversi.css";
 
 import { CellBlack, CellWhite } from "./const";
 
 type InfoProperties = {
+  start: () => void;
+  end: () => void;
   playing: boolean;
 
   board: number[];
@@ -41,6 +45,8 @@ export const Info = (properties: InfoProperties) => {
       <Show when={properties.enable}>
         <Time playing={properties.playing} color={properties.color} />
       </Show>
+
+      <PlayButtons start={properties.start} end={properties.end} />
     </div>
   );
 };
@@ -165,4 +171,34 @@ const formatTime = (time: number) => {
     .padStart(2, "0");
 
   return `${hour}:${minute}:${second}`;
+};
+
+type PlayButtonsProperties = {
+  start: () => void;
+  end: () => void;
+};
+const PlayButtons = (properties: PlayButtonsProperties) => {
+  return (
+    <div class={infoPlayButtonStyle}>
+      <button
+        class={settingStartStyle}
+        type="button"
+        onClick={() => {
+          properties.start();
+        }}
+      >
+        Start Game
+      </button>
+
+      <button
+        class={settingStartStyle}
+        type="button"
+        onClick={() => {
+          properties.end();
+        }}
+      >
+        End Game
+      </button>
+    </div>
+  );
 };
