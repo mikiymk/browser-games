@@ -24,3 +24,13 @@ export const oStyle = style({
 export const xStyle = style({
   color: "blue",
 });
+
+export const restartButtonStyle = style({
+  background: "lightgray",
+  border: "solid 1px black",
+});
+
+export const historyMoveStyle = style({
+  background: "gray",
+  margin: "0.5rem",
+});

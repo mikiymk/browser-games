@@ -1,8 +1,13 @@
 import { PlayerTypeAI, PlayerTypeHuman } from "@/scripts/player";
-import { SettingModal } from "@/components/common/setting-modal";
+import nought from "@/images/symbol/nought.svg";
+import cross from "@/images/symbol/cross.svg";
+import { inlineImageStyle } from "@/styles/common.css";
+import { restartButtonStyle } from "@/styles/nought-and-cross.css";
 
-import type { PlayerType } from "@/scripts/player";
 import type { Setter } from "solid-js";
+import type { PlayerType } from "@/scripts/player";
+
+import { LabeledRadioInput } from "../common/labeled-radio/labeled-radio";
 
 type ControllerProperties = {
   statusMessage: string;
@@ -16,44 +21,61 @@ type ControllerProperties = {
 export const Controller = (properties: ControllerProperties) => {
   return (
     <div>
-      status:
-      <output>{properties.statusMessage}</output>
       <button
         type="button"
         onClick={() => {
           properties.onReset();
         }}
+        class={restartButtonStyle}
       >
-        reset
+        Restart
       </button>
-      <SettingModal>
-        <div>
-          ◯ player
-          <SettingPlayerSelect player={properties.playerO} setPlayer={properties.setPlayerO} />
-        </div>
-        <div>
-          ✗ player
-          <SettingPlayerSelect player={properties.playerX} setPlayer={properties.setPlayerX} />
-        </div>
-      </SettingModal>
-    </div>
-  );
-};
 
-type SettingPlayerSelectProperties = {
-  player: PlayerType;
-  setPlayer: Setter<PlayerType>;
-};
-const SettingPlayerSelect = (properties: SettingPlayerSelectProperties) => {
-  return (
-    <select
-      value={properties.player}
-      onChange={(event) =>
-        properties.setPlayer(Number(event.currentTarget.value) === PlayerTypeHuman ? PlayerTypeHuman : PlayerTypeAI)
-      }
-    >
-      <option value={PlayerTypeHuman}>Human</option>
-      <option value={PlayerTypeAI}>AI</option>
-    </select>
+      <output>{properties.statusMessage}</output>
+
+      <dl>
+        <dt>
+          player
+          <img src={nought.src} alt="nought" class={inlineImageStyle} />
+        </dt>
+        <dd>
+          <LabeledRadioInput
+            label="Player"
+            check={() => {
+              properties.setPlayerO(PlayerTypeHuman);
+            }}
+            checked={properties.playerO === PlayerTypeHuman}
+          />
+          <LabeledRadioInput
+            label="AI"
+            check={() => {
+              properties.setPlayerO(PlayerTypeAI);
+            }}
+            checked={properties.playerO === PlayerTypeAI}
+          />
+        </dd>
+
+        <dt>
+          player
+          <img src={cross.src} alt="cross" class={inlineImageStyle} />
+        </dt>
+        <dd>
+          <LabeledRadioInput
+            label="Player"
+            check={() => {
+              properties.setPlayerX(PlayerTypeHuman);
+            }}
+            checked={properties.playerX === PlayerTypeHuman}
+          />
+          <LabeledRadioInput
+            label="AI"
+            check={() => {
+              properties.setPlayerX(PlayerTypeAI);
+            }}
+            checked={properties.playerX === PlayerTypeAI}
+          />
+        </dd>
+      </dl>
+    </div>
   );
 };

@@ -30,10 +30,11 @@ export const gameLoop = (
     isRunning = false;
   };
 
-  const run = async () => {
-    setBoard([...board]);
-    setMark(mark);
+  setBoard([...board]);
+  setMark(mark);
+  setHistory([]);
 
+  const run = async () => {
     const index: number = isHumanPlayer(players, mark) ? await humanInput.request() : gameNoughtAndCrossAi(board, mark);
     console.log(`turn game(${id}) mark(${mark}) index(${index})`);
 
