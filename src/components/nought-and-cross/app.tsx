@@ -1,11 +1,11 @@
 import { createSignal, onMount } from "solid-js";
 
 import {} from "@/games/nought-and-cross/game";
-import { OMark, XMark } from "@/games/nought-and-cross/types";
-import { PlayerTypeAI, PlayerTypeHuman } from "@/scripts/player";
-import { MultiPromise } from "@/scripts/multi-promise";
 import { filledBoard, gameLoop, isWin } from "@/games/nought-and-cross/game-model";
+import { OMark, XMark } from "@/games/nought-and-cross/types";
 import { doNothingFunction } from "@/scripts/do-nothing";
+import { MultiPromise } from "@/scripts/multi-promise";
+import { PlayerTypeAI, PlayerTypeHuman } from "@/scripts/player";
 
 import { Board } from "./board";
 import { Controller } from "./controller";

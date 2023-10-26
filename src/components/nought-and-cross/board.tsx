@@ -1,9 +1,9 @@
 import { For, Match, Switch } from "solid-js";
 
 import { OMark, XMark } from "@/games/nought-and-cross/types";
-import { boardStyle, cellStyle, oStyle, xStyle } from "@/styles/nought-and-cross.css";
 import cross from "@/images/symbol/cross.svg";
 import nought from "@/images/symbol/nought.svg";
+import { boardStyle, cellStyle, oStyle, xStyle } from "@/styles/nought-and-cross.css";
 
 type BoardProperties = {
   board: number[];

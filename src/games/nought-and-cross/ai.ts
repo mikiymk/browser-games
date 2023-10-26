@@ -1,9 +1,9 @@
-import { randomSelect } from "@/scripts/random-select";
 import { CellEmpty } from "@/components/reversi/const";
+import { randomSelect } from "@/scripts/random-select";
 
 import { invertMark } from "./game";
-import { Empty, Reset, winnerLines } from "./types";
 import { isWin, turnMark } from "./game-model";
+import { Empty, Reset, winnerLines } from "./types";
 
 import type { Accessor } from "solid-js";
 import type { BoardData, Index, Mark, Player } from "./types";

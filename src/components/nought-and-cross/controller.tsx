@@ -1,11 +1,11 @@
-import { PlayerTypeAI, PlayerTypeHuman } from "@/scripts/player";
-import nought from "@/images/symbol/nought.svg";
 import cross from "@/images/symbol/cross.svg";
+import nought from "@/images/symbol/nought.svg";
+import { PlayerTypeAI, PlayerTypeHuman } from "@/scripts/player";
 import { inlineImageStyle } from "@/styles/common.css";
 import { restartButtonStyle } from "@/styles/nought-and-cross.css";
 
-import type { Setter } from "solid-js";
 import type { PlayerType } from "@/scripts/player";
+import type { Setter } from "solid-js";
 
 import { LabeledRadioInput } from "../common/labeled-radio/labeled-radio";
 

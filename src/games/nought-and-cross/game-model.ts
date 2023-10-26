@@ -1,11 +1,11 @@
 import { CellEmpty } from "@/components/reversi/const";
 import { PlayerTypeHuman } from "@/scripts/player";
 
-import { OMark, Reset, XMark } from "./types";
 import { gameNoughtAndCrossAi } from "./ai";
+import { OMark, Reset, XMark } from "./types";
 
-import type { Setter } from "solid-js";
 import type { MultiPromise } from "@/scripts/multi-promise";
+import type { Setter } from "solid-js";
 
 type Players = { O: number; X: number };
 
