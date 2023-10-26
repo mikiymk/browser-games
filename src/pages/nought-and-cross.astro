@@ -1,6 +1,6 @@
 ---
 import "destyle.css";
-import "@/styles/nought-and-cross.css";
+import { bodyStyle } from "@/styles/nought-and-cross.css";
 import { App } from "../components/nought-and-cross/app";
 ---
 
@@ -14,7 +14,7 @@ import { App } from "../components/nought-and-cross/app";
     <title>Noughts and Crosses</title>
   </head>
 
-  <body>
+  <body class={bodyStyle}>
     <App client:load />
   </body>
 </html>
