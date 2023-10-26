@@ -1,5 +1,8 @@
-import { Show, type Setter } from "solid-js";
+import { type Setter, Show } from "solid-js";
 
+import checkedBox from "@/images/symbol/check-box-checked-black.svg";
+import uncheckedBox from "@/images/symbol/check-box-unchecked-black.svg";
+import { h2Style } from "@/styles/common.css";
 import {
   checkedDisableRadioStyle,
   checkedRadioStyle,
@@ -9,14 +12,10 @@ import {
   settingCheckBoxStyle,
   settingItemStyle,
 } from "@/styles/reversi.css";
-import { h2Style } from "@/styles/common.css";
-import checkedBox from "@/images/symbol/check-box-checked-black.svg";
-import uncheckedBox from "@/images/symbol/check-box-unchecked-black.svg";
 
 import { AiPlayer, HumanPlayer } from "./const";
 
 type SettingsProperties = {
-
   playing: boolean;
 
   black: number;
@@ -32,8 +31,6 @@ export const Settings = (properties: SettingsProperties) => {
   return (
     <div>
       <h2 class={h2Style}>Settings</h2>
-
-
 
       <dl>
         <dt>Black Player</dt>

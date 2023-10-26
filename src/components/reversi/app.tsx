@@ -1,15 +1,13 @@
 import { createResource, createSignal } from "solid-js";
 
-
 import { MultiPromise } from "@/scripts/multi-promise";
 
-import { AiPlayer, CellCanMoveBlack, CellCanMoveWhite, CellEmpty, HumanPlayer } from "./const";
-import { getReversiWasm } from "./get-wasm";
-import { gameLoop } from "./game-loop";
-import { Settings } from "./settings";
 import { Board } from "./board";
+import { AiPlayer, CellCanMoveBlack, CellCanMoveWhite, CellEmpty, HumanPlayer } from "./const";
+import { gameLoop } from "./game-loop";
+import { getReversiWasm } from "./get-wasm";
 import { Info } from "./information";
-
+import { Settings } from "./settings";
 
 const emptyFunction = () => {
   // empty
