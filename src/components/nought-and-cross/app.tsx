@@ -1,45 +1,78 @@
 import { createSignal, onMount } from "solid-js";
 
-import { GameAiPromise, aiPlayer, humanPlayer } from "@/games/nought-and-cross/ai";
-import { gameLoop } from "@/games/nought-and-cross/game";
-import { Empty, OMark, Reset, XMark } from "@/games/nought-and-cross/types";
+import {} from "@/games/nought-and-cross/game";
+import { OMark, XMark } from "@/games/nought-and-cross/types";
 import { PlayerTypeAI, PlayerTypeHuman } from "@/scripts/player";
+import { MultiPromise } from "@/scripts/multi-promise";
+import { filledBoard, gameLoop, isWin } from "@/games/nought-and-cross/game-model";
+import { doNothingFunction } from "@/scripts/do-nothing";
 
 import { Board } from "./board";
 import { Controller } from "./controller";
 import { History } from "./history";
 
-import type { BoardData, Index } from "@/games/nought-and-cross/types";
 import type { PlayerType } from "@/scripts/player";
 
-const initialBoardData: BoardData = [Empty, Empty, Empty, Empty, Empty, Empty, Empty, Empty, Empty];
+import { CellEmpty } from "../reversi/const";
 
 export const App = () => {
-  const [board, setBoardData] = createSignal<BoardData>(initialBoardData);
-  const [history, setHistory] = createSignal<Index[]>([]);
+  const [board, setBoardData] = createSignal<number[]>([]);
+  const [mark, setMark] = createSignal(OMark);
+  const [history, setHistory] = createSignal<number[]>([]);
+
   const [playerO, setPlayerO] = createSignal<PlayerType>(PlayerTypeHuman);
   const [playerX, setPlayerX] = createSignal<PlayerType>(PlayerTypeAI);
-  const [status, setStatus] = createSignal("");
+
+  let terminate = doNothingFunction;
+  let resolve: (value: number) => void = doNothingFunction;
+
+  const humanInput = new MultiPromise<number>((rs) => {
+    resolve = (value: number) => {
+      console.log(`resolve ${value}`);
+      rs(value);
+    };
+  });
+
+  const handleClick = (index: number) => {
+    if (board()[index] !== CellEmpty) {
+      return;
+    }
+
+    resolve(index);
+  };
 
   const reset = () => {
-    setBoardData(initialBoardData);
-    setHistory([]);
-
-    GameAiPromise.resolve(Reset);
+    terminate();
 
     const players = {
-      [OMark]: playerO() === PlayerTypeHuman ? humanPlayer : aiPlayer,
-      [XMark]: playerX() === PlayerTypeHuman ? humanPlayer : aiPlayer,
+      O: playerO(),
+      X: playerX(),
     };
 
-    void gameLoop(players, board, setBoardData, setHistory, setStatus);
+    terminate = gameLoop(setBoardData, setMark, setHistory, humanInput, players).terminate;
   };
 
   onMount(reset);
 
+  const status = (): string => {
+    if (isWin(board(), OMark)) {
+      return "O win";
+    } else if (isWin(board(), XMark)) {
+      return "O win";
+    } else if (filledBoard(board())) {
+      return "Draw";
+    } else if (mark() === OMark) {
+      return "next O";
+    } else if (mark() === XMark) {
+      return "next X";
+    } else {
+      return "";
+    }
+  };
+
   return (
     <>
-      <Board board={board()} />
+      <Board board={board()} click={handleClick} />
 
       <Controller
         statusMessage={status()}

@@ -1,34 +1,43 @@
 import { For, Match, Switch } from "solid-js";
 
-import { GameAiPromise } from "@/games/nought-and-cross/ai";
 import { OMark, XMark } from "@/games/nought-and-cross/types";
 import { boardStyle, cellStyle, charOStyle, charXStyle } from "@/styles/nought-and-cross.css";
 
-import type { BoardData, Empty, Index, Mark } from "@/games/nought-and-cross/types";
-
 type BoardProperties = {
-  board: BoardData;
+  board: number[];
+
+  click: (index: number) => void;
 };
 export const Board = (properties: BoardProperties) => {
   return (
     <div class={boardStyle}>
-      <For each={properties.board}>{(mark, index) => <Cell mark={mark} index={index() as Index} />}</For>
+      <For each={properties.board}>
+        {(mark, index) => (
+          <Cell
+            mark={mark}
+            index={index()}
+            click={() => {
+              properties.click(index());
+            }}
+          />
+        )}
+      </For>
     </div>
   );
 };
 
 type CellProperties = {
-  mark: Mark | Empty;
-  index: Index;
+  mark: number;
+  index: number;
+
+  click: () => void;
 };
 const Cell = (properties: CellProperties) => {
   const onClick = () => {
-    console.log(properties.index);
-    GameAiPromise.resolve(properties.index);
+    properties.click();
   };
   return (
-    // biome-ignore lint/a11y/useKeyWithClickEvents: fix it later
-    <div class={cellStyle} onClick={onClick}>
+    <button type="button" class={cellStyle} onClick={onClick}>
       <Switch fallback="">
         <Match when={properties.mark === OMark}>
           <OMarkSVG />
@@ -37,7 +46,7 @@ const Cell = (properties: CellProperties) => {
           <XMarkSVG />
         </Match>
       </Switch>
-    </div>
+    </button>
   );
 };
 

@@ -1,17 +1,13 @@
-import { For } from "solid-js"
-
-import type { Index } from "@/games/nought-and-cross/types"
+import { For } from "solid-js";
 
 type HistoryProperties = {
-    history: Index[]
-}
+  history: number[];
+};
 export const History = (properties: HistoryProperties) => {
-
-    return <div>
-        history
-
-        <For each={properties.history}>
-            {history => <p>{history}</p>}
-        </For>
+  return (
+    <div>
+      history
+      <For each={properties.history}>{(history) => <p>{history}</p>}</For>
     </div>
-}
+  );
+};

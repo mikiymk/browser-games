@@ -1,5 +1,5 @@
-import { SettingModal } from "@/components/common/setting-modal";
 import { PlayerTypeAI, PlayerTypeHuman } from "@/scripts/player";
+import { SettingModal } from "@/components/common/setting-modal";
 
 import type { PlayerType } from "@/scripts/player";
 import type { Setter } from "solid-js";
