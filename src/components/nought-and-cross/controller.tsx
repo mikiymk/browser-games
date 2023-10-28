@@ -1,3 +1,5 @@
+import { Switch, type Setter, Match } from "solid-js";
+
 import cross from "@/images/symbol/cross.svg";
 import nought from "@/images/symbol/nought.svg";
 import { PlayerTypeAI, PlayerTypeHuman } from "@/scripts/player";
@@ -10,14 +12,22 @@ import {
   controllerStyle,
   restartButtonStyle,
 } from "@/styles/nought-and-cross.css";
+import {
+  NnCStatusOWin,
+  type NnCStatus,
+  NnCStatusDraw,
+  NnCStatusXWin,
+  NnCStatusNextO,
+  NnCStatusNextX,
+  NnCStatusNone,
+} from "@/games/nought-and-cross/types";
 
 import type { PlayerType } from "@/scripts/player";
-import type { Setter } from "solid-js";
 
 import { LabeledRadioInput } from "../common/labeled-radio/labeled-radio";
 
 type ControllerProperties = {
-  statusMessage: string;
+  statusMessage: NnCStatus;
   onReset: () => void;
 
   playerO: PlayerType;
@@ -28,7 +38,24 @@ type ControllerProperties = {
 export const Controller = (properties: ControllerProperties) => {
   return (
     <div class={controllerStyle}>
-      <output class={controllerOutputStyle}>{properties.statusMessage}</output>
+      <output class={controllerOutputStyle}>
+        <Switch>
+          <Match when={properties.statusMessage === NnCStatusOWin}>
+            <img src={nought.src} alt="nought" class={inlineImageStyle} /> Win!
+          </Match>
+          <Match when={properties.statusMessage === NnCStatusXWin}>
+            <img src={cross.src} alt="cross" class={inlineImageStyle} /> Win!
+          </Match>
+          <Match when={properties.statusMessage === NnCStatusDraw}>Draw!</Match>
+          <Match when={properties.statusMessage === NnCStatusNextO}>
+            next <img src={nought.src} alt="nought" class={inlineImageStyle} />
+          </Match>
+          <Match when={properties.statusMessage === NnCStatusNextX}>
+            next <img src={cross.src} alt="cross" class={inlineImageStyle} />
+          </Match>
+          <Match when={properties.statusMessage === NnCStatusNone}>{""}</Match>
+        </Switch>
+      </output>
 
       <dl class={controllerPlayerStyle}>
         <dt class={controllerPlayerNameStyle}>

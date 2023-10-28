@@ -2,7 +2,16 @@ import { createSignal, onMount } from "solid-js";
 
 import {} from "@/games/nought-and-cross/game";
 import { filledBoard, gameLoop, isWin } from "@/games/nought-and-cross/game-model";
-import { OMark, XMark } from "@/games/nought-and-cross/types";
+import {
+  NnCStatusDraw,
+  NnCStatusNextO,
+  NnCStatusNextX,
+  NnCStatusNone,
+  NnCStatusOWin,
+  NnCStatusXWin,
+  OMark,
+  XMark,
+} from "@/games/nought-and-cross/types";
 import { doNothingFunction } from "@/scripts/do-nothing";
 import { MultiPromise } from "@/scripts/multi-promise";
 import { PlayerTypeAI, PlayerTypeHuman } from "@/scripts/player";
@@ -11,6 +20,7 @@ import { Board } from "./board";
 import { Controller } from "./controller";
 import { History } from "./history";
 
+import type { NnCStatus } from "@/games/nought-and-cross/types";
 import type { PlayerType } from "@/scripts/player";
 
 import { CellEmpty } from "../reversi/const";
@@ -51,19 +61,19 @@ export const App = () => {
 
   onMount(reset);
 
-  const status = (): string => {
+  const status = (): NnCStatus => {
     if (isWin(board(), OMark)) {
-      return "O win";
+      return NnCStatusOWin;
     } else if (isWin(board(), XMark)) {
-      return "X win";
+      return NnCStatusXWin;
     } else if (filledBoard(board())) {
-      return "Draw";
+      return NnCStatusDraw;
     } else if (mark() === OMark) {
-      return "next O";
+      return NnCStatusNextO;
     } else if (mark() === XMark) {
-      return "next X";
+      return NnCStatusNextX;
     } else {
-      return "";
+      return NnCStatusNone;
     }
   };
 
