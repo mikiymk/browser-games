@@ -6,6 +6,7 @@ const disableStyle = style({
 
 export const radioStyle = style({
   display: "inline-block",
+  textAlign: "center",
   width: "5rem",
   boxSizing: "border-box",
   border: "solid white 2px",
