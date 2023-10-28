@@ -22,6 +22,22 @@ pub fn build(b: *std.Build) void {
     const reversi_step = b.step("reversi", "Build reversi library");
     reversi_step.dependOn(&reversi_artifact.step);
 
+    // chess
+
+    const chess = b.addSharedLibrary(.{
+        .name = "chess",
+        .root_source_file = .{ .path = "src/wasms/chess/main.zig" },
+        .target = target,
+        .optimize = optimize,
+    });
+
+    // exports all "export" functions
+    chess.rdynamic = true;
+
+    const chess_artifact = b.addInstallArtifact(chess, .{ .dest_dir = public_dir });
+    const chess_step = b.step("chess", "Build chess library");
+    chess_step.dependOn(&chess_artifact.step);
+
     // test
 
     const main_tests = b.addTest(.{
