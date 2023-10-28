@@ -18,7 +18,9 @@ export fn init() ?*Board {
 }
 
 export fn deinit(b: ?*Board) void {
-    allocator.destroy(b);
+    if (b) |board_pointer| {
+        allocator.destroy(board_pointer);
+    }
 }
 
 export fn setPieces(b: *Board, kind: PieceKind, pieces: u64) void {

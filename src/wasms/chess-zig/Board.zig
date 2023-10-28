@@ -1,5 +1,7 @@
 const std = @import("std");
 
+const bit_board = @import("bit-board");
+
 const Board = @This();
 
 pub const PieceKind = enum(u8) {
@@ -20,7 +22,7 @@ pub const PieceKind = enum(u8) {
 
 pub const Color = enum(u1) { black, white };
 
-next_color: Color,
+next_color: Color = .white,
 
 black_pawn: u64,
 black_knight: u64,
@@ -37,19 +39,32 @@ white_queen: u64,
 white_king: u64,
 
 pub fn init() Board {
-    return .{
-        .black_pawn = 0,
-        .black_knight = 0,
-        .black_bishop = 0,
-        .black_rook = 0,
-        .black_queen = 0,
-        .black_king = 0,
+    return fromString(
+        \\rnbqkbnr
+        \\pppppppp
+        \\........
+        \\........
+        \\........
+        \\........
+        \\PPPPPPPP
+        \\RNBQKBNR
+    );
+}
 
-        .white_pawn = 0,
-        .white_knight = 0,
-        .white_bishop = 0,
-        .white_rook = 0,
-        .white_queen = 0,
-        .white_king = 0,
+fn fromString(comptime str: []const u8) Board {
+    return .{
+        .black_pawn = bit_board.fromString(str, 'P'),
+        .black_knight = bit_board.fromString(str, 'N'),
+        .black_bishop = bit_board.fromString(str, 'B'),
+        .black_rook = bit_board.fromString(str, 'R'),
+        .black_queen = bit_board.fromString(str, 'Q'),
+        .black_king = bit_board.fromString(str, 'K'),
+
+        .white_pawn = bit_board.fromString(str, 'p'),
+        .white_knight = bit_board.fromString(str, 'n'),
+        .white_bishop = bit_board.fromString(str, 'b'),
+        .white_rook = bit_board.fromString(str, 'r'),
+        .white_queen = bit_board.fromString(str, 'q'),
+        .white_king = bit_board.fromString(str, 'k'),
     };
 }
