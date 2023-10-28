@@ -1,3 +1,4 @@
+export const Empty = 0;
 export const OMark = 1;
 export const XMark = 2;
 export const Reset = 10;

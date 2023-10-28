@@ -1,8 +1,7 @@
-import { CellEmpty } from "@/components/reversi/const";
 import { PlayerTypeHuman } from "@/scripts/player";
 
 import { gameNoughtAndCrossAi } from "./ai";
-import { OMark, Reset, XMark } from "./types";
+import { Empty, OMark, Reset, XMark } from "./types";
 
 import type { MultiPromise } from "@/scripts/multi-promise";
 import type { Setter } from "solid-js";
@@ -20,7 +19,7 @@ export const gameLoop = (
 
   console.log(`start game(${id})`);
 
-  const board = Array.from({ length: 9 }, () => CellEmpty);
+  const board = Array.from({ length: 9 }, () => Empty);
   let mark = OMark;
   let isRunning = true;
 
@@ -104,7 +103,7 @@ export const isWin = (board: number[], mark: number): boolean => {
 
 export const filledBoard = (board: number[]): boolean => {
   for (const cell of board) {
-    if (cell === CellEmpty) {
+    if (cell === Empty) {
       return false;
     }
   }

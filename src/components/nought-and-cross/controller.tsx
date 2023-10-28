@@ -19,10 +19,9 @@ import {
   NnCStatusNextX,
   NnCStatusNone,
 } from "@/games/nought-and-cross/types";
+import { LabeledRadioInput } from "@/components/common/labeled-radio/labeled-radio";
 
 import type { PlayerType } from "@/scripts/player";
-
-import { LabeledRadioInput } from "../common/labeled-radio/labeled-radio";
 
 type ControllerProperties = {
   statusMessage: NnCStatus;

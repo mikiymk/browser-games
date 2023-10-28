@@ -2,6 +2,7 @@ import { createSignal, onMount } from "solid-js";
 
 import { filledBoard, gameLoop, isWin } from "@/games/nought-and-cross/game-model";
 import {
+  Empty,
   NnCStatusDraw,
   NnCStatusNextO,
   NnCStatusNextX,
@@ -22,8 +23,6 @@ import { History } from "./history";
 import type { NnCStatus } from "@/games/nought-and-cross/types";
 import type { PlayerType } from "@/scripts/player";
 
-import { CellEmpty } from "../reversi/const";
-
 export const App = () => {
   const [board, setBoardData] = createSignal<number[]>([]);
   const [mark, setMark] = createSignal(OMark);
@@ -40,7 +39,7 @@ export const App = () => {
   });
 
   const handleClick = (index: number) => {
-    if (board()[index] !== CellEmpty) {
+    if (board()[index] !== Empty) {
       return;
     }
 
