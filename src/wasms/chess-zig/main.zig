@@ -1,51 +1,64 @@
 const std = @import("std");
 const builtin = @import("builtin");
 
+const Board = @import("./Board.zig");
+const PieceKind = Board.PieceKind;
+
 const allocator = if (builtin.target.isWasm()) std.heap.wasm_allocator else std.heap.page_allocator;
 
 export fn add(a: u32, b: u32) u32 {
     return a +| b;
 }
 
-const Board = struct {};
+export fn init() ?*Board {
+    const board_pointer = allocator.create(Board) catch return null;
+    board_pointer.* = Board.init();
 
-const PieceKind = enum(u8) {
-    black_pawn = 1,
-    black_knight = 2,
-    black_bishop = 3,
-    black_rook = 4,
-    black_queen = 5,
-    black_king = 6,
-
-    white_pawn = 7,
-    white_knight = 8,
-    white_bishop = 9,
-    white_rook = 10,
-    white_queen = 11,
-    white_king = 12,
-};
-
-export fn init() *Board {
-    @panic("not implemented");
+    return board_pointer;
 }
 
-export fn deinit(b: *Board) void {
-    _ = b;
+export fn deinit(b: ?*Board) void {
+    allocator.destroy(b);
+}
 
-    @panic("not implemented");
+export fn setPieces(b: *Board, kind: PieceKind, pieces: u64) void {
+    switch (kind) {
+        .black_pawn => b.black_pawn = pieces,
+        .black_knight => b.black_knight = pieces,
+        .black_bishop => b.black_bishop = pieces,
+        .black_rook => b.black_rook = pieces,
+        .black_queen => b.black_queen = pieces,
+        .black_king => b.black_king = pieces,
+
+        .white_pawn => b.white_pawn = pieces,
+        .white_knight => b.white_knight = pieces,
+        .white_bishop => b.white_bishop = pieces,
+        .white_rook => b.white_rook = pieces,
+        .white_queen => b.white_queen = pieces,
+        .white_king => b.white_king = pieces,
+    }
 }
 
 export fn getPieces(b: *Board, kind: PieceKind) u64 {
-    _ = b;
-    _ = kind;
+    return switch (kind) {
+        .black_pawn => b.black_pawn,
+        .black_knight => b.black_knight,
+        .black_bishop => b.black_bishop,
+        .black_rook => b.black_rook,
+        .black_queen => b.black_queen,
+        .black_king => b.black_king,
 
-    @panic("not implemented");
+        .white_pawn => b.white_pawn,
+        .white_knight => b.white_knight,
+        .white_bishop => b.white_bishop,
+        .white_rook => b.white_rook,
+        .white_queen => b.white_queen,
+        .white_king => b.white_king,
+    };
 }
 
 export fn isBlack(b: *Board) bool {
-    _ = b;
-
-    @panic("not implemented");
+    return b.next_color == .black;
 }
 
 export fn isEnd(b: *Board) bool {
