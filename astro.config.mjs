@@ -15,13 +15,24 @@ export default defineConfig({
     compress({
       SVG: {
         multipass: true,
+
+        plugins: [
+          {
+            name: "preset-default",
+            params: {
+              overrides: {
+                cleanupIds: false,
+              },
+            },
+          },
+        ],
       },
 
       Logger: 1,
     }),
   ],
 
-  compressHTML: false,
+  compressHTML: true,
 
   vite: {
     plugins: [

@@ -3,17 +3,11 @@ import { type Setter, Show } from "solid-js";
 import checkedBox from "@/images/symbol/check-box-checked-black.svg";
 import uncheckedBox from "@/images/symbol/check-box-unchecked-black.svg";
 import { h2Style } from "@/styles/common.css";
-import {
-  checkedDisableRadioStyle,
-  checkedRadioStyle,
-  disableRadioStyle,
-  disableStyle,
-  radioStyle,
-  settingCheckBoxStyle,
-  settingItemStyle,
-} from "@/styles/reversi.css";
+import { disableStyle, settingCheckBoxStyle, settingItemStyle } from "@/styles/reversi.css";
 
 import { AiPlayer, HumanPlayer } from "./const";
+
+import { LabeledRadioInput } from "../common/labeled-radio/labeled-radio";
 
 type SettingsProperties = {
   playing: boolean;
@@ -94,40 +88,5 @@ export const Settings = (properties: SettingsProperties) => {
         </dd>
       </dl>
     </div>
-  );
-};
-
-type LabeledRadioInputProperties = {
-  label: string;
-  checked: boolean;
-  enable: boolean;
-  check: () => void;
-};
-const LabeledRadioInput = (properties: LabeledRadioInputProperties) => {
-  const styleClass = () => {
-    const enable = properties.enable;
-    const checked = properties.checked;
-    if (enable && !checked) {
-      return radioStyle;
-    } else if (enable && checked) {
-      return checkedRadioStyle;
-    } else if (!enable && !checked) {
-      return disableRadioStyle;
-    } else {
-      return checkedDisableRadioStyle;
-    }
-  };
-  return (
-    <label class={styleClass()}>
-      {properties.label}
-      <input
-        type="radio"
-        checked={properties.checked}
-        disabled={!properties.enable}
-        onClick={() => {
-          properties.check();
-        }}
-      />
-    </label>
   );
 };

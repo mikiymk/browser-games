@@ -51,6 +51,7 @@ export default [
       ...vitest.configs.recommended.rules,
 
       // my custom
+      "unicorn/number-literal-case": "off",
       "unicorn/prefer-query-selector": "off",
 
       "@typescript-eslint/no-unused-vars": [
