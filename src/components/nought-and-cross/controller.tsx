@@ -1,5 +1,15 @@
-import { Switch, type Setter, Match } from "solid-js";
+import { Match, type Setter, Switch } from "solid-js";
 
+import { LabeledRadioInput } from "@/components/common/labeled-radio/labeled-radio";
+import {
+  type NnCStatus,
+  NnCStatusDraw,
+  NnCStatusNextO,
+  NnCStatusNextX,
+  NnCStatusNone,
+  NnCStatusOWin,
+  NnCStatusXWin,
+} from "@/games/nought-and-cross/types";
 import cross from "@/images/symbol/cross.svg";
 import nought from "@/images/symbol/nought.svg";
 import { PlayerTypeAI, PlayerTypeHuman } from "@/scripts/player";
@@ -10,16 +20,6 @@ import {
   controllerStyle,
   restartButtonStyle,
 } from "@/styles/nought-and-cross.css";
-import {
-  NnCStatusOWin,
-  type NnCStatus,
-  NnCStatusDraw,
-  NnCStatusXWin,
-  NnCStatusNextO,
-  NnCStatusNextX,
-  NnCStatusNone,
-} from "@/games/nought-and-cross/types";
-import { LabeledRadioInput } from "@/components/common/labeled-radio/labeled-radio";
 
 import type { PlayerType } from "@/scripts/player";
 
