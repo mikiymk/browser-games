@@ -1,15 +1,25 @@
-import { For } from "solid-js";
+import { For, Show } from "solid-js";
 
-import { historyMoveStyle } from "@/styles/nought-and-cross.css";
+import { historyMoveStyle, historyStyle, historyTitleStyle } from "@/styles/nought-and-cross.css";
+
+const historyFillArray = [-1, -1, -1, -1, -1, -1, -1, -1, -1];
 
 type HistoryProperties = {
   history: number[];
 };
 export const History = (properties: HistoryProperties) => {
+  const paddedHistory = () => [...properties.history, ...historyFillArray].slice(0, 9);
+
   return (
-    <div>
-      history
-      <For each={properties.history}>{(history) => <span class={historyMoveStyle}>{position(history)}</span>}</For>
+    <div class={historyStyle}>
+      <span class={historyTitleStyle}>History</span>
+      <For each={paddedHistory()}>
+        {(history) => (
+          <span class={historyMoveStyle}>
+            <Show when={history !== -1}>{position(history)}</Show>
+          </span>
+        )}
+      </For>
     </div>
   );
 };

@@ -60,7 +60,24 @@ export const restartButtonStyle = style({
   border: "solid 1px black",
 });
 
+export const historyStyle = style({
+  display: "flex",
+  width: "80vmin",
+
+  flexWrap: "wrap",
+  alignItems: "center",
+  gap: "0.5rem",
+});
+
+export const historyTitleStyle = style({});
+
 export const historyMoveStyle = style({
-  background: "gray",
-  margin: "0.5rem",
+  display: "inline",
+
+  height: ["1.4rem", "1lh"],
+  flex: "0 0 3rem",
+
+  background: "lightgray",
+  textAlign: "center",
+  verticalAlign: "bottom",
 });
