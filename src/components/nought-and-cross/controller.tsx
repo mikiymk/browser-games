@@ -6,8 +6,6 @@ import { PlayerTypeAI, PlayerTypeHuman } from "@/scripts/player";
 import { inlineImageStyle } from "@/styles/common.css";
 import {
   controllerOutputStyle,
-  controllerPlayerNameStyle,
-  controllerPlayerSelectRadioStyle,
   controllerPlayerStyle,
   controllerStyle,
   restartButtonStyle,
@@ -58,11 +56,11 @@ export const Controller = (properties: ControllerProperties) => {
       </output>
 
       <dl class={controllerPlayerStyle}>
-        <dt class={controllerPlayerNameStyle}>
+        <dt>
           player
           <img src={nought.src} alt="nought" class={inlineImageStyle} />
         </dt>
-        <dd class={controllerPlayerSelectRadioStyle}>
+        <dd>
           <LabeledRadioInput
             label="Player"
             check={() => {
@@ -79,11 +77,11 @@ export const Controller = (properties: ControllerProperties) => {
           />
         </dd>
 
-        <dt class={controllerPlayerNameStyle}>
+        <dt>
           player
           <img src={cross.src} alt="cross" class={inlineImageStyle} />
         </dt>
-        <dd class={controllerPlayerSelectRadioStyle}>
+        <dd>
           <LabeledRadioInput
             label="Player"
             check={() => {

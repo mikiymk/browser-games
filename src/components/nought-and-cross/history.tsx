@@ -1,6 +1,6 @@
 import { For, Show } from "solid-js";
 
-import { historyMoveStyle, historyStyle, historyTitleStyle } from "@/styles/nought-and-cross.css";
+import { historyMoveStyle, historyStyle } from "@/styles/nought-and-cross.css";
 
 const historyFillArray = [-1, -1, -1, -1, -1, -1, -1, -1, -1];
 
@@ -12,7 +12,7 @@ export const History = (properties: HistoryProperties) => {
 
   return (
     <div class={historyStyle}>
-      <span class={historyTitleStyle}>History</span>
+      <span>History</span>
       <For each={paddedHistory()}>
         {(history) => (
           <span class={historyMoveStyle}>

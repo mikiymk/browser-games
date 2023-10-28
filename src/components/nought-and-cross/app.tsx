@@ -1,6 +1,5 @@
 import { createSignal, onMount } from "solid-js";
 
-import {} from "@/games/nought-and-cross/game";
 import { filledBoard, gameLoop, isWin } from "@/games/nought-and-cross/game-model";
 import {
   NnCStatusDraw,

@@ -36,7 +36,6 @@ export const gameLoop = (
 
   const run = async () => {
     const index: number = isHumanPlayer(players, mark) ? await humanInput.request() : gameNoughtAndCrossAi(board, mark);
-    console.log(`turn game(${id}) mark(${mark}) index(${index})`);
 
     if (index === Reset) {
       terminate();

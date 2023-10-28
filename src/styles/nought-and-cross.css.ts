@@ -51,9 +51,6 @@ export const controllerPlayerStyle = style({
   gridTemplateColumns: "1fr 2fr",
 });
 
-export const controllerPlayerNameStyle = style({});
-export const controllerPlayerSelectRadioStyle = style({});
-
 export const restartButtonStyle = style({
   background: "lightgray",
   padding: ".2rem",
@@ -68,8 +65,6 @@ export const historyStyle = style({
   alignItems: "center",
   gap: "0.5rem",
 });
-
-export const historyTitleStyle = style({});
 
 export const historyMoveStyle = style({
   display: "inline",
