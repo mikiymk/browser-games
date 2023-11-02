@@ -1,7 +1,7 @@
 const std = @import("std");
 const builtin = @import("builtin");
 
-const Board = @import("./Board.zig");
+pub const Board = @import("Board.zig");
 const PieceKind = Board.PieceKind;
 
 const allocator = if (builtin.target.isWasm()) std.heap.wasm_allocator else std.heap.page_allocator;

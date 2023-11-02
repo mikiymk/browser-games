@@ -2,6 +2,9 @@ const std = @import("std");
 
 const bit_board = @import("bit-board");
 
+const move_pawn = @import("move_pawn.zig");
+const move_knight = @import("move_knight.zig");
+
 const Board = @This();
 
 pub const PieceKind = enum(u8) {
@@ -86,7 +89,7 @@ test "chess board from string" {
     );
 }
 
-fn fromString(comptime str: []const u8) Board {
+pub fn fromString(comptime str: []const u8) Board {
     return .{
         .black_pawn = bit_board.fromString(str, 'P'),
         .black_knight = bit_board.fromString(str, 'N'),
@@ -104,7 +107,7 @@ fn fromString(comptime str: []const u8) Board {
     };
 }
 
-fn getBlack(b: Board) u64 {
+pub fn getBlack(b: Board) u64 {
     return b.black_pawn |
         b.black_knight |
         b.black_bishop |
@@ -113,7 +116,7 @@ fn getBlack(b: Board) u64 {
         b.black_king;
 }
 
-fn getWhite(b: Board) u64 {
+pub fn getWhite(b: Board) u64 {
     return b.white_pawn |
         b.white_knight |
         b.white_bishop |
@@ -122,22 +125,111 @@ fn getWhite(b: Board) u64 {
         b.white_king;
 }
 
-fn getPlayer(b: Board) u64 {
-    _ = b;
-    return;
+pub fn getPlayer(b: Board) u64 {
+    return switch (b.next_color) {
+        .black => b.getBlack(),
+        .white => b.getWhite(),
+    };
 }
 
-fn getOpponent(b: Board) u64 {
-    _ = b;
+pub fn getOpponent(b: Board) u64 {
+    return switch (b.next_color) {
+        .black => b.getWhite(),
+        .white => b.getBlack(),
+    };
+}
+
+pub fn getPlayerPawn(b: Board) u64 {
+    return switch (b.next_color) {
+        .black => b.black_pawn,
+        .white => b.white_pawn,
+    };
+}
+
+pub fn getOpponentPawn(b: Board) u64 {
+    return switch (b.next_color) {
+        .black => b.white_pawn,
+        .white => b.black_pawn,
+    };
+}
+
+pub fn getPlayerKnight(b: Board) u64 {
+    return switch (b.next_color) {
+        .black => b.black_knight,
+        .white => b.white_knight,
+    };
+}
+
+pub fn getOpponentKnight(b: Board) u64 {
+    return switch (b.next_color) {
+        .black => b.white_knight,
+        .white => b.black_knight,
+    };
+}
+
+pub fn getPlayerBishop(b: Board) u64 {
+    return switch (b.next_color) {
+        .black => b.black_bishop,
+        .white => b.white_bishop,
+    };
+}
+
+pub fn getOpponentBishop(b: Board) u64 {
+    return switch (b.next_color) {
+        .black => b.white_bishop,
+        .white => b.black_bishop,
+    };
+}
+
+pub fn getPlayerRook(b: Board) u64 {
+    return switch (b.next_color) {
+        .black => b.black_rook,
+        .white => b.white_rook,
+    };
+}
+
+pub fn getOpponentRook(b: Board) u64 {
+    return switch (b.next_color) {
+        .black => b.white_rook,
+        .white => b.black_rook,
+    };
+}
+
+pub fn getPlayerQueen(b: Board) u64 {
+    return switch (b.next_color) {
+        .black => b.black_queen,
+        .white => b.white_queen,
+    };
+}
+
+pub fn getOpponentQueen(b: Board) u64 {
+    return switch (b.next_color) {
+        .black => b.white_queen,
+        .white => b.black_queen,
+    };
+}
+
+pub fn getPlayerKing(b: Board) u64 {
+    return switch (b.next_color) {
+        .black => b.black_king,
+        .white => b.white_king,
+    };
+}
+
+pub fn getOpponentKing(b: Board) u64 {
+    return switch (b.next_color) {
+        .black => b.white_king,
+        .white => b.black_king,
+    };
 }
 
 pub fn getMove(b: Board, from: u64) u64 {
     if (b.black_pawn & from != 0) {
-        return b.getMovePawnBlack(from);
+        return move_pawn.getMovePawnBlack(b, from);
     } else if (b.white_pawn & from != 0) {
-        return b.getMovePawnWhite(from);
+        return move_pawn.getMovePawnWhite(b, from);
     } else if ((b.black_knight | b.white_knight) & from != 0) {
-        return b.getMoveKnight(from);
+        return move_knight.getMoveKnight(b, from);
     } else if ((b.black_bishop | b.white_bishop) & from != 0) {
         return b.getMoveBishop(from);
     } else if ((b.black_rook | b.white_rook) & from != 0) {
@@ -149,162 +241,6 @@ pub fn getMove(b: Board, from: u64) u64 {
     }
 
     return 0;
-}
-
-fn getMovePawnBlack(b: Board, from: u64) u64 {
-    const pawn = b.black_pawn & from;
-
-    const move_n2_dests = bit_board.fromString(
-        \\........
-        \\........
-        \\........
-        \\........
-        \\oooooooo
-        \\........
-        \\........
-        \\........
-    , 'o');
-
-    const white_pieces = b.white_pawn | b.white_knight | b.white_bishop | b.white_rook | b.white_queen | b.white_king;
-    const black_pieces = b.black_pawn | b.black_knight | b.black_bishop | b.black_rook | b.black_queen | b.black_king;
-    const empties = ~(white_pieces | black_pieces);
-
-    // 前一
-    const move_n: u64 = (pawn >> 8) & empties;
-    const move_n2: u64 = (move_n >> 8) & empties & move_n2_dests;
-    const move_ne_nw: u64 = (pawn >> 7 | pawn >> 9) & white_pieces;
-
-    return move_n | move_n2 | move_ne_nw;
-}
-
-test "get black pawn's move 1: first move" {
-    const board_str =
-        \\........
-        \\........
-        \\........
-        \\........
-        \\........
-        \\........
-        \\....P...
-        \\........
-    ;
-
-    const board = fromString(board_str);
-    const pos = bit_board.fromString(board_str, 'P');
-
-    const pawnmove = board.getMovePawnBlack(pos);
-
-    try bit_board.expectBitBoard(pawnmove,
-        \\........
-        \\........
-        \\........
-        \\........
-        \\....o...
-        \\....o...
-        \\........
-        \\........
-    );
-}
-
-test "get black pawn's move 2: front ally" {
-    const board_str =
-        \\........
-        \\........
-        \\........
-        \\........
-        \\........
-        \\....N...
-        \\....P...
-        \\........
-    ;
-
-    const board = fromString(board_str);
-    const pos = bit_board.fromString(board_str, 'P');
-
-    const pawnmove = board.getMovePawnBlack(pos);
-
-    try bit_board.expectBitBoard(pawnmove,
-        \\........
-        \\........
-        \\........
-        \\........
-        \\........
-        \\........
-        \\........
-        \\........
-    );
-}
-
-test "get black pawn's move 3: front enemy" {
-    const board_str =
-        \\........
-        \\........
-        \\........
-        \\........
-        \\........
-        \\....n...
-        \\....P...
-        \\........
-    ;
-
-    const board = fromString(board_str);
-    const pos = bit_board.fromString(board_str, 'P');
-
-    const pawnmove = board.getMovePawnBlack(pos);
-
-    try bit_board.expectBitBoard(pawnmove,
-        \\........
-        \\........
-        \\........
-        \\........
-        \\........
-        \\........
-        \\........
-        \\........
-    );
-}
-
-test "get black pawn's move 4: diagonal piece" {
-    const board_str =
-        \\........
-        \\........
-        \\........
-        \\...n.N..
-        \\....P...
-        \\........
-        \\........
-        \\........
-    ;
-
-    const board = fromString(board_str);
-    const pos = bit_board.fromString(board_str, 'P');
-
-    const pawnmove = board.getMovePawnBlack(pos);
-
-    try bit_board.expectBitBoard(pawnmove,
-        \\........
-        \\........
-        \\........
-        \\...oo...
-        \\........
-        \\........
-        \\........
-        \\........
-    );
-}
-
-fn getMovePawnWhite(b: Board, from: u64) u64 {
-    _ = from;
-    _ = b;
-
-    @panic("not implemented");
-}
-
-fn getMoveKnight(b: Board, from: u64) u64 {
-    _ = from;
-    _ = b;
-
-    @panic("not implemented");
 }
 
 fn getMoveBishop(b: Board, from: u64) u64 {
