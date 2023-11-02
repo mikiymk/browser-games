@@ -224,6 +224,7 @@ pub fn getMove(b: Board, from: u64) u64 {
     const move_pawn = @import("move_pawn.zig");
     const move_knight = @import("move_knight.zig");
     const move_bishop = @import("move_bishop.zig");
+    const move_rook = @import("move_rook.zig");
 
     if (b.black_pawn & from != 0) {
         return move_pawn.getMovePawnBlack(b, from);
@@ -234,7 +235,7 @@ pub fn getMove(b: Board, from: u64) u64 {
     } else if ((b.black_bishop | b.white_bishop) & from != 0) {
         return move_bishop.getMoveBishop(b, from);
     } else if ((b.black_rook | b.white_rook) & from != 0) {
-        return b.getMoveRook(from);
+        return move_rook.getMoveRook(b, from);
     } else if ((b.black_queen | b.white_queen) & from != 0) {
         return b.getMoveQueen(from);
     } else if ((b.black_king | b.white_king) & from != 0) {
