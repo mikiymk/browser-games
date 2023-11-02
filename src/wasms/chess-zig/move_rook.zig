@@ -98,7 +98,7 @@ test "get rook's move 2: edge" {
     );
 }
 
-test "get rook's move 2: with other pieces" {
+test "get rook's move 3: with other pieces" {
     const board_str =
         \\........
         \\........
@@ -124,5 +124,34 @@ test "get rook's move 2: with other pieces" {
         \\....o...
         \\....o...
         \\........
+    );
+}
+
+test "get rook's move 4: multiple rooks" {
+    const board_str =
+        \\........
+        \\........
+        \\..r.....
+        \\........
+        \\........
+        \\.....r..
+        \\........
+        \\........
+    ;
+
+    const board = Board.fromString(board_str);
+    const pos = bit_board.fromString(board_str, 'r');
+
+    const pawnmove = getMoveRook(board, pos);
+
+    try bit_board.expectBitBoard(pawnmove,
+        \\..o..o..
+        \\..o..o..
+        \\oo.ooooo
+        \\..o..o..
+        \\..o..o..
+        \\ooooo.oo
+        \\..o..o..
+        \\..o..o..
     );
 }

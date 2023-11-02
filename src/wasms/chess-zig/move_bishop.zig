@@ -98,7 +98,7 @@ test "get bishop's move 2: corner" {
     );
 }
 
-test "get bishop's move 2: with other pieces" {
+test "get bishop's move 3: with other pieces" {
     const board_str =
         \\........
         \\........
@@ -124,5 +124,34 @@ test "get bishop's move 2: with other pieces" {
         \\...o.o..
         \\..o.....
         \\........
+    );
+}
+
+test "get bishop's move 4: multiple bishops" {
+    const board_str =
+        \\........
+        \\........
+        \\........
+        \\....b...
+        \\....b...
+        \\........
+        \\........
+        \\........
+    ;
+
+    const board = Board.fromString(board_str);
+    const pos = bit_board.fromString(board_str, 'b');
+
+    const pawnmove = getMoveBishop(board, pos);
+
+    try bit_board.expectBitBoard(pawnmove,
+        \\oo.....o
+        \\.oo...oo
+        \\..oo.oo.
+        \\...o.o..
+        \\...o.o..
+        \\..oo.oo.
+        \\.oo...oo
+        \\oo.....o
     );
 }

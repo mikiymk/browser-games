@@ -116,7 +116,7 @@ test "get queen's move 2: edge" {
     );
 }
 
-test "get queen's move 2: with other pieces" {
+test "get queen's move 3: with other pieces" {
     const board_str =
         \\........
         \\........
@@ -142,5 +142,34 @@ test "get queen's move 2: with other pieces" {
         \\...ooo..
         \\..o...o.
         \\........
+    );
+}
+
+test "get queen's move 4: multiple queens" {
+    const board_str =
+        \\........
+        \\........
+        \\.....q..
+        \\........
+        \\........
+        \\........
+        \\...q....
+        \\........
+    ;
+
+    const board = Board.fromString(board_str);
+    const pos = bit_board.fromString(board_str, 'q');
+
+    const pawnmove = getMoveQueen(board, pos);
+
+    try bit_board.expectBitBoard(pawnmove,
+        \\...o.o.o
+        \\...oooo.
+        \\ooooo.oo
+        \\o..oooo.
+        \\.o.o.o.o
+        \\..oooo..
+        \\ooo.oooo
+        \\o.oooo..
     );
 }

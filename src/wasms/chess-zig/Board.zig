@@ -246,31 +246,3 @@ pub fn getMove(b: Board, from: u64) u64 {
 
     return 0;
 }
-
-fn getMoveBishop(b: Board, from: u64) u64 {
-    _ = from;
-    _ = b;
-
-    @panic("not implemented");
-}
-
-fn getMoveRook(b: Board, from: u64) u64 {
-    _ = from;
-    _ = b;
-
-    @panic("not implemented");
-}
-
-fn getMoveQueen(b: Board, from: u64) u64 {
-    _ = from;
-    _ = b;
-
-    @panic("not implemented");
-}
-
-fn getMoveKing(b: Board, from: u64) u64 {
-    _ = from;
-    _ = b;
-
-    @panic("not implemented");
-}
