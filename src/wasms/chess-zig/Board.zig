@@ -2,6 +2,13 @@ const std = @import("std");
 
 const bit_board = @import("bit-board");
 
+const move_pawn = @import("move_pawn.zig");
+const move_knight = @import("move_knight.zig");
+const move_bishop = @import("move_bishop.zig");
+const move_rook = @import("move_rook.zig");
+const move_queen = @import("move_queen.zig");
+const move_king = @import("move_king.zig");
+
 const Board = @This();
 
 pub const PieceKind = enum(u8) {
@@ -221,13 +228,6 @@ pub fn getOpponentKing(b: Board) u64 {
 }
 
 pub fn getMove(b: Board, from: u64) u64 {
-    const move_pawn = @import("move_pawn.zig");
-    const move_knight = @import("move_knight.zig");
-    const move_bishop = @import("move_bishop.zig");
-    const move_rook = @import("move_rook.zig");
-    const move_queen = @import("move_queen.zig");
-    const move_king = @import("move_king.zig");
-
     if (b.black_pawn & from != 0) {
         return move_pawn.getMovePawnBlack(b, from);
     } else if (b.white_pawn & from != 0) {
@@ -245,4 +245,70 @@ pub fn getMove(b: Board, from: u64) u64 {
     }
 
     return 0;
+}
+
+/// 盤がチェック状態になっているか
+/// - color - チェックされるキングの色
+fn isChecked(b: Board, color: Color) bool {
+    var king: u64 = undefined;
+
+    var danger_zone: u64 = undefined;
+
+    if (color == .black) {
+        king = b.black_king;
+
+        danger_zone = move_king.getMoveKing(b, b.white_king) |
+            move_queen.getMoveQueen(b, b.white_queen) |
+            move_rook.getMoveRook(b, b.white_rook) |
+            move_bishop.getMoveBishop(b, b.white_bishop) |
+            move_knight.getMoveKnight(b, b.white_knight) |
+            move_pawn.getMovePawnWhite(b, b.white_pawn);
+    } else {
+        king = b.white_king;
+
+        danger_zone = move_king.getMoveKing(b, b.black_king) |
+            move_queen.getMoveQueen(b, b.black_queen) |
+            move_rook.getMoveRook(b, b.black_rook) |
+            move_bishop.getMoveBishop(b, b.black_bishop) |
+            move_knight.getMoveKnight(b, b.black_knight) |
+            move_pawn.getMovePawnBlack(b, b.black_pawn);
+    }
+
+    return king & danger_zone != 0;
+}
+
+test "black king is checked" {
+    const board = fromString(
+        \\........
+        \\...q....
+        \\........
+        \\........
+        \\...K....
+        \\........
+        \\........
+        \\........
+    );
+
+    const actual = board.isChecked(.black);
+    const expected = true;
+
+    try std.testing.expect(actual == expected);
+}
+
+test "black king is not checked" {
+    const board = fromString(
+        \\........
+        \\..q.....
+        \\........
+        \\........
+        \\...K....
+        \\........
+        \\........
+        \\........
+    );
+
+    const actual = board.isChecked(.black);
+    const expected = false;
+
+    try std.testing.expect(actual == expected);
 }
