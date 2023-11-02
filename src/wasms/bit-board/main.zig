@@ -74,17 +74,18 @@ pub fn expectBitBoard(expected: u64, comptime actual: []const u8) error{TestExpe
     const actual_bit_board = fromString(actual, 'o');
 
     if (expected != actual_bit_board) {
-        @compileLog(std.fmt.comptimePrint(
+        std.debug.print(
             \\
             \\- expected --
             \\{s}
             \\
             \\- actual ----
             \\{s}
+            \\
         , .{
             toString(expected, 'o', '.'),
             actual,
-        }));
+        });
 
         return error.TestExpectedEqual;
     }

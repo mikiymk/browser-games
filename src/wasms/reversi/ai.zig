@@ -1,5 +1,7 @@
 const std = @import("std");
 
+const bit_board = @import("bit-board");
+
 const Board = @import("./Board.zig");
 
 /// AIが考えた打つ場所をインデックスで返します。
@@ -152,7 +154,7 @@ test "get random move with AI" {
         \\........
     );
 
-    var expected: u64 = comptime Board.bit_board.fromString(
+    var expected: u64 = comptime bit_board.fromString(
         \\........
         \\........
         \\....o...
@@ -180,7 +182,7 @@ test "get random move with AI" {
 
         testing.expect(actual & expected != 0) catch {
             const print = std.debug.print;
-            const boardToString = Board.bit_board.toString;
+            const boardToString = bit_board.toString;
 
             print("expected {x:0>16}\n{s}\n\n", .{ expected, boardToString(expected, 'o', '.') });
             print("actual {x:0>16}\n{s}\n\n", .{ actual, boardToString(actual, 'o', '.') });

@@ -70,10 +70,9 @@ export fn isEnd(b: *Board) bool {
 }
 
 export fn getMove(b: *Board, fromIndex: u8) u64 {
-    _ = b;
-    _ = fromIndex;
+    const fromPlace = @as(u64, 1) << @as(u6, @truncate(fromIndex));
 
-    @panic("not implemented");
+    return b.getMove(fromPlace);
 }
 
 export fn move(b: *Board, place: u8) void {
@@ -83,7 +82,7 @@ export fn move(b: *Board, place: u8) void {
     @panic("not implemented");
 }
 
-export fn getAiMove(b: *Board) [*]u64 {
+export fn getAiMove(b: *Board) u16 {
     _ = b;
 
     @panic("not implemented");
