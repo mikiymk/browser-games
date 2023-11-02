@@ -2,9 +2,6 @@ const std = @import("std");
 
 const bit_board = @import("bit-board");
 
-const move_pawn = @import("move_pawn.zig");
-const move_knight = @import("move_knight.zig");
-
 const Board = @This();
 
 pub const PieceKind = enum(u8) {
@@ -224,6 +221,10 @@ pub fn getOpponentKing(b: Board) u64 {
 }
 
 pub fn getMove(b: Board, from: u64) u64 {
+    const move_pawn = @import("move_pawn.zig");
+    const move_knight = @import("move_knight.zig");
+    const move_bishop = @import("move_bishop.zig");
+
     if (b.black_pawn & from != 0) {
         return move_pawn.getMovePawnBlack(b, from);
     } else if (b.white_pawn & from != 0) {
@@ -231,7 +232,7 @@ pub fn getMove(b: Board, from: u64) u64 {
     } else if ((b.black_knight | b.white_knight) & from != 0) {
         return move_knight.getMoveKnight(b, from);
     } else if ((b.black_bishop | b.white_bishop) & from != 0) {
-        return b.getMoveBishop(from);
+        return move_bishop.getMoveBishop(b, from);
     } else if ((b.black_rook | b.white_rook) & from != 0) {
         return b.getMoveRook(from);
     } else if ((b.black_queen | b.white_queen) & from != 0) {
