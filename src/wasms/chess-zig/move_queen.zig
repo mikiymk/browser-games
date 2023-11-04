@@ -19,8 +19,29 @@ pub fn getMoveQueen(b: Board, queen_place: u64) u64 {
         \\.oooooo.
     , 'o');
 
+    const left_mask = bit_board.fromString(
+        \\ooooooo.
+        \\ooooooo.
+        \\ooooooo.
+        \\ooooooo.
+        \\ooooooo.
+        \\ooooooo.
+        \\ooooooo.
+        \\ooooooo.
+    , 'o');
+    const right_mask = bit_board.fromString(
+        \\.ooooooo
+        \\.ooooooo
+        \\.ooooooo
+        \\.ooooooo
+        \\.ooooooo
+        \\.ooooooo
+        \\.ooooooo
+        \\.ooooooo
+    , 'o');
+
     var move_n_s = queen_place;
-    move_n_s = (move_n_s << 8 | move_n_s >> 8) & empties;
+    move_n_s |= (move_n_s << 8 | move_n_s >> 8) & empties;
     move_n_s |= (move_n_s << 8 | move_n_s >> 8) & empties;
     move_n_s |= (move_n_s << 8 | move_n_s >> 8) & empties;
     move_n_s |= (move_n_s << 8 | move_n_s >> 8) & empties;
@@ -29,31 +50,31 @@ pub fn getMoveQueen(b: Board, queen_place: u64) u64 {
     move_n_s |= (move_n_s << 8 | move_n_s >> 8);
 
     var move_e_w = queen_place;
-    move_e_w = (move_e_w << 1 | move_e_w >> 1) & mask;
     move_e_w |= (move_e_w << 1 | move_e_w >> 1) & mask;
     move_e_w |= (move_e_w << 1 | move_e_w >> 1) & mask;
     move_e_w |= (move_e_w << 1 | move_e_w >> 1) & mask;
     move_e_w |= (move_e_w << 1 | move_e_w >> 1) & mask;
     move_e_w |= (move_e_w << 1 | move_e_w >> 1) & mask;
-    move_e_w |= (move_e_w << 1 | move_e_w >> 1);
+    move_e_w |= (move_e_w << 1 | move_e_w >> 1) & mask;
+    move_e_w |= (move_e_w << 1 & right_mask) | (move_e_w >> 1 & left_mask);
 
     var move_ne_sw = queen_place;
-    move_ne_sw = (move_ne_sw << 7 | move_ne_sw >> 7) & mask;
     move_ne_sw |= (move_ne_sw << 7 | move_ne_sw >> 7) & mask;
     move_ne_sw |= (move_ne_sw << 7 | move_ne_sw >> 7) & mask;
     move_ne_sw |= (move_ne_sw << 7 | move_ne_sw >> 7) & mask;
     move_ne_sw |= (move_ne_sw << 7 | move_ne_sw >> 7) & mask;
     move_ne_sw |= (move_ne_sw << 7 | move_ne_sw >> 7) & mask;
-    move_ne_sw |= (move_ne_sw << 7 | move_ne_sw >> 7);
+    move_ne_sw |= (move_ne_sw << 7 | move_ne_sw >> 7) & mask;
+    move_ne_sw |= (move_ne_sw << 7 & left_mask) | (move_ne_sw >> 7 & right_mask);
 
     var move_nw_se = queen_place;
-    move_nw_se = (move_nw_se << 9 | move_nw_se >> 9) & mask;
     move_nw_se |= (move_nw_se << 9 | move_nw_se >> 9) & mask;
     move_nw_se |= (move_nw_se << 9 | move_nw_se >> 9) & mask;
     move_nw_se |= (move_nw_se << 9 | move_nw_se >> 9) & mask;
     move_nw_se |= (move_nw_se << 9 | move_nw_se >> 9) & mask;
     move_nw_se |= (move_nw_se << 9 | move_nw_se >> 9) & mask;
-    move_nw_se |= (move_nw_se << 9 | move_nw_se >> 9);
+    move_nw_se |= (move_nw_se << 9 | move_nw_se >> 9) & mask;
+    move_nw_se |= (move_nw_se << 9 & right_mask) | (move_nw_se >> 9 & left_mask);
 
     return ~ally_pieces & (move_n_s | move_e_w | move_ne_sw | move_nw_se);
 }
@@ -171,5 +192,34 @@ test "get queen's move 4: multiple queens" {
         \\..oooo..
         \\ooo.oooo
         \\o.oooo..
+    );
+}
+
+test "get queen's move 5: next to piece" {
+    const board_str =
+        \\........
+        \\........
+        \\........
+        \\...brR..
+        \\...Bqp..
+        \\...nNP..
+        \\........
+        \\........
+    ;
+
+    const board = Board.fromString(board_str);
+    const pos = bit_board.fromString(board_str, 'q');
+
+    const pawnmove = getMoveQueen(board, pos);
+
+    try bit_board.expectBitBoard(pawnmove,
+        \\........
+        \\........
+        \\........
+        \\.....o..
+        \\...o....
+        \\....oo..
+        \\........
+        \\........
     );
 }

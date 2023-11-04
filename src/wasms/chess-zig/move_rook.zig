@@ -19,8 +19,29 @@ pub fn getMoveRook(b: Board, rook_place: u64) u64 {
         \\.oooooo.
     , 'o');
 
+    const left_mask = bit_board.fromString(
+        \\ooooooo.
+        \\ooooooo.
+        \\ooooooo.
+        \\ooooooo.
+        \\ooooooo.
+        \\ooooooo.
+        \\ooooooo.
+        \\ooooooo.
+    , 'o');
+    const right_mask = bit_board.fromString(
+        \\.ooooooo
+        \\.ooooooo
+        \\.ooooooo
+        \\.ooooooo
+        \\.ooooooo
+        \\.ooooooo
+        \\.ooooooo
+        \\.ooooooo
+    , 'o');
+
     var move_n_s = rook_place;
-    move_n_s = (move_n_s << 8 | move_n_s >> 8) & empties;
+    move_n_s |= (move_n_s << 8 | move_n_s >> 8) & empties;
     move_n_s |= (move_n_s << 8 | move_n_s >> 8) & empties;
     move_n_s |= (move_n_s << 8 | move_n_s >> 8) & empties;
     move_n_s |= (move_n_s << 8 | move_n_s >> 8) & empties;
@@ -29,13 +50,13 @@ pub fn getMoveRook(b: Board, rook_place: u64) u64 {
     move_n_s |= (move_n_s << 8 | move_n_s >> 8);
 
     var move_e_w = rook_place;
-    move_e_w = (move_e_w << 1 | move_e_w >> 1) & mask;
     move_e_w |= (move_e_w << 1 | move_e_w >> 1) & mask;
     move_e_w |= (move_e_w << 1 | move_e_w >> 1) & mask;
     move_e_w |= (move_e_w << 1 | move_e_w >> 1) & mask;
     move_e_w |= (move_e_w << 1 | move_e_w >> 1) & mask;
     move_e_w |= (move_e_w << 1 | move_e_w >> 1) & mask;
-    move_e_w |= (move_e_w << 1 | move_e_w >> 1);
+    move_e_w |= (move_e_w << 1 | move_e_w >> 1) & mask;
+    move_e_w |= (move_e_w << 1 & right_mask) | (move_e_w >> 1 & left_mask);
 
     return ~ally_pieces & (move_n_s | move_e_w);
 }
@@ -153,5 +174,34 @@ test "get rook's move 4: multiple rooks" {
         \\ooooo.oo
         \\..o..o..
         \\..o..o..
+    );
+}
+
+test "get rook's move 5: next to piece" {
+    const board_str =
+        \\........
+        \\........
+        \\........
+        \\....p...
+        \\...nrP..
+        \\....N...
+        \\........
+        \\........
+    ;
+
+    const board = Board.fromString(board_str);
+    const pos = bit_board.fromString(board_str, 'r');
+
+    const pawnmove = getMoveRook(board, pos);
+
+    try bit_board.expectBitBoard(pawnmove,
+        \\........
+        \\........
+        \\........
+        \\........
+        \\.....o..
+        \\....o...
+        \\........
+        \\........
     );
 }

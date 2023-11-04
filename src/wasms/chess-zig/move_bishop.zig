@@ -19,23 +19,44 @@ pub fn getMoveBishop(b: Board, bishop_place: u64) u64 {
         \\.oooooo.
     , 'o');
 
+    const left_mask = bit_board.fromString(
+        \\ooooooo.
+        \\ooooooo.
+        \\ooooooo.
+        \\ooooooo.
+        \\ooooooo.
+        \\ooooooo.
+        \\ooooooo.
+        \\ooooooo.
+    , 'o');
+    const right_mask = bit_board.fromString(
+        \\.ooooooo
+        \\.ooooooo
+        \\.ooooooo
+        \\.ooooooo
+        \\.ooooooo
+        \\.ooooooo
+        \\.ooooooo
+        \\.ooooooo
+    , 'o');
+
     var move_ne_sw = bishop_place;
-    move_ne_sw = (move_ne_sw << 7 | move_ne_sw >> 7) & mask;
     move_ne_sw |= (move_ne_sw << 7 | move_ne_sw >> 7) & mask;
     move_ne_sw |= (move_ne_sw << 7 | move_ne_sw >> 7) & mask;
     move_ne_sw |= (move_ne_sw << 7 | move_ne_sw >> 7) & mask;
     move_ne_sw |= (move_ne_sw << 7 | move_ne_sw >> 7) & mask;
     move_ne_sw |= (move_ne_sw << 7 | move_ne_sw >> 7) & mask;
-    move_ne_sw |= (move_ne_sw << 7 | move_ne_sw >> 7);
+    move_ne_sw |= (move_ne_sw << 7 | move_ne_sw >> 7) & mask;
+    move_ne_sw |= (move_ne_sw << 7 & left_mask) | (move_ne_sw >> 7 & right_mask);
 
     var move_nw_se = bishop_place;
-    move_nw_se = (move_nw_se << 9 | move_nw_se >> 9) & mask;
     move_nw_se |= (move_nw_se << 9 | move_nw_se >> 9) & mask;
     move_nw_se |= (move_nw_se << 9 | move_nw_se >> 9) & mask;
     move_nw_se |= (move_nw_se << 9 | move_nw_se >> 9) & mask;
     move_nw_se |= (move_nw_se << 9 | move_nw_se >> 9) & mask;
     move_nw_se |= (move_nw_se << 9 | move_nw_se >> 9) & mask;
-    move_nw_se |= (move_nw_se << 9 | move_nw_se >> 9);
+    move_nw_se |= (move_nw_se << 9 | move_nw_se >> 9) & mask;
+    move_nw_se |= (move_nw_se << 9 & right_mask) | (move_nw_se >> 9 & left_mask);
 
     return ~ally_pieces & (move_ne_sw | move_nw_se);
 }
@@ -153,5 +174,34 @@ test "get bishop's move 4: multiple bishops" {
         \\..oo.oo.
         \\.oo...oo
         \\oo.....o
+    );
+}
+
+test "get bishop's move 5: next to piece" {
+    const board_str =
+        \\........
+        \\........
+        \\........
+        \\...p.P..
+        \\....b...
+        \\...n.N..
+        \\........
+        \\........
+    ;
+
+    const board = Board.fromString(board_str);
+    const pos = bit_board.fromString(board_str, 'b');
+
+    const pawnmove = getMoveBishop(board, pos);
+
+    try bit_board.expectBitBoard(pawnmove,
+        \\........
+        \\........
+        \\........
+        \\.....o..
+        \\........
+        \\.....o..
+        \\........
+        \\........
     );
 }
