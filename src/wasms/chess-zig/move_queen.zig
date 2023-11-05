@@ -3,9 +3,9 @@ const std = @import("std");
 const bit_board = @import("bit-board");
 const Board = @import("Board.zig");
 
-pub fn getMoveQueen(b: Board, queen_place: u64) u64 {
-    const ally_pieces = b.getPlayer();
-    const opponent_pieces = b.getOpponent();
+pub fn getMoveQueen(b: Board, queen_place: u64, player_color: Board.Color) u64 {
+    const ally_pieces = b.getColorPieces(player_color);
+    const opponent_pieces = b.getColorPieces(player_color.turn());
     const empties = ~(ally_pieces | opponent_pieces);
 
     const mask = empties & bit_board.fromString(
@@ -94,7 +94,7 @@ test "get queen's move 1: center" {
     const board = Board.fromString(board_str);
     const pos = bit_board.fromString(board_str, 'q');
 
-    const pawnmove = getMoveQueen(board, pos);
+    const pawnmove = getMoveQueen(board, pos, .white);
 
     try bit_board.expectBitBoard(pawnmove,
         \\o...o...
@@ -123,7 +123,7 @@ test "get queen's move 2: edge" {
     const board = Board.fromString(board_str);
     const pos = bit_board.fromString(board_str, 'q');
 
-    const pawnmove = getMoveQueen(board, pos);
+    const pawnmove = getMoveQueen(board, pos, .white);
 
     try bit_board.expectBitBoard(pawnmove,
         \\o..o....
@@ -152,7 +152,7 @@ test "get queen's move 3: with other pieces" {
     const board = Board.fromString(board_str);
     const pos = bit_board.fromString(board_str, 'q');
 
-    const pawnmove = getMoveQueen(board, pos);
+    const pawnmove = getMoveQueen(board, pos, .white);
 
     try bit_board.expectBitBoard(pawnmove,
         \\........
@@ -181,7 +181,7 @@ test "get queen's move 4: multiple queens" {
     const board = Board.fromString(board_str);
     const pos = bit_board.fromString(board_str, 'q');
 
-    const pawnmove = getMoveQueen(board, pos);
+    const pawnmove = getMoveQueen(board, pos, .white);
 
     try bit_board.expectBitBoard(pawnmove,
         \\...o.o.o
@@ -210,7 +210,7 @@ test "get queen's move 5: next to piece" {
     const board = Board.fromString(board_str);
     const pos = bit_board.fromString(board_str, 'q');
 
-    const pawnmove = getMoveQueen(board, pos);
+    const pawnmove = getMoveQueen(board, pos, .white);
 
     try bit_board.expectBitBoard(pawnmove,
         \\........

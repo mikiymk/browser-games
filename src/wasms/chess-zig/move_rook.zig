@@ -3,9 +3,9 @@ const std = @import("std");
 const bit_board = @import("bit-board");
 const Board = @import("Board.zig");
 
-pub fn getMoveRook(b: Board, rook_place: u64) u64 {
-    const ally_pieces = b.getPlayer();
-    const opponent_pieces = b.getOpponent();
+pub fn getMoveRook(b: Board, rook_place: u64, player_color: Board.Color) u64 {
+    const ally_pieces = b.getColorPieces(player_color);
+    const opponent_pieces = b.getColorPieces(player_color.turn());
     const empties = ~(ally_pieces | opponent_pieces);
 
     const mask = empties & bit_board.fromString(
@@ -76,7 +76,7 @@ test "get rook's move 1: center" {
     const board = Board.fromString(board_str);
     const pos = bit_board.fromString(board_str, 'r');
 
-    const pawnmove = getMoveRook(board, pos);
+    const pawnmove = getMoveRook(board, pos, .white);
 
     try bit_board.expectBitBoard(pawnmove,
         \\....o...
@@ -105,7 +105,7 @@ test "get rook's move 2: edge" {
     const board = Board.fromString(board_str);
     const pos = bit_board.fromString(board_str, 'r');
 
-    const pawnmove = getMoveRook(board, pos);
+    const pawnmove = getMoveRook(board, pos, .white);
 
     try bit_board.expectBitBoard(pawnmove,
         \\o.......
@@ -134,7 +134,7 @@ test "get rook's move 3: with other pieces" {
     const board = Board.fromString(board_str);
     const pos = bit_board.fromString(board_str, 'r');
 
-    const pawnmove = getMoveRook(board, pos);
+    const pawnmove = getMoveRook(board, pos, .white);
 
     try bit_board.expectBitBoard(pawnmove,
         \\........
@@ -163,7 +163,7 @@ test "get rook's move 4: multiple rooks" {
     const board = Board.fromString(board_str);
     const pos = bit_board.fromString(board_str, 'r');
 
-    const pawnmove = getMoveRook(board, pos);
+    const pawnmove = getMoveRook(board, pos, .white);
 
     try bit_board.expectBitBoard(pawnmove,
         \\..o..o..
@@ -192,7 +192,7 @@ test "get rook's move 5: next to piece" {
     const board = Board.fromString(board_str);
     const pos = bit_board.fromString(board_str, 'r');
 
-    const pawnmove = getMoveRook(board, pos);
+    const pawnmove = getMoveRook(board, pos, .white);
 
     try bit_board.expectBitBoard(pawnmove,
         \\........

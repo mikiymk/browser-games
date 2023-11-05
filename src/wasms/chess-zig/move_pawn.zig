@@ -15,8 +15,8 @@ pub fn getMovePawnBlack(b: Board, pawn_place: u64) u64 {
         \\........
     , 'o');
 
-    const white_pieces = b.getWhite();
-    const black_pieces = b.getBlack();
+    const white_pieces = b.getColorPieces(.white);
+    const black_pieces = b.getColorPieces(.black);
     const empties = ~(white_pieces | black_pieces);
 
     const move_n: u64 = (pawn_place >> 8) & empties;
@@ -38,8 +38,8 @@ pub fn getMovePawnWhite(b: Board, pawn_place: u64) u64 {
         \\........
     , 'o');
 
-    const white_pieces = b.getWhite();
-    const black_pieces = b.getBlack();
+    const white_pieces = b.getColorPieces(.white);
+    const black_pieces = b.getColorPieces(.black);
     const empties = ~(white_pieces | black_pieces);
 
     const move_s: u64 = (pawn_place << 8) & empties;

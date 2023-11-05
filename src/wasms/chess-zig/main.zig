@@ -3,7 +3,7 @@ const builtin = @import("builtin");
 
 pub const Board = @import("Board.zig");
 pub const Game = @import("Game.zig");
-const PieceKind = Board.PieceKind;
+const PieceKind = Board.ColorPieceType;
 
 const allocator = if (builtin.target.isWasm()) std.heap.wasm_allocator else std.heap.page_allocator;
 
@@ -25,11 +25,11 @@ export fn deinit(g: ?*Game) void {
 }
 
 export fn setPiece(g: *Game, kind: PieceKind, place: u8) void {
-    g.board.setPiece(kind, place);
+    g.board.setPiece(kind, @as(u64, 1) << @truncate(place));
 }
 
 export fn getPiece(g: *Game, kind: PieceKind) u64 {
-    return g.board.getPieces(kind.color, kind.kind);
+    return g.board.getPieces(kind);
 }
 
 export fn isBlack(g: *Game) bool {

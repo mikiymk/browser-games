@@ -3,7 +3,7 @@ const std = @import("std");
 const bit_board = @import("bit-board");
 const Board = @import("Board.zig");
 
-pub fn getMoveKing(b: Board, king_place: u64) u64 {
+pub fn getMoveKing(b: Board, king_place: u64, player_color: Board.Color) u64 {
     const east_moves_mask = bit_board.fromString(
         \\ooooooo.
         \\ooooooo.
@@ -33,7 +33,7 @@ pub fn getMoveKing(b: Board, king_place: u64) u64 {
     const move_e_ne_se: u64 = e_masked << 1 | e_masked << 9 | e_masked >> 7;
     const move_w_nw_sw: u64 = w_masked >> 1 | w_masked << 7 | w_masked >> 9;
 
-    return ~b.getPlayer() & (move_n_s | move_e_ne_se | move_w_nw_sw);
+    return ~b.getColorPieces(player_color) & (move_n_s | move_e_ne_se | move_w_nw_sw);
 }
 
 test "get king's move 1: center" {
@@ -51,7 +51,7 @@ test "get king's move 1: center" {
     const board = Board.fromString(board_str);
     const pos = bit_board.fromString(board_str, 'k');
 
-    const pawnmove = getMoveKing(board, pos);
+    const pawnmove = getMoveKing(board, pos, .white);
 
     try bit_board.expectBitBoard(pawnmove,
         \\........
@@ -80,7 +80,7 @@ test "get knight's move 2: edge" {
     const board = Board.fromString(board_str);
     const pos = bit_board.fromString(board_str, 'k');
 
-    const pawnmove = getMoveKing(board, pos);
+    const pawnmove = getMoveKing(board, pos, .white);
 
     try bit_board.expectBitBoard(pawnmove,
         \\........
@@ -109,7 +109,7 @@ test "get knight's move 3: with other pieces" {
     const board = Board.fromString(board_str);
     const pos = bit_board.fromString(board_str, 'k');
 
-    const pawnmove = getMoveKing(board, pos);
+    const pawnmove = getMoveKing(board, pos, .white);
 
     try bit_board.expectBitBoard(pawnmove,
         \\........
@@ -138,7 +138,7 @@ test "get knight's move 4: multiple kings" {
     const board = Board.fromString(board_str);
     const pos = bit_board.fromString(board_str, 'k');
 
-    const pawnmove = getMoveKing(board, pos);
+    const pawnmove = getMoveKing(board, pos, .white);
 
     try bit_board.expectBitBoard(pawnmove,
         \\.ooo....

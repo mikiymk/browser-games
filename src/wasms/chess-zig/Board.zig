@@ -66,8 +66,26 @@ pub const ColorPieceType = enum(u8) {
     }
 };
 
-pub const Color = enum { black, white };
-pub const PieceType = enum { pawn, knight, bishop, rook, queen, king };
+pub const Color = enum {
+    black,
+    white,
+
+    pub fn turn(color: Color) Color {
+        return switch (color) {
+            .black => .white,
+            .white => .black,
+        };
+    }
+};
+
+pub const PieceType = enum {
+    pawn,
+    knight,
+    bishop,
+    rook,
+    queen,
+    king,
+};
 
 black_pawn: u64,
 black_knight: u64,
@@ -149,6 +167,24 @@ pub fn fromString(comptime str: []const u8) Board {
     };
 }
 
+pub fn setPiece(b: *Board, color_piece: ColorPieceType, pieces: u64) void {
+    switch (color_piece) {
+        .black_pawn => b.black_pawn |= pieces,
+        .black_knight => b.black_knight |= pieces,
+        .black_bishop => b.black_bishop |= pieces,
+        .black_rook => b.black_rook |= pieces,
+        .black_queen => b.black_queen |= pieces,
+        .black_king => b.black_king |= pieces,
+
+        .white_pawn => b.white_pawn |= pieces,
+        .white_knight => b.white_knight |= pieces,
+        .white_bishop => b.white_bishop |= pieces,
+        .white_rook => b.white_rook |= pieces,
+        .white_queen => b.white_queen |= pieces,
+        .white_king => b.white_king |= pieces,
+    }
+}
+
 // 引数の色と種類からその色と種類のすべての駒の位置を返します。
 pub fn getPieces(b: Board, color_piece: ColorPieceType) u64 {
     return switch (color_piece) {
@@ -228,18 +264,18 @@ pub fn getType(b: Board, place: u64) ?PieceType {
 }
 
 pub fn getMove(b: Board, from: u64) u64 {
-    const color_type = b.getColorType(from) orelse 0;
+    const color_type = b.getColorType(from) orelse return 0;
 
     return switch (color_type.pieceType()) {
         .pawn => switch (color_type.color()) {
             .black => move_pawn.getMovePawnBlack(b, from),
             .white => move_pawn.getMovePawnWhite(b, from),
         },
-        .knight => move_knight.getMoveKnight(b, from),
-        .bishop => move_bishop.getMoveBishop(b, from),
-        .rook => move_rook.getMoveRook(b, from),
-        .queen => move_queen.getMoveQueen(b, from),
-        .king => move_king.getMoveKing(b, from),
+        .knight => move_knight.getMoveKnight(b, from, color_type.color()),
+        .bishop => move_bishop.getMoveBishop(b, from, color_type.color()),
+        .rook => move_rook.getMoveRook(b, from, color_type.color()),
+        .queen => move_queen.getMoveQueen(b, from, color_type.color()),
+        .king => move_king.getMoveKing(b, from, color_type.color()),
     };
 }
 
@@ -253,20 +289,20 @@ fn isChecked(b: Board, color: Color) bool {
     if (color == .black) {
         king = b.black_king;
 
-        danger_zone = move_king.getMoveKing(b, b.white_king) |
-            move_queen.getMoveQueen(b, b.white_queen) |
-            move_rook.getMoveRook(b, b.white_rook) |
-            move_bishop.getMoveBishop(b, b.white_bishop) |
-            move_knight.getMoveKnight(b, b.white_knight) |
+        danger_zone = move_king.getMoveKing(b, b.white_king, .white) |
+            move_queen.getMoveQueen(b, b.white_queen, .white) |
+            move_rook.getMoveRook(b, b.white_rook, .white) |
+            move_bishop.getMoveBishop(b, b.white_bishop, .white) |
+            move_knight.getMoveKnight(b, b.white_knight, .white) |
             move_pawn.getMovePawnWhite(b, b.white_pawn);
     } else {
         king = b.white_king;
 
-        danger_zone = move_king.getMoveKing(b, b.black_king) |
-            move_queen.getMoveQueen(b, b.black_queen) |
-            move_rook.getMoveRook(b, b.black_rook) |
-            move_bishop.getMoveBishop(b, b.black_bishop) |
-            move_knight.getMoveKnight(b, b.black_knight) |
+        danger_zone = move_king.getMoveKing(b, b.black_king, .black) |
+            move_queen.getMoveQueen(b, b.black_queen, .black) |
+            move_rook.getMoveRook(b, b.black_rook, .black) |
+            move_bishop.getMoveBishop(b, b.black_bishop, .black) |
+            move_knight.getMoveKnight(b, b.black_knight, .black) |
             move_pawn.getMovePawnBlack(b, b.black_pawn);
     }
 
