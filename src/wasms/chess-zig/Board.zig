@@ -30,8 +30,6 @@ pub const PieceKind = enum(u8) {
 pub const Color = enum(u1) { black, white };
 pub const Piece = enum { pawn, knight, bishop, rook, queen, king };
 
-next_color: Color = .white,
-
 black_pawn: u64,
 black_knight: u64,
 black_bishop: u64,
