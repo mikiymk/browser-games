@@ -11,7 +11,7 @@ const move_king = @import("move_king.zig");
 
 const Board = @This();
 
-pub const PieceKind = enum(u8) {
+pub const ColorPieceType = enum(u8) {
     black_pawn = 1,
     black_knight = 2,
     black_bishop = 3,
@@ -25,10 +25,49 @@ pub const PieceKind = enum(u8) {
     white_rook = 10,
     white_queen = 11,
     white_king = 12,
+
+    pub fn fromColorType(c: Color, t: PieceType) ColorPieceType {
+        return switch (c) {
+            .black => switch (t) {
+                .pawn => .black_pawn,
+                .knight => .black_knight,
+                .bishop => .black_bishop,
+                .rook => .black_rook,
+                .queen => .black_queen,
+                .king => .black_king,
+            },
+            .white => switch (t) {
+                .pawn => .white_pawn,
+                .knight => .white_knight,
+                .bishop => .white_bishop,
+                .rook => .white_rook,
+                .queen => .white_queen,
+                .king => .white_king,
+            },
+        };
+    }
+
+    pub fn color(cp: ColorPieceType) Color {
+        return switch (cp) {
+            .black_pawn, .black_knight, .black_bishop, .black_rook, .black_queen, .black_king => .black,
+            .white_pawn, .white_knight, .white_bishop, .white_rook, .white_queen, .white_king => .white,
+        };
+    }
+
+    pub fn pieceType(cp: ColorPieceType) PieceType {
+        return switch (cp) {
+            .black_pawn, .white_pawn => .pawn,
+            .black_knight, .white_knight => .knight,
+            .black_bishop, .white_bishop => .bishop,
+            .black_rook, .white_rook => .rook,
+            .black_queen, .white_queen => .queen,
+            .black_king, .white_king => .king,
+        };
+    }
 };
 
-pub const Color = enum(u1) { black, white };
-pub const Piece = enum { pawn, knight, bishop, rook, queen, king };
+pub const Color = enum { black, white };
+pub const PieceType = enum { pawn, knight, bishop, rook, queen, king };
 
 black_pawn: u64,
 black_knight: u64,
@@ -110,140 +149,98 @@ pub fn fromString(comptime str: []const u8) Board {
     };
 }
 
-pub fn getBlack(b: Board) u64 {
-    return b.black_pawn |
-        b.black_knight |
-        b.black_bishop |
-        b.black_rook |
-        b.black_queen |
-        b.black_king;
-}
+// 引数の色と種類からその色と種類のすべての駒の位置を返します。
+pub fn getPieces(b: Board, color_piece: ColorPieceType) u64 {
+    return switch (color_piece) {
+        .black_pawn => b.black_pawn,
+        .black_knight => b.black_knight,
+        .black_bishop => b.black_bishop,
+        .black_rook => b.black_rook,
+        .black_queen => b.black_queen,
+        .black_king => b.black_king,
 
-pub fn getWhite(b: Board) u64 {
-    return b.white_pawn |
-        b.white_knight |
-        b.white_bishop |
-        b.white_rook |
-        b.white_queen |
-        b.white_king;
-}
-
-pub fn getPlayer(b: Board) u64 {
-    return switch (b.next_color) {
-        .black => b.getBlack(),
-        .white => b.getWhite(),
+        .white_pawn => b.white_pawn,
+        .white_knight => b.white_knight,
+        .white_bishop => b.white_bishop,
+        .white_rook => b.white_rook,
+        .white_queen => b.white_queen,
+        .white_king => b.white_king,
     };
 }
 
-pub fn getOpponent(b: Board) u64 {
-    return switch (b.next_color) {
-        .black => b.getWhite(),
-        .white => b.getBlack(),
+// 引数の色からその色のすべての駒の位置を返します。
+pub fn getColorPieces(b: Board, color: Color) u64 {
+    return switch (color) {
+        .black => b.black_pawn |
+            b.black_knight |
+            b.black_bishop |
+            b.black_rook |
+            b.black_queen |
+            b.black_king,
+        .white => b.white_pawn |
+            b.white_knight |
+            b.white_bishop |
+            b.white_rook |
+            b.white_queen |
+            b.white_king,
     };
 }
 
-pub fn getPlayerPawn(b: Board) u64 {
-    return switch (b.next_color) {
-        .black => b.black_pawn,
-        .white => b.white_pawn,
-    };
+// 場所からそこのマスにいるコマの色と種類を返します。
+pub fn getColorType(b: Board, place: u64) ?ColorPieceType {
+    if (b.black_pawn & place != 0) {
+        return .black_pawn;
+    } else if (b.black_knight & place != 0) {
+        return .black_knight;
+    } else if (b.black_bishop & place != 0) {
+        return .black_bishop;
+    } else if (b.black_rook & place != 0) {
+        return .black_rook;
+    } else if (b.black_queen & place != 0) {
+        return .black_queen;
+    } else if (b.black_king & place != 0) {
+        return .black_king;
+    } else if (b.white_pawn & place != 0) {
+        return .white_pawn;
+    } else if (b.white_knight & place != 0) {
+        return .white_knight;
+    } else if (b.white_bishop & place != 0) {
+        return .white_bishop;
+    } else if (b.white_rook & place != 0) {
+        return .white_rook;
+    } else if (b.white_queen & place != 0) {
+        return .white_queen;
+    } else if (b.white_king & place != 0) {
+        return .white_king;
+    }
+
+    return null;
 }
 
-pub fn getOpponentPawn(b: Board) u64 {
-    return switch (b.next_color) {
-        .black => b.white_pawn,
-        .white => b.black_pawn,
-    };
+// 場所からそこのマスにいるコマの色を返します。
+pub fn getColor(b: Board, place: u64) ?Color {
+    return if (b.getColorType(place)) |color_type| color_type.color() else null;
 }
 
-pub fn getPlayerKnight(b: Board) u64 {
-    return switch (b.next_color) {
-        .black => b.black_knight,
-        .white => b.white_knight,
-    };
-}
-
-pub fn getOpponentKnight(b: Board) u64 {
-    return switch (b.next_color) {
-        .black => b.white_knight,
-        .white => b.black_knight,
-    };
-}
-
-pub fn getPlayerBishop(b: Board) u64 {
-    return switch (b.next_color) {
-        .black => b.black_bishop,
-        .white => b.white_bishop,
-    };
-}
-
-pub fn getOpponentBishop(b: Board) u64 {
-    return switch (b.next_color) {
-        .black => b.white_bishop,
-        .white => b.black_bishop,
-    };
-}
-
-pub fn getPlayerRook(b: Board) u64 {
-    return switch (b.next_color) {
-        .black => b.black_rook,
-        .white => b.white_rook,
-    };
-}
-
-pub fn getOpponentRook(b: Board) u64 {
-    return switch (b.next_color) {
-        .black => b.white_rook,
-        .white => b.black_rook,
-    };
-}
-
-pub fn getPlayerQueen(b: Board) u64 {
-    return switch (b.next_color) {
-        .black => b.black_queen,
-        .white => b.white_queen,
-    };
-}
-
-pub fn getOpponentQueen(b: Board) u64 {
-    return switch (b.next_color) {
-        .black => b.white_queen,
-        .white => b.black_queen,
-    };
-}
-
-pub fn getPlayerKing(b: Board) u64 {
-    return switch (b.next_color) {
-        .black => b.black_king,
-        .white => b.white_king,
-    };
-}
-
-pub fn getOpponentKing(b: Board) u64 {
-    return switch (b.next_color) {
-        .black => b.white_king,
-        .white => b.black_king,
-    };
+// 場所からそこのマスにいるコマの種類を返します。
+pub fn getType(b: Board, place: u64) ?PieceType {
+    return if (b.getColorType(place)) |color_type| color_type.pieceType() else null;
 }
 
 pub fn getMove(b: Board, from: u64) u64 {
-    if (b.black_pawn & from != 0) {
-        return move_pawn.getMovePawnBlack(b, from);
-    } else if (b.white_pawn & from != 0) {
-        return move_pawn.getMovePawnWhite(b, from);
-    } else if ((b.black_knight | b.white_knight) & from != 0) {
-        return move_knight.getMoveKnight(b, from);
-    } else if ((b.black_bishop | b.white_bishop) & from != 0) {
-        return move_bishop.getMoveBishop(b, from);
-    } else if ((b.black_rook | b.white_rook) & from != 0) {
-        return move_rook.getMoveRook(b, from);
-    } else if ((b.black_queen | b.white_queen) & from != 0) {
-        return move_queen.getMoveQueen(b, from);
-    } else if ((b.black_king | b.white_king) & from != 0) {
-        return move_king.getMoveKing(b, from);
-    }
+    const color_type = b.getColorType(from) orelse 0;
 
-    return 0;
+    return switch (color_type.pieceType()) {
+        .pawn => switch (color_type.color()) {
+            .black => move_pawn.getMovePawnBlack(b, from),
+            .white => move_pawn.getMovePawnWhite(b, from),
+        },
+        .knight => move_knight.getMoveKnight(b, from),
+        .bishop => move_bishop.getMoveBishop(b, from),
+        .rook => move_rook.getMoveRook(b, from),
+        .queen => move_queen.getMoveQueen(b, from),
+        .king => move_king.getMoveKing(b, from),
+    };
 }
 
 /// 盤がチェック状態になっているか
@@ -315,7 +312,7 @@ test "black king is not checked" {
 /// ボードから動いた状態の新しいボードを作成する。
 /// 1. 移動元と移動先のマスを空にする。
 /// 2. 移動先のマスを指定のピースにする。
-pub fn getMovedBoard(b: Board, from: u64, to: u64, color: Color, piece: Piece) Board {
+pub fn getMovedBoard(b: Board, from: u64, to: u64, color: Color, piece: PieceType) Board {
     var new_board = b;
     const reset_board = ~(from | to);
 
