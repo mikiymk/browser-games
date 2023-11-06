@@ -262,10 +262,7 @@ pub fn getMove(b: Board, from: u64) u64 {
     const color_type = b.getColorType(from) orelse return 0;
 
     return switch (color_type.pieceType()) {
-        .pawn => switch (color_type.color()) {
-            .black => moves.pawnBlack(b, from),
-            .white => moves.pawnWhite(b, from),
-        },
+        .pawn => moves.pawn(b, from, color_type.color()),
         .knight => moves.knight(b, from, color_type.color()),
         .bishop => moves.bishop(b, from, color_type.color()),
         .rook => moves.rook(b, from, color_type.color()),
@@ -343,7 +340,7 @@ fn isChecked(b: Board, color: Color) bool {
             moves.rook(b, b.white_rook, .white) |
             moves.bishop(b, b.white_bishop, .white) |
             moves.knight(b, b.white_knight, .white) |
-            moves.pawnWhite(b, b.white_pawn);
+            moves.pawn(b, b.white_pawn, .white);
     } else {
         king = b.white_king;
 
@@ -352,7 +349,7 @@ fn isChecked(b: Board, color: Color) bool {
             moves.rook(b, b.black_rook, .black) |
             moves.bishop(b, b.black_bishop, .black) |
             moves.knight(b, b.black_knight, .black) |
-            moves.pawnBlack(b, b.black_pawn);
+            moves.pawn(b, b.black_pawn, .black);
     }
 
     return king & danger_zone != 0;

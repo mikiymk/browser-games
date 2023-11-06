@@ -80,7 +80,14 @@ const black_pawn_double_step_target = bit_board.fromString(
     \\........
 , 'o');
 
-pub fn pawnBlack(b: Board, pawn_place: u64) u64 {
+pub fn pawn(b: Board, pawn_place: u64, color: Board.Color) u64 {
+    return switch (color) {
+        .black => pawnBlack(b, pawn_place),
+        .white => pawnWhite(b, pawn_place),
+    };
+}
+
+fn pawnBlack(b: Board, pawn_place: u64) u64 {
     const white_pieces = b.getColorPieces(.white);
     const black_pieces = b.getColorPieces(.black);
     const empties = ~(white_pieces | black_pieces);
@@ -92,7 +99,7 @@ pub fn pawnBlack(b: Board, pawn_place: u64) u64 {
     return move_n | move_n2 | move_ne_nw;
 }
 
-pub fn pawnWhite(b: Board, pawn_place: u64) u64 {
+fn pawnWhite(b: Board, pawn_place: u64) u64 {
     const white_pieces = b.getColorPieces(.white);
     const black_pieces = b.getColorPieces(.black);
     const empties = ~(white_pieces | black_pieces);
