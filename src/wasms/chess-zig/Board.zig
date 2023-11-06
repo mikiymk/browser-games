@@ -2,12 +2,7 @@ const std = @import("std");
 
 const bit_board = @import("bit-board");
 
-const move_pawn = @import("move_pawn.zig");
-const move_knight = @import("move_knight.zig");
-const move_bishop = @import("move_bishop.zig");
-const move_rook = @import("move_rook.zig");
-const move_queen = @import("move_queen.zig");
-const move_king = @import("move_king.zig");
+const moves = @import("moves.zig");
 
 const Board = @This();
 
@@ -268,14 +263,14 @@ pub fn getMove(b: Board, from: u64) u64 {
 
     return switch (color_type.pieceType()) {
         .pawn => switch (color_type.color()) {
-            .black => move_pawn.getMovePawnBlack(b, from),
-            .white => move_pawn.getMovePawnWhite(b, from),
+            .black => moves.pawnBlack(b, from),
+            .white => moves.pawnWhite(b, from),
         },
-        .knight => move_knight.getMoveKnight(b, from, color_type.color()),
-        .bishop => move_bishop.getMoveBishop(b, from, color_type.color()),
-        .rook => move_rook.getMoveRook(b, from, color_type.color()),
-        .queen => move_queen.getMoveQueen(b, from, color_type.color()),
-        .king => move_king.getMoveKing(b, from, color_type.color()),
+        .knight => moves.knight(b, from, color_type.color()),
+        .bishop => moves.bishop(b, from, color_type.color()),
+        .rook => moves.rook(b, from, color_type.color()),
+        .queen => moves.queen(b, from, color_type.color()),
+        .king => moves.king(b, from, color_type.color()),
     };
 }
 
@@ -317,7 +312,7 @@ test "filter check move" {
     ;
     const board = fromString(board_str);
     const from = bit_board.fromString(board_str, 'r');
-    const to = move_rook.getMoveRook(board, from, .white);
+    const to = moves.rook(board, from, .white);
 
     const actual = board.filterValidMove(from, to, .white, .rook);
 
@@ -343,21 +338,21 @@ fn isChecked(b: Board, color: Color) bool {
     if (color == .black) {
         king = b.black_king;
 
-        danger_zone = move_king.getMoveKing(b, b.white_king, .white) |
-            move_queen.getMoveQueen(b, b.white_queen, .white) |
-            move_rook.getMoveRook(b, b.white_rook, .white) |
-            move_bishop.getMoveBishop(b, b.white_bishop, .white) |
-            move_knight.getMoveKnight(b, b.white_knight, .white) |
-            move_pawn.getMovePawnWhite(b, b.white_pawn);
+        danger_zone = moves.king(b, b.white_king, .white) |
+            moves.queen(b, b.white_queen, .white) |
+            moves.rook(b, b.white_rook, .white) |
+            moves.bishop(b, b.white_bishop, .white) |
+            moves.knight(b, b.white_knight, .white) |
+            moves.pawnWhite(b, b.white_pawn);
     } else {
         king = b.white_king;
 
-        danger_zone = move_king.getMoveKing(b, b.black_king, .black) |
-            move_queen.getMoveQueen(b, b.black_queen, .black) |
-            move_rook.getMoveRook(b, b.black_rook, .black) |
-            move_bishop.getMoveBishop(b, b.black_bishop, .black) |
-            move_knight.getMoveKnight(b, b.black_knight, .black) |
-            move_pawn.getMovePawnBlack(b, b.black_pawn);
+        danger_zone = moves.king(b, b.black_king, .black) |
+            moves.queen(b, b.black_queen, .black) |
+            moves.rook(b, b.black_rook, .black) |
+            moves.bishop(b, b.black_bishop, .black) |
+            moves.knight(b, b.black_knight, .black) |
+            moves.pawnBlack(b, b.black_pawn);
     }
 
     return king & danger_zone != 0;

@@ -66,6 +66,8 @@ test {
     const testing = std.testing;
 
     testing.refAllDecls(@This());
+
+    _ = @import("./moves_test.zig");
 }
 
 test "add test" {
