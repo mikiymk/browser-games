@@ -261,7 +261,7 @@ pub fn getType(b: Board, place: u64) ?PieceType {
 pub fn getMove(b: Board, from: u64) u64 {
     const color_type = b.getColorType(from) orelse return 0;
 
-    return switch (color_type.pieceType()) {
+    const to_list = switch (color_type.pieceType()) {
         .pawn => moves.pawn(b, from, color_type.color()),
         .knight => moves.knight(b, from, color_type.color()),
         .bishop => moves.bishop(b, from, color_type.color()),
@@ -269,6 +269,8 @@ pub fn getMove(b: Board, from: u64) u64 {
         .queen => moves.queen(b, from, color_type.color()),
         .king => moves.king(b, from, color_type.color()),
     };
+
+    return b.filterValidMove(from, to_list, color_type.color(), color_type.pieceType());
 }
 
 fn filterValidMove(b: Board, from: u64, to_list: u64, color: Color, piece: PieceType) u64 {
