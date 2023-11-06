@@ -37,9 +37,7 @@ export fn isBlack(g: *Game) bool {
 }
 
 export fn isEnd(g: *Game) bool {
-    _ = g;
-
-    @panic("not implemented");
+    return g.end();
 }
 
 export fn getMove(g: *Game, from_index: u8) u64 {
@@ -49,11 +47,9 @@ export fn getMove(g: *Game, from_index: u8) u64 {
 }
 
 export fn move(g: *Game, from_index: u8, to_index: u8) void {
-    _ = g;
-    _ = from_index;
-    _ = to_index;
+    const color_piece_type = g.board.getColorType(from_index) orelse return;
 
-    @panic("not implemented");
+    g.board = g.board.getMovedBoard(from_index, to_index, color_piece_type.color(), color_piece_type.pieceType());
 }
 
 export fn getAiMove(g: *Game) u16 {

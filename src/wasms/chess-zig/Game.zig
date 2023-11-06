@@ -12,3 +12,7 @@ pub fn init() Game {
         .next_color = .white,
     };
 }
+
+pub fn end(game: Game) bool {
+    return game.board.isCheckmate(.black) or game.board.isCheckmate(.white);
+}
