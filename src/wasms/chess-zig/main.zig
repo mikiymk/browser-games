@@ -7,6 +7,11 @@ const PieceKind = Board.ColorPieceType;
 
 const allocator = if (builtin.target.isWasm()) std.heap.wasm_allocator else std.heap.page_allocator;
 
+extern fn random() f64;
+fn getRamdom() f64 {
+    return random();
+}
+
 export fn add(a: u32, b: u32) u32 {
     return a +| b;
 }
