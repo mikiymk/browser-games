@@ -1,105 +1,75 @@
 const std = @import("std");
 const Board = @import("Board.zig");
 const Color = Board.Color;
+const PieceType = Board.PieceType;
 
 const Game = @This();
 
 pub const Move = struct {
     pub const MoveKindEnum = enum { move, promotion, enpassant, castling };
     pub const MoveKind = union(MoveKindEnum) {
+        /// 通常の移動
+        /// 値は常に0
         move: u0,
-        promotion: enum { queen, rook, bishop, knight },
-        enpassant: u64,
-        castling: enum { king, queen },
+        /// ポーンのプロモーション
+        /// 値はプロモーション先の駒
+        promotion: PieceType,
+        /// アンパサン
+        /// 値は常に0
+        enpassant: u0,
+        /// キャスリング
+        /// 値はキングまたはクイーン
+        castling: PieceType,
     };
 
     kind: MoveKind,
+
+    /// 移動する駒の種類
+    piece_type: PieceType,
+    /// 移動元の位置
     from: u64,
+    /// 移動先の位置
     to: u64,
 
-    fn fromU32(serial: u32) Move {
-        const kind_enum: MoveKindEnum = @enumFromInt((serial & 0xff000000) >> 24);
-        const kind_index: u8 = @truncate((serial & 0x00ff0000) >> 16);
-
-        const kind: MoveKind = switch (kind_enum) {
-            .move => .{ .move = 0 },
-            .promotion => .{ .promotion = @enumFromInt(kind_index) },
-            .enpassant => .{ .enpassant = @as(u64, 1) << @truncate(kind_index) },
-            .castling => .{ .castling = @enumFromInt(kind_index) },
-        };
-
-        const from_index: u6 = @truncate((serial & 0x0000ff00) >> 8);
-        const to_index: u6 = @truncate(serial & 0x000000ff);
-
-        const from = @as(u64, 1) << from_index;
-        const to = @as(u64, 1) << to_index;
-
-        return .{ .kind = kind, .from = from, .to = to };
-    }
-
-    fn toU32(move: Move) u32 {
-        const kind: u32 = @intFromEnum(move.kind);
-        const kind_index: u32 = switch (move.kind) {
-            .move => 0,
-            .promotion => |p| @intFromEnum(p),
-            .enpassant => |e| @popCount(e - 1),
-            .castling => |c| @intFromEnum(c),
-        };
-
-        const from_index: u32 = @popCount(move.from - 1);
-        const to_index: u32 = @popCount(move.to - 1);
-
-        return (kind << 24) | (kind_index << 16) | (from_index << 8) | to_index;
-    }
+    /// 取る駒の種類
+    capture_piece_type: ?PieceType = null,
+    /// 取る駒の位置
+    capture: u64 = 0,
 };
 
-test "move from u32" {
-    const testing = std.testing;
+const Castling = struct {
+    kingside: bool = true,
+    queenside: bool = true,
+};
 
-    {
-        const move = Move.fromU32(0x00_00_20_00);
+const BoardMap = std.hash_map.AutoHashMap(Board, void);
 
-        try testing.expectEqual(move.kind.move, 0);
-        try testing.expectEqual(move.from, 0x00_00_00_01_00_00_00_00);
-        try testing.expectEqual(move.to, 0x00_00_00_00_00_00_00_01);
-        try testing.expectEqual(move.toU32(), 0x00_00_20_00);
-    }
-
-    {
-        const promotion = Move.fromU32(0x01_01_20_00);
-
-        try testing.expectEqual(promotion.kind.promotion, .rook);
-        try testing.expectEqual(promotion.from, 0x00_00_00_01_00_00_00_00);
-        try testing.expectEqual(promotion.to, 0x00_00_00_00_00_00_00_01);
-        try testing.expectEqual(promotion.toU32(), 0x01_01_20_00);
-    }
-
-    {
-        const enpassant = Move.fromU32(0x02_30_20_00);
-
-        try testing.expectEqual(enpassant.kind.enpassant, 0x00_01_00_00_00_00_00_00);
-        try testing.expectEqual(enpassant.from, 0x00_00_00_01_00_00_00_00);
-        try testing.expectEqual(enpassant.to, 0x00_00_00_00_00_00_00_01);
-        try testing.expectEqual(enpassant.toU32(), 0x02_30_20_00);
-    }
-
-    {
-        const castling = Move.fromU32(0x03_00_20_00);
-
-        try testing.expectEqual(castling.kind.castling, .king);
-        try testing.expectEqual(castling.from, 0x00_00_00_01_00_00_00_00);
-        try testing.expectEqual(castling.to, 0x00_00_00_00_00_00_00_01);
-        try testing.expectEqual(castling.toU32(), 0x03_00_20_00);
-    }
-}
-
+/// 現在の盤の状態
 board: Board,
+/// 次の手番の色
 next_color: Color,
 
-pub fn init() Game {
+/// アンパサンが可能ならその位置、それ以外では0
+enpassant_target: u64,
+/// キャスリングが可能かどうか
+castling_available: struct {
+    black: Castling,
+    white: Castling,
+},
+/// 50手ルールのためのカウント
+move_clock: u32,
+/// 3回繰り返しルールのための過去の盤の状態
+previous_boards: BoardMap,
+
+pub fn init(allocator: std.mem.Allocator) Game {
     return .{
         .board = Board.init(),
         .next_color = .white,
+
+        .enpassant_target = 0,
+        .castling_available = .{ .black = .{}, .white = .{} },
+        .move_clock = 0,
+        .previous_boards = BoardMap.init(allocator),
     };
 }
 
