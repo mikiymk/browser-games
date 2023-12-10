@@ -48,11 +48,18 @@ export fn isEnd(g: *Game) bool {
     return g.end();
 }
 
+/// ゲームが終了している場合、勝利者を判定する
+export fn winnter(g: *Game) u8 {
+    _ = g;
+
+    @panic("not implemented");
+}
+
 /// 駒を選択し、その駒の移動先を取得する
 export fn getMove(g: *Game, from_index: u8) u64 {
     const from_place = @as(u64, 1) << @as(u6, @truncate(from_index));
 
-    return g.board.getMove(from_place);
+    return g.getMove(from_place);
 }
 
 /// 駒を移動する

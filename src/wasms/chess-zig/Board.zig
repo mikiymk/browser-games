@@ -1,9 +1,10 @@
+//! 8×8チェスボードの構造体。
+//!
+//!
+
 const std = @import("std");
-
 const bit_board = @import("bit-board");
-
 const moves = @import("moves.zig");
-
 const Board = @This();
 
 pub const ColorPieceType = enum(u8) {
@@ -162,6 +163,7 @@ pub fn fromString(comptime str: []const u8) Board {
     };
 }
 
+/// 色と種類、追加する駒を指定し、チェスボードに駒を追加する。
 pub fn setPiece(b: *Board, color_piece: ColorPieceType, pieces: u64) void {
     switch (color_piece) {
         .black_pawn => b.black_pawn |= pieces,
