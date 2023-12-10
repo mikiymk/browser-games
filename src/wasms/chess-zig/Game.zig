@@ -109,5 +109,12 @@ pub const Result = enum { BlackWin, WhiteWin, Draw };
 /// ゲームの勝利を判定する。
 /// まだ勝敗がついていない場合はnull
 pub fn win(game: Game) ?Result {
-    return game.board.isCheckmate(.black) or game.board.isCheckmate(.white);
+    if (game.board.isCheckmate(.black)) {
+        return .BlackWin;
+    }
+    if (game.board.isCheckmate(.white)) {
+        return .WhiteWin;
+    }
+
+    return null;
 }

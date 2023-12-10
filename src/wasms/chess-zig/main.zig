@@ -45,7 +45,7 @@ export fn isBlack(g: *Game) bool {
 
 /// ゲームが終了しているかどうか
 export fn isEnd(g: *Game) bool {
-    return g.end();
+    return if (g.win()) |_| true else false;
 }
 
 /// ゲームが終了している場合、勝利者を判定する
@@ -66,9 +66,11 @@ export fn getMove(g: *Game, from_index: u8) u64 {
 /// アンパサン、キャスリングを判別する
 /// 戻り値はプロモーションが可能かどうか
 export fn move(g: *Game, from_index: u8, to_index: u8) bool {
-    const color_piece_type = g.board.getColorType(from_index) orelse return;
+    const color_piece_type = g.board.getColorType(from_index) orelse return false;
 
     g.board = g.board.getMovedBoard(from_index, to_index, color_piece_type.color(), color_piece_type.pieceType());
+
+    return false;
 }
 
 /// 駒のプロモーション
