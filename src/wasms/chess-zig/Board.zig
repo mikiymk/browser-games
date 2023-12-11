@@ -95,6 +95,21 @@ white_rook: u64,
 white_queen: u64,
 white_king: u64,
 
+/// アンパサンが可能ならその位置、それ以外では0
+enpassant_target: u64 = 0,
+/// キャスリングが可能かどうか
+castling_available: struct {
+    black_kingside: bool,
+    black_queenside: bool,
+    white_kingside: bool,
+    white_queenside: bool,
+} = .{
+    .black_kingside = true,
+    .black_queenside = true,
+    .white_kingside = true,
+    .white_queenside = true,
+},
+
 pub fn init() Board {
     return fromString(
         \\rnbqkbnr
@@ -223,7 +238,14 @@ pub fn getType(b: Board, place: u64) ?PieceType {
     return if (b.getColorType(place)) |color_type| color_type.pieceType() else null;
 }
 
-pub fn getMove(b: Board, from: u64) u64 {
+pub fn getMove(b: Board, from: u64, color: Color) u64 {
+    return b.getNormalMove(from) |
+        b.getCastlingMove(from) |
+        b.getEnpassant(from, color);
+}
+
+/// 通常の動きを取得する。
+fn getNormalMove(b: Board, from: u64) u64 {
     const color_type = b.getColorType(from) orelse return 0;
 
     const to_list = switch (color_type.pieceType()) {
@@ -236,6 +258,58 @@ pub fn getMove(b: Board, from: u64) u64 {
     };
 
     return b.filterValidMove(from, to_list, color_type.color(), color_type.pieceType());
+}
+
+fn getCastlingMove(b: Board, from: u64) u64 {
+    var board: u64 = 0;
+    if (from == bit_board.fromNotation("e1")) {
+        if (b.castling_available.black_kingside and b.canCastling(.black_king)) {
+            board |= bit_board.fromNotation("h1");
+        }
+        if (b.castling_available.black_queenside and b.canCastling(.black_queen)) {
+            board |= bit_board.fromNotation("a1");
+        }
+    } else if (from == bit_board.fromNotation("e8")) {
+        if (b.castling_available.white_kingside and b.canCastling(.white_king)) {
+            board |= bit_board.fromNotation("h8");
+        }
+        if (b.castling_available.white_queenside and b.canCastling(.white_queen)) {
+            board |= bit_board.fromNotation("a8");
+        }
+    }
+    return board;
+}
+
+fn getEnpassant(b: Board, from: u64, color: Color) u64 {
+    switch (color) {
+        .black => if (from & b.black_pawn != 0 and
+            (from >> 7 | from >> 9) & b.enpassant_target != 0)
+        {
+            return b.enpassant_target;
+        },
+        .white => if (from & b.white_pawn != 0 and
+            (from << 7 | from << 9) & b.enpassant_target != 0)
+        {
+            return b.enpassant_target;
+        },
+    }
+
+    return 0;
+}
+
+/// プロモーションかどうかを判定する。
+/// ポーンが最終ランクに到達したとき
+pub fn isPromotion(b: Board, from: u64, to: u64) bool {
+    return to & bit_board.fromString(
+        \\oooooooo
+        \\........
+        \\........
+        \\........
+        \\........
+        \\........
+        \\........
+        \\oooooooo
+    , 'o') != 0 and b.getType(from) == .pawn;
 }
 
 /// 現在の盤面でキャスリングが可能かどうかを判定する。
@@ -371,7 +445,7 @@ pub fn isCheckmate(b: Board, color: Color) bool {
 
         // ここからループ本体
         // 動いてチェック状態にならないものが1つでもあれば、チェックメイトではない
-        if (b.getMove(current_board) != 0) {
+        if (b.getNormalMove(current_board) != 0) {
             return false;
         }
         // ここまでループ本体
