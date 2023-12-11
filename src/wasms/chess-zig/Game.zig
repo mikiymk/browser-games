@@ -1,4 +1,5 @@
 const std = @import("std");
+const bit_board = @import("bit-board");
 const Board = @import("Board.zig");
 const ColorPieceType = Board.ColorPieceType;
 const Color = Board.Color;
@@ -87,8 +88,40 @@ pub fn deinit(game: *Game) void {
 /// 現在のゲームボードの1マスを指定し、その位置にいる駒の移動先を得る。
 /// キャスリング、アンパサンも含める。
 pub fn getMove(game: Game, from: u64) u64 {
-    // todo: キャスリング、アンパサン
-    return game.board.getMove(from);
+    var board = game.board.getMove(from);
+
+    // キャスリング
+    if (from == bit_board.fromNotation("e1")) {
+        if (game.castling_available.black.kingside and game.board.canCastling(.black_king)) {
+            board |= bit_board.fromNotation("h1");
+        }
+        if (game.castling_available.black.queenside and game.board.canCastling(.black_queen)) {
+            board |= bit_board.fromNotation("a1");
+        }
+    } else if (from == bit_board.fromNotation("e8")) {
+        if (game.castling_available.white.kingside and game.board.canCastling(.white_king)) {
+            board |= bit_board.fromNotation("h8");
+        }
+        if (game.castling_available.white.queenside and game.board.canCastling(.white_queen)) {
+            board |= bit_board.fromNotation("a8");
+        }
+    }
+
+    // アンパサン
+    switch (game.next_color) {
+        .black => if (from & game.board.black_pawn != 0 and
+            (from >> 7 | from >> 9) & game.enpassant_target != 0)
+        {
+            board |= game.enpassant_target;
+        },
+        .white => if (from & game.board.white_pawn != 0 and
+            (from << 7 | from << 9) & game.enpassant_target != 0)
+        {
+            board |= game.enpassant_target;
+        },
+    }
+
+    return board;
 }
 
 /// 現在のゲームボードの移動元と移動先を指定し、移動元にある駒を移動先に移動させる。

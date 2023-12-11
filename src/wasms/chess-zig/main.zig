@@ -94,6 +94,7 @@ test {
 
     testing.refAllDecls(@This());
 
+    _ = @import("./Game_test.zig");
     _ = @import("./Board_test.zig");
     _ = @import("./moves_test.zig");
 }
