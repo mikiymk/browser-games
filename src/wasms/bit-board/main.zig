@@ -40,6 +40,45 @@ pub fn fromString(comptime str: []const u8, comptime piece_symbol: u8) u64 {
     return board;
 }
 
+/// 代数式の座標から1マスを表すビットボードを作成する。
+///
+///     a8 b8 c8 d8 e8 f8 g8 h8
+///     a7 b7 c7 d7 e7 f7 g7 h7
+///     a6 b6 c6 d6 e6 f6 g6 h6
+///     a5 b5 c5 d5 e5 f5 g5 h5
+///     a4 b4 c4 d4 e4 f4 g4 h4
+///     a3 b3 c3 d3 e3 f3 g3 h3
+///     a2 b2 c2 d2 e2 f2 g2 h2
+///     a1 b1 c1 d1 e1 f1 g1 h1
+pub fn fromNotation(comptime str: []const u8) u64 {
+    comptime var board: u64 = 0;
+
+    comptime {
+        if (str.len != 2) {
+            @compileError("invalid length");
+        }
+
+        const rank: u8 = str[0] - 'a';
+        const file: u8 = str[1] - '0';
+
+        const index: u11 = rank + (8 - file) * 8;
+
+        board = @as(u64, 1) << index;
+    }
+
+    return board;
+}
+
+pub fn fromNotations(comptime notations: []const []const u8) u64 {
+    var board: u64 = 0;
+
+    inline for (notations) |notation| {
+        board |= fromNotation(notation);
+    }
+
+    return board;
+}
+
 /// ビットボードを文字列に変換する。
 /// printデバッグ用
 pub fn toString(board: u64, piece_symbol: u8, empty_symbol: u8) [71]u8 {
@@ -107,6 +146,46 @@ test "bit-board from string" {
     , 'o');
 
     try testing.expectEqualDeep(expected, actual);
+}
+
+test "bit-board from algebraic notation" {
+    const testing = std.testing;
+
+    try testing.expectEqual(fromNotation("a1"), 1 << 56);
+    try testing.expectEqual(fromNotation("a8"), 1 << 0);
+    try testing.expectEqual(fromNotation("h1"), 1 << 63);
+    try testing.expectEqual(fromNotation("h8"), 1 << 7);
+}
+
+test "bit-board from algebraic notations" {
+    const testing = std.testing;
+
+    try testing.expectEqual(fromNotations(&.{ "a1", "a8", "h1", "h8" }), 0x8100000000000081);
+}
+
+test "from string and from notation" {
+    const testing = std.testing;
+
+    try testing.expectEqual(fromNotation("a8"), fromString(
+        \\o.......
+        \\........
+        \\........
+        \\........
+        \\........
+        \\........
+        \\........
+        \\........
+    , 'o'));
+    try testing.expectEqual(fromNotation("h1"), fromString(
+        \\........
+        \\........
+        \\........
+        \\........
+        \\........
+        \\........
+        \\........
+        \\.......o
+    , 'o'));
 }
 
 test "bit-board to string" {

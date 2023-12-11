@@ -1,4 +1,5 @@
 //! 8×8チェスボードの構造体。
+//!
 
 const bit_board = @import("bit-board");
 const moves = @import("moves.zig");
@@ -237,6 +238,52 @@ pub fn getMove(b: Board, from: u64) u64 {
     return b.filterValidMove(from, to_list, color_type.color(), color_type.pieceType());
 }
 
+/// 現在の盤面でキャスリングが可能かどうかを判定する。
+/// - キングとルークの間に駒がない
+/// - キングの移動範囲が全て攻撃されていない
+pub fn canCastling(b: Board, color_piece: ColorPieceType) bool {
+    const black_king = bit_board.fromNotation("e1");
+    const black_kingside_rook = bit_board.fromNotation("h1");
+    const black_kingside_no_attacked = bit_board.fromNotations(&.{ "e1", "f1", "g1" });
+    const black_kingside_no_pieces = bit_board.fromNotations(&.{ "f1", "g1" });
+    const black_queenside_rook = bit_board.fromNotation("a1");
+    const black_queenside_no_attacked = bit_board.fromNotations(&.{ "c1", "d1", "e1" });
+    const black_queenside_no_pieces = bit_board.fromNotations(&.{ "b1", "c1", "d1" });
+
+    const white_king = bit_board.fromNotation("e8");
+    const white_kingside_rook = bit_board.fromNotation("h8");
+    const white_kingside_no_attacked = bit_board.fromNotations(&.{ "e8", "f8", "g8" });
+    const white_kingside_no_pieces = bit_board.fromNotations(&.{ "f8", "g8" });
+    const white_queenside_rook = bit_board.fromNotation("a8");
+    const white_queenside_no_attacked = bit_board.fromNotations(&.{ "c8", "d8", "e8" });
+    const white_queenside_no_pieces = bit_board.fromNotations(&.{ "b8", "c8", "d8" });
+
+    const pieces = b.getColorPieces(.black) | b.getColorPieces(.white);
+    switch (color_piece) {
+        .black_king => return b.black_king & black_king != 0 and
+            b.black_rook & black_kingside_rook != 0 and
+            pieces & black_kingside_no_pieces == 0 and
+            !b.isAttacked(black_kingside_no_attacked, .black),
+
+        .black_queen => return b.black_king & black_king != 0 and
+            b.black_rook & black_queenside_rook != 0 and
+            pieces & black_queenside_no_pieces == 0 and
+            !b.isAttacked(black_queenside_no_attacked, .black),
+
+        .white_king => return b.white_king & white_king != 0 and
+            b.white_rook & white_kingside_rook != 0 and
+            pieces & white_kingside_no_pieces == 0 and
+            !b.isAttacked(white_kingside_no_attacked, .white),
+
+        .white_queen => return b.white_king & white_king != 0 and
+            b.white_rook & white_queenside_rook != 0 and
+            pieces & white_queenside_no_pieces == 0 and
+            !b.isAttacked(white_queenside_no_attacked, .white),
+
+        else => return false,
+    }
+}
+
 pub fn filterValidMove(b: Board, from: u64, to_list: u64, color: Color, piece: PieceType) u64 {
     // ループ用ビットボード
     var bits = to_list;
@@ -265,31 +312,47 @@ pub fn filterValidMove(b: Board, from: u64, to_list: u64, color: Color, piece: P
 /// 盤がチェック状態になっているか
 /// - color - チェックされるキングの色
 pub fn isChecked(b: Board, color: Color) bool {
-    var king: u64 = undefined;
-
-    var danger_zone: u64 = undefined;
-
     if (color == .black) {
-        king = b.black_king;
-
-        danger_zone = moves.king(b, b.white_king, .white) |
-            moves.queen(b, b.white_queen, .white) |
-            moves.rook(b, b.white_rook, .white) |
-            moves.bishop(b, b.white_bishop, .white) |
-            moves.knight(b, b.white_knight, .white) |
-            moves.pawn(b, b.white_pawn, .white);
+        return b.isAttacked(b.black_king, .black);
     } else {
-        king = b.white_king;
+        return b.isAttacked(b.white_king, .white);
+    }
+}
 
-        danger_zone = moves.king(b, b.black_king, .black) |
-            moves.queen(b, b.black_queen, .black) |
-            moves.rook(b, b.black_rook, .black) |
-            moves.bishop(b, b.black_bishop, .black) |
-            moves.knight(b, b.black_knight, .black) |
-            moves.pawn(b, b.black_pawn, .black);
+/// placeのマス目のうち1つ以上が攻撃されているかどうか。
+/// 攻撃されているならばtrue。
+pub fn isAttacked(b: Board, place: u64, color: Color) bool {
+    if (color == .black) {
+        if (place & moves.king(b, b.white_king, .white) != 0) {
+            return true;
+        } else if (place & moves.queen(b, b.white_queen, .white) != 0) {
+            return true;
+        } else if (place & moves.rook(b, b.white_rook, .white) != 0) {
+            return true;
+        } else if (place & moves.bishop(b, b.white_bishop, .white) != 0) {
+            return true;
+        } else if (place & moves.knight(b, b.white_knight, .white) != 0) {
+            return true;
+        } else if (place & moves.pawn(b, b.white_pawn, .white) != 0) {
+            return true;
+        }
+    } else {
+        if (place & moves.king(b, b.black_king, .black) != 0) {
+            return true;
+        } else if (place & moves.queen(b, b.black_queen, .black) != 0) {
+            return true;
+        } else if (place & moves.rook(b, b.black_rook, .black) != 0) {
+            return true;
+        } else if (place & moves.bishop(b, b.black_bishop, .black) != 0) {
+            return true;
+        } else if (place & moves.knight(b, b.black_knight, .black) != 0) {
+            return true;
+        } else if (place & moves.pawn(b, b.black_pawn, .black) != 0) {
+            return true;
+        }
     }
 
-    return king & danger_zone != 0;
+    return false;
 }
 
 /// ボード状態がチェックメイトかどうか判定する

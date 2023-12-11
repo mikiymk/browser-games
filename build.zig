@@ -21,6 +21,7 @@ pub fn build(b: *std.Build) void {
     // test
 
     const test_step = b.step("test", "Run library tests");
+    buildTest(b, "bit-board", target, optimize, test_step, &modules);
     buildTest(b, "reversi", target, optimize, test_step, &modules);
     buildTest(b, "chess-zig", target, optimize, test_step, &modules);
 }
