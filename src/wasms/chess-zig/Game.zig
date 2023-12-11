@@ -124,6 +124,22 @@ pub fn getMove(game: Game, from: u64) u64 {
     return board;
 }
 
+/// プロモーションかどうかを判定する。
+/// ポーンが最終ランクに到達したとき
+pub fn isPromotion(game: Game, from: u64, to: u64) bool {
+    return to & bit_board.fromString(
+        \\oooooooo
+        \\........
+        \\........
+        \\........
+        \\........
+        \\........
+        \\........
+        \\oooooooo
+    , 'o') != 0 and
+        game.board.getType(from) == .pawn;
+}
+
 /// 現在のゲームボードの移動元と移動先を指定し、移動元にある駒を移動先に移動させる。
 /// 移動先にあるその他の駒はすべて取り除かれる。
 pub fn applyMove(game: *Game, from: u64, to: u64) void {
