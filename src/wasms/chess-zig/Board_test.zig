@@ -361,7 +361,7 @@ test "get moves: normal moves" {
         \\........
     );
 
-    const move = board.getMove(bit_board.fromNotation("d4"), .black);
+    const move = board.getMove(bit_board.fromNotation("d4"));
 
     try bit_board.expectBitBoard(move,
         \\...o....
@@ -387,7 +387,7 @@ test "get moves: castling" {
         \\R...K..R
     );
 
-    const move = board.getMove(bit_board.fromNotation("e1"), .black);
+    const move = board.getMove(bit_board.fromNotation("e1"));
 
     try bit_board.expectBitBoard(move,
         \\........
@@ -414,7 +414,7 @@ test "get moves: en passant" {
     );
     board.enpassant_target = bit_board.fromNotation("f6");
 
-    const move = board.getMove(bit_board.fromNotation("e5"), .black);
+    const move = board.getMove(bit_board.fromNotation("e5"));
 
     try bit_board.expectBitBoard(move,
         \\........

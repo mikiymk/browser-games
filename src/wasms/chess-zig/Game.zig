@@ -42,7 +42,11 @@ pub fn deinit(game: *Game) void {
 /// 現在のゲームボードの1マスを指定し、その位置にいる駒の移動先を得る。
 /// キャスリング、アンパサンも含める。
 pub fn getMove(game: Game, from: u64) u64 {
-    return game.board.getMove(from, game.next_color);
+    if (game.board.getColor(from) != game.next_color) {
+        return 0;
+    }
+
+    return game.board.getMove(from);
 }
 
 /// 現在のゲームボードの移動元と移動先を指定し、移動元にある駒を移動先に移動させる。

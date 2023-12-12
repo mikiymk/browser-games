@@ -238,17 +238,19 @@ pub fn getType(b: Board, place: u64) ?PieceType {
     return if (b.getColorType(place)) |color_type| color_type.pieceType() else null;
 }
 
-pub fn getMove(b: Board, from: u64, color: Color) u64 {
-    return b.getNormalMove(from) |
+pub fn getMove(b: Board, from: u64) u64 {
+    const color_type = b.getColorType(from) orelse return 0;
+
+    const to_list = b.getNormalMove(from, color_type) |
         b.getCastlingMove(from) |
-        b.getEnpassant(from, color);
+        b.getEnpassant(from, color_type.color());
+
+    return b.filterValidMove(from, to_list, color_type.color(), color_type.pieceType());
 }
 
 /// 通常の動きを取得する。
-fn getNormalMove(b: Board, from: u64) u64 {
-    const color_type = b.getColorType(from) orelse return 0;
-
-    const to_list = switch (color_type.pieceType()) {
+fn getNormalMove(b: Board, from: u64, color_type: ColorPieceType) u64 {
+    return switch (color_type.pieceType()) {
         .pawn => moves.pawn(b, from, color_type.color()),
         .knight => moves.knight(b, from, color_type.color()),
         .bishop => moves.bishop(b, from, color_type.color()),
@@ -256,8 +258,6 @@ fn getNormalMove(b: Board, from: u64) u64 {
         .queen => moves.queen(b, from, color_type.color()),
         .king => moves.king(b, from, color_type.color()),
     };
-
-    return b.filterValidMove(from, to_list, color_type.color(), color_type.pieceType());
 }
 
 fn getCastlingMove(b: Board, from: u64) u64 {
@@ -445,9 +445,10 @@ pub fn isCheckmate(b: Board, color: Color) bool {
 
         // ここからループ本体
         // 動いてチェック状態にならないものが1つでもあれば、チェックメイトではない
-        if (b.getNormalMove(current_board) != 0) {
+        if (b.getMove(current_board) != 0) {
             return false;
         }
+
         // ここまでループ本体
 
         // 一番下のビットを落とす
