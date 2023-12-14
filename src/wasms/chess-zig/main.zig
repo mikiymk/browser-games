@@ -66,9 +66,7 @@ export fn getMove(g: *Game, from_index: u8) u64 {
 /// アンパサン、キャスリングを判別する
 /// 戻り値はプロモーションが可能かどうか
 export fn move(g: *Game, from_index: u8, to_index: u8) bool {
-    const color_piece_type = g.board.getColorType(from_index) orelse return false;
-
-    g.board = g.board.getMovedBoard(from_index, to_index, color_piece_type.color(), color_piece_type.pieceType());
+    g.board = g.board.getMovedBoard(from_index, to_index);
 
     return false;
 }

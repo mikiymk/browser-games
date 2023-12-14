@@ -245,7 +245,7 @@ pub fn getMove(b: Board, from: u64) u64 {
         b.getCastlingMove(from) |
         b.getEnpassant(from, color_type.color());
 
-    return b.filterValidMove(from, to_list, color_type.color(), color_type.pieceType());
+    return b.filterValidMove(from, to_list);
 }
 
 /// 通常の動きを取得する。
@@ -358,7 +358,8 @@ pub fn canCastling(b: Board, color_piece: ColorPieceType) bool {
     }
 }
 
-pub fn filterValidMove(b: Board, from: u64, to_list: u64, color: Color, piece: PieceType) u64 {
+pub fn filterValidMove(b: Board, from: u64, to_list: u64) u64 {
+    const from_color = b.getColor(from) orelse return 0;
     // ループ用ビットボード
     var bits = to_list;
     var valid_board: u64 = 0;
@@ -369,8 +370,8 @@ pub fn filterValidMove(b: Board, from: u64, to_list: u64, color: Color, piece: P
         // ここからループ本体
 
         // 動かしたボードがチェック状態の移動先を取り除く
-        const moved_board = b.getMovedBoard(from, current_board, color, piece);
-        if (!moved_board.isChecked(color)) {
+        const moved_board = b.getMovedBoard(from, current_board);
+        if (!moved_board.isChecked(from_color)) {
             valid_board |= current_board;
         }
 
@@ -461,54 +462,166 @@ pub fn isCheckmate(b: Board, color: Color) bool {
 /// ボードから動いた状態の新しいボードを作成する。
 /// 1. 移動元と移動先のマスを空にする。
 /// 2. 移動先のマスを指定のピースにする。
-pub fn getMovedBoard(b: Board, from: u64, to: u64, color: Color, piece: PieceType) Board {
+pub fn getMovedBoard(b: Board, from: u64, to: u64) Board {
+    const piece_type = b.getColorType(from) orelse return b;
+    const to_piece_type = b.getColorType(to);
+
+    if (piece_type.pieceType() == .king and
+        to_piece_type != null and
+        piece_type.color() == to_piece_type.?.color() and
+        to_piece_type.?.pieceType() == .rook)
+    {
+        // 動かし元にキング、動かし先に味方のルークがある場合
+        return getMovedBoardCastling(b, from, to);
+    } else if (piece_type.pieceType() == .pawn and
+        (from << 7 == to or
+        from << 9 == to or
+        from >> 7 == to or
+        from >> 9 == to) and
+        to_piece_type == null)
+    {
+        // ポーンが斜めに動いて動かし先に駒がない場合
+        return getMovedBoardEnpassant(b, from, to);
+    } else {
+        // その他の場合
+        return getMovedBoardNormalMove(b, from, to);
+    }
+}
+
+fn getMovedBoardNormalMove(b: Board, from: u64, to: u64) Board {
     var new_board = b;
-    const reset_board = ~(from | to);
 
-    new_board.black_pawn &= reset_board;
-    new_board.black_knight &= reset_board;
-    new_board.black_bishop &= reset_board;
-    new_board.black_rook &= reset_board;
-    new_board.black_queen &= reset_board;
-    new_board.black_king &= reset_board;
-    new_board.white_pawn &= reset_board;
-    new_board.white_knight &= reset_board;
-    new_board.white_bishop &= reset_board;
-    new_board.white_rook &= reset_board;
-    new_board.white_queen &= reset_board;
-    new_board.white_king &= reset_board;
+    const from_piece_type = new_board.getColorType(from) orelse return new_board;
+    const to_piece_type = new_board.getColorType(to);
 
-    switch (piece) {
-        .pawn => if (color == .black) {
-            new_board.black_pawn |= to;
-        } else {
-            new_board.white_pawn |= to;
+    if (to_piece_type) |tpt| {
+        // 行き先に駒があるなら取り除く
+        switch (tpt) {
+            .black_pawn => new_board.black_pawn &= ~to,
+            .black_knight => new_board.black_knight &= ~to,
+            .black_bishop => new_board.black_bishop &= ~to,
+            .black_rook => new_board.black_rook &= ~to,
+            .black_queen => new_board.black_queen &= ~to,
+            .black_king => new_board.black_king &= ~to,
+
+            .white_pawn => new_board.white_pawn &= ~to,
+            .white_knight => new_board.white_knight &= ~to,
+            .white_bishop => new_board.white_bishop &= ~to,
+            .white_rook => new_board.white_rook &= ~to,
+            .white_queen => new_board.white_queen &= ~to,
+            .white_king => new_board.white_king &= ~to,
+        }
+    }
+
+    // 動かす駒について元と先のビットを反転させる
+    switch (from_piece_type) {
+        .black_pawn => new_board.black_pawn ^= (from | to),
+        .black_knight => new_board.black_knight ^= (from | to),
+        .black_bishop => new_board.black_bishop ^= (from | to),
+        .black_rook => new_board.black_rook ^= (from | to),
+        .black_queen => new_board.black_queen ^= (from | to),
+        .black_king => new_board.black_king ^= (from | to),
+
+        .white_pawn => new_board.white_pawn ^= (from | to),
+        .white_knight => new_board.white_knight ^= (from | to),
+        .white_bishop => new_board.white_bishop ^= (from | to),
+        .white_rook => new_board.white_rook ^= (from | to),
+        .white_queen => new_board.white_queen ^= (from | to),
+        .white_king => new_board.white_king ^= (from | to),
+    }
+
+    return new_board;
+}
+
+/// キャスリングをした後のボードを得る
+fn getMovedBoardCastling(b: Board, from: u64, to: u64) Board {
+    var new_board = b;
+    switch (from) {
+        // e1は白のキング
+        bit_board.fromNotation("e1") => {
+            switch (to) {
+                // クイーンサイド
+                bit_board.fromNotation("a1") => {
+                    new_board.white_king ^= bit_board.fromNotations(&.{ "c1", "e1" });
+                    new_board.white_rook ^= bit_board.fromNotations(&.{ "a1", "d1" });
+                },
+
+                // キングサイド
+                bit_board.fromNotation("h1") => {
+                    new_board.white_king ^= bit_board.fromNotations(&.{ "e1", "g1" });
+                    new_board.white_rook ^= bit_board.fromNotations(&.{ "f1", "h1" });
+                },
+
+                else => {},
+            }
         },
-        .knight => if (color == .black) {
-            new_board.black_knight |= to;
-        } else {
-            new_board.white_knight |= to;
+
+        // e8は黒のキング
+        bit_board.fromNotation("e8") => {
+            switch (to) {
+                // クイーンサイド
+                bit_board.fromNotation("a8") => {
+                    new_board.black_king ^= bit_board.fromNotations(&.{ "c8", "e8" });
+                    new_board.black_rook ^= bit_board.fromNotations(&.{ "a8", "d8" });
+                },
+
+                // キングサイド
+                bit_board.fromNotation("h8") => {
+                    new_board.black_king ^= bit_board.fromNotations(&.{ "e8", "g8" });
+                    new_board.black_rook ^= bit_board.fromNotations(&.{ "f8", "h8" });
+                },
+
+                else => {},
+            }
         },
-        .bishop => if (color == .black) {
-            new_board.black_bishop |= to;
-        } else {
-            new_board.white_bishop |= to;
+
+        else => {},
+    }
+
+    return new_board;
+}
+
+fn getMovedBoardEnpassant(b: Board, from: u64, to: u64) Board {
+    var new_board = b;
+
+    const from_piece_type = new_board.getColorType(from) orelse return new_board;
+
+    // 移動先のマスの1つ後ろの駒
+    var capture_target: u64 = undefined;
+
+    switch (from_piece_type) {
+        .black_pawn => {
+            new_board.black_pawn ^= from | to;
+            capture_target = to >> 8;
         },
-        .rook => if (color == .black) {
-            new_board.black_rook |= to;
-        } else {
-            new_board.white_rook |= to;
+
+        .white_pawn => {
+            new_board.white_pawn ^= from | to;
+            capture_target = to << 8;
         },
-        .queen => if (color == .black) {
-            new_board.black_queen |= to;
-        } else {
-            new_board.white_queen |= to;
-        },
-        .king => if (color == .black) {
-            new_board.black_king |= to;
-        } else {
-            new_board.white_king |= to;
-        },
+
+        else => {},
+    }
+
+    // 駒を取り除く
+    const capture_piece_type = new_board.getColorType(capture_target);
+
+    if (capture_piece_type) |cpt| {
+        switch (cpt) {
+            .black_pawn => new_board.black_pawn &= ~capture_target,
+            .black_knight => new_board.black_knight &= ~capture_target,
+            .black_bishop => new_board.black_bishop &= ~capture_target,
+            .black_rook => new_board.black_rook &= ~capture_target,
+            .black_queen => new_board.black_queen &= ~capture_target,
+            .black_king => new_board.black_king &= ~capture_target,
+
+            .white_pawn => new_board.white_pawn &= ~capture_target,
+            .white_knight => new_board.white_knight &= ~capture_target,
+            .white_bishop => new_board.white_bishop &= ~capture_target,
+            .white_rook => new_board.white_rook &= ~capture_target,
+            .white_queen => new_board.white_queen &= ~capture_target,
+            .white_king => new_board.white_king &= ~capture_target,
+        }
     }
 
     return new_board;
