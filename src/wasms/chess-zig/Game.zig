@@ -6,6 +6,7 @@ const Color = Board.Color;
 const PieceType = Board.PieceType;
 
 const Game = @This();
+pub const Result = enum { BlackWin, WhiteWin, Draw };
 
 const BoardMap = std.hash_map.AutoHashMap(Board, void);
 
@@ -61,8 +62,6 @@ pub fn applyPromote(game: Game, place: u64, piece_type: PieceType) void {
     _ = piece_type;
     _ = game;
 }
-
-pub const Result = enum { BlackWin, WhiteWin, Draw };
 
 /// ゲームの勝利を判定する。
 /// まだ勝敗がついていない場合はnull

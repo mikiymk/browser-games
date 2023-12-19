@@ -112,14 +112,14 @@ castling_available: struct {
 
 pub fn init() Board {
     return fromString(
-        \\rnbqkbnr
-        \\pppppppp
-        \\........
-        \\........
-        \\........
-        \\........
-        \\PPPPPPPP
         \\RNBQKBNR
+        \\PPPPPPPP
+        \\........
+        \\........
+        \\........
+        \\........
+        \\pppppppp
+        \\rnbqkbnr
     );
 }
 
@@ -263,17 +263,17 @@ fn getNormalMove(b: Board, from: u64, color_type: ColorPieceType) u64 {
 fn getCastlingMove(b: Board, from: u64) u64 {
     var board: u64 = 0;
     if (from == bit_board.fromNotation("e1")) {
-        if (b.castling_available.black_kingside and b.canCastling(.black_king)) {
+        if (b.castling_available.white_kingside and b.canCastling(.white_king)) {
             board |= bit_board.fromNotation("h1");
         }
-        if (b.castling_available.black_queenside and b.canCastling(.black_queen)) {
+        if (b.castling_available.white_queenside and b.canCastling(.white_queen)) {
             board |= bit_board.fromNotation("a1");
         }
     } else if (from == bit_board.fromNotation("e8")) {
-        if (b.castling_available.white_kingside and b.canCastling(.white_king)) {
+        if (b.castling_available.black_kingside and b.canCastling(.black_king)) {
             board |= bit_board.fromNotation("h8");
         }
-        if (b.castling_available.white_queenside and b.canCastling(.white_queen)) {
+        if (b.castling_available.black_queenside and b.canCastling(.black_queen)) {
             board |= bit_board.fromNotation("a8");
         }
     }
@@ -283,12 +283,12 @@ fn getCastlingMove(b: Board, from: u64) u64 {
 fn getEnpassant(b: Board, from: u64, color: Color) u64 {
     switch (color) {
         .black => if (from & b.black_pawn != 0 and
-            (from >> 7 | from >> 9) & b.enpassant_target != 0)
+            (from << 7 | from << 9) & b.enpassant_target != 0)
         {
             return b.enpassant_target;
         },
         .white => if (from & b.white_pawn != 0 and
-            (from << 7 | from << 9) & b.enpassant_target != 0)
+            (from >> 7 | from >> 9) & b.enpassant_target != 0)
         {
             return b.enpassant_target;
         },
@@ -316,21 +316,21 @@ pub fn isPromotion(b: Board, from: u64, to: u64) bool {
 /// - キングとルークの間に駒がない
 /// - キングの移動範囲が全て攻撃されていない
 pub fn canCastling(b: Board, color_piece: ColorPieceType) bool {
-    const black_king = bit_board.fromNotation("e1");
-    const black_kingside_rook = bit_board.fromNotation("h1");
-    const black_kingside_no_attacked = bit_board.fromNotations(&.{ "e1", "f1", "g1" });
-    const black_kingside_no_pieces = bit_board.fromNotations(&.{ "f1", "g1" });
-    const black_queenside_rook = bit_board.fromNotation("a1");
-    const black_queenside_no_attacked = bit_board.fromNotations(&.{ "c1", "d1", "e1" });
-    const black_queenside_no_pieces = bit_board.fromNotations(&.{ "b1", "c1", "d1" });
+    const black_king = bit_board.fromNotation("e8");
+    const black_kingside_rook = bit_board.fromNotation("h8");
+    const black_kingside_no_attacked = bit_board.fromNotations(&.{ "e8", "f8", "g8" });
+    const black_kingside_no_pieces = bit_board.fromNotations(&.{ "f8", "g8" });
+    const black_queenside_rook = bit_board.fromNotation("a8");
+    const black_queenside_no_attacked = bit_board.fromNotations(&.{ "c8", "d8", "e8" });
+    const black_queenside_no_pieces = bit_board.fromNotations(&.{ "b8", "c8", "d8" });
 
-    const white_king = bit_board.fromNotation("e8");
-    const white_kingside_rook = bit_board.fromNotation("h8");
-    const white_kingside_no_attacked = bit_board.fromNotations(&.{ "e8", "f8", "g8" });
-    const white_kingside_no_pieces = bit_board.fromNotations(&.{ "f8", "g8" });
-    const white_queenside_rook = bit_board.fromNotation("a8");
-    const white_queenside_no_attacked = bit_board.fromNotations(&.{ "c8", "d8", "e8" });
-    const white_queenside_no_pieces = bit_board.fromNotations(&.{ "b8", "c8", "d8" });
+    const white_king = bit_board.fromNotation("e1");
+    const white_kingside_rook = bit_board.fromNotation("h1");
+    const white_kingside_no_attacked = bit_board.fromNotations(&.{ "e1", "f1", "g1" });
+    const white_kingside_no_pieces = bit_board.fromNotations(&.{ "f1", "g1" });
+    const white_queenside_rook = bit_board.fromNotation("a1");
+    const white_queenside_no_attacked = bit_board.fromNotations(&.{ "c1", "d1", "e1" });
+    const white_queenside_no_pieces = bit_board.fromNotations(&.{ "b1", "c1", "d1" });
 
     const pieces = b.getColorPieces(.black) | b.getColorPieces(.white);
     switch (color_piece) {

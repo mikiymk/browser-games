@@ -29,8 +29,8 @@ export fn deinit(g: ?*Game) void {
 }
 
 /// ボードに駒を配置する
-export fn setPiece(g: *Game, kind: PieceKind, place: u8) void {
-    g.board.setPiece(kind, @as(u64, 1) << @truncate(place));
+export fn setPiece(g: *Game, kind: PieceKind, index: u8) void {
+    g.board.setPiece(kind, indexToPlace(index));
 }
 
 /// ボードの駒を取得する
@@ -57,7 +57,7 @@ export fn winnter(g: *Game) u8 {
 
 /// 駒を選択し、その駒の移動先を取得する
 export fn getMove(g: *Game, from_index: u8) u64 {
-    const from_place = @as(u64, 1) << @as(u6, @truncate(from_index));
+    const from_place = indexToPlace(from_index);
 
     return g.getMove(from_place);
 }
@@ -85,6 +85,10 @@ export fn moveAi(g: *Game) void {
     _ = g;
 
     @panic("not implemented");
+}
+
+fn indexToPlace(index: u8) u64 {
+    return @as(u64, 1) << @as(u6, @truncate(index));
 }
 
 test {

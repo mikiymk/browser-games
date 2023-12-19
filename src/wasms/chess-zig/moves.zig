@@ -62,8 +62,8 @@ const white_pawn_double_step_target = bit_board.fromString(
     \\........
     \\........
     \\........
-    \\oooooooo
     \\........
+    \\oooooooo
     \\........
     \\........
     \\........
@@ -73,8 +73,8 @@ const black_pawn_double_step_target = bit_board.fromString(
     \\........
     \\........
     \\........
-    \\........
     \\oooooooo
+    \\........
     \\........
     \\........
     \\........
@@ -92,11 +92,11 @@ fn pawnBlack(b: Board, pawn_place: u64) u64 {
     const black_pieces = b.getColorPieces(.black);
     const empties = ~(white_pieces | black_pieces);
 
-    const move_n: u64 = (pawn_place >> 8) & empties;
-    const move_n2: u64 = (move_n >> 8) & empties & black_pawn_double_step_target;
-    const move_ne_nw: u64 = (pawn_place >> 7 | pawn_place >> 9) & white_pieces;
+    const move_s: u64 = (pawn_place << 8) & empties;
+    const move_s2: u64 = (move_s << 8) & empties & black_pawn_double_step_target;
+    const move_se_sw: u64 = (pawn_place << 7 | pawn_place << 9) & white_pieces;
 
-    return move_n | move_n2 | move_ne_nw;
+    return move_s | move_s2 | move_se_sw;
 }
 
 fn pawnWhite(b: Board, pawn_place: u64) u64 {
@@ -104,11 +104,11 @@ fn pawnWhite(b: Board, pawn_place: u64) u64 {
     const black_pieces = b.getColorPieces(.black);
     const empties = ~(white_pieces | black_pieces);
 
-    const move_s: u64 = (pawn_place << 8) & empties;
-    const move_s2: u64 = (move_s << 8) & empties & white_pawn_double_step_target;
-    const move_se_sw: u64 = (pawn_place << 7 | pawn_place << 9) & black_pieces;
+    const move_n: u64 = (pawn_place >> 8) & empties;
+    const move_n2: u64 = (move_n >> 8) & empties & white_pawn_double_step_target;
+    const move_ne_nw: u64 = (pawn_place >> 7 | pawn_place >> 9) & black_pieces;
 
-    return move_s | move_s2 | move_se_sw;
+    return move_n | move_n2 | move_ne_nw;
 }
 
 pub fn knight(b: Board, knight_place: u64, player_color: Board.Color) u64 {
