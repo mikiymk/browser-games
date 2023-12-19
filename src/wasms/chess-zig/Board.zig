@@ -396,7 +396,7 @@ pub fn isChecked(b: Board, color: Color) bool {
 
 /// placeのマス目のうち1つ以上が攻撃されているかどうか。
 /// 攻撃されているならばtrue。
-pub fn isAttacked(b: Board, place: u64, color: Color) bool {
+fn isAttacked(b: Board, place: u64, color: Color) bool {
     if (color == .black) {
         if (place & moves.king(b, b.white_king, .white) != 0) {
             return true;
@@ -670,4 +670,39 @@ fn setEnpassant(board: *Board, from: u64, piece_type: ColorPieceType) void {
         },
         else => {},
     }
+}
+
+/// ボードからプロモーションした状態の新しいボードを作成する。
+pub fn getPromotionBoard(board: Board, from: u64, piece_type: PieceType) Board {
+    var new_board = board;
+
+    const color_piece_type = board.getColorType(from) orelse return new_board;
+
+    switch (color_piece_type) {
+        .black_pawn => {
+            new_board.black_pawn &= ~from;
+
+            switch (piece_type) {
+                .knight => new_board.black_knight |= from,
+                .bishop => new_board.black_bishop |= from,
+                .rook => new_board.black_rook |= from,
+                .queen => new_board.black_queen |= from,
+                else => {},
+            }
+        },
+        .white_pawn => {
+            new_board.white_pawn &= ~from;
+
+            switch (piece_type) {
+                .knight => new_board.white_knight |= from,
+                .bishop => new_board.white_bishop |= from,
+                .rook => new_board.white_rook |= from,
+                .queen => new_board.white_queen |= from,
+                else => {},
+            }
+        },
+        else => {},
+    }
+
+    return new_board;
 }

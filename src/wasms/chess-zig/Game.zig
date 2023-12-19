@@ -52,15 +52,18 @@ pub fn getMove(game: Game, from: u64) u64 {
 
 /// 現在のゲームボードの移動元と移動先を指定し、移動元にある駒を移動先に移動させる。
 /// 移動先にあるその他の駒はすべて取り除かれる。
-pub fn applyMove(game: *Game, from: u64, to: u64) void {
-    game.board = game.board.getMovedBoard(from, to);
+pub fn applyMove(game: *Game, from: u64, to: u64) bool {
+    const new_board = game.board.getMovedBoard(from, to);
+    const is_promotion = game.board.isPromotion(from, to);
+
+    game.board = new_board;
+
+    return is_promotion;
 }
 
 /// 現在のゲームボードの1マスと変化する駒の種類を指定し、プロモーション(成り)をする。
 pub fn applyPromote(game: Game, place: u64, piece_type: PieceType) void {
-    _ = place;
-    _ = piece_type;
-    _ = game;
+    game.board = game.board.getPromotionBoard(place, piece_type);
 }
 
 /// ゲームの勝利を判定する。
