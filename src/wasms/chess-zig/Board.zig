@@ -472,7 +472,10 @@ pub fn getMovedBoard(b: Board, from: u64, to: u64) Board {
         to_piece_type.?.pieceType() == .rook)
     {
         // 動かし元にキング、動かし先に味方のルークがある場合
-        return getMovedBoardCastling(b, from, to);
+        var new_board = b.getMovedBoardCastling(from, to);
+        new_board.setEnpassant(from, piece_type);
+
+        return new_board;
     } else if (piece_type.pieceType() == .pawn and
         (from << 7 == to or
         from << 9 == to or
@@ -481,10 +484,22 @@ pub fn getMovedBoard(b: Board, from: u64, to: u64) Board {
         to_piece_type == null)
     {
         // ポーンが斜めに動いて動かし先に駒がない場合
-        return getMovedBoardEnpassant(b, from, to);
+        return b.getMovedBoardEnpassant(from, to);
     } else {
         // その他の場合
-        return getMovedBoardNormalMove(b, from, to);
+        var new_board = b.getMovedBoardNormalMove(from, to);
+        new_board.setEnpassant(from, piece_type);
+
+        // 次にアンパサンが起こる動きならアンパサンの移動先を代入する
+        if (piece_type.pieceType() == .pawn and from << 16 == to) {
+            new_board.enpassant_target = from << 8;
+        } else if (piece_type.pieceType() == .pawn and from >> 16 == to) {
+            new_board.enpassant_target = from >> 8;
+        } else {
+            new_board.enpassant_target = 0;
+        }
+
+        return new_board;
     }
 }
 
@@ -581,6 +596,7 @@ fn getMovedBoardCastling(b: Board, from: u64, to: u64) Board {
     return new_board;
 }
 
+/// アンパサンを実行した後のボードを得る
 fn getMovedBoardEnpassant(b: Board, from: u64, to: u64) Board {
     var new_board = b;
 
@@ -625,4 +641,33 @@ fn getMovedBoardEnpassant(b: Board, from: u64, to: u64) Board {
     }
 
     return new_board;
+}
+
+/// キャスリングのキングとルークの動きを判定
+fn setEnpassant(board: *Board, from: u64, piece_type: ColorPieceType) void {
+    switch (piece_type) {
+        .black_king => {
+            board.castling_available.black_kingside = false;
+            board.castling_available.black_queenside = false;
+        },
+        .black_rook => {
+            if (from == bit_board.fromNotation("a8")) {
+                board.castling_available.black_queenside = false;
+            } else if (from == bit_board.fromNotation("h8")) {
+                board.castling_available.black_kingside = false;
+            }
+        },
+        .white_king => {
+            board.castling_available.white_kingside = false;
+            board.castling_available.white_queenside = false;
+        },
+        .white_rook => {
+            if (from == bit_board.fromNotation("a1")) {
+                board.castling_available.white_queenside = false;
+            } else if (from == bit_board.fromNotation("h1")) {
+                board.castling_available.white_kingside = false;
+            }
+        },
+        else => {},
+    }
 }
