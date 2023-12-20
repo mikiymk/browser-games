@@ -45,14 +45,19 @@ export fn isBlack(g: *Game) bool {
 
 /// ゲームが終了しているかどうか
 export fn isEnd(g: *Game) bool {
-    return if (g.win()) |_| true else false;
+    return g.ends(g.next_color) != null;
 }
 
 /// ゲームが終了している場合、勝利者を判定する
 export fn winnter(g: *Game) u8 {
-    _ = g;
-
-    @panic("not implemented");
+    return if (g.ends(g.next_color)) |result|
+        switch (result) {
+            .BlackWin => 1,
+            .WhiteWin => 2,
+            .Draw => 3,
+        }
+    else
+        0;
 }
 
 /// 駒を選択し、その駒の移動先を取得する

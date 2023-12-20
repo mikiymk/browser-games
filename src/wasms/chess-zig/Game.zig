@@ -8,7 +8,7 @@ const PieceType = Board.PieceType;
 const Game = @This();
 pub const Result = enum { BlackWin, WhiteWin, Draw };
 
-const BoardMap = std.hash_map.AutoHashMap(Board, void);
+const BoardMap = std.hash_map.AutoHashMap(Board, u8);
 
 /// 現在の盤の状態
 board: Board,
@@ -56,6 +56,17 @@ pub fn applyMove(game: *Game, from: u64, to: u64) bool {
     const new_board = game.board.getMovedBoard(from, to);
     const is_promotion = game.board.isPromotion(from, to);
 
+    // 前回のボード状態をカウントアップする
+    const prev_board_count = game.previous_boards.get(game.board) orelse 0;
+    game.previous_boards.put(game.board, prev_board_count + 1) catch {};
+
+    // ポーンを動かすか駒を取る動きならカウントをリセット、それ以外でカウントアップ
+    if (game.board.getType(from) == .pawn or game.board.getColorType(to) != null) {
+        game.move_clock = 0;
+    } else {
+        game.move_clock += 1;
+    }
+
     game.board = new_board;
 
     return is_promotion;
@@ -68,12 +79,36 @@ pub fn applyPromote(game: Game, place: u64, piece_type: PieceType) void {
 
 /// ゲームの勝利を判定する。
 /// まだ勝敗がついていない場合はnull
-pub fn win(game: Game) ?Result {
-    if (game.board.isCheckmate(.black)) {
-        return .BlackWin;
+pub fn ends(game: Game, color: Color) ?Result {
+    if (game.move_clock >= 75) {
+        // 75手ルール
+        return .Draw;
     }
-    if (game.board.isCheckmate(.white)) {
-        return .WhiteWin;
+
+    // 5回繰り返しルール
+    var iter = game.previous_boards.iterator();
+    while (iter.next()) |entry| {
+        if (entry.value_ptr.* >= 5) {
+            return .Draw;
+        }
+    }
+
+    if (game.board.canMove(color)) {
+        if (game.board.isChecked(color)) {
+            // チェック状態ならチェックメイト
+            return switch (color) {
+                .black => .WhiteWin,
+                .white => .BlackWin,
+            };
+        } else {
+            // チェック状態でないならステイルメイト
+            return .Draw;
+        }
+    }
+
+    if (game.board.isInsufficientMaterial()) {
+        // 駒が足りない状態
+        return .Draw;
     }
 
     return null;

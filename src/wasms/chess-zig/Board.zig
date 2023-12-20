@@ -430,24 +430,18 @@ fn isAttacked(b: Board, place: u64, color: Color) bool {
     return false;
 }
 
-/// ボード状態がチェックメイトかどうか判定する
-pub fn isCheckmate(b: Board, color: Color) bool {
-    // チェック状態でないならチェックメイトでもない
-    if (!b.isChecked(color)) {
-        return false;
-    }
-
-    // ループ用ビットボード
+/// その色に一つ以上の動かせる駒があるかどうか判定する
+pub fn canMove(board: Board, color: Color) bool {
     // 自分の色のすべての駒をループ
-    var bits = b.getColorPieces(color);
+    var bits = board.getColorPieces(color);
     while (bits != 0) {
         // 一番下の立っているビットを１つ取り出す
         const current_board = bits & (~bits + 1);
 
         // ここからループ本体
-        // 動いてチェック状態にならないものが1つでもあれば、チェックメイトではない
-        if (b.getMove(current_board) != 0) {
-            return false;
+        // 動ける場所が1つでもあれば真を返して終了
+        if (board.getMove(current_board) != 0) {
+            return true;
         }
 
         // ここまでループ本体
@@ -456,7 +450,82 @@ pub fn isCheckmate(b: Board, color: Color) bool {
         bits &= bits - 1;
     }
 
-    return true;
+    // 最後まで探索して見つからなかった場合は偽
+    return false;
+}
+
+/// 材料の不足による引き分けを判定する
+pub fn isInsufficientMaterial(board: Board) bool {
+    // ポーン、ルーク、クイーンのいずれかが1つ以上ある場合、チェックメイトの可能性がある
+    // ルークとクイーンは
+    if (board.black_pawn != 0 or
+        board.black_rook != 0 or
+        board.black_queen != 0 or
+        board.white_pawn != 0 or
+        board.white_rook != 0 or
+        board.white_queen != 0)
+    {
+        return false;
+    }
+
+    // キング対キング
+    if (board.black_knight == 0 and
+        board.black_bishop == 0 and
+        board.white_knight == 0 and
+        board.white_bishop == 0)
+    {
+        return true;
+    }
+
+    const bn = @popCount(board.black_knight); // black knight count
+    const bb = @popCount(board.black_bishop); // black bishop count
+    const wn = @popCount(board.white_knight); // white knight count
+    const wb = @popCount(board.white_bishop); // white bishop count
+
+    // キングとビショップ対キング
+    if ((bn == 0 and bb == 1 and wn == 0 and wb == 0) or
+        (bn == 0 and bb == 0 and wn == 0 and wb == 1))
+    {
+        return true;
+    }
+
+    // キングとナイト対キング
+    if ((bn == 1 and bb == 0 and wn == 0 and wb == 0) or
+        (bn == 0 and bb == 0 and wn == 1 and wb == 0))
+    {
+        return true;
+    }
+
+    const black_square_mask = bit_board.fromString(
+        \\.o.o.o.o
+        \\o.o.o.o.
+        \\.o.o.o.o
+        \\o.o.o.o.
+        \\.o.o.o.o
+        \\o.o.o.o.
+        \\.o.o.o.o
+        \\o.o.o.o.
+    , 'o');
+    const white_square_mask = bit_board.fromString(
+        \\o.o.o.o.
+        \\.o.o.o.o
+        \\o.o.o.o.
+        \\.o.o.o.o
+        \\o.o.o.o.
+        \\.o.o.o.o
+        \\o.o.o.o.
+        \\.o.o.o.o
+    , 'o');
+
+    // キングとビショップ対キングとビショップ、ビショップは同じ色のマスにいる
+    if (bn == 0 and wn == 0 and
+        ((board.black_bishop | board.white_bishop) & black_square_mask == board.black_bishop | board.white_bishop or
+        (board.black_bishop | board.white_bishop) & white_square_mask == board.black_bishop | board.white_bishop))
+    {
+        return true;
+    }
+
+    return false;
 }
 
 /// ボードから動いた状態の新しいボードを作成する。

@@ -259,7 +259,7 @@ test "white king is not checked" {
     try std.testing.expect(actual == expected);
 }
 
-test "black king is checkmate" {
+test "black is checked and cannot move" {
     const board = Board.fromString(
         \\....K...
         \\........
@@ -271,10 +271,11 @@ test "black king is checkmate" {
         \\........
     );
 
-    try std.testing.expectEqual(true, board.isCheckmate(.black));
+    try std.testing.expectEqual(true, board.isChecked(.black));
+    try std.testing.expectEqual(false, board.canMove(.black));
 }
 
-test "black king is check but not checkmate" {
+test "black is checked and can move" {
     const board = Board.fromString(
         \\....K...
         \\.r......
@@ -286,10 +287,11 @@ test "black king is check but not checkmate" {
         \\........
     );
 
-    try std.testing.expectEqual(false, board.isCheckmate(.black));
+    try std.testing.expectEqual(true, board.isChecked(.black));
+    try std.testing.expectEqual(true, board.canMove(.black));
 }
 
-test "black king is not check" {
+test "black is not checked and can move" {
     const board = Board.fromString(
         \\....K...
         \\.r......
@@ -301,10 +303,27 @@ test "black king is not check" {
         \\........
     );
 
-    try std.testing.expectEqual(false, board.isCheckmate(.black));
+    try std.testing.expectEqual(false, board.isChecked(.black));
+    try std.testing.expectEqual(true, board.canMove(.black));
 }
 
-test "white king is checkmate" {
+test "black is not checked and cannot move" {
+    const board = Board.fromString(
+        \\....K...
+        \\.r......
+        \\.....q..
+        \\........
+        \\........
+        \\........
+        \\........
+        \\........
+    );
+
+    try std.testing.expectEqual(false, board.isChecked(.black));
+    try std.testing.expectEqual(false, board.canMove(.black));
+}
+
+test "white is checked and cannot move" {
     const board = Board.fromString(
         \\........
         \\...R.Q..
@@ -316,10 +335,11 @@ test "white king is checkmate" {
         \\........
     );
 
-    try std.testing.expectEqual(true, board.isCheckmate(.white));
+    try std.testing.expectEqual(true, board.isChecked(.white));
+    try std.testing.expectEqual(false, board.canMove(.white));
 }
 
-test "white king is check but not checkmate" {
+test "white is checked and can move" {
     const board = Board.fromString(
         \\........
         \\........
@@ -331,10 +351,11 @@ test "white king is check but not checkmate" {
         \\......nk
     );
 
-    try std.testing.expectEqual(false, board.isCheckmate(.white));
+    try std.testing.expectEqual(true, board.isChecked(.white));
+    try std.testing.expectEqual(true, board.canMove(.white));
 }
 
-test "white king is not check" {
+test "white is not checked and can move" {
     const board = Board.fromString(
         \\..n.k.r.
         \\...b.q..
@@ -346,7 +367,8 @@ test "white king is not check" {
         \\....K...
     );
 
-    try std.testing.expectEqual(false, board.isCheckmate(.white));
+    try std.testing.expectEqual(false, board.isChecked(.white));
+    try std.testing.expectEqual(true, board.canMove(.white));
 }
 
 test "get moves: normal moves" {
