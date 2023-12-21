@@ -3,7 +3,7 @@ const builtin = @import("builtin");
 
 pub const Board = @import("Board.zig");
 pub const Game = @import("Game.zig");
-const PieceKind = Board.ColorPieceType;
+const ColorPieceType = Board.ColorPieceType;
 
 /// アロケーター
 const allocator = if (builtin.target.isWasm()) std.heap.wasm_allocator else std.heap.page_allocator;
@@ -29,12 +29,12 @@ export fn deinit(g: ?*Game) void {
 }
 
 /// ボードに駒を配置する
-export fn setPiece(g: *Game, kind: PieceKind, index: u8) void {
+export fn setPiece(g: *Game, kind: ColorPieceType, index: u8) void {
     g.board.setPiece(kind, indexToPlace(index));
 }
 
 /// ボードの駒を取得する
-export fn getPiece(g: *Game, kind: PieceKind) u64 {
+export fn getPiece(g: *Game, kind: ColorPieceType) u64 {
     return g.board.getPieces(kind);
 }
 
@@ -71,18 +71,16 @@ export fn getMove(g: *Game, from_index: u8) u64 {
 /// アンパサン、キャスリングを判別する
 /// 戻り値はプロモーションが可能かどうか
 export fn move(g: *Game, from_index: u8, to_index: u8) bool {
-    g.board = g.board.getMovedBoard(from_index, to_index);
+    const from = indexToPlace(from_index);
+    const to = indexToPlace(to_index);
 
-    return false;
+    return g.applyMove(from, to);
 }
 
 /// 駒のプロモーション
-export fn promote(g: *Game, index: u8, piece_kind: PieceKind) void {
-    _ = piece_kind;
-    _ = index;
-    _ = g;
-
-    @panic("not implemented");
+export fn promote(g: *Game, index: u8, piece_kind: ColorPieceType) void {
+    const place = indexToPlace(index);
+    g.applyPromote(place, piece_kind.pieceType());
 }
 
 /// AIで駒を移動する

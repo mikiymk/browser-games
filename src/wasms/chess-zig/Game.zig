@@ -73,7 +73,7 @@ pub fn applyMove(game: *Game, from: u64, to: u64) bool {
 }
 
 /// 現在のゲームボードの1マスと変化する駒の種類を指定し、プロモーション(成り)をする。
-pub fn applyPromote(game: Game, place: u64, piece_type: PieceType) void {
+pub fn applyPromote(game: *Game, place: u64, piece_type: PieceType) void {
     game.board = game.board.getPromotionBoard(place, piece_type);
 }
 
