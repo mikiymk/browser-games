@@ -360,25 +360,15 @@ pub fn canCastling(b: Board, color_piece: ColorPieceType) bool {
 
 pub fn filterValidMove(b: Board, from: u64, to_list: u64) u64 {
     const from_color = b.getColor(from) orelse return 0;
-    // ループ用ビットボード
-    var bits = to_list;
+
+    var iter = bit_board.iterator(to_list);
     var valid_board: u64 = 0;
-    while (bits != 0) {
-        // 一番下の立っているビットを１つ取り出す
-        const current_board = bits & (~bits + 1);
-
-        // ここからループ本体
-
+    while (iter.next()) |current| {
         // 動かしたボードがチェック状態の移動先を取り除く
-        const moved_board = b.getMovedBoard(from, current_board);
+        const moved_board = b.getMovedBoard(from, current);
         if (!moved_board.isChecked(from_color)) {
-            valid_board |= current_board;
+            valid_board |= current;
         }
-
-        // ここまでループ本体
-
-        // 一番下のビットを落とす
-        bits &= bits - 1;
     }
 
     return valid_board;
@@ -433,21 +423,12 @@ fn isAttacked(b: Board, place: u64, color: Color) bool {
 /// その色に一つ以上の動かせる駒があるかどうか判定する
 pub fn canMove(board: Board, color: Color) bool {
     // 自分の色のすべての駒をループ
-    var bits = board.getColorPieces(color);
-    while (bits != 0) {
-        // 一番下の立っているビットを１つ取り出す
-        const current_board = bits & (~bits + 1);
-
-        // ここからループ本体
+    var iter = bit_board.iterator(board.getColorPieces(color));
+    while (iter.next()) |current| {
         // 動ける場所が1つでもあれば真を返して終了
-        if (board.getMove(current_board) != 0) {
+        if (board.getMove(current) != 0) {
             return true;
         }
-
-        // ここまでループ本体
-
-        // 一番下のビットを落とす
-        bits &= bits - 1;
     }
 
     // 最後まで探索して見つからなかった場合は偽

@@ -14,9 +14,8 @@ pub fn getAiMove(b: Board, comptime random: *const fn () f64) u6 {
     // ここまでの最も良い手の評価点
     var best_evaluation: i32 = std.math.minInt(i32);
 
-    var move_board = moves;
-    while (move_board != 0) {
-        const place: u64 = move_board & (~move_board + 1);
+    var move_board = bit_board.iterator(moves);
+    while (move_board.next()) |place| {
         var child = b.move(place);
         const evaluation = alphaBeta(child, b.nextColor, 5, std.math.minInt(i32), std.math.maxInt(i32));
 
@@ -29,8 +28,6 @@ pub fn getAiMove(b: Board, comptime random: *const fn () f64) u6 {
             best_place[0] = place;
             best_place_count = 1;
         }
-
-        move_board &= move_board - 1;
     }
 
     const select_index: u6 = @intFromFloat(random() * @as(f64, @floatFromInt(best_place_count)));
@@ -50,38 +47,32 @@ fn alphaBeta(b: Board, player: Board.Color, depth: u8, alpha: i32, beta: i32) i3
     }
 
     if (b.nextColor == player) {
-        var moves = b.getValidMoves();
+        var moves = bit_board.iterator(b.getValidMoves());
 
         var new_alpha = alpha;
 
-        while (moves != 0) {
-            const cell = moves & (~moves + 1);
+        while (moves.next()) |cell| {
             const child = b.move(cell);
 
             new_alpha = @max(new_alpha, alphaBeta(child, player, depth - 1, new_alpha, beta));
             if (new_alpha >= beta) {
                 break;
             }
-
-            moves &= moves - 1;
         }
 
         return new_alpha;
     } else {
-        var moves = b.getValidMoves();
+        var moves = bit_board.iterator(b.getValidMoves());
 
         var new_beta = beta;
 
-        while (moves != 0) {
-            const cell = moves & (~moves + 1);
+        while (moves.next()) |cell| {
             const child = b.move(cell);
 
             new_beta = @min(new_beta, alphaBeta(child, player, depth - 1, alpha, new_beta));
             if (alpha >= new_beta) {
                 break;
             }
-
-            moves &= moves - 1;
         }
 
         return new_beta;
