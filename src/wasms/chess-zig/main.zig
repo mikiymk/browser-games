@@ -59,7 +59,7 @@ export fn isEnd(g: *Game) bool {
 }
 
 /// ゲームが終了している場合、勝利者を判定する
-export fn winnter(g: *Game) u8 {
+export fn winner(g: *Game) u8 {
     return if (g.ends(g.next_color)) |result|
         switch (result) {
             .BlackWin => 1,
