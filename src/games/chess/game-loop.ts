@@ -12,6 +12,12 @@ import {
   CellBlackBishop,
   CellBlackRook,
   CellBlackQueen,
+  CellBlackPawn,
+  CellBlackKing,
+  CellWhitePawn,
+  CellWhiteKing,
+  MoveFrom,
+  MoveTarget,
 } from "./constants";
 
 import type { MultiPromise } from "@/scripts/multi-promise";
@@ -62,6 +68,101 @@ const BlackPromotionBoard = Array.from({ length: 64 }, (_, index) => {
 });
 
 const AI_SLEEP_TIME_MS = 500;
+
+export const getWasm = async (): Promise<WasmConnect> => {
+  const wasm = await WebAssembly.instantiateStreaming(fetch(`${import.meta.env.BASE_URL}/wasm/chess.wasm`), {
+    env: { random: Math.random },
+  });
+
+  const exports = wasm.instance.exports as WasmExports;
+
+  const getColor = (g: GamePtr) => {
+    return exports.isBlack(g) ? Black : White;
+  };
+
+  const getBoard = (g: GamePtr) => {
+    const blackPawn = exports.getPiece(g, CellBlackPawn);
+    const blackKnight = exports.getPiece(g, CellBlackKnight);
+    const blackBishop = exports.getPiece(g, CellBlackBishop);
+    const blackRook = exports.getPiece(g, CellBlackRook);
+    const blackQueen = exports.getPiece(g, CellBlackQueen);
+    const blackKing = exports.getPiece(g, CellBlackKing);
+    const whitePawn = exports.getPiece(g, CellWhitePawn);
+    const whiteKnight = exports.getPiece(g, CellWhiteKnight);
+    const whiteBishop = exports.getPiece(g, CellWhiteBishop);
+    const whiteRook = exports.getPiece(g, CellWhiteRook);
+    const whiteQueen = exports.getPiece(g, CellWhiteQueen);
+    const whiteKing = exports.getPiece(g, CellWhiteKing);
+
+    return Array.from({ length: 64 }, (_, index) => {
+      const bitBoard = 1n << BigInt(index);
+
+      if (bitBoard & blackPawn) {
+        return CellBlackPawn;
+      } else if (blackKnight & bitBoard) {
+        return CellBlackKnight;
+      } else if (blackBishop & bitBoard) {
+        return CellBlackBishop;
+      } else if (blackRook & bitBoard) {
+        return CellBlackRook;
+      } else if (blackQueen & bitBoard) {
+        return CellBlackQueen;
+      } else if (blackKing & bitBoard) {
+        return CellBlackKing;
+      } else if (whitePawn & bitBoard) {
+        return CellWhitePawn;
+      } else if (whiteKnight & bitBoard) {
+        return CellWhiteKnight;
+      } else if (whiteBishop & bitBoard) {
+        return CellWhiteBishop;
+      } else if (whiteRook & bitBoard) {
+        return CellWhiteRook;
+      } else if (whiteQueen & bitBoard) {
+        return CellWhiteQueen;
+      } else if (whiteKing & bitBoard) {
+        return CellWhiteKing;
+      } else {
+        return CellEmpty;
+      }
+    });
+  };
+
+  const getEnd = (g: GamePtr) => {
+    return exports.winner(g);
+  };
+
+  const getMove = (g: GamePtr, from: number) => {
+    const moveBitBoard = exports.getMove(g, from);
+
+    return Array.from({ length: 64 }, (_, index) => {
+      const bitBoard = 1n << BigInt(index);
+
+      if (index === from) {
+        return MoveFrom;
+      } else if (bitBoard & moveBitBoard) {
+        return MoveTarget;
+      } else {
+        return CellEmpty;
+      }
+    });
+  };
+
+  return {
+    init: exports.init,
+    deinit: exports.deinit,
+
+    getColor: getColor,
+    getBoard: getBoard,
+    getEnd: getEnd,
+    getMove: getMove,
+
+    move: exports.move,
+    promote: exports.promote,
+
+    ai: exports.moveAi,
+  };
+};
+
 export const gameLoop = (
   wasm: WasmConnect,
   setColor: (color: number) => void,
