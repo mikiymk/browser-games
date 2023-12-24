@@ -15,3 +15,6 @@ export const CellWhiteKing = 12;
 
 export const CellBlackCanMove = 13;
 export const CellWhiteCanMove = 14;
+
+export const MoveFrom = 1;
+export const MoveTarget = 2;
