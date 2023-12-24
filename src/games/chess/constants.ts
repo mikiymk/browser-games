@@ -18,3 +18,7 @@ export const CellWhiteCanMove = 14;
 
 export const MoveFrom = 1;
 export const MoveTarget = 2;
+
+export const EndBlackWin = 1;
+export const EndWhiteWin = 2;
+export const EndDraw = 3;

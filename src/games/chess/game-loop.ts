@@ -52,6 +52,7 @@ type WasmConnect = {
   ai: (g: GamePtr) => void;
 };
 
+const EmptyBoard = Array.from({ length: 64 }, () => CellEmpty);
 const WhitePromotionBoard = Array.from({ length: 64 }, (_, index) => {
   if (index === 26) return CellWhiteKnight;
   if (index === 27) return CellWhiteBishop;
@@ -70,7 +71,7 @@ const BlackPromotionBoard = Array.from({ length: 64 }, (_, index) => {
 const AI_SLEEP_TIME_MS = 500;
 
 export const getWasm = async (): Promise<WasmConnect> => {
-  const wasm = await WebAssembly.instantiateStreaming(fetch(`${import.meta.env.BASE_URL}/wasm/chess.wasm`), {
+  const wasm = await WebAssembly.instantiateStreaming(fetch(`${import.meta.env.BASE_URL}/wasm/chess-zig.wasm`), {
     env: { random: Math.random },
   });
 
@@ -171,7 +172,6 @@ export const gameLoop = (
   setMove: (move: number[]) => void,
   humanInput: MultiPromise<number>,
   players: { black: number; white: number },
-  onEnd: () => void,
 ) => {
   const {
     init,
@@ -194,7 +194,6 @@ export const gameLoop = (
     console.log(`game end id(${boardPtr})`);
     deinit(boardPtr);
     boardPtr = 0;
-    onEnd();
   };
 
   const run = async () => {
@@ -220,6 +219,7 @@ export const gameLoop = (
 
     setColor(getColor(boardPtr));
     setBoard(getBoard(boardPtr));
+    setMove(EmptyBoard);
 
     const end = getEnd(boardPtr);
     if (end !== 0) {
