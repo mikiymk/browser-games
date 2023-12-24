@@ -72,7 +72,7 @@ const BlackPromotionBoard = Array.from({ length: 64 }, (_, index) => {
 const AI_SLEEP_TIME_MS = 500;
 
 export const getWasm = async (): Promise<WasmConnect> => {
-  const wasm = await WebAssembly.instantiateStreaming(fetch(`${import.meta.env.BASE_URL}/wasm/chess-zig.wasm`), {
+  const wasm = await WebAssembly.instantiateStreaming(fetch(`${import.meta.env.BASE_URL}/wasm/chess.wasm`), {
     env: { random: Math.random },
   });
 

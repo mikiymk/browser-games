@@ -16,14 +16,14 @@ pub fn build(b: *std.Build) void {
     // build
 
     buildLib(b, "reversi", public_dir, target, optimize, &modules);
-    buildLib(b, "chess-zig", public_dir, target, optimize, &modules);
+    buildLib(b, "chess", public_dir, target, optimize, &modules);
 
     // test
 
     const test_step = b.step("test", "Run library tests");
     buildTest(b, "bit-board", target, optimize, test_step, &modules);
     buildTest(b, "reversi", target, optimize, test_step, &modules);
-    buildTest(b, "chess-zig", target, optimize, test_step, &modules);
+    buildTest(b, "chess", target, optimize, test_step, &modules);
 }
 
 fn buildLib(
