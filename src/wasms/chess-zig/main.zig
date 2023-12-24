@@ -3,6 +3,7 @@ const builtin = @import("builtin");
 
 pub const Board = @import("Board.zig");
 pub const Game = @import("Game.zig");
+pub const ai = @import("ai.zig");
 const ColorPieceType = Board.ColorPieceType;
 
 /// アロケーター
@@ -10,7 +11,16 @@ const allocator = if (builtin.target.isWasm()) std.heap.wasm_allocator else std.
 
 extern fn random() f64;
 fn getRamdom() f64 {
-    return random();
+    if (builtin.target.isWasm()) {
+        return random();
+    } else {
+        const S = struct {
+            var rand_gen = std.rand.DefaultPrng.init(0xfe_dc_ba_98_76_54_32_10);
+            var rand = rand_gen.random();
+        };
+
+        return S.rand.float(f64);
+    }
 }
 
 /// ゲームを作成する
@@ -85,9 +95,11 @@ export fn promote(g: *Game, index: u8, piece_kind: ColorPieceType) void {
 
 /// AIで駒を移動する
 export fn moveAi(g: *Game) void {
-    _ = g;
+    const ai_move = ai.getAiMove(g.board, allocator, g.next_color, getRamdom) catch return;
 
-    @panic("not implemented");
+    if (g.applyMove(ai_move.from, ai_move.to)) {
+        g.applyPromote(ai_move.to, .queen);
+    }
 }
 
 fn indexToPlace(index: u8) u64 {
