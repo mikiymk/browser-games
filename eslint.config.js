@@ -1,10 +1,11 @@
 import js from "@eslint/js";
 import typescript from "@typescript-eslint/eslint-plugin";
 import typescriptParser from "@typescript-eslint/parser";
-import pluginImport from "eslint-plugin-import";
+import pluginImport from "eslint-plugin-i";
 import solid from "eslint-plugin-solid";
 import unicorn from "eslint-plugin-unicorn";
 import vitest from "eslint-plugin-vitest";
+import { rules as prettier } from "eslint-config-prettier";
 import globals from "globals";
 
 export default [
@@ -49,6 +50,7 @@ export default [
       ...unicorn.configs.recommended.rules,
       ...solid.configs.typescript.rules,
       ...vitest.configs.recommended.rules,
+      ...prettier,
 
       // my custom
       "unicorn/number-literal-case": "off",

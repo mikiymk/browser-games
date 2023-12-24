@@ -1,3 +1,6 @@
+export const Black = 1;
+export const White = 0;
+
 export const CellEmpty = 0;
 
 export const CellBlackPawn = 1;
@@ -12,9 +15,6 @@ export const CellWhiteBishop = 9;
 export const CellWhiteRook = 10;
 export const CellWhiteQueen = 11;
 export const CellWhiteKing = 12;
-
-export const CellBlackCanMove = 13;
-export const CellWhiteCanMove = 14;
 
 export const MoveFrom = 1;
 export const MoveTarget = 2;

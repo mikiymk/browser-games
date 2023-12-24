@@ -1,6 +1,6 @@
 import { CellBlack, CellCanMoveBlack, CellCanMoveWhite, CellEmpty, CellWhite } from "./const";
 
-export type BoardPtr = (number & { __unique: "Wasm pointer of Board struct" }) | 0;
+type BoardPtr = (number & { __unique: "Wasm pointer of Board struct" }) | 0;
 type ReversiWasm = WebAssembly.Exports & {
   init: () => BoardPtr;
   deinit: (bp: BoardPtr) => void;

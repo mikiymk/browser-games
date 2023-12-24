@@ -1,7 +1,6 @@
 import { sleep } from "@/scripts/sleep";
 import { PlayerTypeHuman } from "@/scripts/player";
 
-import { Black, White } from "./types";
 import {
   CellWhiteKnight,
   CellWhiteBishop,
@@ -18,6 +17,8 @@ import {
   CellWhiteKing,
   MoveFrom,
   MoveTarget,
+  Black,
+  White,
 } from "./constants";
 
 import type { MultiPromise } from "@/scripts/multi-promise";

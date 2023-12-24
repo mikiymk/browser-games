@@ -35,12 +35,7 @@ export default defineConfig({
   compressHTML: true,
 
   vite: {
-    plugins: [
-      // solidPlugin(),
-      vanillaExtractPlugin(),
-      wasmPlugin(),
-      topLevelAwaitPlugin(),
-    ],
+    plugins: [vanillaExtractPlugin(), wasmPlugin(), topLevelAwaitPlugin()],
 
     esbuild: {
       mangleProps: /_$/,

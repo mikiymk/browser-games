@@ -1,5 +1,4 @@
-import { EndBlackWin, EndDraw, EndWhiteWin } from "@/games/chess/constants";
-import { Black } from "@/games/chess/types";
+import { Black, EndBlackWin, EndDraw, EndWhiteWin } from "@/games/chess/constants";
 import { PlayerTypeAI, PlayerTypeHuman } from "@/scripts/player";
 
 import type { PlayerType } from "@/scripts/player";
