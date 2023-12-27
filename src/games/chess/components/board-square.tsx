@@ -14,6 +14,7 @@ import {
   CellWhiteQueen,
   CellWhiteRook,
 } from "../constants";
+import { pieceBlackStyle, pieceStyle, pieceWhiteStyle } from "@/styles/chess.css";
 
 type BoardSquareProperties = {
   piece: number;
@@ -21,8 +22,34 @@ type BoardSquareProperties = {
 };
 
 export const BoardSquare = (properties: BoardSquareProperties) => {
+  const isBlack = () => {
+    return (
+      properties.piece === CellBlackPawn ||
+      properties.piece === CellBlackKnight ||
+      properties.piece === CellBlackBishop ||
+      properties.piece === CellBlackRook ||
+      properties.piece === CellBlackQueen ||
+      properties.piece === CellBlackKing
+    );
+  };
+  const isWhite = () => {
+    return (
+      properties.piece === CellWhitePawn ||
+      properties.piece === CellWhiteKnight ||
+      properties.piece === CellWhiteBishop ||
+      properties.piece === CellWhiteRook ||
+      properties.piece === CellWhiteQueen ||
+      properties.piece === CellWhiteKing
+    );
+  };
+
   return (
-    <span>
+    <span
+      classList={{
+        [pieceBlackStyle]: isBlack(),
+        [pieceWhiteStyle]: isWhite(),
+      }}
+    >
       <Switch>
         <Match when={properties.piece === CellBlackPawn || properties.piece === CellWhitePawn}>
           <PiecePawn />
@@ -60,7 +87,7 @@ const PiecePawn = () => {
   // note: modification
 
   return (
-    <svg viewBox="0 0 45 45" xmlns="http://www.w3.org/2000/svg" class="piece">
+    <svg viewBox="0 0 45 45" xmlns="http://www.w3.org/2000/svg" class={pieceStyle}>
       <title>pawn</title>
       <path d="M34,39.5C34,31.58 29.59,27.09 26.59,26.03A6.5,6.5 0,0 0 25.72,15.38A4,4 0,1 0 19.28,15.38A6.5,6.5 0,0 0 18.41,26.03C15.41,27.09 11,31.58 11,39.5Z" />
     </svg>
@@ -75,7 +102,7 @@ const PieceKnight = () => {
   // note: modification
 
   return (
-    <svg viewBox="0 0 45 45" xmlns="http://www.w3.org/2000/svg" class="piece">
+    <svg viewBox="0 0 45 45" xmlns="http://www.w3.org/2000/svg" class={pieceStyle}>
       <title>knight</title>
       <path d="M22,10C32.5,11 38.5,18 38,39L15,39C15,30 25,32.5 23,18" />
       <path d="M24,18C24.38,20.91 18.45,25.37 16,27C13,29 13.18,31.34 11,31C9.958,30.06 12.41,27.96 11,28C10,28 11.19,29.23 10,30C9,30 5.997,31 6,26C6,24 12,14 12,14C12,14 13.89,12.1 14,10.5C13.27,9.506 13.5,8.5 13.5,7.5C14.5,6.5 16.5,10 16.5,10L18.5,10C18.5,10 19.28,8.008 21,7C22,7 22,10 22,10" />
@@ -93,7 +120,7 @@ const PieceBishop = () => {
   // note: modification
 
   return (
-    <svg viewBox="0 0 45 45" xmlns="http://www.w3.org/2000/svg" class="piece">
+    <svg viewBox="0 0 45 45" xmlns="http://www.w3.org/2000/svg" class={pieceStyle}>
       <title>bishop</title>
       <path d="M9,36C12.39,35.03 19.11,36.43 22.5,34C25.89,36.43 32.61,35.03 36,36C36,36 37.65,36.54 39,38C38.32,38.97 37.35,38.99 36,38.5C32.61,37.53 25.89,38.96 22.5,37.5C19.11,38.96 12.39,37.53 9,38.5C7.65,38.99 6.68,38.97 6,38C7.35,36.54 9,36 9,36z" />
       <path d="M15,32C17.5,34.5 27.5,34.5 30,32C30.5,30.5 30,30 30,30C30,27.5 27.5,26 27.5,26C33,24.5 33.5,14.5 22.5,10.5C11.5,14.5 12,24.5 17.5,26C17.5,26 15,27.5 15,30C15,30 14.5,30.5 15,32z" />
@@ -111,7 +138,7 @@ const PieceRook = () => {
   // note: modification
 
   return (
-    <svg viewBox="0 0 45 45" xmlns="http://www.w3.org/2000/svg" class="piece">
+    <svg viewBox="0 0 45 45" xmlns="http://www.w3.org/2000/svg" class={pieceStyle}>
       <title>rook</title>
       <path d="M9,39L36,39L36,36L9,36L9,39z" />
       <path d="M12,36L12,32L33,32L33,36L12,36z" />
@@ -132,7 +159,7 @@ const PieceQueen = () => {
   // note: modification
 
   return (
-    <svg viewBox="0 0 45 45" xmlns="http://www.w3.org/2000/svg" class="piece">
+    <svg viewBox="0 0 45 45" xmlns="http://www.w3.org/2000/svg" class={pieceStyle}>
       <title>queen</title>
       <path d="M9,26C17.5,24.5 30,24.5 36,26L38.5,13.5L31,25L30.7,10.9L25.5,24.5L22.5,10L19.5,24.5L14.3,10.9L14,25L6.5,13.5Z" />
       <path d="M9,26C9,28 10.5,28 11.5,30C12.5,31.5 12.5,31 12,33.5C10.5,34.5 11,36 11,36C9.5,37.5 11,38.5 11,38.5C17.5,39.5 27.5,39.5 34,38.5C34,38.5 35.5,37.5 34,36C34,36 34.5,34.5 33,33.5C32.5,31 32.5,31.5 33.5,30C34.5,28 36,28 36,26C27.5,24.5 17.5,24.5 9,26Z" />
@@ -156,7 +183,7 @@ const PieceKing = () => {
   // note: modification
 
   return (
-    <svg viewBox="0 0 45 45" xmlns="http://www.w3.org/2000/svg" class="piece">
+    <svg viewBox="0 0 45 45" xmlns="http://www.w3.org/2000/svg" class={pieceStyle}>
       <title>king</title>
       <path d="M22.5 11.63V6M20 8h5" />
       <path d="M22.5 25s4.5-7.5 3-10.5c0 0-1-2.5-3-2.5s-3 2.5-3 2.5c-1.5 3 3 10.5 3 10.5" />

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg viewBox="0 0 60 60" version="1.1" id="root" xmlns="http://www.w3.org/2000/svg">
+    <style>
+        .s {
+            fill: currentColor;
+            stroke: black;
+        }
+    </style>
+
+    <symbol id="pawn" viewBox="0 0 60 60">
+        <path d="M 25,12 35,12 40,55 20,55 Z" class="s" />
+        <circle cx="30" cy="12" r="10" class="s" />
+        <rect x="20" y="20" width="20" height="5" class="s" />
+        <rect x="10" y="52" width="40" height="5" class="s" />
+    </symbol>
+
+    <symbol id="knight" viewBox="0 0 60 60">
+        <path d="M 45,55 45,20 A 15,15 90 0 0 30,5 L 30,55 Z" class="s" />
+        <path d="M 40,55 40,20 A 10,10 135 0 0 23,13 L 17,19 A 5,5 180 0 0 17,29 L 25,29 C 25,40 15,40 15,55 Z"
+            class="s" />
+        <circle cx="27" cy="18" r="1" />
+        <rect x="10" y="52" width="40" height="5" class="s" />
+    </symbol>
+
+    <symbol id="bishop" viewBox="0 0 60 60">
+        <rect x="26" y="30" width="8" height="25" class="s" />
+        <path d="M 37,45 L 23,45 C 10,10 10,20 30,8 C 50,20 50,12 37,45 Z" class="s" />
+        <path d="M 39,13 30,22" class="s" />
+        <rect x="10" y="52" width="40" height="5" class="s" />
+        <circle cx="30" cy="8" r="3" class="s" />
+    </symbol>
+
+    <symbol id="rook" viewBox="0 0 60 60">
+    </symbol>
+
+    <symbol id="queen" viewBox="0 0 60 60">
+    </symbol>
+
+    <symbol id="king" viewBox="0 0 60 60">
+    </symbol>
+
+    <rect x="0" y="0" width="60" height="60" fill="none" stroke="black" />
+
+
+
+</svg>

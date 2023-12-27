@@ -1,5 +1,6 @@
 ---
 import "@/styles/chess.css";
+import { App } from "../components/chess/app";
 ---
 
 <!doctype html>
@@ -13,11 +14,6 @@ import "@/styles/chess.css";
   </head>
 
   <body>
-    <script>
-      import { App } from "../components/chess/app";
-      import { render } from "solid-js/web";
-
-      render(App, document.body);
-    </script>
+    <App client:load />
   </body>
 </html>
