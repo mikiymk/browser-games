@@ -5,7 +5,7 @@ import { BoardSquare } from "./board-square";
 import type { BoardCell } from "../board";
 
 import { MoveTarget } from "../constants";
-import { boardStyle, movableSquareStyle, squareStyle } from "@/styles/chess.css";
+import { boardStyle, movableSquareStyle, pieceBlackStyle, pieceWhiteStyle, squareStyle } from "@/styles/chess.css";
 import board from "@/images/chess/board.svg";
 import piece from "@/images/chess/piece.svg";
 
@@ -42,17 +42,15 @@ export const Board = (properties: BoardProperties) => {
         xmlns="http://www.w3.org/2000/svg"
         style={{
           width: "100%",
-          fill: "#ddd",
-          stroke: "black",
         }}
       >
         <title>chess pieces</title>
-        <use href={`${piece.src}#pawn`} x={0} y={0} height={10} width={10} />
-        <use href={`${piece.src}#knight`} x={10} y={0} height={10} width={10} />
-        <use href={`${piece.src}#bishop`} x={20} y={0} height={10} width={10} />
-        <use href={`${piece.src}#rook`} x={0} y={10} height={10} width={10} />
-        <use href={`${piece.src}#queen`} x={10} y={10} height={10} width={10} />
-        <use href={`${piece.src}#king`} x={20} y={10} height={10} width={10} />
+        <use href={`${piece.src}#pawn`} x={0} y={0} height={10} width={10} class={pieceBlackStyle} />
+        <use href={`${piece.src}#knight`} x={10} y={0} height={10} width={10} class={pieceWhiteStyle} />
+        <use href={`${piece.src}#bishop`} x={20} y={0} height={10} width={10} class={pieceBlackStyle} />
+        <use href={`${piece.src}#rook`} x={0} y={10} height={10} width={10} class={pieceWhiteStyle} />
+        <use href={`${piece.src}#queen`} x={10} y={10} height={10} width={10} class={pieceBlackStyle} />
+        <use href={`${piece.src}#king`} x={20} y={10} height={10} width={10} class={pieceWhiteStyle} />
       </svg>
     </>
   );

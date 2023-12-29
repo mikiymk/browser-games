@@ -45,13 +45,13 @@ export const pieceStyle = style({
 });
 
 export const pieceBlackStyle = style({
-  stroke: "white",
-  fill: "black",
+  fill: "#ddd",
+  stroke: "black",
 });
 
 export const pieceWhiteStyle = style({
+  fill: "#333",
   stroke: "black",
-  fill: "white",
 });
 
 export const selectedStyle = style({
