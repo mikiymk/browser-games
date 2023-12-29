@@ -32,18 +32,6 @@ export const movableSquareStyle = style([
   },
 ]);
 
-export const pieceStyle = style({
-  height: "100%",
-  width: " 100%",
-
-  strokeWidth: "1.5px",
-  strokeLinecap: "round",
-  strokeLinejoin: "round",
-  strokeMiterlimit: 4,
-  strokeDasharray: "none",
-  strokeOpacity: 1,
-});
-
 export const pieceBlackStyle = style({
   fill: "#ddd",
   stroke: "black",

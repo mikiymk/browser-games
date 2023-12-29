@@ -2,7 +2,7 @@
 <svg viewBox="0 0 720 720" version="1.1" xmlns="http://www.w3.org/2000/svg" id="root">
     <style>
         .b {
-            fill: #444;
+            fill: #666;
         }
     </style>
     <rect width="720" height="720" x="0" y="0" fill="#ccc" />
