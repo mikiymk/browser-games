@@ -19,6 +19,10 @@ export const CellWhiteKing = 12;
 export const MoveFrom = 1;
 export const MoveTarget = 2;
 
+export const EndNotYet = 0;
 export const EndBlackWin = 1;
 export const EndWhiteWin = 2;
-export const EndDraw = 3;
+export const EndStalemate = 3;
+export const End75Moves = 4;
+export const End5Repetition = 5;
+export const EndInsufficientMaterial = 6;

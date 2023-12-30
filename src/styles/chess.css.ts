@@ -33,12 +33,12 @@ export const movableSquareStyle = style([
 ]);
 
 export const pieceBlackStyle = style({
-  fill: "#ddd",
+  fill: "#333",
   stroke: "black",
 });
 
 export const pieceWhiteStyle = style({
-  fill: "#333",
+  fill: "#ddd",
   stroke: "black",
 });
 

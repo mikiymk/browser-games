@@ -19,6 +19,7 @@ import {
   MoveTarget,
   Black,
   White,
+  EndNotYet,
 } from "./constants";
 
 import type { MultiPromise } from "@/scripts/multi-promise";
@@ -244,7 +245,7 @@ export const gameLoop = (
     setMove(EmptyBoard);
 
     const end = getEnd(boardPtr);
-    if (end !== 0) {
+    if (end !== EndNotYet) {
       setEnd(end);
       terminate();
     }

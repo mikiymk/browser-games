@@ -6,7 +6,7 @@ import { createBoard } from "@/games/chess/board";
 import { doNothingFunction } from "@/scripts/do-nothing";
 import { MultiPromise } from "@/scripts/multi-promise";
 import { Board } from "@/games/chess/components/board";
-import { White } from "@/games/chess/constants";
+import { EndNotYet, White } from "@/games/chess/constants";
 
 import { Controller } from "./controller";
 
@@ -18,7 +18,7 @@ export const App = () => {
   const [playerBlack, setPlayerBlack] = createSignal<PlayerType>(PlayerTypeAI);
 
   const [color, setColor] = createSignal(White);
-  const [end, setEnd] = createSignal(0);
+  const [end, setEnd] = createSignal(EndNotYet);
 
   const { board, setPiece, setMark } = createBoard();
   const [wasm] = createResource(getWasm);
