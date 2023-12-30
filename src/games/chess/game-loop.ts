@@ -200,13 +200,31 @@ export const gameLoop = (
   const run = async () => {
     setBoard(getBoard(boardPtr));
     const color = getColor(boardPtr);
+    console.log("color", color);
 
     if (isHuman(color, players)) {
-      const from = await humanInput.request();
+      let from: number;
+      let to: number;
 
-      setMove(getMove(boardPtr, from));
+      while (true) {
+        setMove(EmptyBoard);
 
-      const to = await humanInput.request();
+        from = await humanInput.request();
+
+        const moves = getMove(boardPtr, from);
+
+        if (!moves.includes(MoveTarget)) {
+          continue;
+        }
+
+        setMove(moves);
+
+        to = await humanInput.request();
+
+        if (moves[to] === MoveTarget) {
+          break;
+        }
+      }
 
       if (move(boardPtr, from, to)) {
         const kind = await inputKind(color, setBoard, humanInput);
@@ -214,7 +232,10 @@ export const gameLoop = (
         promote(boardPtr, to, kind);
       }
     } else {
+      console.time("ai think");
       ai(boardPtr);
+      console.timeEnd("ai think");
+
       await sleep(AI_SLEEP_TIME_MS);
     }
 
@@ -230,6 +251,7 @@ export const gameLoop = (
 
     if (boardPtr) {
       setTimeout(() => {
+        console.log(`game continue id(${boardPtr})`);
         void run();
       }, 0);
     }
@@ -259,40 +281,40 @@ const inputKind = async (
     setBoard(WhitePromotionBoard);
   }
 
-  const kindIndex = await humanInput.request();
+  while (true) {
+    const kindIndex = await humanInput.request();
 
-  if (color === Black) {
-    switch (kindIndex) {
-      case 26: {
-        return CellBlackKnight;
-      }
+    if (color === Black) {
+      switch (kindIndex) {
+        case 26: {
+          return CellBlackKnight;
+        }
 
-      case 27: {
-        return CellBlackBishop;
+        case 27: {
+          return CellBlackBishop;
+        }
+        case 28: {
+          return CellBlackRook;
+        }
+        case 29: {
+          return CellBlackQueen;
+        }
       }
-      case 28: {
-        return CellBlackRook;
-      }
-      case 29: {
-        return CellBlackQueen;
-      }
-    }
-  } else {
-    switch (kindIndex) {
-      case 26: {
-        return CellWhiteKnight;
-      }
-      case 27: {
-        return CellWhiteBishop;
-      }
-      case 28: {
-        return CellWhiteRook;
-      }
-      case 29: {
-        return CellWhiteQueen;
+    } else {
+      switch (kindIndex) {
+        case 26: {
+          return CellWhiteKnight;
+        }
+        case 27: {
+          return CellWhiteBishop;
+        }
+        case 28: {
+          return CellWhiteRook;
+        }
+        case 29: {
+          return CellWhiteQueen;
+        }
       }
     }
   }
-
-  return CellEmpty;
 };

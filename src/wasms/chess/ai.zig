@@ -33,7 +33,7 @@ pub fn getAiMove(board: Board, allocator: Allocator, color: Color, comptime rand
                 allocator,
                 color,
                 color.turn(),
-                5,
+                3,
                 std.math.minInt(i32),
                 std.math.maxInt(i32),
             );

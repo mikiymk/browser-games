@@ -76,6 +76,7 @@ pub fn applyMove(game: *Game, from: u64, to: u64) bool {
     }
 
     game.board = new_board;
+    game.next_color = game.next_color.turn();
 
     return is_promotion;
 }
