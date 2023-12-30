@@ -21,6 +21,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+
       - name: Setup pnpm
         uses: pnpm/action-setup@v2
         with:
@@ -30,7 +31,7 @@ jobs:
       # zig setup
       - uses: goto-bus-stop/setup-zig@v2
         with:
-          version: 0.12.0+3f4df8529
+          version: 0.11.0
 
       - name: check codes
         run: pnpm run ci
