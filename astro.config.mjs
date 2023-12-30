@@ -2,8 +2,6 @@ import solidJs from "@astrojs/solid-js";
 import { vanillaExtractPlugin } from "@vanilla-extract/vite-plugin";
 import compress from "astro-compress";
 import { defineConfig } from "astro/config";
-import topLevelAwaitPlugin from "vite-plugin-top-level-await";
-import wasmPlugin from "vite-plugin-wasm";
 
 // https://astro.build/config
 export default defineConfig({
@@ -35,7 +33,7 @@ export default defineConfig({
   compressHTML: true,
 
   vite: {
-    plugins: [vanillaExtractPlugin(), wasmPlugin(), topLevelAwaitPlugin()],
+    plugins: [vanillaExtractPlugin()],
 
     esbuild: {
       mangleProps: /_$/,
