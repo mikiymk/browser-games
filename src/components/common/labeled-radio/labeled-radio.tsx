@@ -14,14 +14,17 @@ export const LabeledRadioInput = (properties: LabeledRadioInputProperties) => {
     const checked = properties.checked;
     if (enable && !checked) {
       return radioStyle;
-    } else if (enable && checked) {
-      return checkedRadioStyle;
-    } else if (!enable && !checked) {
-      return disableRadioStyle;
-    } else {
-      return checkedDisableRadioStyle;
     }
+    if (enable && checked) {
+      return checkedRadioStyle;
+    }
+    if (!enable && !checked) {
+      return disableRadioStyle;
+    }
+
+    return checkedDisableRadioStyle;
   };
+
   return (
     <label class={styleClass()}>
       {properties.label}

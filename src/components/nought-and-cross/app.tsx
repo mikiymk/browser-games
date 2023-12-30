@@ -62,17 +62,21 @@ export const App = () => {
   const status = (): NnCStatus => {
     if (isWin(board(), OMark)) {
       return NnCStatusOWin;
-    } else if (isWin(board(), XMark)) {
-      return NnCStatusXWin;
-    } else if (filledBoard(board())) {
-      return NnCStatusDraw;
-    } else if (mark() === OMark) {
-      return NnCStatusNextO;
-    } else if (mark() === XMark) {
-      return NnCStatusNextX;
-    } else {
-      return NnCStatusNone;
     }
+    if (isWin(board(), XMark)) {
+      return NnCStatusXWin;
+    }
+    if (filledBoard(board())) {
+      return NnCStatusDraw;
+    }
+    if (mark() === OMark) {
+      return NnCStatusNextO;
+    }
+    if (mark() === XMark) {
+      return NnCStatusNextX;
+    }
+
+    return NnCStatusNone;
   };
 
   return (

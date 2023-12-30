@@ -45,7 +45,8 @@ export const message = (state: number, fields: number[], numberMines: number): s
   let flagCount = 0;
   if (state === Bombed) {
     return "bombed";
-  } else if (state === Clear) {
+  }
+  if (state === Clear) {
     return "cleared";
   }
 

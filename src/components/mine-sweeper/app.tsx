@@ -84,7 +84,9 @@ export const App = () => {
     if (fields()[index] === FieldFlag) {
       setFieldOn(index, FieldNoOpen);
       return true;
-    } else if (fields()[index] === FieldNoOpen) {
+    }
+
+    if (fields()[index] === FieldNoOpen) {
       setFieldOn(index, FieldFlag);
       return true;
     }

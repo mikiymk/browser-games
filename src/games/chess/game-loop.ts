@@ -100,31 +100,42 @@ export const getWasm = async (): Promise<WasmConnect> => {
 
       if (bitBoard & blackPawn) {
         return CellBlackPawn;
-      } else if (blackKnight & bitBoard) {
-        return CellBlackKnight;
-      } else if (blackBishop & bitBoard) {
-        return CellBlackBishop;
-      } else if (blackRook & bitBoard) {
-        return CellBlackRook;
-      } else if (blackQueen & bitBoard) {
-        return CellBlackQueen;
-      } else if (blackKing & bitBoard) {
-        return CellBlackKing;
-      } else if (whitePawn & bitBoard) {
-        return CellWhitePawn;
-      } else if (whiteKnight & bitBoard) {
-        return CellWhiteKnight;
-      } else if (whiteBishop & bitBoard) {
-        return CellWhiteBishop;
-      } else if (whiteRook & bitBoard) {
-        return CellWhiteRook;
-      } else if (whiteQueen & bitBoard) {
-        return CellWhiteQueen;
-      } else if (whiteKing & bitBoard) {
-        return CellWhiteKing;
-      } else {
-        return CellEmpty;
       }
+      if (blackKnight & bitBoard) {
+        return CellBlackKnight;
+      }
+      if (blackBishop & bitBoard) {
+        return CellBlackBishop;
+      }
+      if (blackRook & bitBoard) {
+        return CellBlackRook;
+      }
+      if (blackQueen & bitBoard) {
+        return CellBlackQueen;
+      }
+      if (blackKing & bitBoard) {
+        return CellBlackKing;
+      }
+      if (whitePawn & bitBoard) {
+        return CellWhitePawn;
+      }
+      if (whiteKnight & bitBoard) {
+        return CellWhiteKnight;
+      }
+      if (whiteBishop & bitBoard) {
+        return CellWhiteBishop;
+      }
+      if (whiteRook & bitBoard) {
+        return CellWhiteRook;
+      }
+      if (whiteQueen & bitBoard) {
+        return CellWhiteQueen;
+      }
+      if (whiteKing & bitBoard) {
+        return CellWhiteKing;
+      }
+
+      return CellEmpty;
     });
   };
 
@@ -140,11 +151,12 @@ export const getWasm = async (): Promise<WasmConnect> => {
 
       if (index === from) {
         return MoveFrom;
-      } else if (bitBoard & moveBitBoard) {
-        return MoveTarget;
-      } else {
-        return CellEmpty;
       }
+      if (bitBoard & moveBitBoard) {
+        return MoveTarget;
+      }
+
+      return CellEmpty;
     });
   };
 
@@ -299,20 +311,20 @@ const inputKind = async (
           return CellBlackQueen;
         }
       }
-    } else {
-      switch (kindIndex) {
-        case 26: {
-          return CellWhiteKnight;
-        }
-        case 27: {
-          return CellWhiteBishop;
-        }
-        case 28: {
-          return CellWhiteRook;
-        }
-        case 29: {
-          return CellWhiteQueen;
-        }
+    }
+
+    switch (kindIndex) {
+      case 26: {
+        return CellWhiteKnight;
+      }
+      case 27: {
+        return CellWhiteBishop;
+      }
+      case 28: {
+        return CellWhiteRook;
+      }
+      case 29: {
+        return CellWhiteQueen;
       }
     }
   }

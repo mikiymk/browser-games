@@ -38,13 +38,15 @@ export const getReversiWasm = async (): Promise<ReversiWasmConnect> => {
     return Array.from({ length: 64 }, (_, index) => 1n << BigInt(index)).map((n) => {
       if (n & black) {
         return CellBlack;
-      } else if (n & white) {
-        return CellWhite;
-      } else if (n & validMoves) {
-        return isBlack ? CellCanMoveBlack : CellCanMoveWhite;
-      } else {
-        return CellEmpty;
       }
+      if (n & white) {
+        return CellWhite;
+      }
+      if (n & validMoves) {
+        return isBlack ? CellCanMoveBlack : CellCanMoveWhite;
+      }
+
+      return CellEmpty;
     });
   };
 
