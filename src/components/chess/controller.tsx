@@ -8,7 +8,6 @@ import {
   EndWhiteWin,
 } from "@/games/chess/constants";
 import { PlayerTypeAi, PlayerTypeHuman } from "@/scripts/player";
-
 import type { PlayerType } from "@/scripts/player";
 import type { Setter } from "solid-js";
 

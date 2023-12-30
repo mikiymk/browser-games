@@ -1,13 +1,10 @@
-import { type Setter, Show } from "solid-js";
-
 import checkedBox from "@/images/symbol/check-box-checked-black.svg";
 import uncheckedBox from "@/images/symbol/check-box-unchecked-black.svg";
 import { h2Style } from "@/styles/common.css";
 import { disableStyle, settingCheckBoxStyle, settingItemStyle } from "@/styles/reversi.css";
-
-import { AiPlayer, HumanPlayer } from "./const";
-
+import { type Setter, Show } from "solid-js";
 import { LabeledRadioInput } from "../common/labeled-radio/labeled-radio";
+import { AiPlayer, HumanPlayer } from "./const";
 
 type SettingsProperties = {
   playing: boolean;

@@ -1,10 +1,7 @@
-import { createSignal } from "solid-js";
-
-import { sleep } from "@/scripts/sleep";
-
-import { CellBlack, CellEmpty, CellWhite, HumanPlayer } from "./const";
-
 import type { MultiPromise } from "@/scripts/multi-promise";
+import { sleep } from "@/scripts/sleep";
+import { createSignal } from "solid-js";
+import { CellBlack, CellEmpty, CellWhite, HumanPlayer } from "./const";
 import type { ReversiWasmConnect } from "./get-wasm";
 
 const AI_SLEEP_TIME_MS = 500;

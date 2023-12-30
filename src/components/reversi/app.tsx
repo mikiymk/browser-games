@@ -1,7 +1,5 @@
-import { createResource, createSignal } from "solid-js";
-
 import { MultiPromise } from "@/scripts/multi-promise";
-
+import { createResource, createSignal } from "solid-js";
 import { Board } from "./board";
 import { AiPlayer, CellCanMoveBlack, CellCanMoveWhite, CellEmpty, HumanPlayer } from "./const";
 import { gameLoop } from "./game-loop";

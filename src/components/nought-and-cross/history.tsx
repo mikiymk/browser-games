@@ -1,6 +1,5 @@
-import { For, Show } from "solid-js";
-
 import { historyMoveStyle, historyStyle } from "@/styles/nought-and-cross.css";
+import { For, Show } from "solid-js";
 
 const historyFillArray = [-1, -1, -1, -1, -1, -1, -1, -1, -1];
 

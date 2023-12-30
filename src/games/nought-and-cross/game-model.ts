@@ -1,10 +1,8 @@
+import type { MultiPromise } from "@/scripts/multi-promise";
 import { PlayerTypeHuman } from "@/scripts/player";
-
+import type { Setter } from "solid-js";
 import { gameNoughtAndCrossAi } from "./ai";
 import { Empty, MarkO, MarkX, Reset } from "./types";
-
-import type { MultiPromise } from "@/scripts/multi-promise";
-import type { Setter } from "solid-js";
 
 type Players = { o: number; x: number };
 

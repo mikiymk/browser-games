@@ -1,8 +1,6 @@
-import { For } from "solid-js";
-
 import { cellStyle } from "@/styles/knight-tour.css";
 import { boardStyle } from "@/styles/reversi.css";
-
+import { For } from "solid-js";
 import { CellImage } from "./cell-image";
 
 type BoardProperties = {

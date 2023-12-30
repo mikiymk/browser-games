@@ -1,5 +1,3 @@
-import { Match, type Setter, Switch } from "solid-js";
-
 import { LabeledRadioInput } from "@/components/common/labeled-radio/labeled-radio";
 import {
   type Status,
@@ -13,6 +11,7 @@ import {
 import cross from "@/images/symbol/cross.svg";
 import nought from "@/images/symbol/nought.svg";
 import { PlayerTypeAi, PlayerTypeHuman } from "@/scripts/player";
+import type { PlayerType } from "@/scripts/player";
 import { inlineImageStyle } from "@/styles/common.css";
 import {
   controllerOutputStyle,
@@ -20,8 +19,7 @@ import {
   controllerStyle,
   restartButtonStyle,
 } from "@/styles/nought-and-cross.css";
-
-import type { PlayerType } from "@/scripts/player";
+import { Match, type Setter, Switch } from "solid-js";
 
 type ControllerProperties = {
   statusMessage: Status;

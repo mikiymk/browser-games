@@ -1,5 +1,3 @@
-import { Match, Show, Switch, createEffect, createMemo, createSignal } from "solid-js";
-
 import stoneBlack from "@/images/reversi/stone-black.svg";
 import stoneWhite from "@/images/reversi/stone-white.svg";
 import {
@@ -15,7 +13,7 @@ import {
   infoTimeWhiteStyle,
   settingStartStyle,
 } from "@/styles/reversi.css";
-
+import { Match, Show, Switch, createEffect, createMemo, createSignal } from "solid-js";
 import { CellBlack, CellWhite } from "./const";
 
 type InfoProperties = {

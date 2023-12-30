@@ -1,17 +1,14 @@
-import { createResource, createSignal } from "solid-js";
-
 import { createBoard } from "@/games/chess/board";
+import type { BoardCell } from "@/games/chess/board";
 import { Board } from "@/games/chess/components/board";
 import { EndNotYet, White } from "@/games/chess/constants";
 import { gameLoop, getWasm } from "@/games/chess/game-loop";
 import { doNothingFunction } from "@/scripts/do-nothing";
 import { MultiPromise } from "@/scripts/multi-promise";
 import { PlayerTypeAi, PlayerTypeHuman } from "@/scripts/player";
-
-import { Controller } from "./controller";
-
-import type { BoardCell } from "@/games/chess/board";
 import type { PlayerType } from "@/scripts/player";
+import { createResource, createSignal } from "solid-js";
+import { Controller } from "./controller";
 
 export const App = () => {
   const [playerWhite, setPlayerWhite] = createSignal<PlayerType>(PlayerTypeHuman);

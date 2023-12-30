@@ -1,13 +1,9 @@
-import { For } from "solid-js";
-
 import board from "@/images/chess/board.svg";
 import { boardStyle, movableSquareStyle, selectedStyle, squareStyle } from "@/styles/chess.css";
-
-import { BoardSquare } from "./board-square";
-
+import { For } from "solid-js";
 import type { BoardCell } from "../board";
-
 import { MoveFrom, MoveTarget } from "../constants";
+import { BoardSquare } from "./board-square";
 
 type BoardProperties = {
   board: BoardCell[];

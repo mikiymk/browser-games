@@ -1,5 +1,4 @@
 import { randomSelect } from "@/scripts/random-select";
-
 import { isWin, turnMark } from "./game-model";
 import { Empty, Reset } from "./types";
 

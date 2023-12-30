@@ -1,5 +1,3 @@
-import { createSignal, onMount } from "solid-js";
-
 import { filledBoard, gameLoop, isWin } from "@/games/nought-and-cross/game-model";
 import {
   Empty,
@@ -12,16 +10,15 @@ import {
   StatusWinO,
   StatusWinX,
 } from "@/games/nought-and-cross/types";
+import type { Status } from "@/games/nought-and-cross/types";
 import { doNothingFunction } from "@/scripts/do-nothing";
 import { MultiPromise } from "@/scripts/multi-promise";
 import { PlayerTypeAi, PlayerTypeHuman } from "@/scripts/player";
-
+import type { PlayerType } from "@/scripts/player";
+import { createSignal, onMount } from "solid-js";
 import { Board } from "./board";
 import { Controller } from "./controller";
 import { History } from "./history";
-
-import type { Status } from "@/games/nought-and-cross/types";
-import type { PlayerType } from "@/scripts/player";
 
 export const App = () => {
   const [board, setBoardData] = createSignal<number[]>([]);

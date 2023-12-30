@@ -1,8 +1,7 @@
-import { createSignal } from "solid-js";
-
 import { BoardLength, CellMovable, CellUnvisited, CellVisited } from "@/games/knight-tour/consts";
 import { setKnightMovable } from "@/games/knight-tour/knight-move";
 import { randomRange } from "@/scripts/random-select";
+import { createSignal } from "solid-js";
 
 export const createGame = () => {
   const [board, setBoard] = createSignal<number[]>([]);

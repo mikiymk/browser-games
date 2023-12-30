@@ -1,8 +1,6 @@
-import { Match, Switch } from "solid-js";
-
 import piece from "@/images/chess/piece.svg";
 import { pieceBlackStyle, pieceWhiteStyle } from "@/styles/chess.css";
-
+import { Match, Switch } from "solid-js";
 import {
   CellBlackBishop,
   CellBlackKing,

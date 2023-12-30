@@ -1,5 +1,4 @@
 import { createSignal } from "solid-js";
-
 import { CellEmpty } from "./constants";
 
 export type BoardCell = {

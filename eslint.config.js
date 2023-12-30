@@ -62,8 +62,8 @@ export default [
       "import/order": [
         "error",
         {
-          groups: ["external", "internal", "sibling", "type"],
-          "newlines-between": "always",
+          groups: [],
+          "newlines-between": "never",
         },
       ],
 

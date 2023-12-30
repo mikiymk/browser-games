@@ -1,6 +1,6 @@
+import type { MultiPromise } from "@/scripts/multi-promise";
 import { PlayerTypeHuman } from "@/scripts/player";
 import { sleep } from "@/scripts/sleep";
-
 import {
   Black,
   CellBlackBishop,
@@ -21,8 +21,6 @@ import {
   MoveTarget,
   White,
 } from "./constants";
-
-import type { MultiPromise } from "@/scripts/multi-promise";
 
 type GamePtr = (number & { __unique: "Wasm pointer of Board struct" }) | 0;
 type WasmExports = {

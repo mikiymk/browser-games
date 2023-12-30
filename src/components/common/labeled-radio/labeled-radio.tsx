@@ -1,6 +1,5 @@
-import { checkedDisableRadioStyle, checkedRadioStyle, disableRadioStyle, radioStyle } from "./labeled-radio.css";
-
 import type { JSXElement } from "solid-js";
+import { checkedDisableRadioStyle, checkedRadioStyle, disableRadioStyle, radioStyle } from "./labeled-radio.css";
 
 type LabeledRadioInputProperties = {
   label: JSXElement;

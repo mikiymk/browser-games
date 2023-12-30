@@ -1,6 +1,5 @@
-import { For } from "solid-js";
-
 import { historyStyle } from "@/styles/knight-tour.css";
+import { For } from "solid-js";
 
 type HistoryProperties = {
   history_: number[];
