@@ -1,35 +1,85 @@
 const std = @import("std");
 
+const Dir = std.Build.Step.InstallArtifact.Options.Dir;
+const ModuleStructs = struct { name: []const u8, module: *std.build.Module };
+
 pub fn build(b: *std.Build) void {
     const target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
 
-    const public_dir: std.Build.Step.InstallArtifact.Options.Dir = .{ .override = .{ .custom = "../public/wasm" } };
+    const public_dir: Dir = .{ .override = .{ .custom = "../public/wasm" } };
 
-    // reversi
+    var modules = [_]ModuleStructs{
+        buildModule(b, "bit-board"),
+    };
 
-    const reversi = b.addSharedLibrary(.{
-        .name = "reversi",
-        .root_source_file = .{ .path = "src/wasms/reversi/main.zig" },
+    // build
+
+    buildLib(b, "reversi", public_dir, target, optimize, &modules);
+    buildLib(b, "chess", public_dir, target, optimize, &modules);
+
+    // test
+
+    const test_step = b.step("test", "Run library tests");
+    buildTest(b, "bit-board", target, optimize, test_step, &modules);
+    buildTest(b, "reversi", target, optimize, test_step, &modules);
+    buildTest(b, "chess", target, optimize, test_step, &modules);
+}
+
+fn buildLib(
+    b: *std.Build,
+    comptime name: []const u8,
+    public_dir: Dir,
+    target: std.zig.CrossTarget,
+    optimize: std.builtin.OptimizeMode,
+    modules: []ModuleStructs,
+) void {
+    const lib = b.addSharedLibrary(.{
+        .name = name,
+        .root_source_file = .{ .path = "src/wasms/" ++ name ++ "/main.zig" },
         .target = target,
         .optimize = optimize,
     });
 
     // exports all "export" functions
-    reversi.rdynamic = true;
+    lib.rdynamic = true;
 
-    const reversi_artifact = b.addInstallArtifact(reversi, .{ .dest_dir = public_dir });
-    const reversi_step = b.step("reversi", "Build reversi library");
-    reversi_step.dependOn(&reversi_artifact.step);
+    const artifact = b.addInstallArtifact(lib, .{ .dest_dir = public_dir });
+    const step = b.step(name, "Build " ++ name ++ " library");
+    step.dependOn(&artifact.step);
 
-    // test
+    for (modules) |module| {
+        lib.addModule(module.name, module.module);
+    }
+}
 
+fn buildTest(
+    b: *std.Build,
+    comptime name: []const u8,
+    target: std.zig.CrossTarget,
+    optimize: std.builtin.OptimizeMode,
+    test_step: *std.Build.Step,
+    modules: []ModuleStructs,
+) void {
     const main_tests = b.addTest(.{
-        .root_source_file = .{ .path = "src/wasms/test.zig" },
+        .root_source_file = .{ .path = "src/wasms/" ++ name ++ "/main.zig" },
         .target = target,
         .optimize = optimize,
     });
     const run_main_tests = b.addRunArtifact(main_tests);
-    const test_step = b.step("test", "Run library tests");
     test_step.dependOn(&run_main_tests.step);
+
+    for (modules) |module| {
+        main_tests.addModule(module.name, module.module);
+    }
+}
+
+fn buildModule(
+    b: *std.Build,
+    comptime name: []const u8,
+) ModuleStructs {
+    return .{
+        .name = name,
+        .module = b.addModule(name, .{ .source_file = .{ .path = "src/wasms/" ++ name ++ "/main.zig" } }),
+    };
 }

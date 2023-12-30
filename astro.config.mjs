@@ -35,12 +35,7 @@ export default defineConfig({
   compressHTML: true,
 
   vite: {
-    plugins: [
-      // solidPlugin(),
-      vanillaExtractPlugin(),
-      wasmPlugin(),
-      topLevelAwaitPlugin(),
-    ],
+    plugins: [vanillaExtractPlugin(), wasmPlugin(), topLevelAwaitPlugin()],
 
     esbuild: {
       mangleProps: /_$/,
@@ -51,6 +46,12 @@ export default defineConfig({
         output: {
           assetFileNames: "_assets/[hash:16][extname]",
         },
+      },
+    },
+
+    server: {
+      watch: {
+        ignored: ["**/zig-cache/**"],
       },
     },
   },

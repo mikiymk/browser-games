@@ -1,12 +1,22 @@
-import { SettingModal } from "@/components/common/setting-modal";
+import {
+  Black,
+  End5Repetition,
+  End75Moves,
+  EndBlackWin,
+  EndInsufficientMaterial,
+  EndStalemate,
+  EndWhiteWin,
+} from "@/games/chess/constants";
 import { PlayerTypeAI, PlayerTypeHuman } from "@/scripts/player";
 
 import type { PlayerType } from "@/scripts/player";
 import type { Setter } from "solid-js";
 
 type ControllerProperties = {
-  statusMessage: string;
-  reset: () => void;
+  color: number;
+  end: number;
+
+  start: () => void;
 
   playerWhite: PlayerType;
   playerBlack: PlayerType;
@@ -15,28 +25,52 @@ type ControllerProperties = {
 };
 
 export const Controller = (properties: ControllerProperties) => {
+  const message = () => {
+    switch (properties.end) {
+      case EndBlackWin: {
+        return "black win";
+      }
+      case EndWhiteWin: {
+        return "white win";
+      }
+      case EndStalemate: {
+        return "draw - stalemate";
+      }
+      case End75Moves: {
+        return "draw - Seventy-five-move";
+      }
+      case End5Repetition: {
+        return "draw - Fivefold repetition";
+      }
+      case EndInsufficientMaterial: {
+        return "draw - Insufficient material";
+      }
+      default: {
+        return properties.color === Black ? "black" : "white";
+      }
+    }
+  };
   return (
     <div>
       status:
-      <output>{properties.statusMessage}</output>
+      <output>{message()}</output>
       <button
         type="button"
         onClick={() => {
-          properties.reset();
+          properties.start();
         }}
       >
         reset
       </button>
-      <SettingModal>
-        <div>
-          Black player
-          <SettingPlayerSelect player={properties.playerBlack} setPlayer={properties.setPlayerBlack} />
-        </div>
-        <div>
-          White player
-          <SettingPlayerSelect player={properties.playerWhite} setPlayer={properties.setPlayerWhite} />
-        </div>
-      </SettingModal>
+
+      <div>
+        Black player
+        <SettingPlayerSelect player={properties.playerBlack} setPlayer={properties.setPlayerBlack} />
+      </div>
+      <div>
+        White player
+        <SettingPlayerSelect player={properties.playerWhite} setPlayer={properties.setPlayerWhite} />
+      </div>
     </div>
   );
 };

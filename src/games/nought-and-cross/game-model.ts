@@ -68,11 +68,11 @@ export const gameLoop = (
   };
 };
 
-export const isHumanPlayer = (players: Players, mark: number): boolean => {
+const isHumanPlayer = (players: Players, mark: number): boolean => {
   return (mark === OMark && players.O === PlayerTypeHuman) || (mark === XMark && players.X === PlayerTypeHuman);
 };
 
-export const move = (board: number[], index: number, mark: number) => {
+const move = (board: number[], index: number, mark: number) => {
   board[index] = mark;
 };
 

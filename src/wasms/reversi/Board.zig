@@ -1,6 +1,8 @@
 const std = @import("std");
 const builtin = @import("builtin");
 
+const bit_board = @import("bit-board");
+
 // 1 << n
 //
 //  63 62 61 60 59 58 57 56
@@ -42,7 +44,7 @@ pub const Color = enum(u1) {
 
 /// ボードの初期状態を作る
 pub fn init() Board {
-    return comptime fromString(
+    return fromString(
         \\........
         \\........
         \\........
@@ -75,7 +77,7 @@ fn getFlipSquares(b: Board, place: u64) u64 {
     const player_board: u64 = b.getPlayer();
     const opponent_board: u64 = b.getOpponent();
 
-    const mask: u64 = opponent_board & comptime bit_board.fromString(
+    const mask: u64 = opponent_board & bit_board.fromString(
         \\.oooooo.
         \\.oooooo.
         \\.oooooo.
@@ -179,7 +181,7 @@ fn moveDir(player_board: u64, place: u64, mask: u64, dir: u6) u64 {
 test "move black" {
     const testing = std.testing;
 
-    var board = comptime fromString(
+    var board = fromString(
         \\o..o..o.
         \\.x.x.x..
         \\..xxx...
@@ -201,7 +203,7 @@ test "move black" {
         \\........
     , 'o');
 
-    const expected = comptime fromString(
+    const expected = fromString(
         \\o..o..o.
         \\.o.o.o..
         \\..ooo...
@@ -222,7 +224,7 @@ pub fn getValidMoves(b: Board) u64 {
     const player_board = b.getPlayer();
     const opponent_board = b.getOpponent();
 
-    const mask: u64 = opponent_board & comptime bit_board.fromString(
+    const mask: u64 = opponent_board & bit_board.fromString(
         \\.oooooo.
         \\.oooooo.
         \\.oooooo.
@@ -256,7 +258,7 @@ test "get valid move" {
     const testing = std.testing;
 
     // 現在のボード状態
-    const board = comptime fromString(
+    const board = fromString(
         \\...x..x.
         \\.x.x.x..
         \\..xxx...
@@ -269,7 +271,7 @@ test "get valid move" {
 
     // マスク
     // 相手の石があるところだけ + 端をループしないように止める
-    const mask: u64 = board.white & comptime bit_board.fromString(
+    const mask: u64 = board.white & bit_board.fromString(
         \\.oooooo.
         \\.oooooo.
         \\.oooooo.
@@ -399,7 +401,7 @@ test "get valid move" {
 test "get valid move 1" {
     const testing = std.testing;
 
-    const board = comptime fromString(
+    const board = fromString(
         \\.ox.....
         \\........
         \\........
@@ -428,7 +430,7 @@ test "get valid move 1" {
 test "get valid move 2" {
     const testing = std.testing;
 
-    const board = comptime fromString(
+    const board = fromString(
         \\.o...x..
         \\.x.o.o.x
         \\...x...x
@@ -457,7 +459,7 @@ test "get valid move 2" {
 test "get valid move 3" {
     const testing = std.testing;
 
-    const board = comptime fromString(
+    const board = fromString(
         \\o.......
         \\.x...o..
         \\..x...x.
@@ -486,7 +488,7 @@ test "get valid move 3" {
 test "get valid move 4" {
     const testing = std.testing;
 
-    const board = comptime fromString(
+    const board = fromString(
         \\..x.....
         \\.x....x.
         \\o....x..
@@ -531,7 +533,7 @@ pub fn isEnd(b: Board) bool {
 test "game is end" {
     const testing = std.testing;
 
-    const board = comptime fromString(
+    const board = fromString(
         \\oooooooo
         \\xxxxxxxx
         \\oooooooo
@@ -551,7 +553,7 @@ test "game is end" {
 test "game is not end" {
     const testing = std.testing;
 
-    const board = comptime fromString(
+    const board = fromString(
         \\oooooooo
         \\xxxxxxxx
         \\oooooooo
@@ -577,120 +579,6 @@ pub fn fromString(comptime str: []const u8) Board {
     };
 }
 
-/// ビットボードの便利な関数の名前空間
-pub const bit_board = struct {
-    /// ビットボードの文字列からビットボードを作成する。
-    /// 第二引数で石を示す文字を指定する。
-    pub fn fromString(comptime str: []const u8, piece_symbol: u8) u64 {
-        if (!@inComptime() and builtin.mode != .Debug) {
-            @compileError("bit-board.fromString is use only debug or comptime");
-        }
-
-        comptime {
-            if (str.len != 64 + 7) {
-                @compileError("invalid length");
-            }
-
-            for (1..8) |i| {
-                if (str[9 * i - 1] != '\n') {
-                    @compileError("invalid character");
-                }
-            }
-        }
-
-        var board: u64 = 0;
-
-        var char_count: u8 = 0;
-        var bit_count: u6 = 0;
-        for (0..8) |n| {
-            for (0..8) |_| {
-                const char = str[char_count];
-
-                if (char == piece_symbol) {
-                    board |= @as(u64, 1) << bit_count;
-                }
-
-                char_count += 1;
-                bit_count +|= 1;
-            }
-
-            if (n == 7) {
-                break;
-            }
-
-            char_count += 1;
-        }
-
-        return board;
-    }
-
-    /// ビットボードを文字列に変換する。
-    /// printデバッグ用
-    pub fn toString(board: u64, piece_symbol: u8, empty_symbol: u8) [71]u8 {
-        var str: [64 + 7]u8 = .{0} ** (64 + 7);
-
-        var char_count: u8 = 0;
-        var bit_count: u6 = 0;
-        for (0..8) |l| {
-            for (0..8) |_| {
-                if (board & @as(u64, 1) << bit_count != 0) {
-                    str[char_count] = piece_symbol;
-                } else {
-                    str[char_count] = empty_symbol;
-                }
-
-                char_count += 1;
-                bit_count +|= 1;
-            }
-
-            if (l == 7) {
-                break;
-            }
-
-            str[char_count] = '\n';
-            char_count += 1;
-        }
-
-        return str;
-    }
-};
-
-test "bit-board from string" {
-    const testing = std.testing;
-
-    var expected: u64 = 0x00_00_00_00_00_aa_55_aa;
-    var actual = comptime bit_board.fromString(
-        \\.o.o.o.o
-        \\o.o.o.o.
-        \\.o.o.o.o
-        \\........
-        \\........
-        \\x.x.x.x.
-        \\.x.x.x.x
-        \\x.x.x.x.
-    , 'o');
-
-    try testing.expectEqualDeep(expected, actual);
-}
-
-test "bit-board to string" {
-    const testing = std.testing;
-
-    var expected =
-        \\.o.o.o.o
-        \\o.o.o.o.
-        \\.o.o.o.o
-        \\........
-        \\........
-        \\........
-        \\........
-        \\........
-    ;
-    var actual = comptime bit_board.toString(0x00_00_00_00_00_aa_55_aa, 'o', '.');
-
-    try testing.expectEqualStrings(expected, &actual);
-}
-
 test "board from string" {
     const testing = std.testing;
 
@@ -698,7 +586,7 @@ test "board from string" {
         .black = 0x00_00_00_00_00_aa_55_aa,
         .white = 0x55_aa_55_00_00_00_00_00,
     };
-    var actual = comptime fromString(
+    var actual = fromString(
         \\.o.o.o.o
         \\o.o.o.o.
         \\.o.o.o.o

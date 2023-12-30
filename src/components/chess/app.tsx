@@ -1,59 +1,64 @@
-import { createSignal } from "solid-js";
+import { createResource, createSignal } from "solid-js";
 
-import { aiPlayer, createHumanPlayer, createMessenger } from "@/games/chess/ai";
-import { gameLoop } from "@/games/chess/game";
-import { generateState } from "@/games/chess/state";
-import { Black, Reset, White } from "@/games/chess/types";
-import { PlayerTypeAI, PlayerTypeHuman, selectPlayer } from "@/scripts/player";
+import { createBoard } from "@/games/chess/board";
+import { Board } from "@/games/chess/components/board";
+import { EndNotYet, White } from "@/games/chess/constants";
+import { gameLoop, getWasm } from "@/games/chess/game-loop";
+import { doNothingFunction } from "@/scripts/do-nothing";
+import { MultiPromise } from "@/scripts/multi-promise";
+import { PlayerTypeAI, PlayerTypeHuman } from "@/scripts/player";
 
-import { Board } from "./board";
 import { Controller } from "./controller";
-import { PromotionPopup } from "./promotion-popup";
 
-import type { Index, InputType, Mark, PromotionPieces } from "@/games/chess/types";
+import type { BoardCell } from "@/games/chess/board";
 import type { PlayerType } from "@/scripts/player";
 
 export const App = () => {
-  const [state, setState] = createSignal(generateState());
-  const [status, setStatus] = createSignal("");
   const [playerWhite, setPlayerWhite] = createSignal<PlayerType>(PlayerTypeHuman);
   const [playerBlack, setPlayerBlack] = createSignal<PlayerType>(PlayerTypeAI);
-  const [movable, setMovable] = createSignal<Index[]>([]);
-  const [promotionMark, setPromotionMark] = createSignal<Mark>();
 
-  const [humanInputSender, humanInputReceiver] = createMessenger<InputType>();
-  const [humanPromotionSender, humanPromotionReceiver] = createMessenger<PromotionPieces>();
+  const [color, setColor] = createSignal(White);
+  const [end, setEnd] = createSignal(EndNotYet);
 
-  const humanPlayer = createHumanPlayer(humanInputReceiver, setMovable, humanPromotionReceiver, setPromotionMark);
+  const { board, setPiece, setMark } = createBoard();
+  const [wasm] = createResource(getWasm);
 
-  const reset = () => {
-    humanInputSender(Reset);
+  let resolve: (value: number) => void = doNothingFunction;
+  const humanInput = new MultiPromise<number>((rs) => {
+    resolve = rs;
+  });
 
-    setState(() => {
-      return generateState();
+  let terminate = doNothingFunction;
+  const start = () => {
+    terminate();
+
+    const wasmObject = wasm();
+    if (wasmObject === undefined) {
+      return;
+    }
+    terminate = gameLoop(wasmObject, setColor, setPiece, setEnd, setMark, humanInput, {
+      white: playerWhite(),
+      black: playerBlack(),
     });
+  };
 
-    const players = {
-      [White]: selectPlayer(playerWhite(), humanPlayer, aiPlayer),
-      [Black]: selectPlayer(playerBlack(), humanPlayer, aiPlayer),
-    };
-    console.log(playerWhite(), playerBlack());
-
-    void gameLoop(players, state, setState, setStatus);
+  const handleClick = (_square: BoardCell, index: number) => {
+    resolve(index);
   };
 
   return (
     <>
-      <Board board={state().board} setInput={humanInputSender} movableSquares={movable()} />
+      <Board board={board()} handleClick={handleClick} />
+
       <Controller
-        statusMessage={status()}
-        reset={reset}
+        color={color()}
+        end={end()}
+        start={start}
         playerWhite={playerWhite()}
         playerBlack={playerBlack()}
         setPlayerWhite={setPlayerWhite}
         setPlayerBlack={setPlayerBlack}
       />
-      <PromotionPopup mark={promotionMark()} setInput={humanPromotionSender} />
     </>
   );
 };

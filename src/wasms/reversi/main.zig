@@ -6,23 +6,15 @@ const ai = @import("./ai.zig");
 /// アロケーター
 const allocator = if (builtin.target.isWasm()) std.heap.wasm_allocator else std.heap.page_allocator;
 
-// JavaScriptからインポートした関数
-
-extern fn random() f64;
-
 /// Wasmではインポートしたランダム関数を使う
 /// それ以外ではZigのライブラリの
 pub fn getRandom() f64 {
-    if (builtin.target.isWasm()) {
-        return random();
-    } else {
-        const S = struct {
-            var rand_gen = std.rand.DefaultPrng.init(0xfe_dc_ba_98_76_54_32_10);
-            var rand = rand_gen.random();
-        };
+    const S = struct {
+        var rand_gen = std.rand.DefaultPrng.init(0xfe_dc_ba_98_76_54_32_10);
+        var rand = rand_gen.random();
+    };
 
-        return S.rand.float(f64);
-    }
+    return S.rand.float(f64);
 }
 
 /// 新しいボードをアロケートしてポインタを返す。
@@ -87,4 +79,10 @@ export fn getValidMoves(b: *Board) u64 {
 /// 現在のゲームボードからAIの考えた手を取得する。
 export fn getAiMove(b: *Board) u8 {
     return ai.getAiMove(b.*, getRandom);
+}
+
+test {
+    const testing = std.testing;
+
+    testing.refAllDecls(@This());
 }

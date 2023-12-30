@@ -32,22 +32,6 @@ export const boardStyle = style({
   columnGap: 0,
 });
 
-export const cellStyle = style({
-  height: "min(7.5vmax, 10vmin)",
-  width: "min(7.5vmax, 10vmin)",
-
-  border: "2px solid black",
-});
-
-export const cellButtonStyle = style({
-  height: "100%",
-  width: "100%",
-});
-
-export const settingStyle = style({
-  gridArea: "st",
-});
-
 export const settingItemStyle = style({
   padding: "0 1rem",
 });
