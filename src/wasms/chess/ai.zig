@@ -40,9 +40,9 @@ pub fn getAiMove(board: Board, allocator: Allocator, color: Color, comptime rand
 
             if (best_places.items.len == 0 or evaluation > best_evaluation) {
                 best_evaluation = evaluation;
+                best_places.items.len = 0;
                 try best_places.append(.{ .from = from, .to = to });
             } else if (evaluation == best_evaluation) {
-                best_places.items.len = 0;
                 try best_places.append(.{ .from = from, .to = to });
             }
         }
