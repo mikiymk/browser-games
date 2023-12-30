@@ -1,5 +1,8 @@
 import { Match, Switch } from "solid-js";
 
+import piece from "@/images/chess/piece.svg";
+import { pieceBlackStyle, pieceWhiteStyle } from "@/styles/chess.css";
+
 import {
   CellBlackBishop,
   CellBlackKing,
@@ -14,8 +17,6 @@ import {
   CellWhiteQueen,
   CellWhiteRook,
 } from "../constants";
-import { pieceBlackStyle, pieceWhiteStyle } from "@/styles/chess.css";
-import piece from "@/images/chess/piece.svg";
 
 type BoardSquareProperties = {
   piece: number;

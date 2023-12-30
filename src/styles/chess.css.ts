@@ -32,6 +32,15 @@ export const movableSquareStyle = style([
   },
 ]);
 
+export const selectedStyle = style([
+  squareStyle,
+  {
+    borderStyle: "double",
+    borderWidth: "0.3rem",
+    borderColor: "black",
+  },
+]);
+
 export const pieceBlackStyle = style({
   fill: "#333",
   stroke: "black",
@@ -40,8 +49,4 @@ export const pieceBlackStyle = style({
 export const pieceWhiteStyle = style({
   fill: "#ddd",
   stroke: "black",
-});
-
-export const selectedStyle = style({
-  borderColor: "black",
 });

@@ -1,12 +1,12 @@
 import { createResource, createSignal } from "solid-js";
 
-import { PlayerTypeAI, PlayerTypeHuman } from "@/scripts/player";
-import { gameLoop, getWasm } from "@/games/chess/game-loop";
 import { createBoard } from "@/games/chess/board";
-import { doNothingFunction } from "@/scripts/do-nothing";
-import { MultiPromise } from "@/scripts/multi-promise";
 import { Board } from "@/games/chess/components/board";
 import { EndNotYet, White } from "@/games/chess/constants";
+import { gameLoop, getWasm } from "@/games/chess/game-loop";
+import { doNothingFunction } from "@/scripts/do-nothing";
+import { MultiPromise } from "@/scripts/multi-promise";
+import { PlayerTypeAI, PlayerTypeHuman } from "@/scripts/player";
 
 import { Controller } from "./controller";
 

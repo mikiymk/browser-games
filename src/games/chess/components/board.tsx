@@ -1,12 +1,13 @@
 import { For } from "solid-js";
 
+import board from "@/images/chess/board.svg";
+import { boardStyle, movableSquareStyle, selectedStyle, squareStyle } from "@/styles/chess.css";
+
 import { BoardSquare } from "./board-square";
 
 import type { BoardCell } from "../board";
 
-import { MoveTarget } from "../constants";
-import { boardStyle, movableSquareStyle, squareStyle } from "@/styles/chess.css";
-import board from "@/images/chess/board.svg";
+import { MoveFrom, MoveTarget } from "../constants";
 
 type BoardProperties = {
   board: BoardCell[];
@@ -25,7 +26,7 @@ export const Board = (properties: BoardProperties) => {
         {(cell, index) => (
           <button
             type="button"
-            class={cell.mark === MoveTarget ? movableSquareStyle : squareStyle}
+            class={cell.mark === MoveTarget ? movableSquareStyle : cell.mark === MoveFrom ? selectedStyle : squareStyle}
             onClick={() => {
               properties.handleClick(cell, index());
             }}

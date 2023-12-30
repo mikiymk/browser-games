@@ -1,25 +1,25 @@
-import { sleep } from "@/scripts/sleep";
 import { PlayerTypeHuman } from "@/scripts/player";
+import { sleep } from "@/scripts/sleep";
 
 import {
-  CellWhiteKnight,
-  CellWhiteBishop,
-  CellWhiteRook,
-  CellWhiteQueen,
-  CellEmpty,
-  CellBlackKnight,
+  Black,
   CellBlackBishop,
-  CellBlackRook,
-  CellBlackQueen,
-  CellBlackPawn,
   CellBlackKing,
-  CellWhitePawn,
+  CellBlackKnight,
+  CellBlackPawn,
+  CellBlackQueen,
+  CellBlackRook,
+  CellEmpty,
+  CellWhiteBishop,
   CellWhiteKing,
+  CellWhiteKnight,
+  CellWhitePawn,
+  CellWhiteQueen,
+  CellWhiteRook,
+  EndNotYet,
   MoveFrom,
   MoveTarget,
-  Black,
   White,
-  EndNotYet,
 } from "./constants";
 
 import type { MultiPromise } from "@/scripts/multi-promise";
@@ -207,7 +207,7 @@ export const gameLoop = (
       let from: number;
       let to: number;
 
-      while (true) {
+      for (;;) {
         setMove(EmptyBoard);
 
         from = await humanInput.request();
@@ -282,7 +282,7 @@ const inputKind = async (
     setBoard(WhitePromotionBoard);
   }
 
-  while (true) {
+  for (;;) {
     const kindIndex = await humanInput.request();
 
     if (color === Black) {
