@@ -26,9 +26,13 @@ export const gameLoop = (
   console.log(`game start id(${bp})`);
 
   const updateColor = (): void => {
-    if (bp === 0) setColor(CellEmpty);
-    else if (isBlack(bp)) setColor(CellBlack);
-    else setColor(CellWhite);
+    if (bp === 0) {
+      setColor(CellEmpty);
+    } else if (isBlack(bp)) {
+      setColor(CellBlack);
+    } else {
+      setColor(CellWhite);
+    }
   };
 
   const terminate = () => {

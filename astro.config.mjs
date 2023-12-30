@@ -11,6 +11,7 @@ export default defineConfig({
   integrations: [
     solidJs({}),
     compress({
+      // biome-ignore lint/style/useNamingConvention: ライブラリに合わせる
       SVG: {
         multipass: true,
 
@@ -26,10 +27,12 @@ export default defineConfig({
         ],
       },
 
+      // biome-ignore lint/style/useNamingConvention: ライブラリに合わせる
       Logger: 1,
     }),
   ],
 
+  // biome-ignore lint/style/useNamingConvention: ライブラリに合わせる
   compressHTML: true,
 
   vite: {

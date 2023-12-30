@@ -35,7 +35,9 @@ export const App = () => {
 
   const handleStart = () => {
     const exports = wasm();
-    if (exports === undefined) return;
+    if (exports === undefined) {
+      return;
+    }
     terminateGame();
 
     const { terminate, color } = gameLoop(

@@ -56,17 +56,35 @@ type WasmConnect = {
 
 const EmptyBoard = Array.from({ length: 64 }, () => CellEmpty);
 const WhitePromotionBoard = Array.from({ length: 64 }, (_, index) => {
-  if (index === 26) return CellWhiteKnight;
-  if (index === 27) return CellWhiteBishop;
-  if (index === 28) return CellWhiteRook;
-  if (index === 29) return CellWhiteQueen;
+  if (index === 26) {
+    return CellWhiteKnight;
+  }
+  if (index === 27) {
+    return CellWhiteBishop;
+  }
+  if (index === 28) {
+    return CellWhiteRook;
+  }
+  if (index === 29) {
+    return CellWhiteQueen;
+  }
+
   return CellEmpty;
 });
 const BlackPromotionBoard = Array.from({ length: 64 }, (_, index) => {
-  if (index === 26) return CellBlackKnight;
-  if (index === 27) return CellBlackBishop;
-  if (index === 28) return CellBlackRook;
-  if (index === 29) return CellBlackQueen;
+  if (index === 26) {
+    return CellBlackKnight;
+  }
+  if (index === 27) {
+    return CellBlackBishop;
+  }
+  if (index === 28) {
+    return CellBlackRook;
+  }
+  if (index === 29) {
+    return CellBlackQueen;
+  }
+
   return CellEmpty;
 });
 
@@ -95,6 +113,7 @@ export const getWasm = async (): Promise<WasmConnect> => {
     const whiteQueen = exports.getPiece(g, CellWhiteQueen);
     const whiteKing = exports.getPiece(g, CellWhiteKing);
 
+    // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
     return Array.from({ length: 64 }, (_, index) => {
       const bitBoard = 1n << BigInt(index);
 
@@ -208,6 +227,7 @@ export const gameLoop = (
     boardPtr = 0;
   };
 
+  // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
   const run = async () => {
     setBoard(getBoard(boardPtr));
     const color = getColor(boardPtr);

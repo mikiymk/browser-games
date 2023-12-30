@@ -18,7 +18,7 @@ export const LabeledRadioInput = (properties: LabeledRadioInputProperties) => {
     if (enable && checked) {
       return checkedRadioStyle;
     }
-    if (!enable && !checked) {
+    if (!(enable || checked)) {
       return disableRadioStyle;
     }
 

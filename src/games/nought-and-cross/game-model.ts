@@ -1,12 +1,12 @@
 import { PlayerTypeHuman } from "@/scripts/player";
 
 import { gameNoughtAndCrossAi } from "./ai";
-import { Empty, OMark, Reset, XMark } from "./types";
+import { Empty, MarkO, MarkX, Reset } from "./types";
 
 import type { MultiPromise } from "@/scripts/multi-promise";
 import type { Setter } from "solid-js";
 
-type Players = { O: number; X: number };
+type Players = { o: number; x: number };
 
 export const gameLoop = (
   setBoard: Setter<number[]>,
@@ -20,7 +20,7 @@ export const gameLoop = (
   console.log(`start game(${id})`);
 
   const board = Array.from({ length: 9 }, () => Empty);
-  let mark = OMark;
+  let mark = MarkO;
   let isRunning = true;
 
   const terminate = () => {
@@ -48,7 +48,7 @@ export const gameLoop = (
     setMark(mark);
     setHistory((history) => [...history, index]);
 
-    if (isWin(board, OMark) || isWin(board, XMark) || filledBoard(board)) {
+    if (isWin(board, MarkO) || isWin(board, MarkX) || filledBoard(board)) {
       terminate();
     }
 
@@ -69,7 +69,7 @@ export const gameLoop = (
 };
 
 const isHumanPlayer = (players: Players, mark: number): boolean => {
-  return (mark === OMark && players.O === PlayerTypeHuman) || (mark === XMark && players.X === PlayerTypeHuman);
+  return (mark === MarkO && players.o === PlayerTypeHuman) || (mark === MarkX && players.x === PlayerTypeHuman);
 };
 
 const move = (board: number[], index: number, mark: number) => {
@@ -77,7 +77,7 @@ const move = (board: number[], index: number, mark: number) => {
 };
 
 export const turnMark = (mark: number): number => {
-  return mark === XMark ? OMark : XMark;
+  return mark === MarkX ? MarkO : MarkX;
 };
 
 const rowIndexes: [number, number, number][] = [

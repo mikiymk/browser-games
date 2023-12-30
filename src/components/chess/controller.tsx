@@ -7,7 +7,7 @@ import {
   EndStalemate,
   EndWhiteWin,
 } from "@/games/chess/constants";
-import { PlayerTypeAI, PlayerTypeHuman } from "@/scripts/player";
+import { PlayerTypeAi, PlayerTypeHuman } from "@/scripts/player";
 
 import type { PlayerType } from "@/scripts/player";
 import type { Setter } from "solid-js";
@@ -85,11 +85,11 @@ const SettingPlayerSelect = (properties: SettingPlayerSelectProperties) => {
       value={properties.player}
       onChange={(event) => {
         console.log(event.currentTarget.value);
-        properties.setPlayer(Number(event.currentTarget.value) === PlayerTypeHuman ? PlayerTypeHuman : PlayerTypeAI);
+        properties.setPlayer(Number(event.currentTarget.value) === PlayerTypeHuman ? PlayerTypeHuman : PlayerTypeAi);
       }}
     >
       <option value={PlayerTypeHuman}>Human</option>
-      <option value={PlayerTypeAI}>AI</option>
+      <option value={PlayerTypeAi}>AI</option>
     </select>
   );
 };

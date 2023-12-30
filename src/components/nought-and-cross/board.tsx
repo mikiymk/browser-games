@@ -1,6 +1,6 @@
 import { For, Match, Switch } from "solid-js";
 
-import { OMark, XMark } from "@/games/nought-and-cross/types";
+import { MarkO, MarkX } from "@/games/nought-and-cross/types";
 import cross from "@/images/symbol/cross.svg";
 import nought from "@/images/symbol/nought.svg";
 import { boardStyle, cellStyle, oStyle, xStyle } from "@/styles/nought-and-cross.css";
@@ -48,10 +48,10 @@ const Cell = (properties: CellProperties) => {
   return (
     <>
       <Switch>
-        <Match when={properties.mark === OMark}>
+        <Match when={properties.mark === MarkO}>
           <use href={`${nought.src}#root`} x={x()} y={y()} height={30} width={30} class={xStyle} />
         </Match>
-        <Match when={properties.mark === XMark}>
+        <Match when={properties.mark === MarkX}>
           <use href={`${cross.src}#root`} x={x()} y={y()} height={30} width={30} class={oStyle} />
         </Match>
       </Switch>

@@ -35,6 +35,7 @@ export const App = () => {
     reset();
   });
 
+  // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
   const openField = (index: number) => {
     if (gameState() === Bombed || gameState() === Clear || fields().length <= index) {
       return;

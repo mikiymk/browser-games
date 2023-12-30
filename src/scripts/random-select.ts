@@ -1,5 +1,8 @@
 export const randomSelect = <T>(list: T[]): T | undefined => {
-  if (list.length === 0) return undefined;
+  if (list.length === 0) {
+    return undefined;
+  }
+
   return list[randomRange(0, list.length)];
 };
 

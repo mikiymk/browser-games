@@ -3,33 +3,33 @@ import { createSignal, onMount } from "solid-js";
 import { filledBoard, gameLoop, isWin } from "@/games/nought-and-cross/game-model";
 import {
   Empty,
-  NnCStatusDraw,
-  NnCStatusNextO,
-  NnCStatusNextX,
-  NnCStatusNone,
-  NnCStatusOWin,
-  NnCStatusXWin,
-  OMark,
-  XMark,
+  MarkO,
+  MarkX,
+  StatusDraw,
+  StatusNextO,
+  StatusNextX,
+  StatusNone,
+  StatusWinO,
+  StatusWinX,
 } from "@/games/nought-and-cross/types";
 import { doNothingFunction } from "@/scripts/do-nothing";
 import { MultiPromise } from "@/scripts/multi-promise";
-import { PlayerTypeAI, PlayerTypeHuman } from "@/scripts/player";
+import { PlayerTypeAi, PlayerTypeHuman } from "@/scripts/player";
 
 import { Board } from "./board";
 import { Controller } from "./controller";
 import { History } from "./history";
 
-import type { NnCStatus } from "@/games/nought-and-cross/types";
+import type { Status } from "@/games/nought-and-cross/types";
 import type { PlayerType } from "@/scripts/player";
 
 export const App = () => {
   const [board, setBoardData] = createSignal<number[]>([]);
-  const [mark, setMark] = createSignal(OMark);
+  const [mark, setMark] = createSignal(MarkO);
   const [history, setHistory] = createSignal<number[]>([]);
 
   const [playerO, setPlayerO] = createSignal<PlayerType>(PlayerTypeHuman);
-  const [playerX, setPlayerX] = createSignal<PlayerType>(PlayerTypeAI);
+  const [playerX, setPlayerX] = createSignal<PlayerType>(PlayerTypeAi);
 
   let terminate = doNothingFunction;
   let resolve: (value: number) => void = doNothingFunction;
@@ -50,8 +50,8 @@ export const App = () => {
     terminate();
 
     const players = {
-      O: playerO(),
-      X: playerX(),
+      o: playerO(),
+      x: playerX(),
     };
 
     terminate = gameLoop(setBoardData, setMark, setHistory, humanInput, players).terminate;
@@ -59,24 +59,24 @@ export const App = () => {
 
   onMount(reset);
 
-  const status = (): NnCStatus => {
-    if (isWin(board(), OMark)) {
-      return NnCStatusOWin;
+  const status = (): Status => {
+    if (isWin(board(), MarkO)) {
+      return StatusWinO;
     }
-    if (isWin(board(), XMark)) {
-      return NnCStatusXWin;
+    if (isWin(board(), MarkX)) {
+      return StatusWinX;
     }
     if (filledBoard(board())) {
-      return NnCStatusDraw;
+      return StatusDraw;
     }
-    if (mark() === OMark) {
-      return NnCStatusNextO;
+    if (mark() === MarkO) {
+      return StatusNextO;
     }
-    if (mark() === XMark) {
-      return NnCStatusNextX;
+    if (mark() === MarkX) {
+      return StatusNextX;
     }
 
-    return NnCStatusNone;
+    return StatusNone;
   };
 
   return (

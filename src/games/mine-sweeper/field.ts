@@ -72,7 +72,9 @@ export const resetMines = (numberMines: number, height: number, width: number, f
 
   while (mines.size !== amount) {
     const index = Math.floor(Math.random() * length);
-    if (!around.has(index)) mines.add(index);
+    if (!around.has(index)) {
+      mines.add(index);
+    }
   }
 
   return mines;
