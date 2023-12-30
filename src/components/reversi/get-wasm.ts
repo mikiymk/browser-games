@@ -24,9 +24,7 @@ export type ReversiWasmConnect = {
 };
 
 export const getReversiWasm = async (): Promise<ReversiWasmConnect> => {
-  const wasm = await WebAssembly.instantiateStreaming(fetch(`${import.meta.env.BASE_URL}/wasm/reversi.wasm`), {
-    env: { random: Math.random },
-  });
+  const wasm = await WebAssembly.instantiateStreaming(fetch(`${import.meta.env.BASE_URL}/wasm/reversi.wasm`));
 
   const exports = wasm.instance.exports as ReversiWasm;
 

@@ -9,18 +9,13 @@ const ColorPieceType = Board.ColorPieceType;
 /// アロケーター
 const allocator = if (builtin.target.isWasm()) std.heap.wasm_allocator else std.heap.page_allocator;
 
-extern fn random() f64;
 fn getRamdom() f64 {
-    if (builtin.target.isWasm()) {
-        return random();
-    } else {
-        const S = struct {
-            var rand_gen = std.rand.DefaultPrng.init(0xfe_dc_ba_98_76_54_32_10);
-            var rand = rand_gen.random();
-        };
+    const S = struct {
+        var rand_gen = std.rand.DefaultPrng.init(0xfe_dc_ba_98_76_54_32_10);
+        var rand = rand_gen.random();
+    };
 
-        return S.rand.float(f64);
-    }
+    return S.rand.float(f64);
 }
 
 /// ゲームを作成する
