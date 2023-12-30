@@ -48,5 +48,11 @@ export default defineConfig({
         },
       },
     },
+
+    server: {
+      watch: {
+        ignored: ["**/zig-cache/**"],
+      },
+    },
   },
 });

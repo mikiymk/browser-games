@@ -6,7 +6,15 @@ const Color = Board.Color;
 const PieceType = Board.PieceType;
 
 const Game = @This();
-pub const Result = enum { BlackWin, WhiteWin, Draw };
+pub const Result = enum {
+    NoEnds,
+    BlackWin,
+    WhiteWin,
+    Stalemate,
+    SeventyFiveMoves,
+    FivefoldRepetition,
+    InsufficientMaterial,
+};
 
 const BoardMap = std.hash_map.AutoHashMap(Board, u8);
 
@@ -79,21 +87,21 @@ pub fn applyPromote(game: *Game, place: u64, piece_type: PieceType) void {
 
 /// ゲームの勝利を判定する。
 /// まだ勝敗がついていない場合はnull
-pub fn ends(game: Game, color: Color) ?Result {
+pub fn ends(game: Game, color: Color) Result {
     if (game.move_clock >= 75) {
         // 75手ルール
-        return .Draw;
+        return .SeventyFiveMoves;
     }
 
     // 5回繰り返しルール
     var iter = game.previous_boards.iterator();
     while (iter.next()) |entry| {
         if (entry.value_ptr.* >= 5) {
-            return .Draw;
+            return .FivefoldRepetition;
         }
     }
 
-    if (game.board.canMove(color)) {
+    if (!game.board.canMove(color)) {
         if (game.board.isChecked(color)) {
             // チェック状態ならチェックメイト
             return switch (color) {
@@ -102,14 +110,14 @@ pub fn ends(game: Game, color: Color) ?Result {
             };
         } else {
             // チェック状態でないならステイルメイト
-            return .Draw;
+            return .Stalemate;
         }
     }
 
     if (game.board.isInsufficientMaterial()) {
         // 駒が足りない状態
-        return .Draw;
+        return .InsufficientMaterial;
     }
 
-    return null;
+    return .NoEnds;
 }
