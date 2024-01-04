@@ -11,6 +11,7 @@
     "lint": "run-z lint:format lint:eslint lint:biome lint:typescript lint:find-unused",
     "lint:format": "biome ci .",
     "lint:eslint": "eslint src --cache",
+    "lint:eslint-timing": "export TIMING=1 || set TIMING=1 && eslint src",
     "lint:biome": "biome check .",
     "lint:typescript": "tsc",
     "lint:find-unused": "knip",

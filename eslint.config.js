@@ -40,13 +40,12 @@ export default [
     },
 
     rules: {
+      // extends
       ...js.configs.recommended.rules,
       ...typescript.configs["eslint-recommended"].overrides[0].rules,
       ...typescript.configs["recommended-type-checked"].rules,
       ...typescript.configs["strict-type-checked"].rules,
       ...typescript.configs["stylistic-type-checked"].rules,
-      ...pluginImport.configs.recommended.rules,
-      ...pluginImport.configs.typescript.rules,
       ...unicorn.configs.recommended.rules,
       ...solid.configs.typescript.rules,
       ...vitest.configs.recommended.rules,
@@ -59,6 +58,27 @@ export default [
       "@typescript-eslint/consistent-type-definitions": ["warn", "type"],
       "@typescript-eslint/consistent-type-imports": "error",
 
+      "import/no-empty-named-blocks": "error",
+      "import/no-extraneous-dependencies": [
+        "error",
+        {
+          devDependencies: false,
+          optionalDependencies: false,
+          peerDependencies: false,
+          bundledDependencies: false,
+        },
+      ],
+      "import/no-mutable-exports": "error",
+      "import/unambiguous": "error",
+      "import/no-absolute-path": "error",
+      "import/no-useless-path-segments": "error",
+      "import/consistent-type-specifier-style": ["error", "prefer-top-level"],
+      "import/newline-after-import": "error",
+      "import/no-anonymous-default-export": "error",
+      "import/no-duplicates": "error",
+      "import/no-named-default": "error",
+      "import/no-unassigned-import": "error",
+
       "import/order": [
         "error",
         {
@@ -66,6 +86,16 @@ export default [
           "newlines-between": "never",
         },
       ],
+
+      // unnecessary with typescript
+
+      "import/export": "off",
+      "import/default": "off",
+      "import/named": "off",
+      "import/namespace": "off",
+      "import/no-unresolved": "off",
+      "import/no-named-as-default": "off",
+      "import/no-named-as-default-member": "off",
 
       // unnecessary with Biome
 
@@ -89,7 +119,6 @@ export default [
       "no-empty-character-class": "off", // lint/correctness/noEmptyCharacterClassInRegex
       "no-empty-pattern": "off", // lint/correctness/noEmptyPattern
       "no-inner-declarations": "off", // lint/correctness/noInnerDeclarations
-      // "unicorn/new-for-builtin": "off", // lint/correctness/noInvalidNewBuiltin
       "no-self-assign": "off", // lint/correctness/noSelfAssign
       "no-unsafe-finally": "off", // lint/correctness/noUnsafeFinally
       "no-unsafe-optional-chaining": "off", // lint/correctness/noUnsafeOptionalChaining
@@ -149,7 +178,6 @@ export default [
         "warn",
         {
           missingExports: true,
-          // unusedExports: true,
         },
       ],
     },
@@ -164,13 +192,6 @@ export default [
       import: pluginImport,
     },
 
-    rules: {
-      "import/no-unused-modules": [
-        "warn",
-        // {
-        //   unusedExports: true,
-        // },
-      ],
-    },
+    rules: {},
   },
 ];

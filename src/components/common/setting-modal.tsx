@@ -1,4 +1,5 @@
-import { type JSXElement, createSignal } from "solid-js";
+import {  createSignal } from "solid-js";
+import type {JSXElement} from "solid-js";
 
 type SettingModalProperties = {
   children: JSXElement;
