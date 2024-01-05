@@ -1,6 +1,7 @@
 import js from "@eslint/js";
 import typescript from "@typescript-eslint/eslint-plugin";
 import typescriptParser from "@typescript-eslint/parser";
+import eslintComments from "@eslint-community/eslint-plugin-eslint-comments";
 import prettier from "eslint-config-prettier";
 import pluginImport from "eslint-plugin-i";
 import solid from "eslint-plugin-solid";
@@ -19,6 +20,7 @@ export default [
       unicorn,
       solid,
       vitest,
+      "@eslint-community/eslint-comments": eslintComments,
     },
 
     languageOptions: {
@@ -49,6 +51,7 @@ export default [
       ...unicorn.configs.recommended.rules,
       ...solid.configs.typescript.rules,
       ...vitest.configs.recommended.rules,
+      ...eslintComments.configs.recommended.rules,
       ...prettier.rules,
 
       // my custom
@@ -133,6 +136,8 @@ export default [
           "newlines-between": "never",
         },
       ],
+
+      "@eslint-community/eslint-comments/no-unused-disable": "error",
 
       // unnecessary with typescript
 

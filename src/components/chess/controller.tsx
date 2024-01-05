@@ -9,7 +9,7 @@ import {
 } from "@/games/chess/constants";
 import { PlayerTypeAi, PlayerTypeHuman } from "@/scripts/player";
 import type { PlayerType } from "@/scripts/player";
-import type { Setter, JSXElement } from "solid-js";
+import type { JSXElement, Setter } from "solid-js";
 
 type SettingPlayerSelectProperties = {
   readonly player: PlayerType;

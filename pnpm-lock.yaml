@@ -28,6 +28,9 @@ devDependencies:
   '@biomejs/biome':
     specifier: ^1.4.1
     version: 1.4.1
+  '@eslint-community/eslint-plugin-eslint-comments':
+    specifier: ^4.1.0
+    version: 4.1.0(eslint@8.56.0)
   '@eslint/js':
     specifier: ^8.56.0
     version: 8.56.0
@@ -1485,6 +1488,17 @@ packages:
     requiresBuild: true
     dev: false
     optional: true
+
+  /@eslint-community/eslint-plugin-eslint-comments@4.1.0(eslint@8.56.0):
+    resolution: {integrity: sha512-B2mwipifrBS5E00vN8vME68laPMZ0h3sNGOEDj5g9iUN9k5EU99Omq0Nc325eKNoFFDnDtiHp3DqIjO+1bstag==}
+    engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+    peerDependencies:
+      eslint: ^6.0.0 || ^7.0.0 || ^8.0.0
+    dependencies:
+      escape-string-regexp: 4.0.0
+      eslint: 8.56.0
+      ignore: 5.2.4
+    dev: true
 
   /@eslint-community/eslint-utils@4.4.0(eslint@8.56.0):
     resolution: {integrity: sha512-1/sA4dwrzBAyeUoQ6oxahHKmrZvsnLCg4RfxW3ZFGGmQkSNQPFNLV9CUEFQP1x9EYXHTo5p6xdhZM1Ne9p/AfA==}

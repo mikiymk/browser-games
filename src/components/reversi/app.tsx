@@ -1,3 +1,4 @@
+import { doNothingFunction } from "@/scripts/do-nothing";
 import { MultiPromise } from "@/scripts/multi-promise";
 import type { JSXElement } from "solid-js";
 import { createResource, createSignal } from "solid-js";
@@ -7,7 +8,6 @@ import { gameLoop } from "./game-loop";
 import { getReversiWasm } from "./get-wasm";
 import { Info } from "./information";
 import { Settings } from "./settings";
-import { doNothingFunction } from "@/scripts/do-nothing";
 
 const emptyBoard: number[] = Array.from({ length: 64 }, () => CellEmpty);
 
