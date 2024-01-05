@@ -33,5 +33,29 @@ jobs:
         with:
           version: 0.11.0
 
-      - name: check codes
-        run: pnpm run ci
+      - name: check zig is formatted
+        run: pnpm run lint:format-zig
+
+      - name: test zig
+        run: pnpm run test:wasm
+
+      - name: generate wasm
+        run: pnpm run build-wasm
+
+      - name: check javascript is formatted
+        run: pnpm run lint:format
+
+      - name: check biome
+        run: pnpm run lint:biome
+
+      - name: check eslint
+        run: pnpm run lint:eslint
+
+      - name: check typescript
+        run: pnpm run lint:typescript
+
+      - name: check knip
+        run: pnpm run lint:find-unused
+
+      - name: build astro
+        run: pnpm run build-js
