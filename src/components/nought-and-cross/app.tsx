@@ -1,35 +1,33 @@
-import { createSignal, onMount } from "solid-js";
-
 import { filledBoard, gameLoop, isWin } from "@/games/nought-and-cross/game-model";
 import {
   Empty,
-  NnCStatusDraw,
-  NnCStatusNextO,
-  NnCStatusNextX,
-  NnCStatusNone,
-  NnCStatusOWin,
-  NnCStatusXWin,
-  OMark,
-  XMark,
+  MarkO,
+  MarkX,
+  StatusDraw,
+  StatusNextO,
+  StatusNextX,
+  StatusNone,
+  StatusWinO,
+  StatusWinX,
 } from "@/games/nought-and-cross/types";
+import type { Status } from "@/games/nought-and-cross/types";
 import { doNothingFunction } from "@/scripts/do-nothing";
 import { MultiPromise } from "@/scripts/multi-promise";
-import { PlayerTypeAI, PlayerTypeHuman } from "@/scripts/player";
-
+import { PlayerTypeAi, PlayerTypeHuman } from "@/scripts/player";
+import type { PlayerType } from "@/scripts/player";
+import type { JSXElement } from "solid-js";
+import { createSignal, onMount } from "solid-js";
 import { Board } from "./board";
 import { Controller } from "./controller";
 import { History } from "./history";
 
-import type { NnCStatus } from "@/games/nought-and-cross/types";
-import type { PlayerType } from "@/scripts/player";
-
-export const App = () => {
-  const [board, setBoardData] = createSignal<number[]>([]);
-  const [mark, setMark] = createSignal(OMark);
-  const [history, setHistory] = createSignal<number[]>([]);
+export const App = (): JSXElement => {
+  const [board, setBoardData] = createSignal<readonly number[]>([]);
+  const [mark, setMark] = createSignal(MarkO);
+  const [history, setHistory] = createSignal<readonly number[]>([]);
 
   const [playerO, setPlayerO] = createSignal<PlayerType>(PlayerTypeHuman);
-  const [playerX, setPlayerX] = createSignal<PlayerType>(PlayerTypeAI);
+  const [playerX, setPlayerX] = createSignal<PlayerType>(PlayerTypeAi);
 
   let terminate = doNothingFunction;
   let resolve: (value: number) => void = doNothingFunction;
@@ -38,7 +36,7 @@ export const App = () => {
     resolve = rs;
   });
 
-  const handleClick = (index: number) => {
+  const handleClick = (index: number): void => {
     if (board()[index] !== Empty) {
       return;
     }
@@ -46,33 +44,38 @@ export const App = () => {
     resolve(index);
   };
 
-  const reset = () => {
+  const reset = (): void => {
     terminate();
 
     const players = {
-      O: playerO(),
-      X: playerX(),
+      o: playerO(),
+      x: playerX(),
     };
 
+    // eslint-disable-next-line @typescript-eslint/prefer-destructuring
     terminate = gameLoop(setBoardData, setMark, setHistory, humanInput, players).terminate;
   };
 
   onMount(reset);
 
-  const status = (): NnCStatus => {
-    if (isWin(board(), OMark)) {
-      return NnCStatusOWin;
-    } else if (isWin(board(), XMark)) {
-      return NnCStatusXWin;
-    } else if (filledBoard(board())) {
-      return NnCStatusDraw;
-    } else if (mark() === OMark) {
-      return NnCStatusNextO;
-    } else if (mark() === XMark) {
-      return NnCStatusNextX;
-    } else {
-      return NnCStatusNone;
+  const status = (): Status => {
+    if (isWin(board(), MarkO)) {
+      return StatusWinO;
     }
+    if (isWin(board(), MarkX)) {
+      return StatusWinX;
+    }
+    if (filledBoard(board())) {
+      return StatusDraw;
+    }
+    if (mark() === MarkO) {
+      return StatusNextO;
+    }
+    if (mark() === MarkX) {
+      return StatusNextX;
+    }
+
+    return StatusNone;
   };
 
   return (

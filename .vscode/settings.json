@@ -1,6 +1,19 @@
 {
   "svg.preview.background": "dark-transparent",
-  "cSpell.words": ["astro", "clippy", "deinit", "Doptimize", "Dtarget", "Reversi", "wasm_bindgen", "wasms"],
+  "cSpell.words": [
+    "astro",
+    "astrojs",
+    "biomejs",
+    "clippy",
+    "deinit",
+    "destyle",
+    "Doptimize",
+    "Dtarget",
+    "knip",
+    "Reversi",
+    "wasm_bindgen",
+    "wasms"
+  ],
   "rust-analyzer.check.command": "clippy",
 
   "editor.defaultFormatter": "biomejs.biome",

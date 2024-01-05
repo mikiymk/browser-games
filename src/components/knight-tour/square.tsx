@@ -1,5 +1,3 @@
-import { Match, Show, Switch, createMemo } from "solid-js";
-
 import { CellKnight, CellMovable, CellVisited } from "@/games/knight-tour/consts";
 import { getLegalMove } from "@/games/knight-tour/knight-move";
 import knight from "@/images/chess/knight-black.svg";
@@ -14,15 +12,17 @@ import number7 from "@/images/number/7-black.svg";
 import number8 from "@/images/number/8-black.svg";
 import circle from "@/images/symbol/circle-black.svg";
 import cross from "@/images/symbol/cross-black.svg";
+import type { JSXElement } from "solid-js";
+import { Match, Show, Switch, createMemo } from "solid-js";
 
 type SquareProperties = {
-  readonly board: number[];
+  readonly board: readonly number[];
   readonly cell: number;
   readonly index: number;
 
   readonly hintMode: boolean;
 };
-export const Square = (properties: SquareProperties) => {
+export const Square = (properties: SquareProperties): JSXElement => {
   const getMovableCount = createMemo(
     () =>
       getLegalMove(properties.index).filter(

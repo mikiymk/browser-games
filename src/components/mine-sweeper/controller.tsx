@@ -1,19 +1,30 @@
 import { SettingModal } from "@/components/common/setting-modal";
+import type { JSXElement } from "solid-js";
 
 type ControllerProperties = {
-  height: number;
-  width: number;
-  mineAmount: number;
+  readonly height: number;
+  readonly width: number;
+  readonly mineAmount: number;
 
-  message: string;
+  readonly message: string;
 
-  reset: () => void;
-  setHeight: (height: number) => void;
-  setWidth: (width: number) => void;
-  setMineAmount: (amount: number) => void;
+  readonly reset: () => void;
+  readonly setHeight: (height: number) => void;
+  readonly setWidth: (width: number) => void;
+  readonly setMineAmount: (amount: number) => void;
 };
 
-export const Controller = (properties: ControllerProperties) => {
+export const Controller = (properties: ControllerProperties): JSXElement => {
+  const handleHeight = (event: { readonly currentTarget: HTMLInputElement }): void => {
+    properties.setHeight(Number(event.currentTarget.value));
+  };
+  const handleWidth = (event: { readonly currentTarget: HTMLInputElement }): void => {
+    properties.setWidth(Number(event.currentTarget.value));
+  };
+  const handleMines = (event: { readonly currentTarget: HTMLInputElement }): void => {
+    properties.setMineAmount(Number(event.currentTarget.value));
+  };
+
   return (
     <div>
       status:
@@ -30,14 +41,7 @@ export const Controller = (properties: ControllerProperties) => {
         <p>
           <label>
             height:
-            <input
-              type="number"
-              min={4}
-              value={properties.height}
-              onChange={(event) => {
-                properties.setHeight(Number(event.currentTarget.value));
-              }}
-            />
+            <input type="number" min={4} value={properties.height} onChange={handleHeight} />
           </label>
           <br />
           4 ～
@@ -45,14 +49,7 @@ export const Controller = (properties: ControllerProperties) => {
         <p>
           <label>
             width:
-            <input
-              type="number"
-              min={4}
-              value={properties.width}
-              onChange={(event) => {
-                properties.setWidth(Number(event.currentTarget.value));
-              }}
-            />
+            <input type="number" min={4} value={properties.width} onChange={handleWidth} />
           </label>
           <br />
           4 ～
@@ -65,9 +62,7 @@ export const Controller = (properties: ControllerProperties) => {
               min={1}
               max={properties.height * properties.width - 9}
               value={properties.mineAmount}
-              onChange={(event) => {
-                properties.setMineAmount(Number(event.currentTarget.value));
-              }}
+              onChange={handleMines}
             />
           </label>
           <br />

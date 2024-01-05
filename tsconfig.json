@@ -14,7 +14,15 @@
     "baseUrl": "./",
     "paths": {
       "@/*": ["src/*"]
-    }
+    },
+
+    // unnecessary with Biome
+
+    "allowUnusedLabels": true, // lint/correctness/noUnusedLabels
+    "allowUnreachableCode": true, // lint/correctness/noUnreachable
+    "noFallthroughCasesInSwitch": false, // lint/suspicious/noFallthroughSwitchClause
+    "noUnusedLocals": true, // lint/correctness/noUnusedVariables
+    "noUnusedParameters": true, // lint/correctness/noUnusedVariables
   },
   "include": ["**/*.ts", "**/*.tsx"],
   "exclude": ["./vitest.config.ts"]

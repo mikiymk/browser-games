@@ -1,4 +1,6 @@
-export const Bomb = () => {
+import type { JSXElement } from "solid-js";
+
+export const Bomb = (): JSXElement => {
   return (
     <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" class="graph g-bomb">
       <title>bombed!</title>
@@ -8,7 +10,7 @@ export const Bomb = () => {
   );
 };
 
-export const Flag = () => {
+export const Flag = (): JSXElement => {
   return (
     <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" class="graph g-flag">
       <title>flagged area</title>
@@ -18,7 +20,7 @@ export const Flag = () => {
   );
 };
 
-export const Number1 = () => {
+export const Number1 = (): JSXElement => {
   return (
     <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" class="graph g-n1">
       <title>1 bombs nearby</title>
@@ -27,7 +29,7 @@ export const Number1 = () => {
   );
 };
 
-export const Number2 = () => {
+export const Number2 = (): JSXElement => {
   return (
     <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" class="graph g-n2">
       <title>2 bombs nearby</title>
@@ -36,7 +38,7 @@ export const Number2 = () => {
   );
 };
 
-export const Number3 = () => {
+export const Number3 = (): JSXElement => {
   return (
     <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" class="graph g-n3">
       <title>3 bombs nearby</title>
@@ -45,7 +47,7 @@ export const Number3 = () => {
   );
 };
 
-export const Number4 = () => {
+export const Number4 = (): JSXElement => {
   return (
     <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" class="graph g-n4">
       <title>4 bombs nearby</title>
@@ -54,7 +56,7 @@ export const Number4 = () => {
   );
 };
 
-export const Number5 = () => {
+export const Number5 = (): JSXElement => {
   return (
     <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" class="graph g-n5">
       <title>5 bombs nearby</title>
@@ -63,7 +65,7 @@ export const Number5 = () => {
   );
 };
 
-export const Number6 = () => {
+export const Number6 = (): JSXElement => {
   return (
     <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" class="graph g-n6">
       <title>6 bombs nearby</title>
@@ -72,7 +74,7 @@ export const Number6 = () => {
   );
 };
 
-export const Number7 = () => {
+export const Number7 = (): JSXElement => {
   return (
     <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" class="graph g-n7">
       <title>7 bombs nearby</title>
@@ -81,7 +83,7 @@ export const Number7 = () => {
   );
 };
 
-export const Number8 = () => {
+export const Number8 = (): JSXElement => {
   return (
     <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" class="graph g-n8">
       <title>8 bombs nearby</title>

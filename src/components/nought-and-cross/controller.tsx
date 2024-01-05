@@ -1,18 +1,17 @@
-import { Match, type Setter, Switch } from "solid-js";
-
 import { LabeledRadioInput } from "@/components/common/labeled-radio/labeled-radio";
 import {
-  type NnCStatus,
-  NnCStatusDraw,
-  NnCStatusNextO,
-  NnCStatusNextX,
-  NnCStatusNone,
-  NnCStatusOWin,
-  NnCStatusXWin,
+  StatusDraw,
+  StatusNextO,
+  StatusNextX,
+  StatusNone,
+  StatusWinO,
+  StatusWinX,
 } from "@/games/nought-and-cross/types";
+import type { Status } from "@/games/nought-and-cross/types";
 import cross from "@/images/symbol/cross.svg";
 import nought from "@/images/symbol/nought.svg";
-import { PlayerTypeAI, PlayerTypeHuman } from "@/scripts/player";
+import { PlayerTypeAi, PlayerTypeHuman } from "@/scripts/player";
+import type { PlayerType } from "@/scripts/player";
 import { inlineImageStyle } from "@/styles/common.css";
 import {
   controllerOutputStyle,
@@ -20,37 +19,37 @@ import {
   controllerStyle,
   restartButtonStyle,
 } from "@/styles/nought-and-cross.css";
-
-import type { PlayerType } from "@/scripts/player";
+import { Match, Switch } from "solid-js";
+import type { JSXElement, Setter } from "solid-js";
 
 type ControllerProperties = {
-  statusMessage: NnCStatus;
-  onReset: () => void;
+  readonly statusMessage: Status;
+  readonly onReset: () => void;
 
-  playerO: PlayerType;
-  playerX: PlayerType;
-  setPlayerO: Setter<PlayerType>;
-  setPlayerX: Setter<PlayerType>;
+  readonly playerO: PlayerType;
+  readonly playerX: PlayerType;
+  readonly setPlayerO: Setter<PlayerType>;
+  readonly setPlayerX: Setter<PlayerType>;
 };
-export const Controller = (properties: ControllerProperties) => {
+export const Controller = (properties: ControllerProperties): JSXElement => {
   return (
     <div class={controllerStyle}>
       <output class={controllerOutputStyle}>
         <Switch>
-          <Match when={properties.statusMessage === NnCStatusOWin}>
+          <Match when={properties.statusMessage === StatusWinO}>
             <img src={nought.src} alt="nought" class={inlineImageStyle} /> Win!
           </Match>
-          <Match when={properties.statusMessage === NnCStatusXWin}>
+          <Match when={properties.statusMessage === StatusWinX}>
             <img src={cross.src} alt="cross" class={inlineImageStyle} /> Win!
           </Match>
-          <Match when={properties.statusMessage === NnCStatusDraw}>Draw!</Match>
-          <Match when={properties.statusMessage === NnCStatusNextO}>
+          <Match when={properties.statusMessage === StatusDraw}>Draw!</Match>
+          <Match when={properties.statusMessage === StatusNextO}>
             next <img src={nought.src} alt="nought" class={inlineImageStyle} />
           </Match>
-          <Match when={properties.statusMessage === NnCStatusNextX}>
+          <Match when={properties.statusMessage === StatusNextX}>
             next <img src={cross.src} alt="cross" class={inlineImageStyle} />
           </Match>
-          <Match when={properties.statusMessage === NnCStatusNone}>{""}</Match>
+          <Match when={properties.statusMessage === StatusNone}>{""}</Match>
         </Switch>
       </output>
 
@@ -70,9 +69,9 @@ export const Controller = (properties: ControllerProperties) => {
           <LabeledRadioInput
             label="AI"
             check={() => {
-              properties.setPlayerO(PlayerTypeAI);
+              properties.setPlayerO(PlayerTypeAi);
             }}
-            checked={properties.playerO === PlayerTypeAI}
+            checked={properties.playerO === PlayerTypeAi}
           />
         </dd>
 
@@ -91,9 +90,9 @@ export const Controller = (properties: ControllerProperties) => {
           <LabeledRadioInput
             label="AI"
             check={() => {
-              properties.setPlayerX(PlayerTypeAI);
+              properties.setPlayerX(PlayerTypeAi);
             }}
-            checked={properties.playerX === PlayerTypeAI}
+            checked={properties.playerX === PlayerTypeAi}
           />
         </dd>
       </dl>

@@ -27,7 +27,7 @@ export const getAround = (height: number, width: number, index: number): number[
   return around;
 };
 
-export const isClear = (fields: number[], mines: Set<number>): boolean => {
+export const isClear = (fields: readonly number[], mines: Set<number>): boolean => {
   for (const [index, field] of fields.entries()) {
     if (field < 0 && !mines.has(index)) {
       return false;
@@ -37,15 +37,16 @@ export const isClear = (fields: number[], mines: Set<number>): boolean => {
   return true;
 };
 
-export const initializeField = (length: number): number[] => {
+export const initializeField = (length: number): readonly number[] => {
   return Array.from({ length }, () => FieldNoOpen);
 };
 
-export const message = (state: number, fields: number[], numberMines: number): string => {
+export const message = (state: number, fields: readonly number[], numberMines: number): string => {
   let flagCount = 0;
   if (state === Bombed) {
     return "bombed";
-  } else if (state === Clear) {
+  }
+  if (state === Clear) {
     return "cleared";
   }
 
@@ -71,7 +72,9 @@ export const resetMines = (numberMines: number, height: number, width: number, f
 
   while (mines.size !== amount) {
     const index = Math.floor(Math.random() * length);
-    if (!around.has(index)) mines.add(index);
+    if (!around.has(index)) {
+      mines.add(index);
+    }
   }
 
   return mines;

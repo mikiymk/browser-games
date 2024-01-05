@@ -1,14 +1,25 @@
-import { createSignal } from "solid-js";
-
 import { BoardLength, CellMovable, CellUnvisited, CellVisited } from "@/games/knight-tour/consts";
 import { setKnightMovable } from "@/games/knight-tour/knight-move";
 import { randomRange } from "@/scripts/random-select";
+import type { Accessor, Setter } from "solid-js";
+import { createSignal } from "solid-js";
 
-export const createGame = () => {
-  const [board, setBoard] = createSignal<number[]>([]);
-  const [history, setHistory] = createSignal<number[]>([]);
+type GameObject = {
+  board: Accessor<readonly number[]>;
+  // eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
+  resetBoard: (callback: (board: number[]) => number[]) => void;
+  reset: () => void;
+  history: Accessor<readonly number[]>;
+  setHistory: Setter<readonly number[]>;
+  backHistory: (index: number) => void;
+};
 
-  const resetBoard = (callback: (board: number[]) => number[]) => {
+export const createGame = (): GameObject => {
+  const [board, setBoard] = createSignal<readonly number[]>([]);
+  const [history, setHistory] = createSignal<readonly number[]>([]);
+
+  // eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
+  const resetBoard = (callback: (board: number[]) => number[]): void => {
     setBoard((board) => {
       const newBoard = board.map((cell) => {
         return cell === CellMovable ? CellUnvisited : cell;
@@ -18,7 +29,7 @@ export const createGame = () => {
     });
   };
 
-  const reset = () => {
+  const reset = (): void => {
     const rand = randomRange(0, BoardLength);
     const board = Array.from({ length: BoardLength }, () => CellUnvisited);
 
@@ -26,10 +37,11 @@ export const createGame = () => {
     setHistory([]);
   };
 
-  const backHistory = (index: number) => {
+  const backHistory = (index: number): void => {
     const currentHistory = history();
 
     setHistory(currentHistory.slice(0, index));
+    // eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
     resetBoard((board) => {
       for (const historyIndex of currentHistory.slice(index)) {
         board[historyIndex] = CellUnvisited;

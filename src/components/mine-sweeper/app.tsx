@@ -1,19 +1,18 @@
-import { For, batch, createEffect, createSignal } from "solid-js";
-
 import { Bombed, Clear, FieldBomb, FieldFlag, FieldNoOpen, FirstClick, Playing } from "@/games/mine-sweeper/consts";
 import { getAround, initializeField, isClear, message, resetMines } from "@/games/mine-sweeper/field";
-
+import type { JSXElement } from "solid-js";
+import { For, batch, createEffect, createSignal } from "solid-js";
 import { Controller } from "./controller";
 import { MineField } from "./field";
 
-export const App = () => {
+export const App = (): JSXElement => {
   const [height, setHeight] = createSignal(10);
   const [width, setWidth] = createSignal(10);
 
   const [minesAmount, setMinesAmount] = createSignal(10);
 
   const [fields, setFields] = createSignal(initializeField(10 * 10));
-  const setFieldOn = (index: number, field: number) => {
+  const setFieldOn = (index: number, field: number): void => {
     setFields((fields) => {
       const newFields = [...fields];
 
@@ -26,7 +25,7 @@ export const App = () => {
 
   const [gameState, setGameState] = createSignal(FirstClick);
 
-  const reset = () => {
+  const reset = (): void => {
     setGameState(FirstClick);
     setFields(initializeField(height() * width()));
   };
@@ -35,7 +34,8 @@ export const App = () => {
     reset();
   });
 
-  const openField = (index: number) => {
+  // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
+  const openField = (index: number): void => {
     if (gameState() === Bombed || gameState() === Clear || fields().length <= index) {
       return;
     }
@@ -84,7 +84,9 @@ export const App = () => {
     if (fields()[index] === FieldFlag) {
       setFieldOn(index, FieldNoOpen);
       return true;
-    } else if (fields()[index] === FieldNoOpen) {
+    }
+
+    if (fields()[index] === FieldNoOpen) {
       setFieldOn(index, FieldFlag);
       return true;
     }

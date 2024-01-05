@@ -1,29 +1,71 @@
-import { PlayerTypeHuman } from "@/scripts/player";
-
-import { gameNoughtAndCrossAi } from "./ai";
-import { Empty, OMark, Reset, XMark } from "./types";
-
 import type { MultiPromise } from "@/scripts/multi-promise";
+import { PlayerTypeHuman } from "@/scripts/player";
 import type { Setter } from "solid-js";
+import { gameNoughtAndCrossAi } from "./ai";
+import { Empty, MarkO, MarkX, Reset } from "./types";
 
-type Players = { O: number; X: number };
+type Players = { readonly o: number; readonly x: number };
+
+const isHumanPlayer = (players: Players, mark: number): boolean => {
+  return (mark === MarkO && players.o === PlayerTypeHuman) || (mark === MarkX && players.x === PlayerTypeHuman);
+};
+
+// eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
+const move = (board: number[], index: number, mark: number): void => {
+  board[index] = mark;
+};
+
+export const turnMark = (mark: number): number => {
+  return mark === MarkX ? MarkO : MarkX;
+};
+
+const rowIndexes: [number, number, number][] = [
+  [0, 1, 2],
+  [3, 4, 5],
+  [6, 7, 8],
+  [0, 3, 6],
+  [1, 4, 7],
+  [2, 5, 8],
+  [0, 4, 8],
+  [2, 4, 6],
+];
+
+export const isWin = (board: readonly number[], mark: number): boolean => {
+  for (const line of rowIndexes) {
+    if (line.every((index) => board[index] === mark)) {
+      return true;
+    }
+  }
+
+  return false;
+};
+
+export const filledBoard = (board: readonly number[]): boolean => {
+  for (const cell of board) {
+    if (cell === Empty) {
+      return false;
+    }
+  }
+
+  return true;
+};
 
 export const gameLoop = (
-  setBoard: Setter<number[]>,
+  setBoard: Setter<readonly number[]>,
   setMark: Setter<number>,
-  setHistory: Setter<number[]>,
+  setHistory: Setter<readonly number[]>,
   humanInput: MultiPromise<number>,
   players: Players,
-) => {
+): { terminate: () => void } => {
   const id = Math.floor(Math.random() * 0xff_ff).toString(16);
 
   console.log(`start game(${id})`);
 
   const board = Array.from({ length: 9 }, () => Empty);
-  let mark = OMark;
+  let mark = MarkO;
   let isRunning = true;
 
-  const terminate = () => {
+  const terminate = (): void => {
     console.log(`end game(${id})`);
 
     isRunning = false;
@@ -33,7 +75,7 @@ export const gameLoop = (
   setMark(mark);
   setHistory([]);
 
-  const run = async () => {
+  const run = async (): Promise<void> => {
     const index: number = isHumanPlayer(players, mark) ? await humanInput.request() : gameNoughtAndCrossAi(board, mark);
 
     if (index === Reset) {
@@ -48,7 +90,7 @@ export const gameLoop = (
     setMark(mark);
     setHistory((history) => [...history, index]);
 
-    if (isWin(board, OMark) || isWin(board, XMark) || filledBoard(board)) {
+    if (isWin(board, MarkO) || isWin(board, MarkX) || filledBoard(board)) {
       terminate();
     }
 
@@ -66,47 +108,4 @@ export const gameLoop = (
   return {
     terminate,
   };
-};
-
-const isHumanPlayer = (players: Players, mark: number): boolean => {
-  return (mark === OMark && players.O === PlayerTypeHuman) || (mark === XMark && players.X === PlayerTypeHuman);
-};
-
-const move = (board: number[], index: number, mark: number) => {
-  board[index] = mark;
-};
-
-export const turnMark = (mark: number): number => {
-  return mark === XMark ? OMark : XMark;
-};
-
-const rowIndexes: [number, number, number][] = [
-  [0, 1, 2],
-  [3, 4, 5],
-  [6, 7, 8],
-  [0, 3, 6],
-  [1, 4, 7],
-  [2, 5, 8],
-  [0, 4, 8],
-  [2, 4, 6],
-];
-
-export const isWin = (board: number[], mark: number): boolean => {
-  for (const line of rowIndexes) {
-    if (line.every((index) => board[index] === mark)) {
-      return true;
-    }
-  }
-
-  return false;
-};
-
-export const filledBoard = (board: number[]): boolean => {
-  for (const cell of board) {
-    if (cell === Empty) {
-      return false;
-    }
-  }
-
-  return true;
 };

@@ -1,6 +1,6 @@
 import { CellBlack, CellCanMoveBlack, CellCanMoveWhite, CellEmpty, CellWhite } from "./const";
 
-type BoardPtr = (number & { __unique: "Wasm pointer of Board struct" }) | 0;
+type BoardPtr = 0 | (number & { readonly __unique: "Wasm pointer of Board struct" });
 type ReversiWasm = WebAssembly.Exports & {
   init: () => BoardPtr;
   deinit: (bp: BoardPtr) => void;
@@ -14,13 +14,13 @@ type ReversiWasm = WebAssembly.Exports & {
 };
 
 export type ReversiWasmConnect = {
-  init: () => BoardPtr;
-  deinit: (bp: BoardPtr) => void;
-  getBoard: (bp: BoardPtr, showValidMoves: boolean) => number[];
-  isBlack: (bp: BoardPtr) => boolean;
-  move: (bp: BoardPtr, place: number) => void;
-  isEnd: (bp: BoardPtr) => boolean;
-  ai: (bp: BoardPtr) => number;
+  readonly init: () => BoardPtr;
+  readonly deinit: (bp: BoardPtr) => void;
+  readonly getBoard: (bp: BoardPtr, showValidMoves: boolean) => readonly number[];
+  readonly isBlack: (bp: BoardPtr) => boolean;
+  readonly move: (bp: BoardPtr, place: number) => void;
+  readonly isEnd: (bp: BoardPtr) => boolean;
+  readonly ai: (bp: BoardPtr) => number;
 };
 
 export const getReversiWasm = async (): Promise<ReversiWasmConnect> => {
@@ -38,13 +38,15 @@ export const getReversiWasm = async (): Promise<ReversiWasmConnect> => {
     return Array.from({ length: 64 }, (_, index) => 1n << BigInt(index)).map((n) => {
       if (n & black) {
         return CellBlack;
-      } else if (n & white) {
-        return CellWhite;
-      } else if (n & validMoves) {
-        return isBlack ? CellCanMoveBlack : CellCanMoveWhite;
-      } else {
-        return CellEmpty;
       }
+      if (n & white) {
+        return CellWhite;
+      }
+      if (n & validMoves) {
+        return isBlack ? CellCanMoveBlack : CellCanMoveWhite;
+      }
+
+      return CellEmpty;
     });
   };
 

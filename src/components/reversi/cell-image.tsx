@@ -3,14 +3,14 @@ import blackStone from "@/images/reversi/stone-black.svg";
 import smallWhiteStone from "@/images/reversi/stone-white-small.svg";
 import whiteStone from "@/images/reversi/stone-white.svg";
 import empty from "@/images/symbol/empty.svg";
-
+import type { JSXElement } from "solid-js";
 import { CellBlack, CellCanMoveBlack, CellCanMoveWhite, CellWhite } from "./const";
 
 type CellImageProperties = {
-  square: number;
+  readonly square: number;
 };
-export const CellImage = (properties: CellImageProperties) => {
-  const source = () => {
+export const CellImage = (properties: CellImageProperties): JSXElement => {
+  const source = (): string => {
     return (
       {
         [CellBlack]: blackStone.src,
@@ -21,7 +21,7 @@ export const CellImage = (properties: CellImageProperties) => {
     );
   };
 
-  const alt = () => {
+  const alt = (): string => {
     return (
       {
         [CellBlack]: "black stone",

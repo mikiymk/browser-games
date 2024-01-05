@@ -1,7 +1,9 @@
-export default {
-  ignoreBinaries: ["zig"],
+const knipConfig = {
+  ignoreBinaries: ["zig", "export", "set"],
   ignoreDependencies: ["eslint-import-resolver-typescript"],
   compilers: {
-    astro: (text: string) => [...text.matchAll(/import[^;]+/g)].join("\n"),
+    astro: (text: string): string => [...text.matchAll(/import[^;]+/g)].join("\n"),
   },
 };
+
+export default knipConfig;
