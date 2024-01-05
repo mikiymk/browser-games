@@ -1,7 +1,7 @@
 export class MultiPromise<T> {
-  #executor: (resolve: (value: T | PromiseLike<T>) => void, reject: (reason?: unknown) => void) => void;
+  readonly #executor: (resolve: (value: PromiseLike<T> | T) => void, reject: (reason?: unknown) => void) => void;
 
-  constructor(executor: (resolve: (value: T | PromiseLike<T>) => void, reject: (reason?: unknown) => void) => void) {
+  constructor(executor: (resolve: (value: PromiseLike<T> | T) => void, reject: (reason?: unknown) => void) => void) {
     this.#executor = executor;
   }
 

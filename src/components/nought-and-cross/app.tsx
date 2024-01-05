@@ -15,15 +15,16 @@ import { doNothingFunction } from "@/scripts/do-nothing";
 import { MultiPromise } from "@/scripts/multi-promise";
 import { PlayerTypeAi, PlayerTypeHuman } from "@/scripts/player";
 import type { PlayerType } from "@/scripts/player";
+import type { JSXElement } from "solid-js";
 import { createSignal, onMount } from "solid-js";
 import { Board } from "./board";
 import { Controller } from "./controller";
 import { History } from "./history";
 
-export const App = () => {
-  const [board, setBoardData] = createSignal<number[]>([]);
+export const App = (): JSXElement => {
+  const [board, setBoardData] = createSignal<readonly number[]>([]);
   const [mark, setMark] = createSignal(MarkO);
-  const [history, setHistory] = createSignal<number[]>([]);
+  const [history, setHistory] = createSignal<readonly number[]>([]);
 
   const [playerO, setPlayerO] = createSignal<PlayerType>(PlayerTypeHuman);
   const [playerX, setPlayerX] = createSignal<PlayerType>(PlayerTypeAi);
@@ -35,7 +36,7 @@ export const App = () => {
     resolve = rs;
   });
 
-  const handleClick = (index: number) => {
+  const handleClick = (index: number): void => {
     if (board()[index] !== Empty) {
       return;
     }
@@ -43,7 +44,7 @@ export const App = () => {
     resolve(index);
   };
 
-  const reset = () => {
+  const reset = (): void => {
     terminate();
 
     const players = {
@@ -51,6 +52,7 @@ export const App = () => {
       x: playerX(),
     };
 
+    // eslint-disable-next-line @typescript-eslint/prefer-destructuring
     terminate = gameLoop(setBoardData, setMark, setHistory, humanInput, players).terminate;
   };
 

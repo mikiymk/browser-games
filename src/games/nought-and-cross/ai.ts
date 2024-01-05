@@ -2,7 +2,7 @@ import { randomSelect } from "@/scripts/random-select";
 import { isWin, turnMark } from "./game-model";
 import { Empty, Reset } from "./types";
 
-export const gameNoughtAndCrossAi = (board: number[], mark: number): number => {
+export const gameNoughtAndCrossAi = (board: readonly number[], mark: number): number => {
   // 各ラインで相手が2つと空きマスの場合、空きマスを選ぶ
   const clearCells: number[] = [];
   const interCells: number[] = [];

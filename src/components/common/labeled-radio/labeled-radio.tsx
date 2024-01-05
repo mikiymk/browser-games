@@ -2,15 +2,16 @@ import type { JSXElement } from "solid-js";
 import { checkedDisableRadioStyle, checkedRadioStyle, disableRadioStyle, radioStyle } from "./labeled-radio.css";
 
 type LabeledRadioInputProperties = {
-  label: JSXElement;
-  checked: boolean;
-  enable?: boolean;
-  check: () => void;
+  readonly label: JSXElement;
+  readonly checked: boolean;
+  readonly enable?: boolean;
+  readonly check: () => void;
 };
-export const LabeledRadioInput = (properties: LabeledRadioInputProperties) => {
-  const styleClass = () => {
-    const enable = properties.enable ?? true;
-    const checked = properties.checked;
+
+// eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
+export const LabeledRadioInput = (properties: LabeledRadioInputProperties): JSXElement => {
+  const styleClass = (): string => {
+    const { checked, enable = true } = properties;
     if (enable && !checked) {
       return radioStyle;
     }

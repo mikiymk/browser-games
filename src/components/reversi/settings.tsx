@@ -3,23 +3,23 @@ import uncheckedBox from "@/images/symbol/check-box-unchecked-black.svg";
 import { h2Style } from "@/styles/common.css";
 import { disableStyle, settingCheckBoxStyle, settingItemStyle } from "@/styles/reversi.css";
 import { Show } from "solid-js";
-import type { Setter } from "solid-js";
+import type { JSXElement, Setter } from "solid-js";
 import { LabeledRadioInput } from "../common/labeled-radio/labeled-radio";
 import { AiPlayer, HumanPlayer } from "./const";
 
 type SettingsProperties = {
-  playing: boolean;
+  readonly playing: boolean;
 
-  black: number;
-  setBlack: Setter<number>;
-  white: number;
-  setWhite: Setter<number>;
+  readonly black: number;
+  readonly setBlack: Setter<number>;
+  readonly white: number;
+  readonly setWhite: Setter<number>;
 
-  enableWatch: boolean;
-  setEnableWatch: Setter<boolean>;
+  readonly enableWatch: boolean;
+  readonly setEnableWatch: Setter<boolean>;
 };
 
-export const Settings = (properties: SettingsProperties) => {
+export const Settings = (properties: SettingsProperties): JSXElement => {
   return (
     <div>
       <h2 class={h2Style}>Settings</h2>

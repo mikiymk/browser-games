@@ -77,7 +77,18 @@ export default [
       "prefer-destructuring": "off",
       "@typescript-eslint/prefer-destructuring": "error",
       "@typescript-eslint/prefer-readonly": "error",
-      "@typescript-eslint/prefer-readonly-parameter-types": ["error", { allow: [], treatMethodsAsReadonly: false }],
+      "@typescript-eslint/prefer-readonly-parameter-types": [
+        "error",
+        {
+          allow: [
+            { from: "lib", name: "MouseEvent" },
+            { from: "lib", name: "HTMLInputElement" },
+            { from: "lib", name: "HTMLSelectElement" },
+            { from: "package", name: "JSXElement", package: "solid-js" },
+          ],
+          treatMethodsAsReadonly: true,
+        },
+      ],
       "@typescript-eslint/prefer-regexp-exec": "error",
       "@typescript-eslint/require-array-sort-compare": "error",
       "no-return-await": "off",
@@ -87,7 +98,7 @@ export default [
       "@typescript-eslint/switch-exhaustiveness-check": [
         "error",
         {
-          allowDefaultCaseForExhaustiveSwitch: false,
+          // allowDefaultCaseForExhaustiveSwitch: false,
           requireDefaultForNonUnion: true,
         },
       ],

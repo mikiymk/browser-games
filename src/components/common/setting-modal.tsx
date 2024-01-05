@@ -2,10 +2,11 @@ import { createSignal } from "solid-js";
 import type { JSXElement } from "solid-js";
 
 type SettingModalProperties = {
-  children: JSXElement;
+  readonly children: JSXElement;
 };
 
-export const SettingModal = (properties: SettingModalProperties) => {
+// eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
+export const SettingModal = (properties: SettingModalProperties): JSXElement => {
   const [open, setOpen] = createSignal(false);
 
   return (

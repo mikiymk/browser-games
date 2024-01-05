@@ -12,15 +12,22 @@ import {
   FieldNumber7,
   FieldNumber8,
 } from "@/games/mine-sweeper/consts";
+import type { JSXElement } from "solid-js";
 import { Match, Switch } from "solid-js";
 import { Bomb, Flag, Number1, Number2, Number3, Number4, Number5, Number6, Number7, Number8 } from "./graphic";
 
 type MineFieldProperties = {
-  field: number;
-  onClick: () => void;
-  onContextMenu: () => boolean;
+  readonly field: number;
+  readonly onClick: () => void;
+  readonly onContextMenu: () => boolean;
 };
-export const MineField = (properties: MineFieldProperties) => {
+export const MineField = (properties: MineFieldProperties): JSXElement => {
+  const handleContextMenu = (event: MouseEvent): void => {
+    if (properties.onContextMenu()) {
+      event.preventDefault();
+    }
+  };
+
   return (
     // biome-ignore lint/a11y/useKeyWithClickEvents: fix it later
     <div
@@ -28,11 +35,7 @@ export const MineField = (properties: MineFieldProperties) => {
       onClick={() => {
         properties.onClick();
       }}
-      onContextMenu={(event) => {
-        if (properties.onContextMenu()) {
-          event.preventDefault();
-        }
-      }}
+      onContextMenu={handleContextMenu}
     >
       <Switch>
         <Match when={properties.field === FieldBomb}>

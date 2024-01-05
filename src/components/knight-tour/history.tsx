@@ -1,11 +1,12 @@
 import { historyStyle } from "@/styles/knight-tour.css";
+import type { JSXElement } from "solid-js";
 import { For } from "solid-js";
 
 type HistoryProperties = {
-  history_: number[];
-  back_: (index: number) => void;
+  readonly history_: readonly number[];
+  readonly back_: (index: number) => void;
 };
-export const History = (properties: HistoryProperties) => {
+export const History = (properties: HistoryProperties): JSXElement => {
   return (
     <ul class={historyStyle}>
       <For each={properties.history_}>

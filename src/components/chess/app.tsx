@@ -7,10 +7,11 @@ import { doNothingFunction } from "@/scripts/do-nothing";
 import { MultiPromise } from "@/scripts/multi-promise";
 import { PlayerTypeAi, PlayerTypeHuman } from "@/scripts/player";
 import type { PlayerType } from "@/scripts/player";
+import type { JSXElement } from "solid-js";
 import { createResource, createSignal } from "solid-js";
 import { Controller } from "./controller";
 
-export const App = () => {
+export const App = (): JSXElement => {
   const [playerWhite, setPlayerWhite] = createSignal<PlayerType>(PlayerTypeHuman);
   const [playerBlack, setPlayerBlack] = createSignal<PlayerType>(PlayerTypeAi);
 
@@ -26,7 +27,7 @@ export const App = () => {
   });
 
   let terminate = doNothingFunction;
-  const start = () => {
+  const start = (): void => {
     terminate();
 
     const wasmObject = wasm();
@@ -39,7 +40,7 @@ export const App = () => {
     });
   };
 
-  const handleClick = (_square: BoardCell, index: number) => {
+  const handleClick = (_square: BoardCell, index: number): void => {
     resolve(index);
   };
 

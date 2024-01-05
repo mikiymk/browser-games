@@ -1,3 +1,3 @@
-export const doNothingFunction = () => {
+export const doNothingFunction = (): void => {
   // do nothing
 };

@@ -13,44 +13,12 @@ import {
   infoTimeWhiteStyle,
   settingStartStyle,
 } from "@/styles/reversi.css";
+import type { JSXElement } from "solid-js";
 import { Match, Show, Switch, createEffect, createMemo, createSignal } from "solid-js";
 import { CellBlack, CellWhite } from "./const";
 
-type InfoProperties = {
-  start: () => void;
-  end: () => void;
-  playing: boolean;
-
-  board: number[];
-  color: number | undefined;
-
-  enable: boolean;
-};
-export const Info = (properties: InfoProperties) => {
-  const count = (color: number) => {
-    return properties.board.filter((square) => square === color).length;
-  };
-  const countBlack = createMemo(() => count(CellBlack));
-  const countWhite = createMemo(() => count(CellWhite));
-
-  return (
-    <div class={infoStyle}>
-      <Show when={!properties.playing && (countBlack() !== 0 || countWhite() !== 0)}>
-        <GameResult black={countBlack()} white={countWhite()} />
-      </Show>
-      <StoneCount playing={properties.playing} black={countBlack()} white={countWhite()} color={properties.color} />
-
-      <Show when={properties.enable}>
-        <Time playing={properties.playing} color={properties.color} />
-      </Show>
-
-      <PlayButtons start={properties.start} end={properties.end} />
-    </div>
-  );
-};
-
 // ゲーム終了時に結果を表示する
-const GameResult = (properties: { black: number; white: number }) => {
+const GameResult = (properties: { readonly black: number; readonly white: number }): JSXElement => {
   return (
     <div class={infoResultStyle}>
       <Switch fallback="Draw!">
@@ -62,15 +30,15 @@ const GameResult = (properties: { black: number; white: number }) => {
 };
 
 type StoneProperties = {
-  playing: boolean;
-  black: number;
-  white: number;
+  readonly playing: boolean;
+  readonly black: number;
+  readonly white: number;
 
-  color: number | undefined;
+  readonly color: number | undefined;
 };
-const StoneCount = (properties: StoneProperties) => {
-  const isBlack = () => properties.playing && properties.color === CellBlack;
-  const isWhite = () => properties.playing && properties.color === CellWhite;
+const StoneCount = (properties: StoneProperties): JSXElement => {
+  const isBlack = (): boolean => properties.playing && properties.color === CellBlack;
+  const isWhite = (): boolean => properties.playing && properties.color === CellWhite;
 
   return (
     <div class={infoStoneStyle}>
@@ -111,16 +79,31 @@ const StoneCount = (properties: StoneProperties) => {
   );
 };
 
-type TimeProperties = {
-  playing: boolean;
-  color: number | undefined;
+const formatTime = (time: number): string => {
+  const hour = Math.floor(time / 3_600_000)
+    .toString()
+    .padStart(2, "0");
+  const minute = Math.floor((time % 3_600_000) / 60_000)
+    .toString()
+    .padStart(2, "0");
+  const second = Math.floor((time % 60_000) / 1000)
+    .toString()
+    .padStart(2, "0");
+
+  return `${hour}:${minute}:${second}`;
 };
-const Time = (properties: TimeProperties) => {
+
+type TimeProperties = {
+  readonly playing: boolean;
+  readonly color: number | undefined;
+};
+
+const Time = (properties: TimeProperties): JSXElement => {
   const [blackTime, setBlackTime] = createSignal(10 * 60 * 1000);
   const [whiteTime, setWhiteTime] = createSignal(10 * 60 * 1000);
 
   let previousTime = 0;
-  const updateTime = (time: number) => {
+  const updateTime = (time: number): void => {
     if (properties.playing) {
       requestAnimationFrame(updateTime);
     }
@@ -157,25 +140,11 @@ const Time = (properties: TimeProperties) => {
   );
 };
 
-const formatTime = (time: number) => {
-  const hour = Math.floor(time / 3_600_000)
-    .toString()
-    .padStart(2, "0");
-  const minute = Math.floor((time % 3_600_000) / 60_000)
-    .toString()
-    .padStart(2, "0");
-  const second = Math.floor((time % 60_000) / 1000)
-    .toString()
-    .padStart(2, "0");
-
-  return `${hour}:${minute}:${second}`;
-};
-
 type PlayButtonsProperties = {
-  start: () => void;
-  end: () => void;
+  readonly start: () => void;
+  readonly end: () => void;
 };
-const PlayButtons = (properties: PlayButtonsProperties) => {
+const PlayButtons = (properties: PlayButtonsProperties): JSXElement => {
   return (
     <div class={infoPlayButtonStyle}>
       <button
@@ -197,6 +166,39 @@ const PlayButtons = (properties: PlayButtonsProperties) => {
       >
         End Game
       </button>
+    </div>
+  );
+};
+
+type InfoProperties = {
+  readonly start: () => void;
+  readonly end: () => void;
+  readonly playing: boolean;
+
+  readonly board: readonly number[];
+  readonly color: number | undefined;
+
+  readonly enable: boolean;
+};
+export const Info = (properties: InfoProperties): JSXElement => {
+  const count = (color: number): number => {
+    return properties.board.filter((square) => square === color).length;
+  };
+  const countBlack = createMemo(() => count(CellBlack));
+  const countWhite = createMemo(() => count(CellWhite));
+
+  return (
+    <div class={infoStyle}>
+      <Show when={!properties.playing && (countBlack() !== 0 || countWhite() !== 0)}>
+        <GameResult black={countBlack()} white={countWhite()} />
+      </Show>
+      <StoneCount playing={properties.playing} black={countBlack()} white={countWhite()} color={properties.color} />
+
+      <Show when={properties.enable}>
+        <Time playing={properties.playing} color={properties.color} />
+      </Show>
+
+      <PlayButtons start={properties.start} end={properties.end} />
     </div>
   );
 };

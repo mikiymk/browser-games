@@ -10,9 +10,9 @@ export const StatusNextO = 4;
 export const StatusNextX = 5;
 export const StatusNone = 6;
 export type Status =
-  | typeof StatusWinO
-  | typeof StatusWinX
   | typeof StatusDraw
   | typeof StatusNextO
   | typeof StatusNextX
-  | typeof StatusNone;
+  | typeof StatusNone
+  | typeof StatusWinO
+  | typeof StatusWinX;

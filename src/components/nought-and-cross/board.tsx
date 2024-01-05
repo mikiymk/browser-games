@@ -2,45 +2,19 @@ import { MarkO, MarkX } from "@/games/nought-and-cross/types";
 import cross from "@/images/symbol/cross.svg";
 import nought from "@/images/symbol/nought.svg";
 import { boardStyle, cellStyle, oStyle, xStyle } from "@/styles/nought-and-cross.css";
+import type { JSXElement } from "solid-js";
 import { For, Match, Switch } from "solid-js";
 
-type BoardProperties = {
-  board: number[];
-
-  click: (index: number) => void;
-};
-export const Board = (properties: BoardProperties) => {
-  return (
-    <>
-      <svg viewBox="0 0 92 92" xmlns="http://www.w3.org/2000/svg" class={boardStyle}>
-        <title>noughts and crosses board</title>
-
-        <For each={properties.board}>
-          {(mark, index) => (
-            <Cell
-              mark={mark}
-              index={index()}
-              click={() => {
-                properties.click(index());
-              }}
-            />
-          )}
-        </For>
-      </svg>
-    </>
-  );
-};
-
 type CellProperties = {
-  mark: number;
-  index: number;
+  readonly mark: number;
+  readonly index: number;
 
-  click: () => void;
+  readonly click: () => void;
 };
-const Cell = (properties: CellProperties) => {
-  const x = () => (properties.index % 3) * 30 + 1;
-  const y = () => Math.floor(properties.index / 3) * 30 + 1;
-  const handleClick = () => {
+const Cell = (properties: CellProperties): JSXElement => {
+  const x = (): number => (properties.index % 3) * 30 + 1;
+  const y = (): number => Math.floor(properties.index / 3) * 30 + 1;
+  const handleClick = (): void => {
     properties.click();
   };
 
@@ -64,6 +38,33 @@ const Cell = (properties: CellProperties) => {
         onClick={handleClick}
         onKeyPress={handleClick}
       />
+    </>
+  );
+};
+
+type BoardProperties = {
+  readonly board: readonly number[];
+
+  readonly click: (index: number) => void;
+};
+export const Board = (properties: BoardProperties): JSXElement => {
+  return (
+    <>
+      <svg viewBox="0 0 92 92" xmlns="http://www.w3.org/2000/svg" class={boardStyle}>
+        <title>noughts and crosses board</title>
+
+        <For each={properties.board}>
+          {(mark, index) => (
+            <Cell
+              mark={mark}
+              index={index()}
+              click={() => {
+                properties.click(index());
+              }}
+            />
+          )}
+        </For>
+      </svg>
     </>
   );
 };

@@ -1,5 +1,6 @@
 import piece from "@/images/chess/piece.svg";
 import { pieceBlackStyle, pieceWhiteStyle } from "@/styles/chess.css";
+import type { JSXElement } from "solid-js";
 import { Match, Switch } from "solid-js";
 import {
   CellBlackBishop,
@@ -17,11 +18,11 @@ import {
 } from "../constants";
 
 type BoardSquareProperties = {
-  piece: number;
-  mark: number;
+  readonly piece: number;
+  readonly mark: number;
 };
 
-export const BoardSquare = (properties: BoardSquareProperties) => {
+export const BoardSquare = (properties: BoardSquareProperties): JSXElement => {
   return (
     <svg
       viewBox="0 0 60 60"

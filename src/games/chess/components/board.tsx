@@ -1,16 +1,17 @@
 import board from "@/images/chess/board.svg";
 import { boardStyle, movableSquareStyle, selectedStyle, squareStyle } from "@/styles/chess.css";
+import type { JSXElement } from "solid-js";
 import { For } from "solid-js";
 import type { BoardCell } from "../board";
 import { MoveFrom, MoveTarget } from "../constants";
 import { BoardSquare } from "./board-square";
 
 type BoardProperties = {
-  board: BoardCell[];
-  handleClick: (square: BoardCell, index: number) => void;
+  readonly board: readonly BoardCell[];
+  readonly handleClick: (square: BoardCell, index: number) => void;
 };
 
-export const Board = (properties: BoardProperties) => {
+export const Board = (properties: BoardProperties): JSXElement => {
   return (
     <div
       class={boardStyle}

@@ -22,7 +22,7 @@ import {
   White,
 } from "./constants";
 
-type GamePtr = (number & { __unique: "Wasm pointer of Board struct" }) | 0;
+type GamePtr = 0 | (number & { readonly __unique: "Wasm pointer of Board struct" });
 type WasmExports = {
   init: () => GamePtr;
   deinit: (g: GamePtr) => void;
@@ -38,18 +38,23 @@ type WasmExports = {
 };
 
 type WasmConnect = {
-  init: () => GamePtr;
-  deinit: (g: GamePtr) => void;
+  readonly init: () => GamePtr;
+  readonly deinit: (g: GamePtr) => void;
 
-  getColor: (g: GamePtr) => number;
-  getBoard: (g: GamePtr) => number[];
-  getEnd: (g: GamePtr) => number;
-  getMove: (g: GamePtr, from: number) => number[];
+  readonly getColor: (g: GamePtr) => number;
+  readonly getBoard: (g: GamePtr) => readonly number[];
+  readonly getEnd: (g: GamePtr) => number;
+  readonly getMove: (g: GamePtr, from: number) => readonly number[];
 
-  move: (g: GamePtr, from: number, to: number) => boolean;
-  promote: (g: GamePtr, from: number, kind: number) => void;
+  readonly move: (g: GamePtr, from: number, to: number) => boolean;
+  readonly promote: (g: GamePtr, from: number, kind: number) => void;
 
-  ai: (g: GamePtr) => void;
+  readonly ai: (g: GamePtr) => void;
+};
+
+type Players = {
+  readonly black: number;
+  readonly white: number;
 };
 
 const EmptyBoard = Array.from({ length: 64 }, () => CellEmpty);
@@ -93,11 +98,11 @@ export const getWasm = async (): Promise<WasmConnect> => {
 
   const exports = wasm.instance.exports as WasmExports;
 
-  const getColor = (g: GamePtr) => {
+  const getColor = (g: GamePtr): number => {
     return exports.isBlack(g) ? Black : White;
   };
 
-  const getBoard = (g: GamePtr) => {
+  const getBoard = (g: GamePtr): readonly number[] => {
     const blackPawn = exports.getPiece(g, CellBlackPawn);
     const blackKnight = exports.getPiece(g, CellBlackKnight);
     const blackBishop = exports.getPiece(g, CellBlackBishop);
@@ -156,11 +161,11 @@ export const getWasm = async (): Promise<WasmConnect> => {
     });
   };
 
-  const getEnd = (g: GamePtr) => {
+  const getEnd = (g: GamePtr): number => {
     return exports.winner(g);
   };
 
-  const getMove = (g: GamePtr, from: number) => {
+  const getMove = (g: GamePtr, from: number): readonly number[] => {
     const moveBitBoard = exports.getMove(g, from);
 
     return Array.from({ length: 64 }, (_, index) => {
@@ -193,15 +198,72 @@ export const getWasm = async (): Promise<WasmConnect> => {
   };
 };
 
+const isHuman = (color: number, players: Players): boolean => {
+  return (
+    (color === Black && players.black === PlayerTypeHuman) || (color === White && players.white === PlayerTypeHuman)
+  );
+};
+
+const inputKind = async (
+  color: number,
+  setBoard: (board: readonly number[]) => void,
+  humanInput: MultiPromise<number>,
+): Promise<number> => {
+  if (color === Black) {
+    setBoard(BlackPromotionBoard);
+  } else {
+    setBoard(WhitePromotionBoard);
+  }
+
+  for (;;) {
+    const kindIndex = await humanInput.request();
+
+    if (color === Black) {
+      // eslint-disable-next-line @typescript-eslint/switch-exhaustiveness-check
+      switch (kindIndex) {
+        case 26: {
+          return CellBlackKnight;
+        }
+
+        case 27: {
+          return CellBlackBishop;
+        }
+        case 28: {
+          return CellBlackRook;
+        }
+        case 29: {
+          return CellBlackQueen;
+        }
+      }
+    }
+
+    // eslint-disable-next-line @typescript-eslint/switch-exhaustiveness-check
+    switch (kindIndex) {
+      case 26: {
+        return CellWhiteKnight;
+      }
+      case 27: {
+        return CellWhiteBishop;
+      }
+      case 28: {
+        return CellWhiteRook;
+      }
+      case 29: {
+        return CellWhiteQueen;
+      }
+    }
+  }
+};
+
 export const gameLoop = (
   wasm: WasmConnect,
   setColor: (color: number) => void,
-  setBoard: (board: number[]) => void,
+  setBoard: (board: readonly number[]) => void,
   setEnd: (end: number) => void,
-  setMove: (move: number[]) => void,
+  setMove: (move: readonly number[]) => void,
   humanInput: MultiPromise<number>,
-  players: { black: number; white: number },
-) => {
+  players: Players,
+): (() => void) => {
   const {
     init,
     deinit,
@@ -219,14 +281,14 @@ export const gameLoop = (
   let boardPtr: GamePtr = init();
   console.log(`game start id(${boardPtr})`);
 
-  const terminate = () => {
+  const terminate = (): void => {
     console.log(`game end id(${boardPtr})`);
     deinit(boardPtr);
     boardPtr = 0;
   };
 
   // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
-  const run = async () => {
+  const run = async (): Promise<void> => {
     setBoard(getBoard(boardPtr));
     const color = getColor(boardPtr);
     console.log("color", color);
@@ -278,7 +340,7 @@ export const gameLoop = (
       terminate();
     }
 
-    if (boardPtr) {
+    if (boardPtr !== 0) {
       setTimeout(() => {
         console.log(`game continue id(${boardPtr})`);
         void run();
@@ -291,59 +353,4 @@ export const gameLoop = (
   }, 0);
 
   return terminate;
-};
-
-const isHuman = (color: number, players: { black: number; white: number }): boolean => {
-  return (
-    (color === Black && players.black === PlayerTypeHuman) || (color === White && players.white === PlayerTypeHuman)
-  );
-};
-
-const inputKind = async (
-  color: number,
-  setBoard: (board: number[]) => void,
-  humanInput: MultiPromise<number>,
-): Promise<number> => {
-  if (color === Black) {
-    setBoard(BlackPromotionBoard);
-  } else {
-    setBoard(WhitePromotionBoard);
-  }
-
-  for (;;) {
-    const kindIndex = await humanInput.request();
-
-    if (color === Black) {
-      switch (kindIndex) {
-        case 26: {
-          return CellBlackKnight;
-        }
-
-        case 27: {
-          return CellBlackBishop;
-        }
-        case 28: {
-          return CellBlackRook;
-        }
-        case 29: {
-          return CellBlackQueen;
-        }
-      }
-    }
-
-    switch (kindIndex) {
-      case 26: {
-        return CellWhiteKnight;
-      }
-      case 27: {
-        return CellWhiteBishop;
-      }
-      case 28: {
-        return CellWhiteRook;
-      }
-      case 29: {
-        return CellWhiteQueen;
-      }
-    }
-  }
 };

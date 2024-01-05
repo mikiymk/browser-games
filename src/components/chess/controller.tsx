@@ -9,22 +9,40 @@ import {
 } from "@/games/chess/constants";
 import { PlayerTypeAi, PlayerTypeHuman } from "@/scripts/player";
 import type { PlayerType } from "@/scripts/player";
-import type { Setter } from "solid-js";
+import type { Setter, JSXElement } from "solid-js";
 
-type ControllerProperties = {
-  color: number;
-  end: number;
+type SettingPlayerSelectProperties = {
+  readonly player: PlayerType;
+  readonly setPlayer: Setter<PlayerType>;
+};
+const SettingPlayerSelect = (properties: SettingPlayerSelectProperties): JSXElement => {
+  const handleChange = (event: { readonly currentTarget: HTMLSelectElement }): void => {
+    console.log(event.currentTarget.value);
+    properties.setPlayer(Number(event.currentTarget.value) === PlayerTypeHuman ? PlayerTypeHuman : PlayerTypeAi);
+  };
 
-  start: () => void;
-
-  playerWhite: PlayerType;
-  playerBlack: PlayerType;
-  setPlayerWhite: Setter<PlayerType>;
-  setPlayerBlack: Setter<PlayerType>;
+  return (
+    <select value={properties.player} onChange={handleChange}>
+      <option value={PlayerTypeHuman}>Human</option>
+      <option value={PlayerTypeAi}>AI</option>
+    </select>
+  );
 };
 
-export const Controller = (properties: ControllerProperties) => {
-  const message = () => {
+type ControllerProperties = {
+  readonly color: number;
+  readonly end: number;
+
+  readonly start: () => void;
+
+  readonly playerWhite: PlayerType;
+  readonly playerBlack: PlayerType;
+  readonly setPlayerWhite: Setter<PlayerType>;
+  readonly setPlayerBlack: Setter<PlayerType>;
+};
+
+export const Controller = (properties: ControllerProperties): JSXElement => {
+  const message = (): string => {
     switch (properties.end) {
       case EndBlackWin: {
         return "black win";
@@ -71,24 +89,5 @@ export const Controller = (properties: ControllerProperties) => {
         <SettingPlayerSelect player={properties.playerWhite} setPlayer={properties.setPlayerWhite} />
       </div>
     </div>
-  );
-};
-
-type SettingPlayerSelectProperties = {
-  player: PlayerType;
-  setPlayer: Setter<PlayerType>;
-};
-const SettingPlayerSelect = (properties: SettingPlayerSelectProperties) => {
-  return (
-    <select
-      value={properties.player}
-      onChange={(event) => {
-        console.log(event.currentTarget.value);
-        properties.setPlayer(Number(event.currentTarget.value) === PlayerTypeHuman ? PlayerTypeHuman : PlayerTypeAi);
-      }}
-    >
-      <option value={PlayerTypeHuman}>Human</option>
-      <option value={PlayerTypeAi}>AI</option>
-    </select>
   );
 };

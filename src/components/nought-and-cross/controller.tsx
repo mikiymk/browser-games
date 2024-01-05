@@ -20,18 +20,18 @@ import {
   restartButtonStyle,
 } from "@/styles/nought-and-cross.css";
 import { Match, Switch } from "solid-js";
-import type { Setter } from "solid-js";
+import type { JSXElement, Setter } from "solid-js";
 
 type ControllerProperties = {
-  statusMessage: Status;
-  onReset: () => void;
+  readonly statusMessage: Status;
+  readonly onReset: () => void;
 
-  playerO: PlayerType;
-  playerX: PlayerType;
-  setPlayerO: Setter<PlayerType>;
-  setPlayerX: Setter<PlayerType>;
+  readonly playerO: PlayerType;
+  readonly playerX: PlayerType;
+  readonly setPlayerO: Setter<PlayerType>;
+  readonly setPlayerX: Setter<PlayerType>;
 };
-export const Controller = (properties: ControllerProperties) => {
+export const Controller = (properties: ControllerProperties): JSXElement => {
   return (
     <div class={controllerStyle}>
       <output class={controllerOutputStyle}>

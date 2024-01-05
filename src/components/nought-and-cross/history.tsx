@@ -1,13 +1,18 @@
 import { historyMoveStyle, historyStyle } from "@/styles/nought-and-cross.css";
+import type { JSXElement } from "solid-js";
 import { For, Show } from "solid-js";
 
 const historyFillArray = [-1, -1, -1, -1, -1, -1, -1, -1, -1];
 
-type HistoryProperties = {
-  history: number[];
+const position = (index: number): string => {
+  return `${"ABC"[index % 3] ?? ""}-${Math.floor(index / 3)}`;
 };
-export const History = (properties: HistoryProperties) => {
-  const paddedHistory = () => [...properties.history, ...historyFillArray].slice(0, 9);
+
+type HistoryProperties = {
+  readonly history: readonly number[];
+};
+export const History = (properties: HistoryProperties): JSXElement => {
+  const paddedHistory = (): number[] => [...properties.history, ...historyFillArray].slice(0, 9);
 
   return (
     <div class={historyStyle}>
@@ -21,8 +26,4 @@ export const History = (properties: HistoryProperties) => {
       </For>
     </div>
   );
-};
-
-const position = (index: number): string => {
-  return `${"ABC"[index % 3] ?? ""}-${Math.floor(index / 3)}`;
 };
