@@ -20,7 +20,7 @@
     "lint-fix:biome": "biome check . --apply",
     "format:biome": "biome format . --write",
     "format:wasm": "zig fmt .",
-    "build": "run-z build-wasm build-js:astro",
+    "build": "run-z build-wasm build-js",
     "build-js": "astro build",
     "build-wasm": "run-z build-wasm:chess build-wasm:reversi",
     "build-wasm:chess": "zig build chess -Dtarget=wasm32-freestanding -Doptimize=ReleaseFast",
@@ -29,7 +29,7 @@
     "check-all:wasm": "run-z format:wasm test:wasm build-wasm",
     "check-all": "run-z check-all:wasm check-all:js",
     "ci": "run-z ci:wasm ci:js",
-    "ci:js": "run-z lint:format lint:eslint lint:typescript build-js",
+    "ci:js": "run-z lint:format lint:eslint lint:typescript lint:find-unused build-js",
     "ci:wasm": "run-z lint:format-zig test:wasm build-wasm",
     "serve": "astro dev",
     "serve-preview": "astro preview"
