@@ -1,4 +1,9 @@
-import piece from "@/images/chess/piece.svg";
+import pawn from "@/images/chess-pieces/pawn.svg";
+import knight from "@/images/chess-pieces/knight.svg";
+import bishop from "@/images/chess-pieces/bishop.svg";
+import rook from "@/images/chess-pieces/rook.svg";
+import queen from "@/images/chess-pieces/queen.svg";
+import king from "@/images/chess-pieces/king.svg";
 import { movableSquareStyle, pieceBlackStyle, pieceWhiteStyle, selectedStyle, squareStyle } from "@/styles/chess.css";
 import type { JSXElement } from "solid-js";
 import { Show } from "solid-js";
@@ -39,34 +44,34 @@ export const BoardSquare = (properties: BoardSquareProperties): JSXElement => {
       ? pieceBlackStyle
       : pieceWhiteStyle;
 
-  const pieceHref = (): string => {
+  const pieceHref = (): string | undefined => {
     switch (properties.piece) {
       case CellBlackPawn:
       case CellWhitePawn:
-        return `${piece.src}#pawn`;
+        return `${pawn.src}#root`;
 
       case CellBlackKnight:
       case CellWhiteKnight:
-        return `${piece.src}#knight`;
+        return `${knight.src}#root`;
 
       case CellBlackBishop:
       case CellWhiteBishop:
-        return `${piece.src}#bishop`;
+        return `${bishop.src}#root`;
 
       case CellBlackRook:
       case CellWhiteRook:
-        return `${piece.src}#rook`;
+        return `${rook.src}#root`;
 
       case CellBlackQueen:
       case CellWhiteQueen:
-        return `${piece.src}#queen`;
+        return `${queen.src}#root`;
 
       case CellBlackKing:
       case CellWhiteKing:
-        return `${piece.src}#king`;
+        return `${king.src}#root`;
 
       default:
-        return "";
+        return;
     }
   };
 
