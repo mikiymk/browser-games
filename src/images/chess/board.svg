@@ -1,49 +1,44 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg viewBox="0 0 720 720" version="1.1" xmlns="http://www.w3.org/2000/svg" id="root">
-    <style>
-        .b {
-            fill: #666;
-        }
+    <rect width="720" height="720" x="0" y="0" fill="#ccc" />
 
-        .w {
-            fill: #ccc;
-        }
-    </style>
-    <rect width="720" height="720" x="0" y="0" class="w" />
+    <rect width="90" height="90" x="0" y="0" />
+    <rect width="90" height="90" x="180" y="0" />
+    <rect width="90" height="90" x="360" y="0" />
+    <rect width="90" height="90" x="540" y="0" />
 
-    <rect width="90" height="90" x="0" y="0" class="b" />
-    <rect width="90" height="90" x="180" y="0" class="b" />
-    <rect width="90" height="90" x="360" y="0" class="b" />
-    <rect width="90" height="90" x="540" y="0" class="b" />
-    <rect width="90" height="90" x="90" y="90" class="b" />
-    <rect width="90" height="90" x="270" y="90" class="b" />
-    <rect width="90" height="90" x="450" y="90" class="b" />
-    <rect width="90" height="90" x="630" y="90" class="b" />
+    <rect width="90" height="90" x="90" y="90" />
+    <rect width="90" height="90" x="270" y="90" />
+    <rect width="90" height="90" x="450" y="90" />
+    <rect width="90" height="90" x="630" y="90" />
 
-    <rect width="90" height="90" x="0" y="180" class="b" />
-    <rect width="90" height="90" x="180" y="180" class="b" />
-    <rect width="90" height="90" x="360" y="180" class="b" />
-    <rect width="90" height="90" x="540" y="180" class="b" />
-    <rect width="90" height="90" x="90" y="270" class="b" />
-    <rect width="90" height="90" x="270" y="270" class="b" />
-    <rect width="90" height="90" x="450" y="270" class="b" />
-    <rect width="90" height="90" x="630" y="270" class="b" />
+    <rect width="90" height="90" x="0" y="180" />
+    <rect width="90" height="90" x="180" y="180" />
+    <rect width="90" height="90" x="360" y="180" />
+    <rect width="90" height="90" x="540" y="180" />
 
-    <rect width="90" height="90" x="0" y="360" class="b" />
-    <rect width="90" height="90" x="180" y="360" class="b" />
-    <rect width="90" height="90" x="360" y="360" class="b" />
-    <rect width="90" height="90" x="540" y="360" class="b" />
-    <rect width="90" height="90" x="90" y="450" class="b" />
-    <rect width="90" height="90" x="270" y="450" class="b" />
-    <rect width="90" height="90" x="450" y="450" class="b" />
-    <rect width="90" height="90" x="630" y="450" class="b" />
+    <rect width="90" height="90" x="90" y="270" />
+    <rect width="90" height="90" x="270" y="270" />
+    <rect width="90" height="90" x="450" y="270" />
+    <rect width="90" height="90" x="630" y="270" />
 
-    <rect width="90" height="90" x="0" y="540" class="b" />
-    <rect width="90" height="90" x="180" y="540" class="b" />
-    <rect width="90" height="90" x="360" y="540" class="b" />
-    <rect width="90" height="90" x="540" y="540" class="b" />
-    <rect width="90" height="90" x="90" y="630" class="b" />
-    <rect width="90" height="90" x="270" y="630" class="b" />
-    <rect width="90" height="90" x="450" y="630" class="b" />
-    <rect width="90" height="90" x="630" y="630" class="b" />
+    <rect width="90" height="90" x="0" y="360" />
+    <rect width="90" height="90" x="180" y="360" />
+    <rect width="90" height="90" x="360" y="360" />
+    <rect width="90" height="90" x="540" y="360" />
+
+    <rect width="90" height="90" x="90" y="450" />
+    <rect width="90" height="90" x="270" y="450" />
+    <rect width="90" height="90" x="450" y="450" />
+    <rect width="90" height="90" x="630" y="450" />
+
+    <rect width="90" height="90" x="0" y="540" />
+    <rect width="90" height="90" x="180" y="540" />
+    <rect width="90" height="90" x="360" y="540" />
+    <rect width="90" height="90" x="540" y="540" />
+
+    <rect width="90" height="90" x="90" y="630" />
+    <rect width="90" height="90" x="270" y="630" />
+    <rect width="90" height="90" x="450" y="630" />
+    <rect width="90" height="90" x="630" y="630" />
 </svg>

@@ -1,19 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg viewBox="0 0 60 60" version="1.1" id="root" xmlns="http://www.w3.org/2000/svg">
-    <style>
-        .a {
-            fill: #333;
-            stroke: #222;
-        }
-    </style>
-
     <path d="
         M 45,55
         L 45,20
         A 15,15 90 0 0 30,5
         L 30,55
         Z
-    " class="a" />
+    " />
     <path d="
         M 40,55
         L 40,20
@@ -23,7 +16,7 @@
         L 25,29
         C 25,40 15,40 15,55
         Z
-    " class="a" />
-    <circle cx="27" cy="18" r="1" class="a" />
-    <rect x="10" y="52" width="40" height="5" class="a" />
+    " />
+    <circle cx="27" cy="18" r="1" />
+    <rect x="10" y="52" width="40" height="5" />
 </svg>
