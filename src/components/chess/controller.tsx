@@ -79,7 +79,6 @@ export const Controller = (properties: ControllerProperties): JSXElement => {
       >
         reset
       </button>
-
       <div>
         Black player
         <SettingPlayerSelect player={properties.playerBlack} setPlayer={properties.setPlayerBlack} />

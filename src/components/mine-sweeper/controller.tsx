@@ -43,16 +43,14 @@ export const Controller = (properties: ControllerProperties): JSXElement => {
             height:
             <input type="number" min={4} value={properties.height} onChange={handleHeight} />
           </label>
-          <br />
-          4 ～
+          <br />4 ～
         </p>
         <p>
           <label>
             width:
             <input type="number" min={4} value={properties.width} onChange={handleWidth} />
           </label>
-          <br />
-          4 ～
+          <br />4 ～
         </p>
         <p>
           <label>
@@ -65,8 +63,7 @@ export const Controller = (properties: ControllerProperties): JSXElement => {
               onChange={handleMines}
             />
           </label>
-          <br />
-          1 ～ {properties.height * properties.width - 9}
+          <br />1 ～ {properties.height * properties.width - 9}
         </p>
       </SettingModal>
     </div>
