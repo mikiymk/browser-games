@@ -4,8 +4,12 @@
         .b {
             fill: #666;
         }
+
+        .w {
+            fill: #ccc;
+        }
     </style>
-    <rect width="720" height="720" x="0" y="0" fill="#ccc" />
+    <rect width="720" height="720" x="0" y="0" class="w" />
 
     <rect width="90" height="90" x="0" y="0" class="b" />
     <rect width="90" height="90" x="180" y="0" class="b" />
