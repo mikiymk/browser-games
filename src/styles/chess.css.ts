@@ -11,33 +11,24 @@ export const boardStyle = style({
 });
 
 export const squareStyle = style({
-  height: "10vmin",
-  width: "10vmin",
+  fill: "#0000",
+  stroke: "none",
+  strokeWidth: "0.03",
 
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-
-  backgroundColor: "transparent",
-  borderWidth: 0,
-  padding: 0,
+  cursor: "pointer",
 });
 
 export const movableSquareStyle = style([
   squareStyle,
   {
-    borderStyle: "double",
-    borderWidth: "0.3rem",
-    borderColor: "darkorange",
+    stroke: "darkorange",
   },
 ]);
 
 export const selectedStyle = style([
   squareStyle,
   {
-    borderStyle: "double",
-    borderWidth: "0.3rem",
-    borderColor: "black",
+    stroke: "black",
   },
 ]);
 
@@ -49,4 +40,8 @@ export const pieceBlackStyle = style({
 export const pieceWhiteStyle = style({
   fill: "#ddd",
   stroke: "black",
+});
+
+export const boardBlackStyle = style({
+  fill: "#666",
 });
