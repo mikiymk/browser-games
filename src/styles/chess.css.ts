@@ -34,12 +34,12 @@ export const selectedStyle = style([
 
 export const pieceBlackStyle = style({
   fill: "#333",
-  stroke: "black",
+  stroke: "#222",
 });
 
 export const pieceWhiteStyle = style({
-  fill: "#ddd",
-  stroke: "black",
+  fill: "#ccc",
+  stroke: "#222",
 });
 
 export const boardBlackStyle = style({
