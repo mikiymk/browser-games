@@ -1,8 +1,8 @@
 import { CellKnight, CellMovable, CellVisited } from "@/games/knight-tour/consts";
 import { createGame } from "@/games/knight-tour/create-game";
 import { setKnightMovable } from "@/games/knight-tour/knight-move";
-import checked from "@/images/symbol/check-box-checked-black.svg";
-import unchecked from "@/images/symbol/check-box-unchecked-black.svg";
+import checked from "@/images/symbol/checkbox-checked.svg";
+import unchecked from "@/images/symbol/checkbox.svg";
 import {
   boardStyle,
   cellButtonStyle,
