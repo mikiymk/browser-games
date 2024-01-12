@@ -1,18 +1,23 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg viewBox="0 0 60 60" version="1.1" xmlns="http://www.w3.org/2000/svg">
-    <path id="0" d="
-        M 18,40
-        A 12,12 180 0 0 42,40
-        L 42,20
-        A 12,12 180 0 0 18,20
+<svg viewBox="0 0 60 60" version="1.1" xmlns="http://www.w3.org/2000/svg" id="root">
+    <style>
+        .a {
+            fill: none;
+            stroke: black;
+            stroke-width: 3;
+        }
+    </style>
+
+    <path d="
+        M 20,40
+        A 10,10 180 0 0 40,40
+        L 40,20
+        A 10,10 180 0 0 20,20
         Z
-        M 20,38
-        L 20,20
-        A 10,10 180 0 1 40,20
-        Z
-        M 40,22
-        L 40,40
-        A 10,10 180 0 1 20,40
-        Z
-    " />
+    " class="a" />
+    <path d="
+        M 20,40
+        L 40,20
+    " class="a" />
+
 </svg>
