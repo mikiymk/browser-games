@@ -1,9 +1,9 @@
 import { Bombed, Clear, FieldBomb, FieldFlag, FieldNoOpen, FirstClick, Playing } from "@/games/mine-sweeper/consts";
 import { getAround, initializeField, isClear, message, resetMines } from "@/games/mine-sweeper/field";
 import type { JSXElement } from "solid-js";
-import { For, batch, createEffect, createSignal } from "solid-js";
+import { batch, createEffect, createSignal } from "solid-js";
 import { Controller } from "./controller";
-import { MineField } from "./field";
+import { MineFields } from "./field";
 
 export const App = (): JSXElement => {
   const [height, setHeight] = createSignal(10);
@@ -98,24 +98,7 @@ export const App = (): JSXElement => {
     <>
       <h1>mine sweeper</h1>
 
-      <div
-        class="grid"
-        style={{
-          "grid-template-columns": `repeat(${width()}, 1fr)`,
-        }}
-      >
-        <For each={fields()}>
-          {(field, index) => (
-            <MineField
-              field={field}
-              onClick={() => {
-                openField(index());
-              }}
-              onContextMenu={() => flagField(index())}
-            />
-          )}
-        </For>
-      </div>
+      <MineFields fields={fields()} width={width()} open={openField} flag={flagField} />
 
       <Controller
         height={height()}

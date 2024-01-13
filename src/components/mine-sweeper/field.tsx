@@ -13,15 +13,15 @@ import {
   FieldNumber8,
 } from "@/games/mine-sweeper/consts";
 import type { JSXElement } from "solid-js";
-import { Match, Switch } from "solid-js";
+import { For, Match, Switch } from "solid-js";
 import { Bomb, Flag, Number1, Number2, Number3, Number4, Number5, Number6, Number7, Number8 } from "./graphic";
 
-type MineFieldProperties = {
+type MineCellProperties = {
   readonly field: number;
   readonly onClick: () => void;
   readonly onContextMenu: () => boolean;
 };
-export const MineField = (properties: MineFieldProperties): JSXElement => {
+const MineCell = (properties: MineCellProperties): JSXElement => {
   const handleContextMenu = (event: MouseEvent): void => {
     if (properties.onContextMenu()) {
       event.preventDefault();
@@ -97,6 +97,36 @@ export const MineField = (properties: MineFieldProperties): JSXElement => {
           </div>
         </Match>
       </Switch>
+    </div>
+  );
+};
+
+type MineFieldsProperties = {
+  readonly width: number;
+  readonly fields: readonly number[];
+
+  readonly open: (index: number) => void;
+  readonly flag: (index: number) => boolean;
+};
+export const MineFields = (properties: MineFieldsProperties): JSXElement => {
+  return (
+    <div
+      class="grid"
+      style={{
+        "grid-template-columns": `repeat(${properties.width}, 1fr)`,
+      }}
+    >
+      <For each={properties.fields}>
+        {(field, index) => (
+          <MineCell
+            field={field}
+            onClick={() => {
+              properties.open(index());
+            }}
+            onContextMenu={() => properties.flag(index())}
+          />
+        )}
+      </For>
     </div>
   );
 };
