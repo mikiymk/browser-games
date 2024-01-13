@@ -6,10 +6,6 @@
             stroke: black;
             stroke-width: 3;
         }
-
-        .b {
-            fill: red;
-        }
     </style>
 
     <path d="
@@ -17,7 +13,7 @@
         L 10,30
         L 30,30
         Z
-    " class="b" />
+    " fill="red" />
     <path d="
         M 30,5 
         L 30,50

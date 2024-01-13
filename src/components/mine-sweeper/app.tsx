@@ -98,7 +98,7 @@ export const App = (): JSXElement => {
     <>
       <h1>mine sweeper</h1>
 
-      <MineFields fields={fields()} width={width()} open={openField} flag={flagField} />
+      <MineFields height={height()} width={width()} fields={fields()} open={openField} flag={flagField} />
 
       <Controller
         height={height()}
