@@ -29,10 +29,12 @@ export const MineField = (properties: MineFieldProperties): JSXElement => {
   };
 
   return (
-    // biome-ignore lint/a11y/useKeyWithClickEvents: fix it later
     <div
       class="field"
       onClick={() => {
+        properties.onClick();
+      }}
+      onKeyPress={() => {
         properties.onClick();
       }}
       onContextMenu={handleContextMenu}

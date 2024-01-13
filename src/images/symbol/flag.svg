@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg id="root" viewBox="0 0 60 60" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <style>
+        .a {
+            fill: none;
+            stroke: black;
+            stroke-width: 3;
+        }
+
+        .b {
+            fill: red;
+        }
+    </style>
+
+    <path d="
+        M 30,5 
+        L 10,30
+        L 30,30
+        Z
+    " class="b" />
+    <path d="
+        M 30,5 
+        L 30,50
+    " class="a" />
+    <path d="
+        M 10,50
+        L 50,50
+    " class="a" />
+
+</svg>
