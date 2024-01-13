@@ -14,7 +14,12 @@ import nought from "@/images/symbol/nought.svg";
 import cross from "@/images/symbol/cross.svg";
 import type { JSXElement } from "solid-js";
 import { Show, createMemo } from "solid-js";
-import { movableStyle, numberStyle, pieceStyle, rectStyle } from "../../styles/knight-tour.css";
+import { blackNumberStyle, pieceStyle, rectStyle, whiteNumberStyle } from "../../styles/knight-tour.css";
+
+const blackIndexes = new Set([
+  0, 2, 4, 6, 9, 11, 13, 15, 16, 18, 20, 22, 25, 27, 29, 31, 32, 34, 36, 38, 41, 43, 45, 47, 48, 50, 52, 54, 57, 59, 61,
+  63,
+]);
 
 type SquareProperties = {
   readonly board: readonly number[];
@@ -73,10 +78,8 @@ export const Square = (properties: SquareProperties): JSXElement => {
     switch (properties.cell) {
       case CellKnight:
         return pieceStyle;
-      case CellMovable:
-        return movableStyle;
       default:
-        return numberStyle;
+        return blackIndexes.has(properties.index) ? whiteNumberStyle : blackNumberStyle;
     }
   };
 

@@ -84,17 +84,15 @@ export const pieceStyle = style({
   stroke: "#222",
 });
 
-export const numberStyle = style({
+export const blackNumberStyle = style({
   fill: "none",
-  stroke: "#888",
+  stroke: "#333",
 });
 
-export const movableStyle = style([
-  numberStyle,
-  {
-    cursor: "pointer",
-  },
-]);
+export const whiteNumberStyle = style({
+  fill: "none",
+  stroke: "#ccc",
+});
 
 export const rectStyle = style({
   fill: "#0000",
