@@ -78,3 +78,24 @@ export const historyStyle = style({
     },
   },
 });
+
+export const pieceStyle = style({
+  fill: "#ccc",
+  stroke: "#222",
+});
+
+export const numberStyle = style({
+  fill: "none",
+  stroke: "#888",
+});
+
+export const movableStyle = style([
+  numberStyle,
+  {
+    cursor: "pointer",
+  },
+]);
+
+export const rectStyle = style({
+  fill: "#0000",
+});

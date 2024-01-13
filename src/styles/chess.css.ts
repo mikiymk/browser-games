@@ -42,6 +42,3 @@ export const pieceWhiteStyle = style({
   stroke: "#222",
 });
 
-export const boardBlackStyle = style({
-  fill: "#666",
-});

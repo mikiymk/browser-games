@@ -10,10 +10,11 @@ import number5 from "@/images/number/5.svg";
 import number6 from "@/images/number/6.svg";
 import number7 from "@/images/number/7.svg";
 import number8 from "@/images/number/8.svg";
-import circle from "@/images/symbol/nought.svg";
+import nought from "@/images/symbol/nought.svg";
 import cross from "@/images/symbol/cross.svg";
 import type { JSXElement } from "solid-js";
-import { Match, Show, Switch, createMemo } from "solid-js";
+import { Show, createMemo } from "solid-js";
+import { movableStyle, numberStyle, pieceStyle, rectStyle } from "../../styles/knight-tour.css";
 
 type SquareProperties = {
   readonly board: readonly number[];
@@ -21,6 +22,7 @@ type SquareProperties = {
   readonly index: number;
 
   readonly hintMode: boolean;
+  readonly click: () => void;
 };
 export const Square = (properties: SquareProperties): JSXElement => {
   const getMovableCount = createMemo(
@@ -30,48 +32,78 @@ export const Square = (properties: SquareProperties): JSXElement => {
       ).length,
   );
 
-  return (
-    <Switch>
-      <Match when={properties.cell === CellVisited}>
-        <img src={cross.src} alt="visited" />
-      </Match>
+  const imageSource = (): string | undefined => {
+    switch (properties.cell) {
+      case CellVisited:
+        return cross.src;
+      case CellMovable: {
+        if (properties.hintMode) {
+          switch (getMovableCount()) {
+            case 0:
+              return number0.src;
+            case 1:
+              return number1.src;
+            case 2:
+              return number2.src;
+            case 3:
+              return number3.src;
+            case 4:
+              return number4.src;
+            case 5:
+              return number5.src;
+            case 6:
+              return number6.src;
+            case 7:
+              return number7.src;
+            default:
+              return number8.src;
+          }
+        }
 
-      <Match when={properties.cell === CellMovable}>
-        <Show when={properties.hintMode} fallback={<img src={circle.src} alt="movable" />}>
-          <Switch>
-            <Match when={getMovableCount() === 0}>
-              <img src={number0.src} alt="movable 0" />
-            </Match>
-            <Match when={getMovableCount() === 1}>
-              <img src={number1.src} alt="movable 1" />
-            </Match>
-            <Match when={getMovableCount() === 2}>
-              <img src={number2.src} alt="movable 2" />
-            </Match>
-            <Match when={getMovableCount() === 3}>
-              <img src={number3.src} alt="movable 3" />
-            </Match>
-            <Match when={getMovableCount() === 4}>
-              <img src={number4.src} alt="movable 4" />
-            </Match>
-            <Match when={getMovableCount() === 5}>
-              <img src={number5.src} alt="movable 5" />
-            </Match>
-            <Match when={getMovableCount() === 6}>
-              <img src={number6.src} alt="movable 6" />
-            </Match>
-            <Match when={getMovableCount() === 7}>
-              <img src={number7.src} alt="movable 7" />
-            </Match>
-            <Match when={getMovableCount() === 8}>
-              <img src={number8.src} alt="movable 8" />
-            </Match>
-          </Switch>
-        </Show>
-      </Match>
-      <Match when={properties.cell === CellKnight}>
-        <img src={knight.src} alt="knight" />
-      </Match>
-    </Switch>
+        return nought.src;
+      }
+      case CellKnight:
+        return knight.src;
+      default:
+        return;
+    }
+  };
+
+  const imageStyle = (): string => {
+    switch (properties.cell) {
+      case CellKnight:
+        return pieceStyle;
+      case CellMovable:
+        return movableStyle;
+      default:
+        return numberStyle;
+    }
+  };
+
+  const x = (): number => {
+    return properties.index % 8;
+  };
+  const y = (): number => {
+    return Math.floor(properties.index / 8);
+  };
+
+  return (
+    <Show when={imageSource()}>
+      {(source) => (
+        <>
+          <use href={`${source()}#root`} x={x()} y={y()} height={1} width={1} class={imageStyle()} />
+          <rect
+            x={x()}
+            y={y()}
+            height={1}
+            width={1}
+            tabindex={0}
+            onClick={properties.click}
+            onKeyPress={properties.click}
+            class={rectStyle}
+          />
+        </>
+      )}
+    </Show>
   );
 };
