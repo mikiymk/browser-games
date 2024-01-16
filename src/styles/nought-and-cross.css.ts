@@ -31,11 +31,17 @@ export const cellStyle = style({
 });
 
 export const oStyle = style({
-  color: "red",
+  fill: "none",
+  stroke: "red",
+
+  strokeWidth: 3,
 });
 
 export const xStyle = style({
-  color: "blue",
+  fill: "none",
+  stroke: "blue",
+
+  strokeWidth: 3,
 });
 
 export const controllerStyle = style({
