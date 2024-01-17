@@ -1,6 +1,6 @@
-import stoneBlack from "@/images/reversi/stone-black.svg";
-import stoneWhite from "@/images/reversi/stone-white.svg";
+import stone from "@/images/reversi/stone.svg";
 import {
+  blackStoneStyle,
   infoPlayButtonStyle,
   infoResultStyle,
   infoStoneCountStyle,
@@ -12,6 +12,7 @@ import {
   infoTimeStyle,
   infoTimeWhiteStyle,
   settingStartStyle,
+  whiteStoneStyle,
 } from "@/styles/reversi.css";
 import type { JSXElement } from "solid-js";
 import { Match, Show, Switch, createEffect, createMemo, createSignal } from "solid-js";
@@ -42,14 +43,17 @@ const StoneCount = (properties: StoneProperties): JSXElement => {
 
   return (
     <div class={infoStoneStyle}>
-      <img
+      <svg
+        viewBox="0 0 60 60"
+        xmlns="http://www.w3.org/2000/svg"
         classList={{
           [infoStoneSymbolStyle]: true,
           [infoStoneCurrentPlayerStyle]: isBlack(),
         }}
-        src={stoneBlack.src}
-        alt="black"
-      />
+      >
+        <title>black</title>
+        <use href={`${stone.src}#root`} class={blackStoneStyle} />
+      </svg>
       <span
         classList={{
           [infoStoneCountStyle]: true,
@@ -59,14 +63,17 @@ const StoneCount = (properties: StoneProperties): JSXElement => {
         {properties.black}
       </span>
       <span>-</span>
-      <img
+      <svg
+        viewBox="0 0 60 60"
+        xmlns="http://www.w3.org/2000/svg"
         classList={{
           [infoStoneSymbolStyle]: true,
           [infoStoneCurrentPlayerStyle]: isWhite(),
         }}
-        src={stoneWhite.src}
-        alt="white"
-      />
+      >
+        <title>white</title>
+        <use href={`${stone.src}#root`} class={whiteStoneStyle} />
+      </svg>
       <span
         classList={{
           [infoStoneCountStyle]: true,

@@ -13,22 +13,27 @@ export default defineConfig({
     compress({
       // biome-ignore lint/style/useNamingConvention: ライブラリに合わせる
       SVG: {
-        multipass: true,
+        svgo: {
+          multipass: true,
 
-        plugins: [
-          {
-            name: "preset-default",
-            params: {
-              overrides: {
-                cleanupIds: false,
+          plugins: [
+            {
+              name: "cleanupIds",
+              params: {
+                preserve: ["root"],
               },
             },
-          },
-        ],
+            {
+              name: "preset-default",
+              params: {
+                overrides: {
+                  cleanupIds: false,
+                },
+              },
+            },
+          ],
+        },
       },
-
-      // biome-ignore lint/style/useNamingConvention: ライブラリに合わせる
-      Logger: 1,
     }),
   ],
 

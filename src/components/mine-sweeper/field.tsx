@@ -2,7 +2,6 @@ import {
   FieldBomb,
   FieldFlag,
   FieldNoOpen,
-  FieldNumber0,
   FieldNumber1,
   FieldNumber2,
   FieldNumber3,
@@ -12,89 +11,129 @@ import {
   FieldNumber7,
   FieldNumber8,
 } from "@/games/mine-sweeper/consts";
+import number1 from "@/images/number/1.svg";
+import number2 from "@/images/number/2.svg";
+import number3 from "@/images/number/3.svg";
+import number4 from "@/images/number/4.svg";
+import number5 from "@/images/number/5.svg";
+import number6 from "@/images/number/6.svg";
+import number7 from "@/images/number/7.svg";
+import number8 from "@/images/number/8.svg";
+import flag from "@/images/symbol/flag.svg";
+import mine from "@/images/symbol/mine.svg";
 import type { JSXElement } from "solid-js";
-import { Match, Switch } from "solid-js";
-import { Bomb, Flag, Number1, Number2, Number3, Number4, Number5, Number6, Number7, Number8 } from "./graphic";
+import { For, Show } from "solid-js";
 
-type MineFieldProperties = {
+type MineCellProperties = {
   readonly field: number;
+  readonly x: number;
+  readonly y: number;
   readonly onClick: () => void;
   readonly onContextMenu: () => boolean;
 };
-export const MineField = (properties: MineFieldProperties): JSXElement => {
+const MineCell = (properties: MineCellProperties): JSXElement => {
   const handleContextMenu = (event: MouseEvent): void => {
     if (properties.onContextMenu()) {
       event.preventDefault();
     }
   };
 
+  const isClosed = (): boolean => {
+    return properties.field === FieldBomb || properties.field === FieldFlag || properties.field === FieldNoOpen;
+  };
+
+  const imageSource = (): [source: string, style: string] | undefined => {
+    switch (properties.field) {
+      case FieldBomb:
+        return [mine.src, "mine"];
+      case FieldFlag:
+        return [flag.src, "flag"];
+
+      case FieldNumber1:
+        return [number1.src, "n1"];
+      case FieldNumber2:
+        return [number2.src, "n2"];
+      case FieldNumber3:
+        return [number3.src, "n3"];
+      case FieldNumber4:
+        return [number4.src, "n4"];
+      case FieldNumber5:
+        return [number5.src, "n5"];
+      case FieldNumber6:
+        return [number6.src, "n6"];
+      case FieldNumber7:
+        return [number7.src, "n7"];
+      case FieldNumber8:
+        return [number8.src, "n8"];
+      default:
+        return;
+    }
+  };
+
   return (
-    // biome-ignore lint/a11y/useKeyWithClickEvents: fix it later
-    <div
-      class="field"
-      onClick={() => {
-        properties.onClick();
-      }}
-      onContextMenu={handleContextMenu}
-    >
-      <Switch>
-        <Match when={properties.field === FieldBomb}>
-          <div class="field-close">
-            <Bomb />
-          </div>
-        </Match>
-        <Match when={properties.field === FieldFlag}>
-          <div class="field-close">
-            <Flag />
-          </div>
-        </Match>
-        <Match when={properties.field === FieldNoOpen}>
-          <div class="field-close" />
-        </Match>
-        <Match when={properties.field === FieldNumber0}>
-          <div class="field-open" />
-        </Match>
-        <Match when={properties.field === FieldNumber1}>
-          <div class="field-open">
-            <Number1 />
-          </div>
-        </Match>
-        <Match when={properties.field === FieldNumber2}>
-          <div class="field-open">
-            <Number2 />
-          </div>
-        </Match>
-        <Match when={properties.field === FieldNumber3}>
-          <div class="field-open">
-            <Number3 />
-          </div>
-        </Match>
-        <Match when={properties.field === FieldNumber4}>
-          <div class="field-open">
-            <Number4 />
-          </div>
-        </Match>
-        <Match when={properties.field === FieldNumber5}>
-          <div class="field-open">
-            <Number5 />
-          </div>
-        </Match>
-        <Match when={properties.field === FieldNumber6}>
-          <div class="field-open">
-            <Number6 />
-          </div>
-        </Match>
-        <Match when={properties.field === FieldNumber7}>
-          <div class="field-open">
-            <Number7 />
-          </div>
-        </Match>
-        <Match when={properties.field === FieldNumber8}>
-          <div class="field-open">
-            <Number8 />
-          </div>
-        </Match>
-      </Switch>
-    </div>
+    <>
+      <rect x={properties.x} y={properties.y} height={1} width={1} class={isClosed() ? "field-close" : "field-open"} />
+
+      <Show when={imageSource()}>
+        {(source) => (
+          <use
+            href={`${source()[0]}#root`}
+            x={properties.x}
+            y={properties.y}
+            height={1}
+            width={1}
+            class={`graph ${source()[1]}`}
+          />
+        )}
+      </Show>
+
+      <rect
+        x={properties.x}
+        y={properties.y}
+        height={1}
+        width={1}
+        fill="#0000"
+        stroke="black"
+        stroke-width={0.05}
+        tabindex={0}
+        onClick={() => {
+          properties.onClick();
+        }}
+        onKeyPress={() => {
+          properties.onClick();
+        }}
+        onContextMenu={handleContextMenu}
+      />
+    </>
+  );
+};
+
+type MineFieldsProperties = {
+  readonly height: number;
+  readonly width: number;
+  readonly fields: readonly number[];
+
+  readonly open: (index: number) => void;
+  readonly flag: (index: number) => boolean;
+};
+export const MineFields = (properties: MineFieldsProperties): JSXElement => {
+  return (
+    <svg viewBox={`0 0 ${properties.width} ${properties.height}`} xmlns="http://www.w3.org/2000/svg">
+      <title>mine sweeper field</title>
+
+      <For each={properties.fields}>
+        {(field, index) => (
+          <MineCell
+            field={field}
+            x={index() % properties.width}
+            y={Math.floor(index() / properties.width)}
+            onClick={() => {
+              properties.open(index());
+            }}
+            onContextMenu={() => properties.flag(index())}
+          />
+        )}
+      </For>
+    </svg>
   );
 };

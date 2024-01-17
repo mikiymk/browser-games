@@ -1,20 +1,14 @@
 import { CellKnight, CellMovable, CellVisited } from "@/games/knight-tour/consts";
 import { createGame } from "@/games/knight-tour/create-game";
 import { setKnightMovable } from "@/games/knight-tour/knight-move";
-import checked from "@/images/symbol/check-box-checked-black.svg";
-import unchecked from "@/images/symbol/check-box-unchecked-black.svg";
-import {
-  boardStyle,
-  cellButtonStyle,
-  cellStyle,
-  h2Style,
-  settingCheckStyle,
-  settingStyle,
-} from "@/styles/knight-tour.css";
+import checked from "@/images/symbol/checkbox-checked.svg";
+import unchecked from "@/images/symbol/checkbox.svg";
+import { h2Style, settingCheckStyle, settingStyle } from "@/styles/knight-tour.css";
 import type { JSXElement } from "solid-js";
-import { For, Show, createSignal, onMount } from "solid-js";
+import { Show, createSignal, onMount } from "solid-js";
+import { StyledSvg } from "../common/styled-svg";
+import { Board } from "./board";
 import { History } from "./history";
-import { Square } from "./square";
 
 export const App = (): JSXElement => {
   const { board, history, resetBoard, reset, setHistory, backHistory } = createGame();
@@ -38,26 +32,7 @@ export const App = (): JSXElement => {
 
   return (
     <>
-      <div class={boardStyle}>
-        <For each={board()}>
-          {(cell, index) => (
-            <span class={cellStyle}>
-              <button
-                type="button"
-                class={cellButtonStyle}
-                style={{
-                  cursor: cell === CellMovable ? "pointer" : "default",
-                }}
-                onClick={() => {
-                  handleClick(index());
-                }}
-              >
-                <Square board={board()} cell={cell} index={index()} hintMode={hintMode()} />
-              </button>
-            </span>
-          )}
-        </For>
-      </div>
+      <Board board={board()} handleClick={handleClick} hintMode={hintMode()} />
 
       <div class={settingStyle}>
         <h2 class={h2Style}>Settings</h2>
@@ -65,9 +40,9 @@ export const App = (): JSXElement => {
         <label>
           <Show
             when={hintMode()}
-            fallback={<img class={settingCheckStyle} src={unchecked.src} alt="hint mode disabled" />}
+            fallback={<StyledSvg class={settingCheckStyle} src={unchecked.src} alt="hint mode disabled" />}
           >
-            <img class={settingCheckStyle} src={checked.src} alt="hint mode enabled" />
+            <StyledSvg class={settingCheckStyle} src={checked.src} alt="hint mode enabled" />
           </Show>
           <button type="button" onClick={() => setHintMode((hint) => !hint)}>
             Show Warnsdorff's hint

@@ -8,13 +8,13 @@
     "test": "run-z test:vitest test:zig",
     "test:vitest": "vitest run",
     "test:wasm": "zig build test",
-    "lint": "run-z lint:format lint:eslint lint:biome lint:typescript lint:find-unused",
+    "lint": "run-z lint:format lint:eslint lint:biome lint:typescript lint:knip",
     "lint:format": "biome ci .",
     "lint:eslint": "eslint src --cache",
     "lint:eslint-timing": "export TIMING=1 || set TIMING=1 && eslint src",
     "lint:biome": "biome check .",
     "lint:typescript": "tsc",
-    "lint:find-unused": "knip",
+    "lint:knip": "knip",
     "lint:format-zig": "zig fmt --check ./src",
     "lint-fix:eslint": "eslint src --cache --fix",
     "lint-fix:biome": "biome check . --apply",
@@ -29,7 +29,7 @@
     "check-all:wasm": "run-z format:wasm test:wasm build-wasm",
     "check-all": "run-z check-all:wasm check-all:js",
     "ci": "run-z ci:wasm ci:js",
-    "ci:js": "run-z lint:format lint:eslint lint:typescript lint:find-unused build-js",
+    "ci:js": "run-z lint:format lint:eslint lint:typescript lint:knip build-js",
     "ci:wasm": "run-z lint:format-zig test:wasm build-wasm",
     "serve": "astro dev",
     "serve-preview": "astro preview"
@@ -45,12 +45,12 @@
   },
   "homepage": "https://github.com/mikiymk/js-html-game#readme",
   "devDependencies": {
-    "@biomejs/biome": "^1.4.1",
+    "@biomejs/biome": "^1.5.1",
     "@eslint-community/eslint-plugin-eslint-comments": "^4.1.0",
     "@eslint/js": "^8.56.0",
     "@tsconfig/strictest": "^2.0.2",
-    "@typescript-eslint/eslint-plugin": "^6.17.0",
-    "@typescript-eslint/parser": "^6.17.0",
+    "@typescript-eslint/eslint-plugin": "^6.18.1",
+    "@typescript-eslint/parser": "^6.18.1",
     "@vanilla-extract/vite-plugin": "^3.9.3",
     "eslint": "^8.56.0",
     "eslint-config-prettier": "^9.1.0",
@@ -60,18 +60,18 @@
     "eslint-plugin-unicorn": "^50.0.1",
     "eslint-plugin-vitest": "^0.3.20",
     "globals": "^13.24.0",
-    "jsdom": "^23.0.1",
-    "knip": "^3.11.0",
+    "jsdom": "^23.2.0",
+    "knip": "^3.13.1",
     "run-z": "^2.0.0",
     "typescript": "^5.3.3",
-    "vitest": "^1.1.2"
+    "vitest": "^1.1.3"
   },
   "dependencies": {
-    "@astrojs/solid-js": "^4.0.0",
+    "@astrojs/solid-js": "^4.0.1",
     "@vanilla-extract/css": "^1.14.0",
-    "astro": "^4.1.0",
-    "astro-compress": "^2.2.5",
+    "astro": "^4.1.2",
+    "astro-compress": "^2.2.7",
     "destyle.css": "^4.0.0",
-    "solid-js": "^1.8.8"
+    "solid-js": "^1.8.10"
   }
 }

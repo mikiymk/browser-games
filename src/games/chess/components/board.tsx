@@ -1,9 +1,7 @@
 import board from "@/images/chess/board.svg";
-import { boardStyle, movableSquareStyle, selectedStyle, squareStyle } from "@/styles/chess.css";
 import type { JSXElement } from "solid-js";
 import { For } from "solid-js";
 import type { BoardCell } from "../board";
-import { MoveFrom, MoveTarget } from "../constants";
 import { BoardSquare } from "./board-square";
 
 type BoardProperties = {
@@ -13,25 +11,26 @@ type BoardProperties = {
 
 export const Board = (properties: BoardProperties): JSXElement => {
   return (
-    <div
-      class={boardStyle}
-      style={{
-        "background-image": `url(${board.src})`,
-      }}
-    >
+    <svg viewBox="0 0 8 8" xmlns="http://www.w3.org/2000/svg">
+      <title>chess board</title>
+
+      <use href={`${board.src}#root`} />
+
       <For each={properties.board}>
-        {(cell, index) => (
-          <button
-            type="button"
-            class={cell.mark === MoveTarget ? movableSquareStyle : cell.mark === MoveFrom ? selectedStyle : squareStyle}
-            onClick={() => {
-              properties.handleClick(cell, index());
-            }}
-          >
-            <BoardSquare piece={cell.piece} mark={cell.mark} />
-          </button>
-        )}
+        {(cell, index) => {
+          return (
+            <BoardSquare
+              piece={cell.piece}
+              mark={cell.mark}
+              x={index() % 8}
+              y={Math.floor(index() / 8)}
+              click={() => {
+                properties.handleClick(cell, index());
+              }}
+            />
+          );
+        }}
       </For>
-    </div>
+    </svg>
   );
 };

@@ -21,6 +21,7 @@ import {
 } from "@/styles/nought-and-cross.css";
 import { Match, Switch } from "solid-js";
 import type { JSXElement, Setter } from "solid-js";
+import { StyledSvg } from "../common/styled-svg";
 
 type ControllerProperties = {
   readonly statusMessage: Status;
@@ -37,17 +38,17 @@ export const Controller = (properties: ControllerProperties): JSXElement => {
       <output class={controllerOutputStyle}>
         <Switch>
           <Match when={properties.statusMessage === StatusWinO}>
-            <img src={nought.src} alt="nought" class={inlineImageStyle} /> Win!
+            <StyledSvg src={nought.src} alt="nought" class={inlineImageStyle} /> Win!
           </Match>
           <Match when={properties.statusMessage === StatusWinX}>
-            <img src={cross.src} alt="cross" class={inlineImageStyle} /> Win!
+            <StyledSvg src={cross.src} alt="cross" class={inlineImageStyle} /> Win!
           </Match>
           <Match when={properties.statusMessage === StatusDraw}>Draw!</Match>
           <Match when={properties.statusMessage === StatusNextO}>
-            next <img src={nought.src} alt="nought" class={inlineImageStyle} />
+            next <StyledSvg src={nought.src} alt="nought" class={inlineImageStyle} />
           </Match>
           <Match when={properties.statusMessage === StatusNextX}>
-            next <img src={cross.src} alt="cross" class={inlineImageStyle} />
+            next <StyledSvg src={cross.src} alt="cross" class={inlineImageStyle} />
           </Match>
           <Match when={properties.statusMessage === StatusNone}>{""}</Match>
         </Switch>
@@ -56,7 +57,7 @@ export const Controller = (properties: ControllerProperties): JSXElement => {
       <dl class={controllerPlayerStyle}>
         <dt>
           player
-          <img src={nought.src} alt="nought" class={inlineImageStyle} />
+          <StyledSvg src={nought.src} alt="nought" class={inlineImageStyle} />
         </dt>
         <dd>
           <LabeledRadioInput
@@ -77,7 +78,7 @@ export const Controller = (properties: ControllerProperties): JSXElement => {
 
         <dt>
           player
-          <img src={cross.src} alt="cross" class={inlineImageStyle} />
+          <StyledSvg src={cross.src} alt="cross" class={inlineImageStyle} />
         </dt>
         <dd>
           <LabeledRadioInput

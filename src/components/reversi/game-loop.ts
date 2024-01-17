@@ -50,7 +50,7 @@ export const gameLoop = (
   };
 
   const gameMove = async (): Promise<void> => {
-    let nextMove;
+    let nextMove: number;
     if (isHuman(isBlack(bp), players)) {
       setBoard(getBoard(bp, true));
 

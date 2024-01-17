@@ -1,7 +1,6 @@
 export const FieldNoOpen = -1;
 export const FieldBomb = -2;
 export const FieldFlag = -3;
-export const FieldNumber0 = 0;
 export const FieldNumber1 = 1;
 export const FieldNumber2 = 2;
 export const FieldNumber3 = 3;

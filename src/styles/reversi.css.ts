@@ -23,13 +23,27 @@ export const boardStyle = style({
   height: "min(60vmax, 80vmin)",
   width: "min(60vmax, 80vmin)",
 
-  backgroundColor: "#2bd92b",
+  border: "solid",
 
   display: "grid",
   gridTemplateColumns: "repeat(8, 1fr)",
 
   rowGap: 0,
   columnGap: 0,
+});
+
+export const blackStoneStyle = style({
+  fill: "#1a1a1a",
+  stroke: "#222",
+});
+
+export const whiteStoneStyle = style({
+  fill: "#cacaca",
+  stroke: "#222",
+});
+
+export const rectStyle = style({
+  fill: "#0000",
 });
 
 export const settingItemStyle = style({

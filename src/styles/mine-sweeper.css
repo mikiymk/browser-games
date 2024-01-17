@@ -25,78 +25,55 @@ body {
 }
 
 .field-close {
-  height: 100%;
-  width: 100%;
-  box-sizing: border-box;
-  border: 0.5vmin outset darkgray;
-  background-color: darkgray;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  fill: gray;
 }
 
 .field-open {
-  height: 100%;
-  width: 100%;
-  border: 0;
-  background-color: lightgray;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  fill: white;
 }
 
 .graph {
-  height: 100%;
-  width: 100%;
-
   fill: none;
   stroke: black;
-  stroke-width: 0;
+  stroke-width: 3;
 }
 
-.g-bomb {
-  fill: black;
-}
-
-.g-flag {
-  fill: red;
-}
-
-.stroke {
-  fill: none;
-  stroke-width: 10px;
-}
-
-.g-n1 {
+.n1 {
   stroke: blue;
 }
 
-.g-n2 {
+.n2 {
   stroke: green;
 }
 
-.g-n3 {
+.n3 {
   stroke: red;
 }
 
-.g-n4 {
+.n4 {
   stroke: purple;
 }
 
-.g-n5 {
+.n5 {
   stroke: maroon;
 }
 
-.g-n6 {
+.n6 {
   stroke: darkturquoise;
 }
 
-.g-n7 {
+.n7 {
   stroke: black;
 }
 
-.g-n8 {
+.n8 {
   stroke: darkgray;
+}
+
+.mine {
+  fill: black;
+}
+
+.flag {
+  fill: red;
 }
