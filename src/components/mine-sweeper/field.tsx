@@ -11,10 +11,6 @@ import {
   FieldNumber7,
   FieldNumber8,
 } from "@/games/mine-sweeper/consts";
-import type { JSXElement } from "solid-js";
-import { For, Show } from "solid-js";
-import mine from "@/images/symbol/mine.svg";
-import flag from "@/images/symbol/flag.svg";
 import number1 from "@/images/number/1.svg";
 import number2 from "@/images/number/2.svg";
 import number3 from "@/images/number/3.svg";
@@ -23,6 +19,10 @@ import number5 from "@/images/number/5.svg";
 import number6 from "@/images/number/6.svg";
 import number7 from "@/images/number/7.svg";
 import number8 from "@/images/number/8.svg";
+import flag from "@/images/symbol/flag.svg";
+import mine from "@/images/symbol/mine.svg";
+import type { JSXElement } from "solid-js";
+import { For, Show } from "solid-js";
 
 type MineCellProperties = {
   readonly field: number;

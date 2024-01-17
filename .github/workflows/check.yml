@@ -60,7 +60,7 @@ jobs:
         run: pnpm run lint:typescript
 
       - name: check knip
-        run: pnpm run lint:find-unused
+        run: pnpm run lint:knip
 
       - name: build astro
         run: pnpm run build-js

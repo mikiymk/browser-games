@@ -1,8 +1,8 @@
+import board from "@/images/reversi/board.svg";
 import { boardStyle } from "@/styles/reversi.css";
 import type { JSXElement } from "solid-js";
 import { For } from "solid-js";
 import { CellImage } from "./cell-image";
-import board from "@/images/reversi/board.svg";
 
 type BoardProperties = {
   readonly board: readonly number[];

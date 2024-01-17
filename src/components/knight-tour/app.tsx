@@ -6,8 +6,8 @@ import unchecked from "@/images/symbol/checkbox.svg";
 import { h2Style, settingCheckStyle, settingStyle } from "@/styles/knight-tour.css";
 import type { JSXElement } from "solid-js";
 import { Show, createSignal, onMount } from "solid-js";
-import { History } from "./history";
 import { Board } from "./board";
+import { History } from "./history";
 
 export const App = (): JSXElement => {
   const { board, history, resetBoard, reset, setHistory, backHistory } = createGame();

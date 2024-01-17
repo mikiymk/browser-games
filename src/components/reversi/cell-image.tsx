@@ -1,9 +1,9 @@
-import stone from "@/images/reversi/stone.svg";
 import smallStone from "@/images/reversi/stone-small.svg";
+import stone from "@/images/reversi/stone.svg";
+import { blackStoneStyle, rectStyle, whiteStoneStyle } from "@/styles/reversi.css";
 import { Show } from "solid-js";
 import type { JSXElement } from "solid-js";
 import { CellBlack, CellCanMoveBlack, CellCanMoveWhite, CellWhite } from "./const";
-import { blackStoneStyle, rectStyle, whiteStoneStyle } from "@/styles/reversi.css";
 
 type CellImageProperties = {
   readonly square: number;

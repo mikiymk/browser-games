@@ -1,15 +1,5 @@
 import { style } from "@vanilla-extract/css";
 
-export const boardStyle = style({
-  margin: "5vmin",
-  height: "80vmin",
-  width: "80vmin",
-  display: "grid",
-  gridTemplateColumns: "repeat(8, 1fr)",
-  rowGap: 0,
-  columnGap: 0,
-});
-
 export const squareStyle = style({
   fill: "#0000",
   stroke: "none",
@@ -41,4 +31,3 @@ export const pieceWhiteStyle = style({
   fill: "#ccc",
   stroke: "#222",
 });
-
