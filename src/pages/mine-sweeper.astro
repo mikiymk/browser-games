@@ -1,5 +1,5 @@
 ---
-import "@/styles/mine-sweeper.css";
+import { App } from "../components/mine-sweeper/app";
 ---
 
 <!doctype html>
@@ -13,11 +13,6 @@ import "@/styles/mine-sweeper.css";
   </head>
 
   <body>
-    <script>
-      import { App } from "../components/mine-sweeper/app";
-      import { render } from "solid-js/web";
-
-      render(App, document.body);
-    </script>
+    <App client:only="solid-js" />
   </body>
 </html>
