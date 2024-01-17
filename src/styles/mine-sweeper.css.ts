@@ -1,34 +1,7 @@
 import { style } from "@vanilla-extract/css";
 
-export const gridStyle = style({
-  margin: "auto",
-  padding: "1vmin",
-  width: "min-content",
-  height: "min-content",
-
-  display: "grid",
-
-  gap: 0,
-});
-
-export const fieldStyle = style({
-  height: "5vmin",
-  width: "5vmin",
-
-  border: "2px solid black",
-
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-});
-
-export const closeFieldStyle = style({
-  fill: "gray",
-});
-
-export const openFieldStyle = style({
-  fill: "white",
-});
+export const closeFieldStyle = style({ fill: "gray" });
+export const openFieldStyle = style({ fill: "white" });
 
 const graphStyle = style({
   fill: "none",
