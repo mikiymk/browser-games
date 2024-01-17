@@ -1,36 +1,59 @@
-import smallBlackStone from "@/images/reversi/stone-black-small.svg";
-import blackStone from "@/images/reversi/stone-black.svg";
-import smallWhiteStone from "@/images/reversi/stone-white-small.svg";
-import whiteStone from "@/images/reversi/stone-white.svg";
-import empty from "@/images/symbol/empty.svg";
+import stone from "@/images/reversi/stone.svg";
+import smallStone from "@/images/reversi/stone-small.svg";
+import { Show } from "solid-js";
 import type { JSXElement } from "solid-js";
 import { CellBlack, CellCanMoveBlack, CellCanMoveWhite, CellWhite } from "./const";
+import { blackStoneStyle, rectStyle, whiteStoneStyle } from "@/styles/reversi.css";
 
 type CellImageProperties = {
   readonly square: number;
+  readonly index: number;
+
+  readonly click: (square: number, index: number) => void;
 };
 export const CellImage = (properties: CellImageProperties): JSXElement => {
-  const source = (): string => {
-    return (
-      {
-        [CellBlack]: blackStone.src,
-        [CellWhite]: whiteStone.src,
-        [CellCanMoveBlack]: smallBlackStone.src,
-        [CellCanMoveWhite]: smallWhiteStone.src,
-      }[properties.square] ?? empty.src
-    );
+  const source = (): string | undefined => {
+    return {
+      [CellBlack]: stone.src,
+      [CellWhite]: stone.src,
+      [CellCanMoveBlack]: smallStone.src,
+      [CellCanMoveWhite]: smallStone.src,
+    }[properties.square];
   };
 
-  const alt = (): string => {
-    return (
-      {
-        [CellBlack]: "black stone",
-        [CellWhite]: "white stone",
-        [CellCanMoveBlack]: "can put black stone",
-        [CellCanMoveWhite]: "can put white stone",
-      }[properties.square] ?? ""
-    );
+  const style = (): string => {
+    switch (properties.square) {
+      case CellBlack:
+      case CellCanMoveBlack:
+        return blackStoneStyle;
+      default:
+        return whiteStoneStyle;
+    }
   };
 
-  return <img src={source()} alt={alt()} />;
+  const x = (): number => properties.index % 8;
+  const y = (): number => Math.floor(properties.index / 8);
+
+  const handleClick = (): void => {
+    properties.click(properties.square, properties.index);
+  };
+
+  return (
+    <>
+      <Show when={source()}>
+        {(source) => <use href={`${source()}#root`} x={x()} y={y()} height={1} width={1} class={style()} />}
+      </Show>
+
+      <rect
+        x={x()}
+        y={y()}
+        height={1}
+        width={1}
+        tabindex={0}
+        onClick={handleClick}
+        onKeyPress={handleClick}
+        class={rectStyle}
+      />
+    </>
+  );
 };
