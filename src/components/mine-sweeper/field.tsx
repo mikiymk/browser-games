@@ -21,6 +21,21 @@ import number7 from "@/images/number/7.svg";
 import number8 from "@/images/number/8.svg";
 import flag from "@/images/symbol/flag.svg";
 import mine from "@/images/symbol/mine.svg";
+import {
+  closeFieldStyle,
+  flagStyle,
+  frontRectStyle,
+  mineStyle,
+  number1Style,
+  number2Style,
+  number3Style,
+  number4Style,
+  number5Style,
+  number6Style,
+  number7Style,
+  number8Style,
+  openFieldStyle,
+} from "@/styles/mine-sweeper.css";
 import type { JSXElement } from "solid-js";
 import { For, Show } from "solid-js";
 
@@ -45,26 +60,26 @@ const MineCell = (properties: MineCellProperties): JSXElement => {
   const imageSource = (): [source: string, style: string] | undefined => {
     switch (properties.field) {
       case FieldBomb:
-        return [mine.src, "mine"];
+        return [mine.src, mineStyle];
       case FieldFlag:
-        return [flag.src, "flag"];
+        return [flag.src, flagStyle];
 
       case FieldNumber1:
-        return [number1.src, "n1"];
+        return [number1.src, number1Style];
       case FieldNumber2:
-        return [number2.src, "n2"];
+        return [number2.src, number2Style];
       case FieldNumber3:
-        return [number3.src, "n3"];
+        return [number3.src, number3Style];
       case FieldNumber4:
-        return [number4.src, "n4"];
+        return [number4.src, number4Style];
       case FieldNumber5:
-        return [number5.src, "n5"];
+        return [number5.src, number5Style];
       case FieldNumber6:
-        return [number6.src, "n6"];
+        return [number6.src, number6Style];
       case FieldNumber7:
-        return [number7.src, "n7"];
+        return [number7.src, number7Style];
       case FieldNumber8:
-        return [number8.src, "n8"];
+        return [number8.src, number8Style];
       default:
         return;
     }
@@ -72,7 +87,13 @@ const MineCell = (properties: MineCellProperties): JSXElement => {
 
   return (
     <>
-      <rect x={properties.x} y={properties.y} height={1} width={1} class={isClosed() ? "field-close" : "field-open"} />
+      <rect
+        x={properties.x}
+        y={properties.y}
+        height={1}
+        width={1}
+        class={isClosed() ? closeFieldStyle : openFieldStyle}
+      />
 
       <Show when={imageSource()}>
         {(source) => (
@@ -82,7 +103,7 @@ const MineCell = (properties: MineCellProperties): JSXElement => {
             y={properties.y}
             height={1}
             width={1}
-            class={`graph ${source()[1]}`}
+            class={source()[1]}
           />
         )}
       </Show>
@@ -92,9 +113,6 @@ const MineCell = (properties: MineCellProperties): JSXElement => {
         y={properties.y}
         height={1}
         width={1}
-        fill="#0000"
-        stroke="black"
-        stroke-width={0.05}
         tabindex={0}
         onClick={() => {
           properties.onClick();
@@ -103,6 +121,7 @@ const MineCell = (properties: MineCellProperties): JSXElement => {
           properties.onClick();
         }}
         onContextMenu={handleContextMenu}
+        class={frontRectStyle}
       />
     </>
   );
