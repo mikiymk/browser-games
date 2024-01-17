@@ -6,6 +6,7 @@ import unchecked from "@/images/symbol/checkbox.svg";
 import { h2Style, settingCheckStyle, settingStyle } from "@/styles/knight-tour.css";
 import type { JSXElement } from "solid-js";
 import { Show, createSignal, onMount } from "solid-js";
+import { StyledSvg } from "../common/styled-svg";
 import { Board } from "./board";
 import { History } from "./history";
 
@@ -39,9 +40,9 @@ export const App = (): JSXElement => {
         <label>
           <Show
             when={hintMode()}
-            fallback={<img class={settingCheckStyle} src={unchecked.src} alt="hint mode disabled" />}
+            fallback={<StyledSvg class={settingCheckStyle} src={unchecked.src} alt="hint mode disabled" />}
           >
-            <img class={settingCheckStyle} src={checked.src} alt="hint mode enabled" />
+            <StyledSvg class={settingCheckStyle} src={checked.src} alt="hint mode enabled" />
           </Show>
           <button type="button" onClick={() => setHintMode((hint) => !hint)}>
             Show Warnsdorff's hint

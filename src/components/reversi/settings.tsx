@@ -5,6 +5,7 @@ import { disableStyle, settingCheckBoxStyle, settingItemStyle } from "@/styles/r
 import { Show } from "solid-js";
 import type { JSXElement, Setter } from "solid-js";
 import { LabeledRadioInput } from "../common/labeled-radio/labeled-radio";
+import { StyledSvg } from "../common/styled-svg";
 import { AiPlayer, HumanPlayer } from "./const";
 
 type SettingsProperties = {
@@ -77,9 +78,9 @@ export const Settings = (properties: SettingsProperties): JSXElement => {
             />
             <Show
               when={properties.enableWatch}
-              fallback={<img class={settingCheckBoxStyle} src={uncheckedBox.src} alt="disable" />}
+              fallback={<StyledSvg class={settingCheckBoxStyle} src={uncheckedBox.src} alt="disable" />}
             >
-              <img class={settingCheckBoxStyle} src={checkedBox.src} alt="enable" />
+              <StyledSvg class={settingCheckBoxStyle} src={checkedBox.src} alt="enable" />
             </Show>
             use game clock
           </label>
