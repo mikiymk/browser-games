@@ -1,0 +1,46 @@
+---
+import Head from "@/components/common/head.astro";
+---
+
+<Head title="Knight's Tour" />
+
+<form action="game/">
+    <h1>Knight's Tour Settings</h1>
+
+    <p>
+        Hint mode
+
+        <ul>
+            <li>
+                <label>
+                    <input type="radio" name="hint" value="show" checked />
+                    O and X only
+                </label>
+            </li>
+            <li>
+                <label>
+                    <input type="radio" name="hint" value="hide" />
+                    Number is order of visit
+                </label>
+            </li>
+            <li>
+                <label>
+                    <input type="radio" name="hint" value="hide" />
+                    Number is onward moves
+                </label>
+            </li>
+        </ul>
+    </p>
+
+    <button>Start</button>
+</form>
+
+<p>
+    <h1>How to play Knight's Tour</h1>
+
+    <p>
+        Knight's Tour is a puzzle using an 8 x 8 chess board and one knight
+        piece. The player moves the knight and wins if he crosses every square
+        on the board exactly once.
+    </p>
+</p>

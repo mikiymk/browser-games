@@ -1,0 +1,38 @@
+---
+import Head from "@/components/common/head.astro";
+---
+
+<Head title="Mine Sweeper" />
+
+<form action="game/">
+    <h1>Mine Sweeper Settings</h1>
+
+    <p>
+        <label>
+            Height
+            <input type="number" name="height" value="10" />
+        </label>
+    </p>
+
+    <p>
+        <label>
+            Width
+            <input type="number" name="width" value="10" />
+        </label>
+    </p>
+
+    <p>
+        <label>
+            Count of Mines
+            <input type="number" name="mines" value="10" />
+        </label>
+    </p>
+
+    <button>Start</button>
+</form>
+
+<p>
+    <h1>How to play Mine Sweeper</h1>
+
+    <!-- TODO -->
+</p>

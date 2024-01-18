@@ -1,0 +1,42 @@
+---
+import Head from "@/components/common/head.astro";
+---
+
+<Head title="Noughts and Crosses" />
+
+<form action="game/">
+    <h1>Noughts and Crosses Settings</h1>
+
+    <p>
+        O player
+
+        <label>
+            <input type="radio" name="o" value="non-player" />
+            Non-Player
+        </label>
+        <label>
+            <input type="radio" name="o" value="player" checked />
+            Player
+        </label>
+    </p>
+    <p>
+        X player
+
+        <label>
+            <input type="radio" name="x" value="non-player" checked />
+            Non-Player
+        </label>
+        <label>
+            <input type="radio" name="x" value="player" />
+            Player
+        </label>
+    </p>
+
+    <button>Start</button>
+</form>
+
+<p>
+    <h1>How to play Noughts and Crosses</h1>
+
+    <!-- TODO -->
+</p>
