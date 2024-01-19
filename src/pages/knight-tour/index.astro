@@ -4,8 +4,9 @@ import Head from "@/components/common/head.astro";
 
 <Head title="Knight's Tour" />
 
+<h1>Knight's Tour</h1>
 <form action="game/">
-    <h1>Knight's Tour Settings</h1>
+    <h2>Knight's Tour Settings</h2>
 
     <p>
         Hint mode
@@ -13,19 +14,19 @@ import Head from "@/components/common/head.astro";
         <ul>
             <li>
                 <label>
-                    <input type="radio" name="hint" value="show" checked />
+                    <input type="radio" name="board" value="hide" checked />
                     O and X only
                 </label>
             </li>
             <li>
                 <label>
-                    <input type="radio" name="hint" value="hide" />
+                    <input type="radio" name="board" value="hint" />
                     Number is order of visit
                 </label>
             </li>
             <li>
                 <label>
-                    <input type="radio" name="hint" value="hide" />
+                    <input type="radio" name="board" value="history" />
                     Number is onward moves
                 </label>
             </li>
@@ -36,7 +37,7 @@ import Head from "@/components/common/head.astro";
 </form>
 
 <p>
-    <h1>How to play Knight's Tour</h1>
+    <h2>How to play Knight's Tour</h2>
 
     <p>
         Knight's Tour is a puzzle using an 8 x 8 chess board and one knight
