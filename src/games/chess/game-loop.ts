@@ -1,4 +1,5 @@
 import type { MultiPromise } from "@/scripts/multi-promise";
+import type { PlayerType } from "@/scripts/player";
 import { PlayerTypeHuman } from "@/scripts/player";
 import { sleep } from "@/scripts/sleep";
 import {
@@ -53,8 +54,8 @@ type WasmConnect = {
 };
 
 type Players = {
-  readonly black: number;
-  readonly white: number;
+  readonly black: PlayerType;
+  readonly white: PlayerType;
 };
 
 const EmptyBoard = Array.from({ length: 64 }, () => CellEmpty);

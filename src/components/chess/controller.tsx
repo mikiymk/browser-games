@@ -7,38 +7,13 @@ import {
   EndStalemate,
   EndWhiteWin,
 } from "@/games/chess/constants";
-import { PlayerTypeAi, PlayerTypeHuman } from "@/scripts/player";
-import type { PlayerType } from "@/scripts/player";
-import type { JSXElement, Setter } from "solid-js";
-
-type SettingPlayerSelectProperties = {
-  readonly player: PlayerType;
-  readonly setPlayer: Setter<PlayerType>;
-};
-const SettingPlayerSelect = (properties: SettingPlayerSelectProperties): JSXElement => {
-  const handleChange = (event: { readonly currentTarget: HTMLSelectElement }): void => {
-    console.log(event.currentTarget.value);
-    properties.setPlayer(Number(event.currentTarget.value) === PlayerTypeHuman ? PlayerTypeHuman : PlayerTypeAi);
-  };
-
-  return (
-    <select value={properties.player} onChange={handleChange}>
-      <option value={PlayerTypeHuman}>Human</option>
-      <option value={PlayerTypeAi}>AI</option>
-    </select>
-  );
-};
+import type { JSXElement } from "solid-js";
 
 type ControllerProperties = {
   readonly color: number;
   readonly end: number;
 
   readonly start: () => void;
-
-  readonly playerWhite: PlayerType;
-  readonly playerBlack: PlayerType;
-  readonly setPlayerWhite: Setter<PlayerType>;
-  readonly setPlayerBlack: Setter<PlayerType>;
 };
 
 export const Controller = (properties: ControllerProperties): JSXElement => {
@@ -77,16 +52,8 @@ export const Controller = (properties: ControllerProperties): JSXElement => {
           properties.start();
         }}
       >
-        reset
+        start
       </button>
-      <div>
-        Black player
-        <SettingPlayerSelect player={properties.playerBlack} setPlayer={properties.setPlayerBlack} />
-      </div>
-      <div>
-        White player
-        <SettingPlayerSelect player={properties.playerWhite} setPlayer={properties.setPlayerWhite} />
-      </div>
     </div>
   );
 };

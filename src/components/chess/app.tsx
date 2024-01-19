@@ -5,15 +5,16 @@ import { EndNotYet, White } from "@/games/chess/constants";
 import { gameLoop, getWasm } from "@/games/chess/game-loop";
 import { doNothingFunction } from "@/scripts/do-nothing";
 import { MultiPromise } from "@/scripts/multi-promise";
-import { PlayerTypeAi, PlayerTypeHuman } from "@/scripts/player";
-import type { PlayerType } from "@/scripts/player";
+import { PlayerTypeAi, PlayerTypeHuman, playerType } from "@/scripts/player";
 import type { JSXElement } from "solid-js";
 import { createResource, createSignal } from "solid-js";
 import { Controller } from "./controller";
 
 export const App = (): JSXElement => {
-  const [playerWhite, setPlayerWhite] = createSignal<PlayerType>(PlayerTypeHuman);
-  const [playerBlack, setPlayerBlack] = createSignal<PlayerType>(PlayerTypeAi);
+  const query = new URLSearchParams(location.search);
+
+  const playerWhite = playerType(query.get("white"), PlayerTypeHuman);
+  const playerBlack = playerType(query.get("black"), PlayerTypeAi);
 
   const [color, setColor] = createSignal(White);
   const [end, setEnd] = createSignal(EndNotYet);
@@ -35,8 +36,8 @@ export const App = (): JSXElement => {
       return;
     }
     terminate = gameLoop(wasmObject, setColor, setPiece, setEnd, setMark, humanInput, {
-      white: playerWhite(),
-      black: playerBlack(),
+      white: playerWhite,
+      black: playerBlack,
     });
   };
 
@@ -47,16 +48,7 @@ export const App = (): JSXElement => {
   return (
     <>
       <Board board={board()} handleClick={handleClick} />
-
-      <Controller
-        color={color()}
-        end={end()}
-        start={start}
-        playerWhite={playerWhite()}
-        playerBlack={playerBlack()}
-        setPlayerWhite={setPlayerWhite}
-        setPlayerBlack={setPlayerBlack}
-      />
+      <Controller color={color()} end={end()} start={start} />
     </>
   );
 };
