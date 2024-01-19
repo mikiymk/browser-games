@@ -1,20 +1,4 @@
-import { globalStyle, style } from "@vanilla-extract/css";
-
-globalStyle(":root", {
-  font: "100% 'Noto Sans', sans-serif",
-});
-
-export const bodyStyle = style({
-  margin: 0,
-  padding: 0,
-
-  height: "100dvh",
-  width: "100dvw",
-
-  display: "flex",
-  alignItems: "center",
-  flexDirection: "column",
-});
+import { style } from "@vanilla-extract/css";
 
 export const boardStyle = style({
   height: "80vmin",
@@ -50,11 +34,6 @@ export const controllerStyle = style({
 
 export const controllerOutputStyle = style({
   font: "",
-});
-
-export const controllerPlayerStyle = style({
-  display: "grid",
-  gridTemplateColumns: "1fr 2fr",
 });
 
 export const restartButtonStyle = style({

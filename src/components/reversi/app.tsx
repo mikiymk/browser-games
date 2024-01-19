@@ -1,5 +1,6 @@
 import { doNothingFunction } from "@/scripts/do-nothing";
 import { MultiPromise } from "@/scripts/multi-promise";
+import { PlayerTypeAi, PlayerTypeHuman, playerType } from "@/scripts/player";
 import type { JSXElement } from "solid-js";
 import { createResource, createSignal } from "solid-js";
 import { Board } from "./board";
@@ -8,7 +9,6 @@ import { gameLoop } from "./game-loop";
 import { getReversiWasm } from "./get-wasm";
 import { Info } from "./information";
 import { Settings } from "./settings";
-import { PlayerTypeAi, PlayerTypeHuman, playerType } from "@/scripts/player";
 
 const emptyBoard: number[] = Array.from({ length: 64 }, () => CellEmpty);
 

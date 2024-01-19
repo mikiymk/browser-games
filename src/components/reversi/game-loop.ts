@@ -1,11 +1,11 @@
 import type { MultiPromise } from "@/scripts/multi-promise";
+import type { PlayerType } from "@/scripts/player";
+import { PlayerTypeHuman } from "@/scripts/player";
 import { sleep } from "@/scripts/sleep";
 import type { Accessor } from "solid-js";
 import { createSignal } from "solid-js";
 import { CellBlack, CellEmpty, CellWhite } from "./const";
 import type { ReversiWasmConnect } from "./get-wasm";
-import type { PlayerType } from "@/scripts/player";
-import { PlayerTypeHuman } from "@/scripts/player";
 
 const AI_SLEEP_TIME_MS = 500;
 

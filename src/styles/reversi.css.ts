@@ -1,21 +1,5 @@
 import { style } from "@vanilla-extract/css";
 
-export const bodyStyle = style({
-  fontFamily: "serif",
-
-  display: "grid",
-  gridTemplateAreas: "'tt'" + "'if'" + "'bd'" + "'st'" + "'rl'",
-});
-
-export const titleStyle = style({
-  font: "bold 3rem serif",
-  gridArea: "tt",
-});
-
-export const ruleStyle = style({
-  gridArea: "rl",
-});
-
 export const boardStyle = style({
   gridArea: "bd",
   placeSelf: "center",
