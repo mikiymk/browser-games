@@ -13,8 +13,7 @@ import {
 import type { Status } from "@/games/nought-and-cross/types";
 import { doNothingFunction } from "@/scripts/do-nothing";
 import { MultiPromise } from "@/scripts/multi-promise";
-import { PlayerTypeAi, PlayerTypeHuman } from "@/scripts/player";
-import type { PlayerType } from "@/scripts/player";
+import { PlayerTypeAi, PlayerTypeHuman, playerType } from "@/scripts/player";
 import type { JSXElement } from "solid-js";
 import { createSignal, onMount } from "solid-js";
 import { Board } from "./board";
@@ -22,12 +21,14 @@ import { Controller } from "./controller";
 import { History } from "./history";
 
 export const App = (): JSXElement => {
+  const query = new URLSearchParams(location.search);
+
+  const playerO = playerType(query.get("o"), PlayerTypeHuman);
+  const playerX = playerType(query.get("x"), PlayerTypeAi);
+
   const [board, setBoardData] = createSignal<readonly number[]>([]);
   const [mark, setMark] = createSignal(MarkO);
   const [history, setHistory] = createSignal<readonly number[]>([]);
-
-  const [playerO, setPlayerO] = createSignal<PlayerType>(PlayerTypeHuman);
-  const [playerX, setPlayerX] = createSignal<PlayerType>(PlayerTypeAi);
 
   let terminate = doNothingFunction;
   let resolve: (value: number) => void = doNothingFunction;
@@ -48,8 +49,8 @@ export const App = (): JSXElement => {
     terminate();
 
     const players = {
-      o: playerO(),
-      x: playerX(),
+      o: playerO,
+      x: playerX,
     };
 
     // eslint-disable-next-line @typescript-eslint/prefer-destructuring
@@ -81,15 +82,7 @@ export const App = (): JSXElement => {
   return (
     <>
       <Board board={board()} click={handleClick} />
-
-      <Controller
-        statusMessage={status()}
-        onReset={reset}
-        playerO={playerO()}
-        playerX={playerX()}
-        setPlayerO={setPlayerO}
-        setPlayerX={setPlayerX}
-      />
+      <Controller statusMessage={status()} onReset={reset} />
       <History history={history()} />
     </>
   );
