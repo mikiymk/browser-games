@@ -1,4 +1,3 @@
-import stone from "@/images/reversi/stone.svg";
 import {
   blackStoneStyle,
   infoPlayButtonStyle,
@@ -14,6 +13,7 @@ import {
   settingStartStyle,
   whiteStoneStyle,
 } from "@/games/reversi/style.css";
+import stone from "@/images/reversi/stone.svg";
 import type { JSXElement } from "solid-js";
 import { Match, Show, Switch, createEffect, createMemo, createSignal } from "solid-js";
 import { CellBlack, CellWhite } from "../const";

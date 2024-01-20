@@ -1,6 +1,6 @@
+import { blackStoneStyle, rectStyle, whiteStoneStyle } from "@/games/reversi/style.css";
 import smallStone from "@/images/reversi/stone-small.svg";
 import stone from "@/images/reversi/stone.svg";
-import { blackStoneStyle, rectStyle, whiteStoneStyle } from"@/games/reversi/style.css";
 import { Show } from "solid-js";
 import type { JSXElement } from "solid-js";
 import { CellBlack, CellCanMoveBlack, CellCanMoveWhite, CellWhite } from "../const";

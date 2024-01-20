@@ -1,3 +1,5 @@
+import { StyledSvg } from "@/components/styled-svg";
+import { controllerOutputStyle, controllerStyle, restartButtonStyle } from "@/games/nought-and-cross/style.css";
 import {
   StatusDraw,
   StatusNextO,
@@ -7,13 +9,11 @@ import {
   StatusWinX,
 } from "@/games/nought-and-cross/types";
 import type { Status } from "@/games/nought-and-cross/types";
-import cross from "@/images/symbol/cross.svg";
-import nought from "@/images/symbol/nought.svg";
+import cross from "@/images/icon/cross.svg";
+import nought from "@/images/icon/nought.svg";
 import { inlineImageStyle } from "@/styles/common.css";
-import { controllerOutputStyle, controllerStyle, restartButtonStyle } from "@/games/nought-and-cross/style.css";
 import { Match, Switch } from "solid-js";
 import type { JSXElement } from "solid-js";
-import { StyledSvg } from "@/components/styled-svg";
 
 type ControllerProperties = {
   readonly statusMessage: Status;
