@@ -1,8 +1,8 @@
 const std = @import("std");
 
-const bit_board = @import("bit-board");
+const bit_board = @import("../bit-board/main.zig");
 
-const Board = @import("./Board.zig");
+const Board = @import("Board.zig");
 
 /// AIが考えた打つ場所をインデックスで返します。
 pub fn getAiMove(b: Board, comptime random: *const fn () f64) u6 {

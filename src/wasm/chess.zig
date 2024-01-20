@@ -1,9 +1,9 @@
 const std = @import("std");
 const builtin = @import("builtin");
 
-pub const Board = @import("Board.zig");
-pub const Game = @import("Game.zig");
-pub const ai = @import("ai.zig");
+pub const Board = @import("libs/chess/Board.zig");
+pub const Game = @import("libs/chess/Game.zig");
+pub const ai = @import("libs/chess/ai.zig");
 const ColorPieceType = Board.ColorPieceType;
 
 /// アロケーター
@@ -92,14 +92,4 @@ export fn moveAi(g: *Game) void {
 
 fn indexToPlace(index: u8) u64 {
     return @as(u64, 1) << @as(u6, @truncate(index));
-}
-
-test {
-    const testing = std.testing;
-
-    testing.refAllDecls(@This());
-
-    _ = @import("./Game_test.zig");
-    _ = @import("./Board_test.zig");
-    _ = @import("./moves_test.zig");
 }

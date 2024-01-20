@@ -1,7 +1,7 @@
 //! 8×8チェスボードの構造体。
 //!
 
-const bit_board = @import("bit-board");
+const bit_board = @import("../bit-board/main.zig");
 const moves = @import("moves.zig");
 const Board = @This();
 

@@ -11,16 +11,6 @@ import {
   FieldNumber7,
   FieldNumber8,
 } from "@/games/mine-sweeper/consts";
-import number1 from "@/images/number/1.svg";
-import number2 from "@/images/number/2.svg";
-import number3 from "@/images/number/3.svg";
-import number4 from "@/images/number/4.svg";
-import number5 from "@/images/number/5.svg";
-import number6 from "@/images/number/6.svg";
-import number7 from "@/images/number/7.svg";
-import number8 from "@/images/number/8.svg";
-import flag from "@/images/symbol/flag.svg";
-import mine from "@/images/symbol/mine.svg";
 import {
   closeFieldStyle,
   flagStyle,
@@ -36,6 +26,16 @@ import {
   number8Style,
   openFieldStyle,
 } from "@/games/mine-sweeper/style.css";
+import flag from "@/images/icon/flag.svg";
+import mine from "@/images/icon/mine.svg";
+import number1 from "@/images/letter/1.svg";
+import number2 from "@/images/letter/2.svg";
+import number3 from "@/images/letter/3.svg";
+import number4 from "@/images/letter/4.svg";
+import number5 from "@/images/letter/5.svg";
+import number6 from "@/images/letter/6.svg";
+import number7 from "@/images/letter/7.svg";
+import number8 from "@/images/letter/8.svg";
 import type { JSXElement } from "solid-js";
 import { For, Show } from "solid-js";
 

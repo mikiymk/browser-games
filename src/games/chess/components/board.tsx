@@ -1,7 +1,7 @@
+import type { BoardCell } from "@/games/chess/board";
 import board from "@/images/chess/board.svg";
 import type { JSXElement } from "solid-js";
 import { For } from "solid-js";
-import type { BoardCell } from "@/games/chess/board";
 import { BoardSquare } from "./board-square";
 
 type BoardProperties = {

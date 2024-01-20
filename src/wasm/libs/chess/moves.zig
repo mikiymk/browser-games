@@ -1,6 +1,6 @@
 const std = @import("std");
 
-const bit_board = @import("bit-board");
+const bit_board = @import("../bit-board/main.zig");
 const Board = @import("Board.zig");
 
 const east_west_mask = bit_board.fromString(

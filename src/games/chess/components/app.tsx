@@ -1,6 +1,5 @@
 import { createBoard } from "@/games/chess/board";
 import type { BoardCell } from "@/games/chess/board";
-import { Board } from "./board";
 import { EndNotYet, White } from "@/games/chess/constants";
 import { gameLoop, getWasm } from "@/games/chess/game-loop";
 import { doNothingFunction } from "@/scripts/do-nothing";
@@ -8,6 +7,7 @@ import { MultiPromise } from "@/scripts/multi-promise";
 import { PlayerTypeAi, PlayerTypeHuman, playerType } from "@/scripts/player";
 import type { JSXElement } from "solid-js";
 import { createResource, createSignal } from "solid-js";
+import { Board } from "./board";
 import { Controller } from "./controller";
 
 export const App = (): JSXElement => {

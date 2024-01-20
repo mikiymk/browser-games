@@ -1,7 +1,7 @@
 const std = @import("std");
 const builtin = @import("builtin");
-const Board = @import("./Board.zig");
-const ai = @import("./ai.zig");
+const Board = @import("libs/reversi/Board.zig");
+const ai = @import("libs/reversi/ai.zig");
 
 /// アロケーター
 const allocator = if (builtin.target.isWasm()) std.heap.wasm_allocator else std.heap.page_allocator;
@@ -79,10 +79,4 @@ export fn getValidMoves(b: *Board) u64 {
 /// 現在のゲームボードからAIの考えた手を取得する。
 export fn getAiMove(b: *Board) u8 {
     return ai.getAiMove(b.*, getRandom);
-}
-
-test {
-    const testing = std.testing;
-
-    testing.refAllDecls(@This());
 }

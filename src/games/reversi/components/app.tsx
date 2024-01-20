@@ -3,10 +3,10 @@ import { MultiPromise } from "@/scripts/multi-promise";
 import { PlayerTypeAi, PlayerTypeHuman, playerType } from "@/scripts/player";
 import type { JSXElement } from "solid-js";
 import { createResource, createSignal } from "solid-js";
-import { Board } from "./board";
 import { CellCanMoveBlack, CellCanMoveWhite, CellEmpty } from "../const";
 import { gameLoop } from "../game-loop";
 import { getReversiWasm } from "../get-wasm";
+import { Board } from "./board";
 import { Info } from "./information";
 import { Settings } from "./settings";
 

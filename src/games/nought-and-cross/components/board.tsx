@@ -1,7 +1,7 @@
-import { MarkO, MarkX } from "@/games/nought-and-cross/types";
-import cross from "@/images/symbol/cross.svg";
-import nought from "@/images/symbol/nought.svg";
 import { boardStyle, cellStyle, oStyle, xStyle } from "@/games/nought-and-cross/style.css";
+import { MarkO, MarkX } from "@/games/nought-and-cross/types";
+import cross from "@/images/icon/cross.svg";
+import nought from "@/images/icon/nought.svg";
 import type { JSXElement } from "solid-js";
 import { For, Match, Switch } from "solid-js";
 

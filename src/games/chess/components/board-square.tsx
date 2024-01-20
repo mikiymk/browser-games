@@ -1,12 +1,3 @@
-import bishop from "@/images/chess-pieces/bishop.svg";
-import king from "@/images/chess-pieces/king.svg";
-import knight from "@/images/chess-pieces/knight.svg";
-import pawn from "@/images/chess-pieces/pawn.svg";
-import queen from "@/images/chess-pieces/queen.svg";
-import rook from "@/images/chess-pieces/rook.svg";
-import { movableSquareStyle, pieceBlackStyle, pieceWhiteStyle, selectedStyle, squareStyle } from "@/games/chess/style.css";
-import type { JSXElement } from "solid-js";
-import { Show } from "solid-js";
 import {
   CellBlackBishop,
   CellBlackKing,
@@ -23,6 +14,21 @@ import {
   MoveFrom,
   MoveTarget,
 } from "@/games/chess/constants";
+import {
+  movableSquareStyle,
+  pieceBlackStyle,
+  pieceWhiteStyle,
+  selectedStyle,
+  squareStyle,
+} from "@/games/chess/style.css";
+import bishop from "@/images/chess/bishop.svg";
+import king from "@/images/chess/king.svg";
+import knight from "@/images/chess/knight.svg";
+import pawn from "@/images/chess/pawn.svg";
+import queen from "@/images/chess/queen.svg";
+import rook from "@/images/chess/rook.svg";
+import type { JSXElement } from "solid-js";
+import { Show } from "solid-js";
 
 type BoardSquareProperties = {
   readonly piece: number;

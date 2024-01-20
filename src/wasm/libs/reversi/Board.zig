@@ -1,7 +1,7 @@
 const std = @import("std");
 const builtin = @import("builtin");
 
-const bit_board = @import("bit-board");
+const bit_board = @import("../bit-board/main.zig");
 
 // 1 << n
 //

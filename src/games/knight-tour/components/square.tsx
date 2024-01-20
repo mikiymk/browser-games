@@ -1,20 +1,20 @@
 import { CellKnight, CellMovable, CellVisited } from "@/games/knight-tour/consts";
 import { getLegalMove } from "@/games/knight-tour/knight-move";
-import knight from "@/images/chess-pieces/knight.svg";
-import number0 from "@/images/number/0.svg";
-import number1 from "@/images/number/1.svg";
-import number2 from "@/images/number/2.svg";
-import number3 from "@/images/number/3.svg";
-import number4 from "@/images/number/4.svg";
-import number5 from "@/images/number/5.svg";
-import number6 from "@/images/number/6.svg";
-import number7 from "@/images/number/7.svg";
-import number8 from "@/images/number/8.svg";
-import cross from "@/images/symbol/cross.svg";
-import nought from "@/images/symbol/nought.svg";
+import { blackNumberStyle, pieceStyle, rectStyle, whiteNumberStyle } from "@/games/knight-tour/style.css";
+import knight from "@/images/chess/knight.svg";
+import cross from "@/images/icon/cross.svg";
+import nought from "@/images/icon/nought.svg";
+import number0 from "@/images/letter/0.svg";
+import number1 from "@/images/letter/1.svg";
+import number2 from "@/images/letter/2.svg";
+import number3 from "@/images/letter/3.svg";
+import number4 from "@/images/letter/4.svg";
+import number5 from "@/images/letter/5.svg";
+import number6 from "@/images/letter/6.svg";
+import number7 from "@/images/letter/7.svg";
+import number8 from "@/images/letter/8.svg";
 import type { JSXElement } from "solid-js";
 import { Show, createMemo } from "solid-js";
-import { blackNumberStyle, pieceStyle, rectStyle, whiteNumberStyle } from "@/games/knight-tour/style.css";
 
 const blackIndexes = new Set([
   0, 2, 4, 6, 9, 11, 13, 15, 16, 18, 20, 22, 25, 27, 29, 31, 32, 34, 36, 38, 41, 43, 45, 47, 48, 50, 52, 54, 57, 59, 61,
