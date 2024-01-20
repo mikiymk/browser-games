@@ -1,5 +1,8 @@
 ---
 import Head from "@/components/head.astro";
+import { StyledSvg } from "@/components/styled-svg";
+import nought from "@/images/icon/nought.svg";
+import cross from "@/images/icon/cross.svg";
 ---
 
 <Head title="Noughts and Crosses" />
@@ -9,7 +12,7 @@ import Head from "@/components/head.astro";
     <h2>Noughts and Crosses Settings</h2>
 
     <p>
-        O player
+        <StyledSvg src={nought.src} alt="nought" /> player
 
         <label>
             <input type="radio" name="o" value="non-player" />
@@ -21,7 +24,7 @@ import Head from "@/components/head.astro";
         </label>
     </p>
     <p>
-        X player
+        <StyledSvg src={cross.src} alt="cross" /> player
 
         <label>
             <input type="radio" name="x" value="non-player" checked />

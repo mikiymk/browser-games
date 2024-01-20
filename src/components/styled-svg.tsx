@@ -4,7 +4,7 @@ import type { JSXElement } from "solid-js";
 type StyledSvgProperties = {
   readonly src: string;
   readonly alt: string;
-  readonly class: string;
+  readonly class?: string;
   readonly style?: string;
 };
 export const StyledSvg = (properties: StyledSvgProperties): JSXElement => {

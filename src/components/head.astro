@@ -1,5 +1,6 @@
 ---
 import favicon from "@/images/favicon.svg";
+import "@/styles/basic.css";
 
 interface Props {
     title: string;
@@ -16,6 +17,10 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 <link
     rel="stylesheet"
     href="https://cdn.jsdelivr.net/npm/destyle.css@latest/destyle.min.css"
+/>
+<link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap"
 />
 <link rel="canonical" href={canonicalURL} />
 <title>{title}</title>
