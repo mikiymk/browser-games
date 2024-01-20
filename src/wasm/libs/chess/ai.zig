@@ -2,7 +2,7 @@ const std = @import("std");
 const Allocator = std.mem.Allocator;
 const AllocError = Allocator.Error;
 
-const bit_board = @import("bit-board");
+const bit_board = @import("../bit-board/main.zig");
 
 const Board = @import("./Board.zig");
 const Color = Board.Color;
