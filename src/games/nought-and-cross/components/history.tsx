@@ -1,4 +1,4 @@
-import { historyMoveStyle, historyStyle } from "@/styles/nought-and-cross.css";
+import { historyMoveStyle, historyStyle } from "@/games/nought-and-cross/style.css";
 import type { JSXElement } from "solid-js";
 import { For, Show } from "solid-js";
 

@@ -13,10 +13,10 @@ import {
   infoTimeWhiteStyle,
   settingStartStyle,
   whiteStoneStyle,
-} from "@/styles/reversi.css";
+} from "@/games/reversi/style.css";
 import type { JSXElement } from "solid-js";
 import { Match, Show, Switch, createEffect, createMemo, createSignal } from "solid-js";
-import { CellBlack, CellWhite } from "./const";
+import { CellBlack, CellWhite } from "../const";
 
 // ゲーム終了時に結果を表示する
 const GameResult = (properties: { readonly black: number; readonly white: number }): JSXElement => {

@@ -10,10 +10,10 @@ import type { Status } from "@/games/nought-and-cross/types";
 import cross from "@/images/symbol/cross.svg";
 import nought from "@/images/symbol/nought.svg";
 import { inlineImageStyle } from "@/styles/common.css";
-import { controllerOutputStyle, controllerStyle, restartButtonStyle } from "@/styles/nought-and-cross.css";
+import { controllerOutputStyle, controllerStyle, restartButtonStyle } from "@/games/nought-and-cross/style.css";
 import { Match, Switch } from "solid-js";
 import type { JSXElement } from "solid-js";
-import { StyledSvg } from "../common/styled-svg";
+import { StyledSvg } from "@/components/common/styled-svg";
 
 type ControllerProperties = {
   readonly statusMessage: Status;

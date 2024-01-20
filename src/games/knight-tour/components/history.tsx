@@ -1,4 +1,4 @@
-import { historyStyle } from "@/styles/knight-tour.css";
+import { historyStyle } from "@/games/knight-tour/style.css";
 import type { JSXElement } from "solid-js";
 import { For } from "solid-js";
 

@@ -14,7 +14,7 @@ import cross from "@/images/symbol/cross.svg";
 import nought from "@/images/symbol/nought.svg";
 import type { JSXElement } from "solid-js";
 import { Show, createMemo } from "solid-js";
-import { blackNumberStyle, pieceStyle, rectStyle, whiteNumberStyle } from "../../styles/knight-tour.css";
+import { blackNumberStyle, pieceStyle, rectStyle, whiteNumberStyle } from "@/games/knight-tour/style.css";
 
 const blackIndexes = new Set([
   0, 2, 4, 6, 9, 11, 13, 15, 16, 18, 20, 22, 25, 27, 29, 31, 32, 34, 36, 38, 41, 43, 45, 47, 48, 50, 52, 54, 57, 59, 61,

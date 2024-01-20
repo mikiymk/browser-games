@@ -35,7 +35,7 @@ import {
   number7Style,
   number8Style,
   openFieldStyle,
-} from "@/styles/mine-sweeper.css";
+} from "@/games/mine-sweeper/style.css";
 import type { JSXElement } from "solid-js";
 import { For, Show } from "solid-js";
 

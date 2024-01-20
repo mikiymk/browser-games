@@ -1,10 +1,10 @@
 import checkedBox from "@/images/symbol/checkbox-checked.svg";
 import uncheckedBox from "@/images/symbol/checkbox.svg";
 import { h2Style } from "@/styles/common.css";
-import { disableStyle, settingCheckBoxStyle, settingItemStyle } from "@/styles/reversi.css";
+import { disableStyle, settingCheckBoxStyle, settingItemStyle } from"@/games/reversi/style.css";
 import { Show } from "solid-js";
 import type { JSXElement, Setter } from "solid-js";
-import { StyledSvg } from "../common/styled-svg";
+import { StyledSvg } from "@/components/common/styled-svg";
 
 type SettingsProperties = {
   readonly playing: boolean;
