@@ -13,7 +13,7 @@ import { inlineImageStyle } from "@/styles/common.css";
 import { controllerOutputStyle, controllerStyle, restartButtonStyle } from "@/games/nought-and-cross/style.css";
 import { Match, Switch } from "solid-js";
 import type { JSXElement } from "solid-js";
-import { StyledSvg } from "@/components/common/styled-svg";
+import { StyledSvg } from "@/components/styled-svg";
 
 type ControllerProperties = {
   readonly statusMessage: Status;
