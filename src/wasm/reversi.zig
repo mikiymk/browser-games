@@ -1,7 +1,7 @@
 const std = @import("std");
 const builtin = @import("builtin");
-const Board = @import("./Board.zig");
-const ai = @import("./ai.zig");
+const Board = @import("libs/reversi/Board.zig");
+const ai = @import("libs/reversi/ai.zig");
 
 /// アロケーター
 const allocator = if (builtin.target.isWasm()) std.heap.wasm_allocator else std.heap.page_allocator;
