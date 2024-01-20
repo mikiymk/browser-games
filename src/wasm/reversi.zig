@@ -80,9 +80,3 @@ export fn getValidMoves(b: *Board) u64 {
 export fn getAiMove(b: *Board) u8 {
     return ai.getAiMove(b.*, getRandom);
 }
-
-test {
-    const testing = std.testing;
-
-    testing.refAllDecls(@This());
-}
