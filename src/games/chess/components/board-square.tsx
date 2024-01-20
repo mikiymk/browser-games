@@ -4,7 +4,7 @@ import knight from "@/images/chess-pieces/knight.svg";
 import pawn from "@/images/chess-pieces/pawn.svg";
 import queen from "@/images/chess-pieces/queen.svg";
 import rook from "@/images/chess-pieces/rook.svg";
-import { movableSquareStyle, pieceBlackStyle, pieceWhiteStyle, selectedStyle, squareStyle } from "@/styles/chess.css";
+import { movableSquareStyle, pieceBlackStyle, pieceWhiteStyle, selectedStyle, squareStyle } from "@/games/chess/style.css";
 import type { JSXElement } from "solid-js";
 import { Show } from "solid-js";
 import {
@@ -22,7 +22,7 @@ import {
   CellWhiteRook,
   MoveFrom,
   MoveTarget,
-} from "../constants";
+} from "@/games/chess/constants";
 
 type BoardSquareProperties = {
   readonly piece: number;

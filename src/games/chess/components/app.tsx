@@ -1,6 +1,6 @@
 import { createBoard } from "@/games/chess/board";
 import type { BoardCell } from "@/games/chess/board";
-import { Board } from "@/games/chess/components/board";
+import { Board } from "./board";
 import { EndNotYet, White } from "@/games/chess/constants";
 import { gameLoop, getWasm } from "@/games/chess/game-loop";
 import { doNothingFunction } from "@/scripts/do-nothing";
