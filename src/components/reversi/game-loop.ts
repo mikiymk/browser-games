@@ -1,13 +1,15 @@
 import type { MultiPromise } from "@/scripts/multi-promise";
+import type { PlayerType } from "@/scripts/player";
+import { PlayerTypeHuman } from "@/scripts/player";
 import { sleep } from "@/scripts/sleep";
 import type { Accessor } from "solid-js";
 import { createSignal } from "solid-js";
-import { CellBlack, CellEmpty, CellWhite, HumanPlayer } from "./const";
+import { CellBlack, CellEmpty, CellWhite } from "./const";
 import type { ReversiWasmConnect } from "./get-wasm";
 
 const AI_SLEEP_TIME_MS = 500;
 
-type Players = { readonly black: number; readonly white: number };
+type Players = { readonly black: PlayerType; readonly white: PlayerType };
 
 type GameObject = {
   terminate: () => void;
@@ -15,7 +17,7 @@ type GameObject = {
 };
 
 const isHuman = (isBlack: boolean, players: Players): boolean => {
-  return (isBlack && players.black === HumanPlayer) || (!isBlack && players.white === HumanPlayer);
+  return (isBlack && players.black === PlayerTypeHuman) || (!isBlack && players.white === PlayerTypeHuman);
 };
 
 export const gameLoop = (

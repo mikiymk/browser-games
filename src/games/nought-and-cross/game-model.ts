@@ -1,10 +1,11 @@
 import type { MultiPromise } from "@/scripts/multi-promise";
+import type { PlayerType } from "@/scripts/player";
 import { PlayerTypeHuman } from "@/scripts/player";
 import type { Setter } from "solid-js";
 import { gameNoughtAndCrossAi } from "./ai";
 import { Empty, MarkO, MarkX, Reset } from "./types";
 
-type Players = { readonly o: number; readonly x: number };
+type Players = { readonly o: PlayerType; readonly x: PlayerType };
 
 const isHumanPlayer = (players: Players, mark: number): boolean => {
   return (mark === MarkO && players.o === PlayerTypeHuman) || (mark === MarkX && players.x === PlayerTypeHuman);

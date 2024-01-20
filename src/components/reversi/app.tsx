@@ -1,9 +1,10 @@
 import { doNothingFunction } from "@/scripts/do-nothing";
 import { MultiPromise } from "@/scripts/multi-promise";
+import { PlayerTypeAi, PlayerTypeHuman, playerType } from "@/scripts/player";
 import type { JSXElement } from "solid-js";
 import { createResource, createSignal } from "solid-js";
 import { Board } from "./board";
-import { AiPlayer, CellCanMoveBlack, CellCanMoveWhite, CellEmpty, HumanPlayer } from "./const";
+import { CellCanMoveBlack, CellCanMoveWhite, CellEmpty } from "./const";
 import { gameLoop } from "./game-loop";
 import { getReversiWasm } from "./get-wasm";
 import { Info } from "./information";
@@ -12,11 +13,14 @@ import { Settings } from "./settings";
 const emptyBoard: number[] = Array.from({ length: 64 }, () => CellEmpty);
 
 export const App = (): JSXElement => {
+  const query = new URLSearchParams(location.search);
+
+  const black = playerType(query.get("black"), PlayerTypeHuman);
+  const white = playerType(query.get("white"), PlayerTypeAi);
+
   const [gamePlaying, setGamePlaying] = createSignal(false);
 
   const [board, setBoard] = createSignal(emptyBoard);
-  const [blackPlayer, setBlackPlayer] = createSignal(HumanPlayer);
-  const [whitePlayer, setWhitePlayer] = createSignal(AiPlayer);
 
   const [enableWatch, setEnableWatch] = createSignal(false);
 
@@ -42,8 +46,8 @@ export const App = (): JSXElement => {
       setBoard,
       humanInput,
       {
-        black: blackPlayer(),
-        white: whitePlayer(),
+        black,
+        white,
       },
       () => {
         setGamePlaying(false);
@@ -79,15 +83,7 @@ export const App = (): JSXElement => {
         enable={enableWatch()}
         color={getColor?.()}
       />
-      <Settings
-        playing={gamePlaying()}
-        black={blackPlayer()}
-        setBlack={setBlackPlayer}
-        white={whitePlayer()}
-        setWhite={setWhitePlayer}
-        enableWatch={enableWatch()}
-        setEnableWatch={setEnableWatch}
-      />
+      <Settings playing={gamePlaying()} enableWatch={enableWatch()} setEnableWatch={setEnableWatch} />
     </>
   );
 };

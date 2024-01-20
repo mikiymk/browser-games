@@ -4,7 +4,7 @@
   "compilerOptions": {
     "target": "ESNext",
     "module": "ESNext",
-    "moduleResolution": "bundler",
+    "moduleResolution": "Bundler",
     "jsx": "preserve",
     "jsxImportSource": "solid-js",
     "noEmit": true,
@@ -21,9 +21,9 @@
     "allowUnusedLabels": true, // lint/correctness/noUnusedLabels
     "allowUnreachableCode": true, // lint/correctness/noUnreachable
     "noFallthroughCasesInSwitch": false, // lint/suspicious/noFallthroughSwitchClause
-    "noUnusedLocals": true, // lint/correctness/noUnusedVariables
-    "noUnusedParameters": true, // lint/correctness/noUnusedVariables
+    "noUnusedLocals": false, // lint/correctness/noUnusedVariables
+    "noUnusedParameters": false, // lint/correctness/noUnusedVariables
   },
-  "include": ["**/*.ts", "**/*.tsx"],
+  "include": ["**/*.ts", "**/*.tsx", "src/**/*.astro"],
   "exclude": ["./vitest.config.ts"]
 }

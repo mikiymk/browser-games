@@ -1,0 +1,8 @@
+---
+import Head from "@/components/common/head.astro";
+import { App } from "@/components/mine-sweeper/app";
+---
+
+<Head title="Play Mine Sweeper" />
+
+<App client:only="solid-js" />

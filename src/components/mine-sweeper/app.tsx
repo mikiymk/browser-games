@@ -6,10 +6,10 @@ import { Controller } from "./controller";
 import { MineFields } from "./field";
 
 export const App = (): JSXElement => {
-  const [height, setHeight] = createSignal(10);
-  const [width, setWidth] = createSignal(10);
-
-  const [minesAmount, setMinesAmount] = createSignal(10);
+  const query = new URLSearchParams(location.search);
+  const height = Number.parseInt(query.get("height") ?? "10");
+  const width = Number.parseInt(query.get("width") ?? "10");
+  const mineCount = Number.parseInt(query.get("mines") ?? "10");
 
   const [fields, setFields] = createSignal(initializeField(10 * 10));
   const setFieldOn = (index: number, field: number): void => {
@@ -27,7 +27,7 @@ export const App = (): JSXElement => {
 
   const reset = (): void => {
     setGameState(FirstClick);
-    setFields(initializeField(height() * width()));
+    setFields(initializeField(height * width));
   };
 
   createEffect(() => {
@@ -41,11 +41,11 @@ export const App = (): JSXElement => {
     }
 
     if (gameState() === FirstClick) {
-      mines = resetMines(minesAmount(), height(), width(), index);
+      mines = resetMines(mineCount, height, width, index);
       setGameState(Playing);
     }
 
-    const aroundIndexes = getAround(height(), width(), index);
+    const aroundIndexes = getAround(height, width, index);
     let clickResult = 0;
 
     if (mines.has(index)) {
@@ -96,20 +96,8 @@ export const App = (): JSXElement => {
 
   return (
     <>
-      <h1>mine sweeper</h1>
-
-      <MineFields height={height()} width={width()} fields={fields()} open={openField} flag={flagField} />
-
-      <Controller
-        height={height()}
-        width={width()}
-        mineAmount={minesAmount()}
-        message={message(gameState(), fields(), minesAmount())}
-        reset={reset}
-        setHeight={setHeight}
-        setWidth={setWidth}
-        setMineAmount={setMinesAmount}
-      />
+      <MineFields height={height} width={width} fields={fields()} open={openField} flag={flagField} />
+      <Controller message={message(gameState(), fields(), mineCount)} reset={reset} />
     </>
   );
 };

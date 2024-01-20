@@ -1,0 +1,42 @@
+---
+import Head from "@/components/common/head.astro";
+---
+
+<Head title="Chess" />
+
+<h1>Chess </h1>
+<form action="game/">
+    <h2>Chess Settings</h2>
+
+    <p>
+        White Player
+        <label>
+            <input type="radio" name="white" value="non-player" />
+            Non-Player
+        </label>
+        <label>
+            <input type="radio" name="white" value="player" checked />
+            Player
+        </label>
+    </p>
+
+    <p>
+        Black Player
+        <label>
+            <input type="radio" name="black" value="non-player" checked />
+            Non-Player
+        </label>
+        <label>
+            <input type="radio" name="black" value="player" />
+            Player
+        </label>
+    </p>
+
+    <button>Start</button>
+</form>
+
+<p>
+    <h2>How to play Chess</h2>
+
+    <!-- TODO -->
+</p>
