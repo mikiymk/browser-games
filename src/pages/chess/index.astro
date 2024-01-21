@@ -1,42 +1,29 @@
 ---
 import Head from "@/components/head.astro";
+import Setting from "@/components/setting-form/form.astro";
+import Radio from "@/components/setting-form/radio.astro";
+import { h1Style, h2Style } from "@/styles/common.css";
 ---
 
 <Head title="Chess" />
 
-<h1>Chess</h1>
-<form action="game/">
-    <h2>Chess Settings</h2>
+<h1 class={h1Style}>Chess</h1>
+<Setting action="game/">
+    <dt>White Player</dt>
+    <dd>
+        <Radio name="white" value="non-player">Non-Player</Radio>
+        <Radio name="white" value="player" checked>Player</Radio>
+    </dd>
 
-    <p>
-        White Player
-        <label>
-            <input type="radio" name="white" value="non-player" />
-            Non-Player
-        </label>
-        <label>
-            <input type="radio" name="white" value="player" checked />
-            Player
-        </label>
-    </p>
-
-    <p>
-        Black Player
-        <label>
-            <input type="radio" name="black" value="non-player" checked />
-            Non-Player
-        </label>
-        <label>
-            <input type="radio" name="black" value="player" />
-            Player
-        </label>
-    </p>
-
-    <button>Start</button>
-</form>
+    <dt>Black Player</dt>
+    <dd>
+        <Radio name="black" value="non-player" checked>Non-Player</Radio>
+        <Radio name="black" value="player">Player</Radio>
+    </dd>
+</Setting>
 
 <p>
-    <h2>How to play Chess</h2>
+    <h2 class={h2Style}>How to play Chess</h2>
 
     <!-- TODO -->
 </p>

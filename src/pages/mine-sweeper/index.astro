@@ -1,39 +1,32 @@
 ---
 import Head from "@/components/head.astro";
+import Setting from "@/components/setting-form/form.astro";
+import Number from "@/components/setting-form/number.astro";
+import { h1Style, h2Style } from "@/styles/common.css";
 ---
 
 <Head title="Mine Sweeper" />
 
-<h1>Mine Sweeper</h1>
-<form action="game/">
-    <h2>Mine Sweeper Settings</h2>
+<h1 class={h1Style}>Mine Sweeper</h1>
+<Setting action="game/">
+    <dt>Height</dt>
+    <dd>
+        <Number name="height" value="10" />
+    </dd>
 
-    <p>
-        <label>
-            Height
-            <input type="number" name="height" value="10" />
-        </label>
-    </p>
+    <dt>Width</dt>
+    <dd>
+        <Number name="width" value="10" />
+    </dd>
 
-    <p>
-        <label>
-            Width
-            <input type="number" name="width" value="10" />
-        </label>
-    </p>
-
-    <p>
-        <label>
-            Count of Mines
-            <input type="number" name="mines" value="10" />
-        </label>
-    </p>
-
-    <button>Start</button>
-</form>
+    <dt>Count of Mines</dt>
+    <dd>
+        <Number name="mines" value="10" />
+    </dd>
+</Setting>
 
 <p>
-    <h2>How to play Mine Sweeper</h2>
+    <h2 class={h2Style}>How to play Mine Sweeper</h2>
 
     <!-- TODO -->
 </p>

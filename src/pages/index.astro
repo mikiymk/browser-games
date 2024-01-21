@@ -1,5 +1,11 @@
 ---
 import Head from "@/components/head.astro";
+import {
+    h1Style,
+    listStyle,
+    listItemStyle,
+    linkStyle,
+} from "@/styles/common.css";
 
 const pages = [
     { title: "Noughts and Crosses", name: "nought-and-cross" },
@@ -12,12 +18,14 @@ const pages = [
 
 <Head title="Games" />
 
-<h1>Games</h1>
-<ul>
+<h1 class={h1Style}>Games</h1>
+<ul class={listStyle}>
     {
         pages.map(({ title, name }) => (
-            <li>
-                <a href={`${name}/`}>{title}</a>
+            <li class={listItemStyle}>
+                <a href={`${name}/`} class={linkStyle}>
+                    {title}
+                </a>
             </li>
         ))
     }
