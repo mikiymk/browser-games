@@ -19,7 +19,6 @@ import { createSignal, onMount } from "solid-js";
 import { Board } from "./board";
 import { Controller } from "./controller";
 import { History } from "./history";
-import { bodyStyle } from "@/styles/common.css";
 
 export const App = (): JSXElement => {
   const query = new URLSearchParams(location.search);
@@ -81,10 +80,10 @@ export const App = (): JSXElement => {
   };
 
   return (
-    <div class={bodyStyle}>
+    <>
       <Board board={board()} click={handleClick} />
       <Controller statusMessage={status()} onReset={reset} />
       <History history={history()} />
-    </div>
+    </>
   );
 };

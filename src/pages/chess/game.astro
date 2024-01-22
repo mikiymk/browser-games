@@ -1,8 +1,8 @@
 ---
 import { App } from "@/games/chess/components/app";
-import Head from "@/components/head.astro";
+import GameBody from "@/components/game-template.astro";
 ---
 
-<Head title="Play Chess" />
-
-<App client:only="solid-js" />
+<GameBody title="Play Chess">
+    <App client:only="solid-js" />
+</GameBody>

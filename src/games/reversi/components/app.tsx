@@ -8,7 +8,6 @@ import { gameLoop } from "../game-loop";
 import { getReversiWasm } from "../get-wasm";
 import { Board } from "./board";
 import { Info } from "./information";
-import { bodyStyle } from "@/styles/common.css";
 
 const emptyBoard: number[] = Array.from({ length: 64 }, () => CellEmpty);
 
@@ -71,9 +70,9 @@ export const App = (): JSXElement => {
   };
 
   return (
-    <div class={bodyStyle}>
+    <>
       <Board board={board()} click={handleClick} />
       <Info start={handleStart} end={handleEnd} playing={gamePlaying()} board={board()} color={getColor?.()} />
-    </div>
+    </>
   );
 };

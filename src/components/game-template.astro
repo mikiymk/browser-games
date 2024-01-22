@@ -1,0 +1,22 @@
+---
+import Head from "@/components/head.astro";
+import { bodyStyle as defaultBodyStyle, linkStyle } from "@/styles/common.css";
+
+interface Props {
+    title: string;
+
+    bodyStyle?: string;
+}
+
+const { title, bodyStyle } = Astro.props;
+---
+
+<Head title={title} />
+
+<body>
+    <div class={bodyStyle ?? defaultBodyStyle}>
+        <slot />
+
+        <a href="../../" class={linkStyle}>Return to top</a>
+    </div>
+</body>

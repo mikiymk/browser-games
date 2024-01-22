@@ -9,7 +9,6 @@ import type { JSXElement } from "solid-js";
 import { createResource, createSignal } from "solid-js";
 import { Board } from "./board";
 import { Controller } from "./controller";
-import { bodyStyle } from "@/styles/common.css";
 
 export const App = (): JSXElement => {
   const query = new URLSearchParams(location.search);
@@ -47,9 +46,9 @@ export const App = (): JSXElement => {
   };
 
   return (
-    <div class={bodyStyle}>
+    <>
       <Board board={board()} handleClick={handleClick} />
       <Controller color={color()} end={end()} start={start} />
-    </div>
+    </>
   );
 };

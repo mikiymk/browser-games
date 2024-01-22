@@ -1,8 +1,8 @@
 ---
 import { App } from "@/games/mine-sweeper/components/app";
-import Head from "@/components/head.astro";
+import GameBody from "@/components/game-template.astro";
 ---
 
-<Head title="Play Mine Sweeper" />
-
-<App client:only="solid-js" />
+<GameBody title="Play Mine Sweeper">
+    <App client:only="solid-js" />
+</GameBody>
