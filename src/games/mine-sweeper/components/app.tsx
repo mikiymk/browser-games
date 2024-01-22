@@ -4,6 +4,7 @@ import type { JSXElement } from "solid-js";
 import { batch, createEffect, createSignal } from "solid-js";
 import { Controller } from "./controller";
 import { MineFields } from "./field";
+import { bodyStyle } from "@/styles/common.css";
 
 export const App = (): JSXElement => {
   const query = new URLSearchParams(location.search);
@@ -95,9 +96,9 @@ export const App = (): JSXElement => {
   };
 
   return (
-    <>
+    <div class={bodyStyle}>
       <MineFields height={height} width={width} fields={fields()} open={openField} flag={flagField} />
       <Controller message={message(gameState(), fields(), mineCount)} reset={reset} />
-    </>
+    </div>
   );
 };

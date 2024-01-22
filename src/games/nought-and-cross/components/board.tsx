@@ -1,4 +1,4 @@
-import { boardStyle, cellStyle, oStyle, xStyle } from "@/games/nought-and-cross/style.css";
+import { cellStyle, oStyle, xStyle } from "@/games/nought-and-cross/style.css";
 import { MarkO, MarkX } from "@/games/nought-and-cross/types";
 import cross from "@/images/icon/cross.svg";
 import nought from "@/images/icon/nought.svg";
@@ -50,7 +50,7 @@ type BoardProperties = {
 export const Board = (properties: BoardProperties): JSXElement => {
   return (
     <>
-      <svg viewBox="0 0 92 92" xmlns="http://www.w3.org/2000/svg" class={boardStyle}>
+      <svg viewBox="0 0 92 92" xmlns="http://www.w3.org/2000/svg">
         <title>noughts and crosses board</title>
 
         <For each={properties.board}>

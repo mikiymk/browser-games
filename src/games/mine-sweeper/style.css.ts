@@ -1,5 +1,7 @@
 import { style } from "@vanilla-extract/css";
 
+export const fieldStyle = style({});
+
 export const closeFieldStyle = style({ fill: "gray" });
 export const openFieldStyle = style({ fill: "white" });
 

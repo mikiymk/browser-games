@@ -5,6 +5,7 @@ import type { JSXElement } from "solid-js";
 import { onMount } from "solid-js";
 import { Board } from "./board";
 import { History } from "./history";
+import { knightTourBodyStyle } from "@/games/knight-tour/style.css";
 
 export const App = (): JSXElement => {
   const query = new URLSearchParams(location.search);
@@ -29,9 +30,9 @@ export const App = (): JSXElement => {
   onMount(reset);
 
   return (
-    <>
+    <div class={knightTourBodyStyle}>
       <Board board={board()} handleClick={handleClick} hintMode={hintMode} />
       <History history_={history()} back_={backHistory} />
-    </>
+    </div>
   );
 };
