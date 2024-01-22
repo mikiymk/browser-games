@@ -12,6 +12,38 @@ export default defineConfig({
     solidJs({}),
     compress({
       // biome-ignore lint/style/useNamingConvention: ライブラリに合わせる
+      HTML: {
+        "html-minifier-terser": {
+          collapseWhitespace: true,
+          collapseInlineTagWhitespace: true,
+
+          decodeEntities: true,
+          removeAttributeQuotes: true,
+          removeRedundantAttributes: true,
+
+          sortAttributes: true,
+          sortClassName: true,
+        },
+      },
+
+      // biome-ignore lint/style/useNamingConvention: ライブラリに合わせる
+      Image: {
+        sharp: {},
+      },
+
+      // biome-ignore lint/style/useNamingConvention: ライブラリに合わせる
+      CSS: {
+        csso: {
+          forceMediaMerge: true,
+        },
+      },
+
+      // biome-ignore lint/style/useNamingConvention: ライブラリに合わせる
+      JavaScript: {
+        terser: {},
+      },
+
+      // biome-ignore lint/style/useNamingConvention: ライブラリに合わせる
       SVG: {
         svgo: {
           multipass: true,

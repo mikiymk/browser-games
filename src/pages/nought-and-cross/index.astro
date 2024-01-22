@@ -1,43 +1,36 @@
 ---
 import Head from "@/components/head.astro";
+import { StyledSvg } from "@/components/styled-svg";
+import nought from "@/images/icon/nought.svg";
+import cross from "@/images/icon/cross.svg";
+import Setting from "@/components/setting-form/form.astro";
+import Radio from "@/components/setting-form/radio.astro";
+import { h1Style, h2Style } from "@/styles/common.css";
 ---
 
 <Head title="Noughts and Crosses" />
 
-<h1>Noughts and Crosses</h1>
-<form action="game/">
-    <h2>Noughts and Crosses Settings</h2>
+<h1 class={h1Style}>Noughts and Crosses</h1>
+<Setting action="game/">
+    <dt>
+        <StyledSvg src={nought.src} alt="nought" /> player
+    </dt>
+    <dd>
+        <Radio name="o" value="non-player">Non-Player</Radio>
+        <Radio name="o" value="player" checked>Player</Radio>
+    </dd>
 
-    <p>
-        O player
-
-        <label>
-            <input type="radio" name="o" value="non-player" />
-            Non-Player
-        </label>
-        <label>
-            <input type="radio" name="o" value="player" checked />
-            Player
-        </label>
-    </p>
-    <p>
-        X player
-
-        <label>
-            <input type="radio" name="x" value="non-player" checked />
-            Non-Player
-        </label>
-        <label>
-            <input type="radio" name="x" value="player" />
-            Player
-        </label>
-    </p>
-
-    <button>Start</button>
-</form>
+    <dt>
+        <StyledSvg src={cross.src} alt="cross" /> player
+    </dt>
+    <dd>
+        <Radio name="x" value="non-player" checked>Non-Player</Radio>
+        <Radio name="x" value="player">Player</Radio>
+    </dd>
+</Setting>
 
 <p>
-    <h2>How to play Noughts and Crosses</h2>
+    <h2 class={h2Style}>How to play Noughts and Crosses</h2>
 
     <!-- TODO -->
 </p>

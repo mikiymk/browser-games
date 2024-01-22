@@ -8,7 +8,6 @@ import { gameLoop } from "../game-loop";
 import { getReversiWasm } from "../get-wasm";
 import { Board } from "./board";
 import { Info } from "./information";
-import { Settings } from "./settings";
 
 const emptyBoard: number[] = Array.from({ length: 64 }, () => CellEmpty);
 
@@ -21,8 +20,6 @@ export const App = (): JSXElement => {
   const [gamePlaying, setGamePlaying] = createSignal(false);
 
   const [board, setBoard] = createSignal(emptyBoard);
-
-  const [enableWatch, setEnableWatch] = createSignal(false);
 
   const [wasm] = createResource(getReversiWasm);
   let terminateGame: () => void = doNothingFunction;
@@ -75,15 +72,7 @@ export const App = (): JSXElement => {
   return (
     <>
       <Board board={board()} click={handleClick} />
-      <Info
-        start={handleStart}
-        end={handleEnd}
-        playing={gamePlaying()}
-        board={board()}
-        enable={enableWatch()}
-        color={getColor?.()}
-      />
-      <Settings playing={gamePlaying()} enableWatch={enableWatch()} setEnableWatch={setEnableWatch} />
+      <Info start={handleStart} end={handleEnd} playing={gamePlaying()} board={board()} color={getColor?.()} />
     </>
   );
 };

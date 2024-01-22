@@ -1,4 +1,5 @@
 import type { BoardCell } from "@/games/chess/board";
+import { boardStyle } from "@/games/chess/style.css";
 import board from "@/images/chess/board.svg";
 import type { JSXElement } from "solid-js";
 import { For } from "solid-js";
@@ -11,7 +12,7 @@ type BoardProperties = {
 
 export const Board = (properties: BoardProperties): JSXElement => {
   return (
-    <svg viewBox="0 0 8 8" xmlns="http://www.w3.org/2000/svg">
+    <svg viewBox="0 0 8 8" xmlns="http://www.w3.org/2000/svg" class={boardStyle}>
       <title>chess board</title>
 
       <use href={`${board.src}#root`} />

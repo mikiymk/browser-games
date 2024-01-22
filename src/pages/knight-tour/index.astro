@@ -1,43 +1,30 @@
 ---
 import Head from "@/components/head.astro";
+import Setting from "@/components/setting-form/form.astro";
+import Radio from "@/components/setting-form/radio.astro";
+import { h1Style, h2Style } from "@/styles/common.css";
 ---
 
 <Head title="Knight's Tour" />
 
-<h1>Knight's Tour</h1>
-<form action="game/">
-    <h2>Knight's Tour Settings</h2>
-
-    <p>
-        Hint mode
-
-        <ul>
-            <li>
-                <label>
-                    <input type="radio" name="board" value="hide" checked />
-                    O and X only
-                </label>
-            </li>
-            <li>
-                <label>
-                    <input type="radio" name="board" value="hint" />
-                    Number is order of visit
-                </label>
-            </li>
-            <li>
-                <label>
-                    <input type="radio" name="board" value="history" />
-                    Number is onward moves
-                </label>
-            </li>
-        </ul>
-    </p>
-
-    <button>Start</button>
-</form>
+<h1 class={h1Style}>Knight's Tour</h1>
+<Setting action="game/">
+    <dt>Hint mode</dt>
+    <dd>
+        <Radio name="board" value="hide" checked>O and X only</Radio>
+    </dd>
+    <dt></dt>
+    <dd>
+        <Radio name="board" value="hint">Number is order of visit</Radio>
+    </dd>
+    <dt></dt>
+    <dd>
+        <Radio name="board" value="history">Number is onward moves</Radio>
+    </dd>
+</Setting>
 
 <p>
-    <h2>How to play Knight's Tour</h2>
+    <h2 class={h2Style}>How to play Knight's Tour</h2>
 
     <p>
         Knight's Tour is a puzzle using an 8 x 8 chess board and one knight

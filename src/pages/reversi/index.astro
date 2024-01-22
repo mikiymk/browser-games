@@ -1,43 +1,29 @@
 ---
 import Head from "@/components/head.astro";
+import Setting from "@/components/setting-form/form.astro";
+import Radio from "@/components/setting-form/radio.astro";
+import { h1Style, h2Style } from "@/styles/common.css";
 ---
 
 <Head title="Reversi" />
 
-<h1>Reversi</h1>
-<form action="game/">
-    <h2>Reversi Settings</h2>
+<h1 class={h1Style}>Reversi</h1>
+<Setting action="game/">
+    <dt>Black player</dt>
+    <dd>
+        <Radio name="black" value="non-player">Non-Player</Radio>
+        <Radio name="black" value="player" checked>Player</Radio>
+    </dd>
 
-    <p>
-        Black player
-
-        <label>
-            <input type="radio" name="black" value="non-player" />
-            Non-Player
-        </label>
-        <label>
-            <input type="radio" name="black" value="player" checked />
-            Player
-        </label>
-    </p>
-    <p>
-        White player
-
-        <label>
-            <input type="radio" name="white" value="non-player" checked />
-            Non-Player
-        </label>
-        <label>
-            <input type="radio" name="white" value="player" />
-            Player
-        </label>
-    </p>
-
-    <button>Start</button>
-</form>
+    <dt>White player</dt>
+    <dd>
+        <Radio name="white" value="non-player" checked>Non-Player</Radio>
+        <Radio name="white" value="player">Player</Radio>
+    </dd>
+</Setting>
 
 <p>
-    <h2>How to play Reversi</h2>
+    <h2 class={h2Style}>How to play Reversi</h2>
 
     <ul>
         <li>8x8 board.</li>

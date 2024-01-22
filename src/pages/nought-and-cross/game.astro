@@ -1,8 +1,8 @@
 ---
 import { App } from "@/games/nought-and-cross/components/app";
-import Head from "@/components/head.astro";
+import GameBody from "@/components/game-template.astro";
 ---
 
-<Head title="Play Noughts and Crosses" />
-
-<App client:only="solid-js" />
+<GameBody title="Play Noughts and Crosses">
+    <App client:only="solid-js" />
+</GameBody>

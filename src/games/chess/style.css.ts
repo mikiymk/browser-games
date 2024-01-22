@@ -1,5 +1,7 @@
 import { style } from "@vanilla-extract/css";
 
+export const boardStyle = style({});
+
 export const squareStyle = style({
   fill: "#0000",
   stroke: "none",
@@ -23,11 +25,11 @@ export const selectedStyle = style([
 ]);
 
 export const pieceBlackStyle = style({
-  fill: "#333",
+  fill: "#555",
   stroke: "#222",
 });
 
 export const pieceWhiteStyle = style({
-  fill: "#ccc",
+  fill: "#eee",
   stroke: "#222",
 });

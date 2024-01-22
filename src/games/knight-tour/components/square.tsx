@@ -1,6 +1,12 @@
 import { CellKnight, CellMovable, CellVisited } from "@/games/knight-tour/consts";
 import { getLegalMove } from "@/games/knight-tour/knight-move";
-import { blackNumberStyle, pieceStyle, rectStyle, whiteNumberStyle } from "@/games/knight-tour/style.css";
+import {
+  blackNumberStyle,
+  emptyRectStyle,
+  moveRectStyle,
+  pieceStyle,
+  whiteNumberStyle,
+} from "@/games/knight-tour/style.css";
 import knight from "@/images/chess/knight.svg";
 import cross from "@/images/icon/cross.svg";
 import nought from "@/images/icon/nought.svg";
@@ -83,6 +89,15 @@ export const Square = (properties: SquareProperties): JSXElement => {
     }
   };
 
+  const rectStyle = (): string => {
+    switch (properties.cell) {
+      case CellMovable:
+        return moveRectStyle;
+      default:
+        return emptyRectStyle;
+    }
+  };
+
   const x = (): number => {
     return properties.index % 8;
   };
@@ -103,7 +118,7 @@ export const Square = (properties: SquareProperties): JSXElement => {
             tabindex={0}
             onClick={properties.click}
             onKeyPress={properties.click}
-            class={rectStyle}
+            class={rectStyle()}
           />
         </>
       )}

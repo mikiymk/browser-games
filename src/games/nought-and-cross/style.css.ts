@@ -1,12 +1,5 @@
 import { style } from "@vanilla-extract/css";
 
-export const boardStyle = style({
-  height: "80vmin",
-  width: "80vmin",
-
-  margin: "0 10vmin",
-});
-
 export const cellStyle = style({
   fill: "#0000",
   stroke: "black",
@@ -28,33 +21,21 @@ export const xStyle = style({
   strokeWidth: 3,
 });
 
-export const controllerStyle = style({
-  width: "80vmin",
-});
-
-export const controllerOutputStyle = style({
-  font: "",
-});
-
-export const restartButtonStyle = style({
-  background: "lightgray",
-  padding: ".2rem",
-  border: "solid 1px black",
-});
-
 export const historyStyle = style({
+  width: "100%",
+
   display: "flex",
-  width: "80vmin",
 
   flexWrap: "wrap",
   alignItems: "center",
+  justifyContent: "center",
   gap: "0.5rem",
 });
 
 export const historyMoveStyle = style({
   display: "inline",
 
-  height: ["1.4rem", "1lh"],
+  height: "1lh",
   flex: "0 0 3rem",
 
   background: "lightgray",

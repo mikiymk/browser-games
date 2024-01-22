@@ -7,6 +7,7 @@ import {
   EndStalemate,
   EndWhiteWin,
 } from "@/games/chess/constants";
+import { buttonStyle } from "@/styles/common.css";
 import type { JSXElement } from "solid-js";
 
 type ControllerProperties = {
@@ -44,13 +45,17 @@ export const Controller = (properties: ControllerProperties): JSXElement => {
   };
   return (
     <div>
-      status:
-      <output>{message()}</output>
+      <p>
+        status:
+        <output>{message()}</output>
+      </p>
+
       <button
         type="button"
         onClick={() => {
           properties.start();
         }}
+        class={buttonStyle}
       >
         start
       </button>
