@@ -1,9 +1,9 @@
 import type { BoardCell } from "@/games/chess/board";
+import { boardStyle } from "@/games/chess/style.css";
 import board from "@/images/chess/board.svg";
 import type { JSXElement } from "solid-js";
 import { For } from "solid-js";
 import { BoardSquare } from "./board-square";
-import { boardStyle } from "@/games/chess/style.css";
 
 type BoardProperties = {
   readonly board: readonly BoardCell[];

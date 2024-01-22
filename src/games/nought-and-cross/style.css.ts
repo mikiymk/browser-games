@@ -21,12 +21,6 @@ export const xStyle = style({
   strokeWidth: 3,
 });
 
-export const restartButtonStyle = style({
-  background: "lightgray",
-  padding: ".2rem",
-  border: "solid 1px black",
-});
-
 export const historyStyle = style({
   width: "100%",
 

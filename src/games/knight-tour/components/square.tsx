@@ -2,10 +2,10 @@ import { CellKnight, CellMovable, CellVisited } from "@/games/knight-tour/consts
 import { getLegalMove } from "@/games/knight-tour/knight-move";
 import {
   blackNumberStyle,
-  pieceStyle,
   emptyRectStyle,
-  whiteNumberStyle,
   moveRectStyle,
+  pieceStyle,
+  whiteNumberStyle,
 } from "@/games/knight-tour/style.css";
 import knight from "@/images/chess/knight.svg";
 import cross from "@/images/icon/cross.svg";

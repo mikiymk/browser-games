@@ -1,5 +1,5 @@
-import { style } from "@vanilla-extract/css";
 import { bodyStyle } from "@/styles/common.css";
+import { style } from "@vanilla-extract/css";
 
 export const knightTourBodyStyle = style([
   bodyStyle,

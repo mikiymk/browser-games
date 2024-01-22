@@ -13,7 +13,6 @@ import {
 } from "@/games/mine-sweeper/consts";
 import {
   closeFieldStyle,
- 
   flagStyle,
   frontRectStyle,
   mineStyle,
@@ -138,7 +137,7 @@ type MineFieldsProperties = {
 };
 export const MineFields = (properties: MineFieldsProperties): JSXElement => {
   return (
-    <svg viewBox={`0 0 ${properties.width} ${properties.height}`} xmlns="http://www.w3.org/2000/svg" >
+    <svg viewBox={`0 0 ${properties.width} ${properties.height}`} xmlns="http://www.w3.org/2000/svg">
       <title>mine sweeper field</title>
 
       <For each={properties.fields}>

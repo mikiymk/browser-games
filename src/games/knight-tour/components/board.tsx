@@ -1,5 +1,5 @@
-import board from "@/images/chess/board.svg";
 import { boardStyle } from "@/games/knight-tour/style.css";
+import board from "@/images/chess/board.svg";
 import type { JSXElement } from "solid-js";
 import { For } from "solid-js";
 import { Square } from "./square";

@@ -46,11 +46,6 @@ export const linkStyle = style({
   },
 });
 
-export const inlineImageStyle = style({
-  height: "1.2rem",
-  width: "1.3rem",
-});
-
 export const defaultIconStyle = style({
   height: "1.4rem",
   width: "1.4rem",

@@ -6,10 +6,10 @@ import {
   whiteStoneStyle,
 } from "@/games/reversi/style.css";
 import stone from "@/images/reversi/stone.svg";
+import { buttonStyle } from "@/styles/common.css";
 import type { JSXElement } from "solid-js";
 import { createMemo } from "solid-js";
 import { CellBlack, CellWhite } from "../const";
-import { buttonStyle } from "@/styles/common.css";
 
 // ゲーム終了時に結果を表示する
 

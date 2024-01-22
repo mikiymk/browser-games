@@ -1,5 +1,5 @@
-import type { JSXElement } from "solid-js";
 import { buttonStyle } from "@/styles/common.css";
+import type { JSXElement } from "solid-js";
 
 type ControllerProperties = {
   readonly message: string;
