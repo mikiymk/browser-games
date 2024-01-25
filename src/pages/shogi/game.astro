@@ -1,0 +1,8 @@
+---
+import { App } from "@/games/shogi/components/app";
+import GameBody from "@/components/game-template.astro";
+---
+
+<GameBody title="Play Shogi">
+    <App client:only="solid-js" />
+</GameBody>

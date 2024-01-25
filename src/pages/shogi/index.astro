@@ -1,0 +1,27 @@
+---
+import Head from "@/components/head.astro";
+import Setting from "@/components/setting-form/form.astro";
+import Radio from "@/components/setting-form/radio.astro";
+import { h1Style, h2Style } from "@/styles/common.css";
+---
+
+<Head title="Shogi" />
+
+<h1 class={h1Style}>Shogi</h1>
+<Setting action="game/">
+    <dt>First player</dt>
+    <dd>
+        <Radio name="black" value="non-player">Non-Player</Radio>
+        <Radio name="black" value="player" checked>Player</Radio>
+    </dd>
+
+    <dt>Second player</dt>
+    <dd>
+        <Radio name="white" value="non-player" checked>Non-Player</Radio>
+        <Radio name="white" value="player">Player</Radio>
+    </dd>
+</Setting>
+
+<p>
+    <h2 class={h2Style}>How to play Shogi</h2>
+</p>
