@@ -9,7 +9,7 @@ export const App = (): JSXElement => {
   const playerFirst = playerType(query.get("first"), PlayerTypeHuman);
   const playerSecond = playerType(query.get("second"), PlayerTypeAi);
 
-  const [board, setBoard] = createSignal<number[]>(Array.from({ length: 81 }, (_, index) => index % 15));
+  const [board, setBoard] = createSignal<number[]>(Array.from({ length: 81 }, (_, index) => index % 16));
 
   return (
     <>
