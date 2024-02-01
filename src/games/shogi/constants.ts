@@ -1,0 +1,15 @@
+export const Osyo = 0; // 王将
+export const Gyokusyo = 1; // 玉将
+export const Hisya = 2; // 飛車
+export const Ryuo = 3; // 龍王
+export const Kakugyo = 4; // 角行
+export const Ryuma = 5; // 龍馬
+export const Kinsyo = 6; // 金将
+export const Ginsyo = 7; // 銀将
+export const NariGin = 8; // 成銀
+export const Keima = 9; // 桂馬
+export const NariKei = 10; // 成桂
+export const Kyosya = 11; // 香車
+export const NariKyo = 12; // 成香
+export const Huhyo = 13; // 歩兵
+export const Tokin = 14; // と金
