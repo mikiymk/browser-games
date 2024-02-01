@@ -3,7 +3,7 @@ import { createGame } from "@/games/knight-tour/create-game";
 import { setKnightMovable } from "@/games/knight-tour/knight-move";
 import type { JSXElement } from "solid-js";
 import { onMount } from "solid-js";
-import { Board } from "./board";
+import { KnightBoard } from "./board";
 import { History } from "./history";
 
 export const App = (): JSXElement => {
@@ -30,7 +30,7 @@ export const App = (): JSXElement => {
 
   return (
     <>
-      <Board board={board()} handleClick={handleClick} hintMode={hintMode} />
+      <KnightBoard board={board()} handleClick={handleClick} hintMode={hintMode} />
       <History history_={history()} back_={backHistory} />
     </>
   );

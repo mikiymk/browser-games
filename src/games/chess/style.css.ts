@@ -1,11 +1,8 @@
 import { style } from "@vanilla-extract/css";
 
-export const boardStyle = style({});
-
 export const squareStyle = style({
-  fill: "#0000",
   stroke: "none",
-  strokeWidth: "0.03",
+  strokeWidth: 4,
 
   cursor: "pointer",
 });

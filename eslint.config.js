@@ -85,6 +85,7 @@ export default [
         {
           allow: [
             { from: "lib", name: "MouseEvent" },
+            { from: "lib", name: "KeyboardEvent" },
             { from: "lib", name: "HTMLInputElement" },
             { from: "lib", name: "HTMLSelectElement" },
             { from: "package", name: "JSXElement", package: "solid-js" },

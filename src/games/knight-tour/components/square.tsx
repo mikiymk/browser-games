@@ -1,12 +1,6 @@
 import { CellKnight, CellMovable, CellVisited } from "@/games/knight-tour/consts";
 import { getLegalMove } from "@/games/knight-tour/knight-move";
-import {
-  blackNumberStyle,
-  emptyRectStyle,
-  moveRectStyle,
-  pieceStyle,
-  whiteNumberStyle,
-} from "@/games/knight-tour/style.css";
+import { blackNumberStyle, pieceStyle, whiteNumberStyle } from "@/games/knight-tour/style.css";
 import knight from "@/images/chess/knight.svg";
 import cross from "@/images/icon/cross.svg";
 import nought from "@/images/icon/nought.svg";
@@ -31,9 +25,10 @@ type SquareProperties = {
   readonly board: readonly number[];
   readonly cell: number;
   readonly index: number;
+  readonly x: number;
+  readonly y: number;
 
   readonly hintMode: boolean;
-  readonly click: () => void;
 };
 export const Square = (properties: SquareProperties): JSXElement => {
   const getMovableCount = createMemo(
@@ -89,36 +84,17 @@ export const Square = (properties: SquareProperties): JSXElement => {
     }
   };
 
-  const rectStyle = (): string => {
-    switch (properties.cell) {
-      case CellMovable:
-        return moveRectStyle;
-      default:
-        return emptyRectStyle;
-    }
-  };
-
-  const x = (): number => {
-    return properties.index % 8;
-  };
-  const y = (): number => {
-    return Math.floor(properties.index / 8);
-  };
-
   return (
     <Show when={imageSource()}>
       {(source) => (
         <>
-          <use href={`${source()}#root`} x={x()} y={y()} height={1} width={1} class={imageStyle()} />
-          <rect
-            x={x()}
-            y={y()}
-            height={1}
-            width={1}
-            tabindex={0}
-            onClick={properties.click}
-            onKeyPress={properties.click}
-            class={rectStyle()}
+          <use
+            href={`${source()}#root`}
+            x={properties.x}
+            y={properties.y}
+            height={10}
+            width={10}
+            class={imageStyle()}
           />
         </>
       )}

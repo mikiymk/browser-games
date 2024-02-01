@@ -6,7 +6,7 @@ import { createResource, createSignal } from "solid-js";
 import { CellCanMoveBlack, CellCanMoveWhite, CellEmpty } from "../const";
 import { gameLoop } from "../game-loop";
 import { getReversiWasm } from "../get-wasm";
-import { Board } from "./board";
+import { ReversiBoard } from "./board";
 import { Info } from "./information";
 
 const emptyBoard: number[] = Array.from({ length: 64 }, () => CellEmpty);
@@ -71,7 +71,7 @@ export const App = (): JSXElement => {
 
   return (
     <>
-      <Board board={board()} click={handleClick} />
+      <ReversiBoard board={board()} click={handleClick} />
       <Info start={handleStart} end={handleEnd} playing={gamePlaying()} board={board()} color={getColor?.()} />
     </>
   );

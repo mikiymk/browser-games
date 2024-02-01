@@ -7,7 +7,7 @@ import { MultiPromise } from "@/scripts/multi-promise";
 import { PlayerTypeAi, PlayerTypeHuman, playerType } from "@/scripts/player";
 import type { JSXElement } from "solid-js";
 import { createResource, createSignal } from "solid-js";
-import { Board } from "./board";
+import { ChessBoard } from "./board";
 import { Controller } from "./controller";
 
 export const App = (): JSXElement => {
@@ -47,7 +47,7 @@ export const App = (): JSXElement => {
 
   return (
     <>
-      <Board board={board()} handleClick={handleClick} />
+      <ChessBoard board={board()} handleClick={handleClick} />
       <Controller color={color()} end={end()} start={start} />
     </>
   );
