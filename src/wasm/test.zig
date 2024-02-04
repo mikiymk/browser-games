@@ -11,4 +11,5 @@ test {
     _ = @import("libs/chess/Game_test.zig");
     _ = @import("libs/chess/Board_test.zig");
     _ = @import("libs/chess/moves_test.zig");
+    _ = @import("libs/common/main.zig");
 }
