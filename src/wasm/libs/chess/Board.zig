@@ -1,9 +1,23 @@
 //! 8×8チェスボードの構造体。
 //!
 
-const bit_board = @import("../bit-board/main.zig");
-const moves = @import("moves.zig");
-const Board = @This();
+// std import
+const std = @import("std");
+const builtin = @import("builtin");
+
+// common import
+const common = @import("../common/main.zig");
+const BitBoard = common.bit_board.BitBoard(8, 8);
+
+// internal import
+const main = @import("./main.zig");
+const Board = main.Board;
+const moves = main.moves;
+
+// test import
+test {
+    _ = @import("./Board.test.zig");
+}
 
 pub const ColorPieceType = enum(u8) {
     black_pawn = 1,
@@ -81,6 +95,74 @@ pub const PieceType = enum {
     king,
 };
 
+pub const position = struct {
+    /// a8
+    const black_rook_queenside = BitBoard.fromCoordinate(0, 7);
+    /// b8
+    const black_knight_queenside = BitBoard.fromCoordinate(1, 7);
+    /// c8
+    const black_bishop_queenside = BitBoard.fromCoordinate(2, 7);
+    /// d8
+    const black_queen = BitBoard.fromCoordinate(3, 7);
+    /// e8
+    const black_king = BitBoard.fromCoordinate(4, 7);
+    /// f8
+    const black_bishop_kingside = BitBoard.fromCoordinate(5, 7);
+    /// g8
+    const black_knight_kingside = BitBoard.fromCoordinate(6, 7);
+    /// h8
+    const black_rook_kingside = BitBoard.fromCoordinate(7, 7);
+
+    /// a1
+    const white_rook_queenside = BitBoard.fromCoordinate(0, 0);
+    /// b1
+    const white_knight_queenside = BitBoard.fromCoordinate(1, 0);
+    /// c1
+    const white_bishop_queenside = BitBoard.fromCoordinate(2, 0);
+    /// d1
+    const white_queen = BitBoard.fromCoordinate(3, 0);
+    /// e1
+    const white_king = BitBoard.fromCoordinate(4, 0);
+    /// f1
+    const white_bishop_kingside = BitBoard.fromCoordinate(5, 0);
+    /// g1
+    const white_knight_kingside = BitBoard.fromCoordinate(6, 0);
+    /// h1
+    const white_rook_kingside = BitBoard.fromCoordinate(7, 0);
+
+    const black_square_mask = BitBoard.fromString(
+        \\.o.o.o.o
+        \\o.o.o.o.
+        \\.o.o.o.o
+        \\o.o.o.o.
+        \\.o.o.o.o
+        \\o.o.o.o.
+        \\.o.o.o.o
+        \\o.o.o.o.
+    , 'o');
+    const white_square_mask = BitBoard.fromString(
+        \\o.o.o.o.
+        \\.o.o.o.o
+        \\o.o.o.o.
+        \\.o.o.o.o
+        \\o.o.o.o.
+        \\.o.o.o.o
+        \\o.o.o.o.
+        \\.o.o.o.o
+    , 'o');
+
+    const final_ranks = BitBoard.fromString(
+        \\oooooooo
+        \\........
+        \\........
+        \\........
+        \\........
+        \\........
+        \\........
+        \\oooooooo
+    , 'o');
+};
+
 black_pawn: u64,
 black_knight: u64,
 black_bishop: u64,
@@ -125,19 +207,19 @@ pub fn init() Board {
 
 pub fn fromString(comptime str: []const u8) Board {
     return .{
-        .black_pawn = bit_board.fromString(str, 'P'),
-        .black_knight = bit_board.fromString(str, 'N'),
-        .black_bishop = bit_board.fromString(str, 'B'),
-        .black_rook = bit_board.fromString(str, 'R'),
-        .black_queen = bit_board.fromString(str, 'Q'),
-        .black_king = bit_board.fromString(str, 'K'),
+        .black_pawn = BitBoard.fromString(str, 'P'),
+        .black_knight = BitBoard.fromString(str, 'N'),
+        .black_bishop = BitBoard.fromString(str, 'B'),
+        .black_rook = BitBoard.fromString(str, 'R'),
+        .black_queen = BitBoard.fromString(str, 'Q'),
+        .black_king = BitBoard.fromString(str, 'K'),
 
-        .white_pawn = bit_board.fromString(str, 'p'),
-        .white_knight = bit_board.fromString(str, 'n'),
-        .white_bishop = bit_board.fromString(str, 'b'),
-        .white_rook = bit_board.fromString(str, 'r'),
-        .white_queen = bit_board.fromString(str, 'q'),
-        .white_king = bit_board.fromString(str, 'k'),
+        .white_pawn = BitBoard.fromString(str, 'p'),
+        .white_knight = BitBoard.fromString(str, 'n'),
+        .white_bishop = BitBoard.fromString(str, 'b'),
+        .white_rook = BitBoard.fromString(str, 'r'),
+        .white_queen = BitBoard.fromString(str, 'q'),
+        .white_king = BitBoard.fromString(str, 'k'),
     };
 }
 
@@ -262,19 +344,19 @@ fn getNormalMove(b: Board, from: u64, color_type: ColorPieceType) u64 {
 
 fn getCastlingMove(b: Board, from: u64) u64 {
     var board: u64 = 0;
-    if (from == bit_board.fromNotation("e1")) {
+    if (from == position.white_king) {
         if (b.castling_available.white_kingside and b.canCastling(.white_king)) {
-            board |= bit_board.fromNotation("h1");
+            board |= position.white_rook_kingside;
         }
         if (b.castling_available.white_queenside and b.canCastling(.white_queen)) {
-            board |= bit_board.fromNotation("a1");
+            board |= position.white_rook_queenside;
         }
-    } else if (from == bit_board.fromNotation("e8")) {
+    } else if (from == position.black_king) {
         if (b.castling_available.black_kingside and b.canCastling(.black_king)) {
-            board |= bit_board.fromNotation("h8");
+            board |= position.black_rook_kingside;
         }
         if (b.castling_available.black_queenside and b.canCastling(.black_queen)) {
-            board |= bit_board.fromNotation("a8");
+            board |= position.black_rook_queenside;
         }
     }
     return board;
@@ -300,37 +382,30 @@ fn getEnpassant(b: Board, from: u64, color: Color) u64 {
 /// プロモーションかどうかを判定する。
 /// ポーンが最終ランクに到達したとき
 pub fn isPromotion(b: Board, from: u64, to: u64) bool {
-    return to & bit_board.fromString(
-        \\oooooooo
-        \\........
-        \\........
-        \\........
-        \\........
-        \\........
-        \\........
-        \\oooooooo
-    , 'o') != 0 and b.getType(from) == .pawn;
+    return to & position.final_ranks != 0 and b.getType(from) == .pawn;
 }
 
 /// 現在の盤面でキャスリングが可能かどうかを判定する。
 /// - キングとルークの間に駒がない
 /// - キングの移動範囲が全て攻撃されていない
 pub fn canCastling(b: Board, color_piece: ColorPieceType) bool {
-    const black_king = bit_board.fromNotation("e8");
-    const black_kingside_rook = bit_board.fromNotation("h8");
-    const black_kingside_no_attacked = bit_board.fromNotations(&.{ "e8", "f8", "g8" });
-    const black_kingside_no_pieces = bit_board.fromNotations(&.{ "f8", "g8" });
-    const black_queenside_rook = bit_board.fromNotation("a8");
-    const black_queenside_no_attacked = bit_board.fromNotations(&.{ "c8", "d8", "e8" });
-    const black_queenside_no_pieces = bit_board.fromNotations(&.{ "b8", "c8", "d8" });
+    const black_king = position.black_king;
+    const black_kingside_rook = position.black_rook_kingside;
+    const black_queenside_rook = position.black_rook_queenside;
 
-    const white_king = bit_board.fromNotation("e1");
-    const white_kingside_rook = bit_board.fromNotation("h1");
-    const white_kingside_no_attacked = bit_board.fromNotations(&.{ "e1", "f1", "g1" });
-    const white_kingside_no_pieces = bit_board.fromNotations(&.{ "f1", "g1" });
-    const white_queenside_rook = bit_board.fromNotation("a1");
-    const white_queenside_no_attacked = bit_board.fromNotations(&.{ "c1", "d1", "e1" });
-    const white_queenside_no_pieces = bit_board.fromNotations(&.{ "b1", "c1", "d1" });
+    const black_kingside_no_attacked = position.black_king | position.black_bishop_kingside | position.black_knight_kingside;
+    const black_kingside_no_pieces = position.black_bishop_kingside | position.black_knight_kingside;
+    const black_queenside_no_attacked = position.black_bishop_queenside | position.black_queen | position.black_king;
+    const black_queenside_no_pieces = position.black_knight_queenside | position.black_bishop_queenside | position.black_queen;
+
+    const white_king = position.white_king;
+    const white_kingside_rook = position.white_rook_kingside;
+    const white_queenside_rook = position.white_rook_queenside;
+
+    const white_kingside_no_attacked = position.white_king | position.white_bishop_kingside | position.white_knight_kingside;
+    const white_kingside_no_pieces = position.white_bishop_kingside | position.white_knight_kingside;
+    const white_queenside_no_attacked = position.white_bishop_queenside | position.white_queen | position.white_king;
+    const white_queenside_no_pieces = position.white_knight_queenside | position.white_bishop_queenside | position.white_queen;
 
     const pieces = b.getColorPieces(.black) | b.getColorPieces(.white);
     switch (color_piece) {
@@ -361,7 +436,7 @@ pub fn canCastling(b: Board, color_piece: ColorPieceType) bool {
 pub fn filterValidMove(b: Board, from: u64, to_list: u64) u64 {
     const from_color = b.getColor(from) orelse return 0;
 
-    var iter = bit_board.iterator(to_list);
+    var iter = BitBoard.iterator(to_list);
     var valid_board: u64 = 0;
     while (iter.next()) |current| {
         // 動かしたボードがチェック状態の移動先を取り除く
@@ -423,7 +498,7 @@ fn isAttacked(b: Board, place: u64, color: Color) bool {
 /// その色に一つ以上の動かせる駒があるかどうか判定する
 pub fn canMove(board: Board, color: Color) bool {
     // 自分の色のすべての駒をループ
-    var iter = bit_board.iterator(board.getColorPieces(color));
+    var iter = BitBoard.iterator(board.getColorPieces(color));
     while (iter.next()) |current| {
         // 動ける場所が1つでもあれば真を返して終了
         if (board.getMove(current) != 0) {
@@ -477,31 +552,10 @@ pub fn isInsufficientMaterial(board: Board) bool {
         return true;
     }
 
-    const black_square_mask = bit_board.fromString(
-        \\.o.o.o.o
-        \\o.o.o.o.
-        \\.o.o.o.o
-        \\o.o.o.o.
-        \\.o.o.o.o
-        \\o.o.o.o.
-        \\.o.o.o.o
-        \\o.o.o.o.
-    , 'o');
-    const white_square_mask = bit_board.fromString(
-        \\o.o.o.o.
-        \\.o.o.o.o
-        \\o.o.o.o.
-        \\.o.o.o.o
-        \\o.o.o.o.
-        \\.o.o.o.o
-        \\o.o.o.o.
-        \\.o.o.o.o
-    , 'o');
-
     // キングとビショップ対キングとビショップ、ビショップは同じ色のマスにいる
     if (bn == 0 and wn == 0 and
-        ((board.black_bishop | board.white_bishop) & black_square_mask == board.black_bishop | board.white_bishop or
-        (board.black_bishop | board.white_bishop) & white_square_mask == board.black_bishop | board.white_bishop))
+        ((board.black_bishop | board.white_bishop) & position.black_square_mask == board.black_bishop | board.white_bishop or
+        (board.black_bishop | board.white_bishop) & position.white_square_mask == board.black_bishop | board.white_bishop))
     {
         return true;
     }
@@ -603,18 +657,18 @@ fn getMovedBoardCastling(b: Board, from: u64, to: u64) Board {
     var new_board = b;
     switch (from) {
         // e1は白のキング
-        bit_board.fromNotation("e1") => {
+        position.white_king => {
             switch (to) {
                 // クイーンサイド
-                bit_board.fromNotation("a1") => {
-                    new_board.white_king ^= bit_board.fromNotations(&.{ "c1", "e1" });
-                    new_board.white_rook ^= bit_board.fromNotations(&.{ "a1", "d1" });
+                position.white_rook_queenside => {
+                    new_board.white_king ^= position.white_bishop_queenside | position.white_king;
+                    new_board.white_rook ^= position.white_rook_queenside | position.white_queen;
                 },
 
                 // キングサイド
-                bit_board.fromNotation("h1") => {
-                    new_board.white_king ^= bit_board.fromNotations(&.{ "e1", "g1" });
-                    new_board.white_rook ^= bit_board.fromNotations(&.{ "f1", "h1" });
+                position.white_rook_kingside => {
+                    new_board.white_king ^= position.white_king | position.white_knight_kingside;
+                    new_board.white_rook ^= position.white_bishop_kingside | position.white_rook_kingside;
                 },
 
                 else => {},
@@ -622,18 +676,18 @@ fn getMovedBoardCastling(b: Board, from: u64, to: u64) Board {
         },
 
         // e8は黒のキング
-        bit_board.fromNotation("e8") => {
+        position.black_king => {
             switch (to) {
                 // クイーンサイド
-                bit_board.fromNotation("a8") => {
-                    new_board.black_king ^= bit_board.fromNotations(&.{ "c8", "e8" });
-                    new_board.black_rook ^= bit_board.fromNotations(&.{ "a8", "d8" });
+                position.black_rook_queenside => {
+                    new_board.black_king ^= position.black_bishop_queenside | position.black_king;
+                    new_board.black_rook ^= position.black_rook_queenside | position.black_queen;
                 },
 
                 // キングサイド
-                bit_board.fromNotation("h8") => {
-                    new_board.black_king ^= bit_board.fromNotations(&.{ "e8", "g8" });
-                    new_board.black_rook ^= bit_board.fromNotations(&.{ "f8", "h8" });
+                position.black_rook_kingside => {
+                    new_board.black_king ^= position.black_king | position.black_knight_kingside;
+                    new_board.black_rook ^= position.black_bishop_kingside | position.black_rook_kingside;
                 },
 
                 else => {},
@@ -701,9 +755,9 @@ fn setEnpassant(board: *Board, from: u64, piece_type: ColorPieceType) void {
             board.castling_available.black_queenside = false;
         },
         .black_rook => {
-            if (from == bit_board.fromNotation("a8")) {
+            if (from == position.black_rook_queenside) {
                 board.castling_available.black_queenside = false;
-            } else if (from == bit_board.fromNotation("h8")) {
+            } else if (from == position.black_rook_queenside) {
                 board.castling_available.black_kingside = false;
             }
         },
@@ -712,9 +766,9 @@ fn setEnpassant(board: *Board, from: u64, piece_type: ColorPieceType) void {
             board.castling_available.white_queenside = false;
         },
         .white_rook => {
-            if (from == bit_board.fromNotation("a1")) {
+            if (from == position.white_rook_queenside) {
                 board.castling_available.white_queenside = false;
-            } else if (from == bit_board.fromNotation("h1")) {
+            } else if (from == position.white_rook_kingside) {
                 board.castling_available.white_kingside = false;
             }
         },

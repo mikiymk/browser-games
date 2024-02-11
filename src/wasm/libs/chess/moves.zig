@@ -1,9 +1,22 @@
+// std import
 const std = @import("std");
+const builtin = @import("builtin");
 
-const bit_board = @import("../bit-board/main.zig");
-const Board = @import("Board.zig");
+// common import
+const common = @import("../common/main.zig");
+const BitBoard = common.bit_board.BitBoard(8, 8);
 
-const east_west_mask = bit_board.fromString(
+// internal import
+const main = @import("./main.zig");
+const Board = main.Board;
+const moves = main.moves;
+
+// test import
+test {
+    _ = @import("./moves.test.zig");
+}
+
+const east_west_mask = BitBoard.fromString(
     \\.oooooo.
     \\.oooooo.
     \\.oooooo.
@@ -14,7 +27,7 @@ const east_west_mask = bit_board.fromString(
     \\.oooooo.
 , 'o');
 
-const east_mask = bit_board.fromString(
+const east_mask = BitBoard.fromString(
     \\ooooooo.
     \\ooooooo.
     \\ooooooo.
@@ -25,7 +38,7 @@ const east_mask = bit_board.fromString(
     \\ooooooo.
 , 'o');
 
-const east_mask_double = bit_board.fromString(
+const east_mask_double = BitBoard.fromString(
     \\oooooo..
     \\oooooo..
     \\oooooo..
@@ -36,7 +49,7 @@ const east_mask_double = bit_board.fromString(
     \\oooooo..
 , 'o');
 
-const west_mask = bit_board.fromString(
+const west_mask = BitBoard.fromString(
     \\.ooooooo
     \\.ooooooo
     \\.ooooooo
@@ -47,7 +60,7 @@ const west_mask = bit_board.fromString(
     \\.ooooooo
 , 'o');
 
-const west_mask_double = bit_board.fromString(
+const west_mask_double = BitBoard.fromString(
     \\..oooooo
     \\..oooooo
     \\..oooooo
@@ -58,7 +71,7 @@ const west_mask_double = bit_board.fromString(
     \\..oooooo
 , 'o');
 
-const white_pawn_double_step_target = bit_board.fromString(
+const white_pawn_double_step_target = BitBoard.fromString(
     \\........
     \\........
     \\........
@@ -69,7 +82,7 @@ const white_pawn_double_step_target = bit_board.fromString(
     \\........
 , 'o');
 
-const black_pawn_double_step_target = bit_board.fromString(
+const black_pawn_double_step_target = BitBoard.fromString(
     \\........
     \\........
     \\........

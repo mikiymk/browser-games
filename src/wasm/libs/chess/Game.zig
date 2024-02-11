@@ -1,11 +1,24 @@
+// std import
 const std = @import("std");
-const bit_board = @import("../bit-board/main.zig");
-const Board = @import("Board.zig");
+const builtin = @import("builtin");
+
+// common import
+const common = @import("../common/main.zig");
+
+// internal import
+const main = @import("./main.zig");
+const Game = main.Game;
+const Board = main.Board;
 const ColorPieceType = Board.ColorPieceType;
 const Color = Board.Color;
 const PieceType = Board.PieceType;
+const moves = main.moves;
 
-const Game = @This();
+// test import
+test {
+    _ = @import("./Game.test.zig");
+}
+
 pub const Result = enum {
     NoEnds,
     BlackWin,

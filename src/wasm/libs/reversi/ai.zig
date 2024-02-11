@@ -7,14 +7,13 @@ const common = @import("../common/main.zig");
 const BitBoard = common.bit_board.BitBoard(8, 8);
 
 // internal import
-const bit_board = @import("../bit-board/main.zig");
+const main = @import("./main.zig");
+const Board = main.Board;
 
 // test import
 test {
     _ = @import("./ai.test.zig");
 }
-
-const Board = @import("Board.zig");
 
 /// AIが考えた打つ場所をインデックスで返します。
 pub fn getAiMove(b: Board, comptime random: *const fn () f64) u6 {
