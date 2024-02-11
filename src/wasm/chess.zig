@@ -1,9 +1,10 @@
 const std = @import("std");
 const builtin = @import("builtin");
 
-pub const Board = @import("libs/chess/Board.zig");
-pub const Game = @import("libs/chess/Game.zig");
-pub const ai = @import("libs/chess/ai.zig");
+const chess = @import("libs/chess/main.zig");
+const Board = chess.Board;
+const Game = chess.Game;
+const ai = chess.ai;
 const ColorPieceType = Board.ColorPieceType;
 
 /// アロケーター

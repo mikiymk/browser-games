@@ -18,8 +18,6 @@ test {
     _ = @import("./ai.test.zig");
 }
 
-const bit_board = @import("../bit-board/main.zig");
-
 const Move = struct { from: u64, to: u64 };
 const MoveList = std.ArrayList(Move);
 

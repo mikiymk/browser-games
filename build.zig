@@ -10,8 +10,15 @@ pub fn build(b: *std.Build) void {
 
     // build
 
-    buildLib(b, "reversi", public_dir, target, optimize);
-    buildLib(b, "chess", public_dir, target, optimize);
+    const build_all = b.step("all", "Build all library");
+
+    const build_reversi = buildLib(b, "reversi", public_dir, target, optimize);
+    const build_chess = buildLib(b, "chess", public_dir, target, optimize);
+    const build_shogi = buildLib(b, "shogi", public_dir, target, optimize);
+
+    build_all.dependOn(build_reversi);
+    build_all.dependOn(build_chess);
+    build_all.dependOn(build_shogi);
 
     // test
     buildTest(b, target, optimize);
@@ -23,7 +30,7 @@ fn buildLib(
     public_dir: Dir,
     target: std.zig.CrossTarget,
     optimize: std.builtin.OptimizeMode,
-) void {
+) *std.build.Step {
     const lib = b.addSharedLibrary(.{
         .name = name,
         .root_source_file = .{ .path = "src/wasm/" ++ name ++ ".zig" },
@@ -37,6 +44,8 @@ fn buildLib(
     const artifact = b.addInstallArtifact(lib, .{ .dest_dir = public_dir });
     const step = b.step(name, "Build " ++ name ++ " library");
     step.dependOn(&artifact.step);
+
+    return step;
 }
 
 fn buildTest(

@@ -1,8 +1,10 @@
+// std import
 const std = @import("std");
-const testing = std.testing;
+const builtin = @import("builtin");
 
-const bit_board = @import("../bit-board/main.zig");
-const Game = @import("Game.zig");
-const Board = @import("Board.zig");
+// common import
+const common = @import("../common/main.zig");
 
-const allocator = testing.allocator_instance.allocator();
+// internal import
+const main = @import("./main.zig");
+const Game = main.Game;

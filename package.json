@@ -22,7 +22,7 @@
     "format:wasm": "zig fmt ./src",
     "build": "run-z build-wasm build-js",
     "build-js": "astro build",
-    "build-wasm": "run-z build-wasm:chess build-wasm:reversi",
+    "build-wasm": "zig build all -Dtarget=wasm32-freestanding -Doptimize=ReleaseFast",
     "build-wasm:chess": "zig build chess -Dtarget=wasm32-freestanding -Doptimize=ReleaseFast",
     "build-wasm:reversi": "zig build reversi -Dtarget=wasm32-freestanding -Doptimize=ReleaseFast",
     "check-all:js": "run-z format:biome lint:biome lint:eslint lint:typescript build-js",
