@@ -1,4 +1,20 @@
-const Board = @import("./Board.zig");
+// std import
+const std = @import("std");
+const builtin = @import("builtin");
+
+// common import
+const common = @import("../common/main.zig");
+const BitBoard = common.bit_board.BitBoard(9, 9);
+
+// internal import
+const main = @import("./main.zig");
+const Game = main.Game;
+const Board = main.Board;
+
+// test import
+test {
+    _ = @import("./Game.test.zig");
+}
 
 /// 駒の種類
 pub const PieceKind = enum {
@@ -122,3 +138,9 @@ pub const Square = enum {
 };
 
 current_board: Board,
+
+pub fn init() Game {
+    return .{
+        .current_board = Board.init(),
+    };
+}
