@@ -24,7 +24,7 @@ export fn deinit(game_ptr: ?*shogi.Game) void {
 
 /// ボードのメモリを作成する
 export fn initBoard() ?[*]u8 {
-    var board_ptr = allocator.alloc(u8, 81) catch return null;
+    const board_ptr = allocator.alloc(u8, 81) catch return null;
     for (board_ptr) |*square| {
         square.* = 0;
     }
@@ -41,21 +41,21 @@ export fn deinitBoard(board: ?[*]u8) void {
 
 /// ボードのメモリを設定する
 export fn setBoard(game_ptr: ?*shogi.Game, board: ?[*]u8) void {
-    if (game_ptr) |gp| {
+    if (game_ptr) |game| {
         if (board) |b| {
-            _ = gp;
-            _ = b;
+            var board_slice: []u8 = b[0..81];
+            game.setBoard(&board_slice);
         }
     }
-
-    @panic("not implement yet");
 }
 
-/// プレイヤーの種類を得る
+/// 現在のプレイヤーの種類を得る
 export fn player(game_ptr: ?*shogi.Game) u8 {
-    _ = game_ptr;
-
-    @panic("not implement yet");
+    if (game_ptr) |game| {
+        return @intFromEnum(game.current_player);
+    } else {
+        return 0;
+    }
 }
 
 /// 勝利したプレイヤーの種類を得る

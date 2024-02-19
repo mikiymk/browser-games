@@ -47,9 +47,7 @@ pub const PieceKind = enum {
     /// と金
     to_gold,
 
-    const Self = @This();
-
-    pub fn isPromoted(self: Self) bool {
+    pub fn isPromoted(self: PieceKind) bool {
         return switch (self) {
             .dragon_king,
             .dragon_horse,
@@ -62,7 +60,7 @@ pub const PieceKind = enum {
         };
     }
 
-    pub fn promote(self: Self) ?Self {
+    pub fn promote(self: PieceKind) ?PieceKind {
         return switch (self) {
             .fly_car => .dragon_king,
             .corner_line => .dragon_horse,
@@ -74,7 +72,7 @@ pub const PieceKind = enum {
         };
     }
 
-    pub fn unpromote(self: Self) ?Self {
+    pub fn unpromote(self: PieceKind) ?PieceKind {
         return switch (self) {
             .dragon_king => .fly_car,
             .dragon_horse => .corner_line,
@@ -90,13 +88,11 @@ pub const PieceKind = enum {
 /// プレイヤーの種類
 pub const PlayerColor = enum {
     /// 先手
-    black,
-    /// 後手
     white,
+    /// 後手
+    black,
 
-    const Self = @This();
-
-    pub fn turn(self: Self) Self {
+    pub fn turn(self: PlayerColor) PlayerColor {
         return switch (self) {
             .black => .white,
             .white => .black,
@@ -138,9 +134,24 @@ pub const Square = enum {
 };
 
 current_board: Board,
+current_player: PlayerColor,
 
 pub fn init() Game {
     return .{
         .current_board = Board.init(),
+        .current_player = .white,
     };
+}
+
+/// ボード用スライスに駒の情報を設定する。
+pub fn setBoard(game: Game, board_slice: *[]u8) void {
+    var position: u81 = 1;
+
+    for (0..81) |i| {
+        const square = game.current_board.getPieceAt(position);
+
+        board_slice.*[i] = @intFromEnum(square);
+
+        position <<= 1;
+    }
 }
