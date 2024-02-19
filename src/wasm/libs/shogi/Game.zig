@@ -131,6 +131,66 @@ pub const Square = enum {
     white_promoted_cinnamon_horse,
     white_promoted_incense_car,
     white_to_gold,
+
+    pub fn color(self: Square) ?PlayerColor {
+        return switch (self) {
+            .empty => null,
+
+            .black_king_general,
+            .black_fly_car,
+            .black_corner_line,
+            .black_gold_general,
+            .black_silver_general,
+            .black_cinnamon_horse,
+            .black_incense_car,
+            .black_step_soldier,
+            .black_dragon_king,
+            .black_dragon_horse,
+            .black_promoted_silver_general,
+            .black_promoted_cinnamon_horse,
+            .black_promoted_incense_car,
+            .black_to_gold,
+            => .black,
+
+            .white_king_general,
+            .white_fly_car,
+            .white_corner_line,
+            .white_gold_general,
+            .white_silver_general,
+            .white_cinnamon_horse,
+            .white_incense_car,
+            .white_step_soldier,
+            .white_dragon_king,
+            .white_dragon_horse,
+            .white_promoted_silver_general,
+            .white_promoted_cinnamon_horse,
+            .white_promoted_incense_car,
+            .white_to_gold,
+            => .white,
+        };
+    }
+
+    pub fn piece(self: Square) ?PieceKind {
+        return switch (self) {
+            .empty => null,
+
+            .black_king_general, .white_king_general => .king_general,
+            .black_fly_car, .white_fly_car => .fly_car,
+            .black_corner_line, .white_corner_line => .corner_line,
+            .black_gold_general, .white_gold_general => .gold_general,
+            .black_silver_general, .white_silver_general => .silver_general,
+            .black_cinnamon_horse, .white_cinnamon_horse => .cinnamon_horse,
+            .black_incense_car, .white_incense_car => .incense_car,
+            .black_step_soldier, .white_step_soldier => .step_soldier,
+
+            .black_dragon_king, .white_dragon_king => .dragon_king,
+            .black_dragon_horse, .white_dragon_horse => .dragon_horse,
+            .black_promoted_silver_general, .white_promoted_silver_general => .promoted_silver_general,
+            .black_promoted_cinnamon_horse, .white_promoted_cinnamon_horse => .promoted_cinnamon_horse,
+            .black_promoted_incense_car, .white_promoted_incense_car => .promoted_incense_car,
+            .black_to_gold, .white_to_gold => .to_gold,
+        };
+    }
 };
 
 current_board: Board,

@@ -171,3 +171,61 @@ test "BitBoard.Iterator: ボードのONの各ビットを繰り返す" {
 
     try testing.expectEqual(iterator.next(), null);
 }
+
+test "BitBoard.move: ボードの駒を1つ動かしたボードを得る" {
+    const B = BitBoard(3, 3);
+
+    const board: B.Board = B.fromString(
+        \\...
+        \\.o.
+        \\...
+    , 'o');
+
+    try B.expect(B.move(board, .n),
+        \\.o.
+        \\...
+        \\...
+    );
+
+    try B.expect(B.move(board, .s),
+        \\...
+        \\...
+        \\.o.
+    );
+
+    try B.expect(B.move(board, .e),
+        \\...
+        \\..o
+        \\...
+    );
+
+    try B.expect(B.move(board, .w),
+        \\...
+        \\o..
+        \\...
+    );
+
+    try B.expect(B.move(board, .ne),
+        \\..o
+        \\...
+        \\...
+    );
+
+    try B.expect(B.move(board, .nw),
+        \\o..
+        \\...
+        \\...
+    );
+
+    try B.expect(B.move(board, .se),
+        \\...
+        \\...
+        \\..o
+    );
+
+    try B.expect(B.move(board, .sw),
+        \\...
+        \\...
+        \\o..
+    );
+}

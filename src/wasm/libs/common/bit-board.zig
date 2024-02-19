@@ -157,6 +157,31 @@ pub fn BitBoard(comptime height: u16, comptime width: u16) type {
             return .{ .board = board };
         }
 
+        pub const Direction = enum { n, s, e, w, nw, ne, sw, se };
+        pub fn move(board: Board, direction: Direction) Board {
+            const is_minus: bool = switch (direction) {
+                .n, .w, .ne, .nw => true,
+                .s, .e, .se, .sw => false,
+            };
+
+            const length: UBitLength = switch (direction) {
+                .n => width,
+                .s => width,
+                .e => 1,
+                .w => 1,
+                .nw => width + 1,
+                .ne => width - 1,
+                .sw => width - 1,
+                .se => width + 1,
+            };
+
+            if (is_minus) {
+                return board >> length;
+            } else {
+                return board << length;
+            }
+        }
+
         pub fn expect(board: Board, comptime expected: []const u8) error{TestExpectedEqual}!void {
             const expected_board = fromString(expected, 'o');
 

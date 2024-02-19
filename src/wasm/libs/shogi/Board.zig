@@ -154,3 +154,36 @@ pub fn getPieceAt(board: Board, position: u81) Game.Square {
 
     return .empty;
 }
+
+pub fn getColorPieces(board: Board, color: Game.PlayerColor) u81 {
+    return switch (color) {
+        .black => board.black_king_general |
+            board.black_fly_car |
+            board.black_corner_line |
+            board.black_gold_general |
+            board.black_silver_general |
+            board.black_cinnamon_horse |
+            board.black_incense_car |
+            board.black_step_soldier |
+            board.black_dragon_king |
+            board.black_dragon_horse |
+            board.black_promoted_silver_general |
+            board.black_promoted_cinnamon_horse |
+            board.black_promoted_incense_car |
+            board.black_to_gold,
+        .white => board.white_king_general |
+            board.white_fly_car |
+            board.white_corner_line |
+            board.white_gold_general |
+            board.white_silver_general |
+            board.white_cinnamon_horse |
+            board.white_incense_car |
+            board.white_step_soldier |
+            board.white_dragon_king |
+            board.white_dragon_horse |
+            board.white_promoted_silver_general |
+            board.white_promoted_cinnamon_horse |
+            board.white_promoted_incense_car |
+            board.white_to_gold,
+    };
+}
