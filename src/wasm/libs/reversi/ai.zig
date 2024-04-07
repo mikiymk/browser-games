@@ -44,7 +44,7 @@ pub fn getAiMove(b: Board, comptime random: *const fn () f64) u6 {
     const select_index: u6 = @intFromFloat(random() * @as(f64, @floatFromInt(best_place_count)));
     const selected_best_place: u64 = best_place[select_index];
 
-    return @truncate(@popCount(selected_best_place - 1));
+    return @truncate(@ctz(selected_best_place));
 }
 
 /// αβ法を使ってよい手を探す

@@ -10,6 +10,7 @@ const BitBoard = common.bit_board.BitBoard(9, 9);
 const main = @import("./main.zig");
 const Game = main.Game;
 const Board = main.Board;
+const moves = main.moves;
 
 // test import
 test {
@@ -155,6 +156,141 @@ pub fn getPieceAt(board: Board, position: u81) Game.Square {
     return .empty;
 }
 
+/// 駒を移動したボードを作成する
+pub fn movedBoard(board: Board, from: u81, to: u81) Board {
+    var new_board = board;
+
+    const piece_board: *u81 =
+        if (new_board.black_king_general & from != 0)
+        &new_board.black_king_general
+    else if (new_board.black_fly_car & from != 0)
+        &new_board.black_fly_car
+    else if (new_board.black_corner_line & from != 0)
+        &new_board.black_corner_line
+    else if (new_board.black_gold_general & from != 0)
+        &new_board.black_gold_general
+    else if (new_board.black_silver_general & from != 0)
+        &new_board.black_silver_general
+    else if (new_board.black_cinnamon_horse & from != 0)
+        &new_board.black_cinnamon_horse
+    else if (new_board.black_incense_car & from != 0)
+        &new_board.black_incense_car
+    else if (new_board.black_step_soldier & from != 0)
+        &new_board.black_step_soldier
+    else if (new_board.black_dragon_king & from != 0)
+        &new_board.black_dragon_king
+    else if (new_board.black_dragon_horse & from != 0)
+        &new_board.black_dragon_horse
+    else if (new_board.black_promoted_silver_general & from != 0)
+        &new_board.black_promoted_silver_general
+    else if (new_board.black_promoted_cinnamon_horse & from != 0)
+        &new_board.black_promoted_cinnamon_horse
+    else if (new_board.black_promoted_incense_car & from != 0)
+        &new_board.black_promoted_incense_car
+    else if (new_board.black_to_gold & from != 0)
+        &new_board.black_to_gold
+    else if (new_board.white_king_general & from != 0)
+        &new_board.white_king_general
+    else if (new_board.white_fly_car & from != 0)
+        &new_board.white_fly_car
+    else if (new_board.white_corner_line & from != 0)
+        &new_board.white_corner_line
+    else if (new_board.white_gold_general & from != 0)
+        &new_board.white_gold_general
+    else if (new_board.white_silver_general & from != 0)
+        &new_board.white_silver_general
+    else if (new_board.white_cinnamon_horse & from != 0)
+        &new_board.white_cinnamon_horse
+    else if (new_board.white_incense_car & from != 0)
+        &new_board.white_incense_car
+    else if (new_board.white_step_soldier & from != 0)
+        &new_board.white_step_soldier
+    else if (new_board.white_dragon_king & from != 0)
+        &new_board.white_dragon_king
+    else if (new_board.white_dragon_horse & from != 0)
+        &new_board.white_dragon_horse
+    else if (new_board.white_promoted_silver_general & from != 0)
+        &new_board.white_promoted_silver_general
+    else if (new_board.white_promoted_cinnamon_horse & from != 0)
+        &new_board.white_promoted_cinnamon_horse
+    else if (new_board.white_promoted_incense_car & from != 0)
+        &new_board.white_promoted_incense_car
+    else if (new_board.white_to_gold & from != 0)
+        &new_board.white_to_gold
+    else
+        return new_board;
+
+    new_board.black_king_general |= ~to;
+    new_board.black_fly_car |= ~to;
+    new_board.black_corner_line |= ~to;
+    new_board.black_gold_general |= ~to;
+    new_board.black_silver_general |= ~to;
+    new_board.black_cinnamon_horse |= ~to;
+    new_board.black_incense_car |= ~to;
+    new_board.black_step_soldier |= ~to;
+    new_board.black_dragon_king |= ~to;
+    new_board.black_dragon_horse |= ~to;
+    new_board.black_promoted_silver_general |= ~to;
+    new_board.black_promoted_cinnamon_horse |= ~to;
+    new_board.black_promoted_incense_car |= ~to;
+    new_board.black_to_gold |= ~to;
+    new_board.white_king_general |= ~to;
+    new_board.white_fly_car |= ~to;
+    new_board.white_corner_line |= ~to;
+    new_board.white_gold_general |= ~to;
+    new_board.white_silver_general |= ~to;
+    new_board.white_cinnamon_horse |= ~to;
+    new_board.white_incense_car |= ~to;
+    new_board.white_step_soldier |= ~to;
+    new_board.white_dragon_king |= ~to;
+    new_board.white_dragon_horse |= ~to;
+    new_board.white_promoted_silver_general |= ~to;
+    new_board.white_promoted_cinnamon_horse |= ~to;
+    new_board.white_promoted_incense_car |= ~to;
+    new_board.white_to_gold |= ~to;
+
+    piece_board.* ^= from & to;
+
+    return new_board;
+}
+
+pub fn getColorPiecesArray(board: Board, color: Game.PlayerColor) [14]u81 {
+    return switch (color) {
+        .black => .{
+            board.black_king_general,
+            board.black_fly_car,
+            board.black_corner_line,
+            board.black_gold_general,
+            board.black_silver_general,
+            board.black_cinnamon_horse,
+            board.black_incense_car,
+            board.black_step_soldier,
+            board.black_dragon_king,
+            board.black_dragon_horse,
+            board.black_promoted_silver_general,
+            board.black_promoted_cinnamon_horse,
+            board.black_promoted_incense_car,
+            board.black_to_gold,
+        },
+        .white => .{
+            board.white_king_general,
+            board.white_fly_car,
+            board.white_corner_line,
+            board.white_gold_general,
+            board.white_silver_general,
+            board.white_cinnamon_horse,
+            board.white_incense_car,
+            board.white_step_soldier,
+            board.white_dragon_king,
+            board.white_dragon_horse,
+            board.white_promoted_silver_general,
+            board.white_promoted_cinnamon_horse,
+            board.white_promoted_incense_car,
+            board.white_to_gold,
+        },
+    };
+}
+
 pub fn getColorPieces(board: Board, color: Game.PlayerColor) u81 {
     return switch (color) {
         .black => board.black_king_general |
@@ -186,4 +322,101 @@ pub fn getColorPieces(board: Board, color: Game.PlayerColor) u81 {
             board.white_promoted_incense_car |
             board.white_to_gold,
     };
+}
+
+/// その色の駒の行ける範囲をすべて得る
+pub fn getAllMoves(board: Board, color: Game.PlayerColor) u81 {
+    switch (color) {
+        .white => {
+            var move_places: u81 = 0;
+            move_places |= moves.getWhitePawnMovable(board, board.white_step_soldier);
+            move_places |= moves.getWhiteLanceMovable(board, board.white_incense_car);
+            move_places |= moves.getWhiteKnightMovable(board, board.white_cinnamon_horse);
+            move_places |= moves.getWhiteSilverMovable(board, board.white_silver_general);
+            move_places |= moves.getWhiteGoldMovable(board, board.white_gold_general);
+            move_places |= moves.getBishopMovable(board, board.white_corner_line, .white);
+            move_places |= moves.getRookMovable(board, board.white_fly_car, .white);
+            move_places |= moves.getKingMovable(board, board.white_king_general, .white);
+
+            move_places |= moves.getWhiteGoldMovable(board, board.white_to_gold);
+            move_places |= moves.getWhiteGoldMovable(board, board.white_promoted_incense_car);
+            move_places |= moves.getWhiteGoldMovable(board, board.white_promoted_cinnamon_horse);
+            move_places |= moves.getWhiteGoldMovable(board, board.white_promoted_silver_general);
+
+            return move_places;
+        },
+        .black => {
+            var move_places: u81 = 0;
+            move_places |= moves.getBlackPawnMovable(board, board.black_step_soldier);
+            move_places |= moves.getBlackLanceMovable(board, board.black_incense_car);
+            move_places |= moves.getBlackKnightMovable(board, board.black_cinnamon_horse);
+            move_places |= moves.getBlackSilverMovable(board, board.black_silver_general);
+            move_places |= moves.getBlackGoldMovable(board, board.black_gold_general);
+            move_places |= moves.getBishopMovable(board, board.black_corner_line, .black);
+            move_places |= moves.getRookMovable(board, board.black_fly_car, .black);
+            move_places |= moves.getKingMovable(board, board.black_king_general, .black);
+
+            move_places |= moves.getBlackGoldMovable(board, board.black_to_gold);
+            move_places |= moves.getBlackGoldMovable(board, board.black_promoted_incense_car);
+            move_places |= moves.getBlackGoldMovable(board, board.black_promoted_cinnamon_horse);
+            move_places |= moves.getBlackGoldMovable(board, board.black_promoted_silver_general);
+
+            return move_places;
+        },
+    }
+}
+
+/// セルフ王手を除く
+pub fn filterMove(board: Board, color: Game.PlayerColor, from: u81, to: u81) u81 {
+    var filtered: u81 = 0;
+    var to_iter = BitBoard.iterator(to);
+
+    while (to_iter.next()) |t| {
+        const new_board = board.movedBoard(from, t);
+
+        if (!new_board.isChecked(color)) {
+            filtered |= t;
+        }
+    }
+
+    return filtered;
+}
+
+/// 指定したマスが攻撃されているか
+pub fn isAttacked(board: Board, place: u81, color: Game.PlayerColor) bool {
+    return place & board.getAllMoves(color) != 0;
+}
+
+/// 指定した色の王が王手状態になっているかどうか
+pub fn isChecked(board: Board, color: Game.PlayerColor) bool {
+    const king = switch (color) {
+        .white => board.white_king_general,
+        .black => board.black_king_general,
+    };
+
+    return board.isAttacked(king, color);
+}
+
+/// 指定した色の王が王手を逃れられない状態になっているかどうか
+pub fn isCheckmated(board: Board, color: Game.PlayerColor) bool {
+    if (!board.isChecked(color)) {
+        return false;
+    }
+
+    const pieces = board.getColorPiecesArray(color);
+
+    for (pieces) |piece| {
+        var piece_iter = BitBoard.iterator(piece);
+
+        while (piece_iter.next()) |p| {
+            const move_to = moves.getMovablePositions(board, p);
+            const filtered_moves = board.filterMove(color, p, move_to);
+
+            if (filtered_moves != 0) {
+                return false;
+            }
+        }
+    }
+
+    return true;
 }

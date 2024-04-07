@@ -205,13 +205,58 @@ pub fn init() Game {
 
 /// ボード用スライスに駒の情報を設定する。
 pub fn setBoard(game: Game, board_slice: *[]u8) void {
-    var position: u81 = 1;
+    const board = game.current_board;
 
-    for (0..81) |i| {
-        const square = game.current_board.getPieceAt(position);
+    @memset(board_slice.*, 0);
 
-        board_slice.*[i] = @intFromEnum(square);
+    setPieceToBoard(board_slice, board.white_step_soldier, .white_step_soldier);
+    setPieceToBoard(board_slice, board.white_incense_car, .white_incense_car);
+    setPieceToBoard(board_slice, board.white_cinnamon_horse, .white_cinnamon_horse);
+    setPieceToBoard(board_slice, board.white_silver_general, .white_silver_general);
+    setPieceToBoard(board_slice, board.white_gold_general, .white_gold_general);
+    setPieceToBoard(board_slice, board.white_corner_line, .white_corner_line);
+    setPieceToBoard(board_slice, board.white_fly_car, .white_fly_car);
+    setPieceToBoard(board_slice, board.white_to_gold, .white_to_gold);
+    setPieceToBoard(board_slice, board.white_promoted_cinnamon_horse, .white_promoted_cinnamon_horse);
+    setPieceToBoard(board_slice, board.white_promoted_incense_car, .white_promoted_incense_car);
+    setPieceToBoard(board_slice, board.white_promoted_silver_general, .white_promoted_silver_general);
+    setPieceToBoard(board_slice, board.white_dragon_horse, .white_dragon_horse);
+    setPieceToBoard(board_slice, board.white_dragon_king, .white_dragon_king);
+    setPieceToBoard(board_slice, board.white_king_general, .white_king_general);
 
-        position <<= 1;
+    setPieceToBoard(board_slice, board.black_step_soldier, .black_step_soldier);
+    setPieceToBoard(board_slice, board.black_incense_car, .black_incense_car);
+    setPieceToBoard(board_slice, board.black_cinnamon_horse, .black_cinnamon_horse);
+    setPieceToBoard(board_slice, board.black_silver_general, .black_silver_general);
+    setPieceToBoard(board_slice, board.black_gold_general, .black_gold_general);
+    setPieceToBoard(board_slice, board.black_corner_line, .black_corner_line);
+    setPieceToBoard(board_slice, board.black_fly_car, .black_fly_car);
+    setPieceToBoard(board_slice, board.black_to_gold, .black_to_gold);
+    setPieceToBoard(board_slice, board.black_promoted_cinnamon_horse, .black_promoted_cinnamon_horse);
+    setPieceToBoard(board_slice, board.black_promoted_incense_car, .black_promoted_incense_car);
+    setPieceToBoard(board_slice, board.black_promoted_silver_general, .black_promoted_silver_general);
+    setPieceToBoard(board_slice, board.black_dragon_horse, .black_dragon_horse);
+    setPieceToBoard(board_slice, board.black_dragon_king, .black_dragon_king);
+    setPieceToBoard(board_slice, board.black_king_general, .black_king_general);
+}
+
+/// ボードに駒を設定する
+fn setPieceToBoard(board: *[]u8, target: u81, value: Game.Square) void {
+    var iter = BitBoard.iterator(target);
+    while (iter.next()) |n| {
+        board.*[@ctz(n)] = @intFromEnum(value);
     }
+}
+
+/// 勝利したプレイヤーを得る
+/// まだゲーム中ならnull
+pub fn getWinner(game: Game) ?PlayerColor {
+    if (game.current_board.isCheckmated(.white)) {
+        return .black;
+    }
+    if (game.current_board.isCheckmated(.black)) {
+        return .white;
+    }
+
+    return null;
 }
