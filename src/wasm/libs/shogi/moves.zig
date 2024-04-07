@@ -41,55 +41,55 @@ const west_mask = BitBoard.fromString(
     \\.oooooooo
 , 'o');
 
-pub fn getMovablePositions(board: Board, from: u81) u81 {
+pub fn move(board: Board, from: u81) u81 {
     const piece = board.getPieceAt(from);
     return switch (piece) {
-        .white_step_soldier => getWhitePawnMovable(board, from),
-        .black_step_soldier => getBlackPawnMovable(board, from),
+        .white_pawn => whitePawn(board, from),
+        .black_pawn => blackPawn(board, from),
 
-        .white_incense_car => getWhiteLanceMovable(board, from),
-        .black_incense_car => getBlackLanceMovable(board, from),
+        .white_lance => whiteLance(board, from),
+        .black_lance => blackLance(board, from),
 
-        .white_cinnamon_horse => getWhiteKnightMovable(board, from),
-        .black_cinnamon_horse => getBlackKnightMovable(board, from),
+        .white_knight => whiteKnight(board, from),
+        .black_knight => blackKnight(board, from),
 
-        .white_silver_general => getWhiteSilverMovable(board, from),
-        .black_silver_general => getBlackSilverMovable(board, from),
+        .white_silver => whiteSilver(board, from),
+        .black_silver => blackSilver(board, from),
 
-        .white_gold_general,
-        .white_to_gold,
-        .white_promoted_incense_car,
-        .white_promoted_cinnamon_horse,
-        .white_promoted_silver_general,
-        => getWhiteGoldMovable(board, from),
-        .black_gold_general,
-        .black_to_gold,
-        .black_promoted_incense_car,
-        .black_promoted_cinnamon_horse,
-        .black_promoted_silver_general,
-        => getBlackGoldMovable(board, from),
+        .white_gold,
+        .white_pawn_promoted,
+        .white_lance_promoted,
+        .white_knight_promoted,
+        .white_silver_promoted,
+        => whiteGold(board, from),
+        .black_gold,
+        .black_pawn_promoted,
+        .black_lance_promoted,
+        .black_knight_promoted,
+        .black_silver_promoted,
+        => blackGold(board, from),
 
-        .white_corner_line => getBishopMovable(board, from, .white),
-        .black_corner_line => getBishopMovable(board, from, .white),
+        .white_bishop => bishop(board, from, .white),
+        .black_bishop => bishop(board, from, .white),
 
-        .white_fly_car => getRookMovable(board, from, .white),
-        .black_fly_car => getRookMovable(board, from, .black),
+        .white_rook => rook(board, from, .white),
+        .black_rook => rook(board, from, .black),
 
-        .white_dragon_horse => getPromotedBishopMovable(board, from, .white),
-        .black_dragon_horse => getPromotedBishopMovable(board, from, .black),
+        .white_bishop_promoted => promotedBishop(board, from, .white),
+        .black_bishop_promoted => promotedBishop(board, from, .black),
 
-        .white_dragon_king => getPromotedRookMovable(board, from, .white),
-        .black_dragon_king => getPromotedRookMovable(board, from, .black),
+        .white_rook_promoted => promotedRook(board, from, .white),
+        .black_rook_promoted => promotedRook(board, from, .black),
 
-        .white_king_general => getKingMovable(board, from, .white),
-        .black_king_general => getKingMovable(board, from, .black),
+        .white_king => king(board, from, .white),
+        .black_king => king(board, from, .black),
 
         else => 0,
     };
 }
 
 /// 先手の歩兵の移動できる範囲
-pub fn getWhitePawnMovable(board: Board, from: u81) u81 {
+pub fn whitePawn(board: Board, from: u81) u81 {
     const to: u81 = BitBoard.move(from, .n);
     const ally_pieces = board.getColorPieces(.white);
 
@@ -97,7 +97,7 @@ pub fn getWhitePawnMovable(board: Board, from: u81) u81 {
 }
 
 /// 後手の歩兵の移動できる範囲
-pub fn getBlackPawnMovable(board: Board, from: u81) u81 {
+pub fn blackPawn(board: Board, from: u81) u81 {
     const to: u81 = BitBoard.move(from, .s);
     const ally_pieces = board.getColorPieces(.black);
 
@@ -105,7 +105,7 @@ pub fn getBlackPawnMovable(board: Board, from: u81) u81 {
 }
 
 /// 先手の香車の移動できる範囲
-pub fn getWhiteLanceMovable(board: Board, from: u81) u81 {
+pub fn whiteLance(board: Board, from: u81) u81 {
     const ally_pieces = board.getColorPieces(.white);
     const enemy_pieces = board.getColorPieces(.black);
     const empty_squares = ~(ally_pieces | enemy_pieces);
@@ -120,7 +120,7 @@ pub fn getWhiteLanceMovable(board: Board, from: u81) u81 {
 }
 
 /// 後手の香車の移動できる範囲
-pub fn getBlackLanceMovable(board: Board, from: u81) u81 {
+pub fn blackLance(board: Board, from: u81) u81 {
     const ally_pieces = board.getColorPieces(.black);
     const enemy_pieces = board.getColorPieces(.white);
     const empty_squares = ~(ally_pieces | enemy_pieces);
@@ -135,7 +135,7 @@ pub fn getBlackLanceMovable(board: Board, from: u81) u81 {
 }
 
 /// 先手の桂馬の移動できる範囲
-pub fn getWhiteKnightMovable(board: Board, from: u81) u81 {
+pub fn whiteKnight(board: Board, from: u81) u81 {
     const to_nne: u81 = BitBoard.move(BitBoard.move(from & east_mask, .ne), .n);
     const to_nnw: u81 = BitBoard.move(BitBoard.move(from & west_mask, .nw), .n);
     const ally_pieces = board.getColorPieces(.white);
@@ -144,7 +144,7 @@ pub fn getWhiteKnightMovable(board: Board, from: u81) u81 {
 }
 
 /// 後手の桂馬の移動できる範囲
-pub fn getBlackKnightMovable(board: Board, from: u81) u81 {
+pub fn blackKnight(board: Board, from: u81) u81 {
     const to_sse: u81 = BitBoard.move(BitBoard.move(from & east_mask, .se), .s);
     const to_ssw: u81 = BitBoard.move(BitBoard.move(from & west_mask, .sw), .s);
     const ally_pieces = board.getColorPieces(.black);
@@ -153,7 +153,7 @@ pub fn getBlackKnightMovable(board: Board, from: u81) u81 {
 }
 
 /// 先手の銀将の移動できる範囲
-pub fn getWhiteSilverMovable(board: Board, from: u81) u81 {
+pub fn whiteSilver(board: Board, from: u81) u81 {
     const masked_e = from & east_mask;
     const masked_w = from & west_mask;
 
@@ -168,7 +168,7 @@ pub fn getWhiteSilverMovable(board: Board, from: u81) u81 {
 }
 
 /// 後手の銀将の移動できる範囲
-pub fn getBlackSilverMovable(board: Board, from: u81) u81 {
+pub fn blackSilver(board: Board, from: u81) u81 {
     const masked_e = from & east_mask;
     const masked_w = from & west_mask;
 
@@ -183,7 +183,7 @@ pub fn getBlackSilverMovable(board: Board, from: u81) u81 {
 }
 
 /// 先手の金将の移動できる範囲
-pub fn getWhiteGoldMovable(board: Board, from: u81) u81 {
+pub fn whiteGold(board: Board, from: u81) u81 {
     const masked_e = from & east_mask;
     const masked_w = from & west_mask;
 
@@ -199,7 +199,7 @@ pub fn getWhiteGoldMovable(board: Board, from: u81) u81 {
 }
 
 /// 後手の金将の移動できる範囲
-pub fn getBlackGoldMovable(board: Board, from: u81) u81 {
+pub fn blackGold(board: Board, from: u81) u81 {
     const masked_e = from & east_mask;
     const masked_w = from & west_mask;
 
@@ -215,7 +215,7 @@ pub fn getBlackGoldMovable(board: Board, from: u81) u81 {
 }
 
 /// 先手の角行の移動できる範囲
-pub fn getBishopMovable(board: Board, from: u81, color: Game.PlayerColor) u81 {
+pub fn bishop(board: Board, from: u81, color: Game.PlayerColor) u81 {
     const ally_pieces = board.getColorPieces(color);
     const enemy_pieces = board.getColorPieces(color.turn());
     const empty_squares = ~(ally_pieces | enemy_pieces);
@@ -237,7 +237,7 @@ pub fn getBishopMovable(board: Board, from: u81, color: Game.PlayerColor) u81 {
 }
 
 /// 先手の龍馬の移動できる範囲
-pub fn getPromotedBishopMovable(board: Board, from: u81, color: Game.PlayerColor) u81 {
+pub fn promotedBishop(board: Board, from: u81, color: Game.PlayerColor) u81 {
     const ally_pieces = board.getColorPieces(color);
     const enemy_pieces = board.getColorPieces(color.turn());
     const empty_squares = ~(ally_pieces | enemy_pieces);
@@ -267,7 +267,7 @@ pub fn getPromotedBishopMovable(board: Board, from: u81, color: Game.PlayerColor
 }
 
 /// 先手の飛車の移動できる範囲
-pub fn getRookMovable(board: Board, from: u81, color: Game.PlayerColor) u81 {
+pub fn rook(board: Board, from: u81, color: Game.PlayerColor) u81 {
     const ally_pieces = board.getColorPieces(color);
     const enemy_pieces = board.getColorPieces(color.turn());
     const empty_squares = ~(ally_pieces | enemy_pieces);
@@ -289,7 +289,7 @@ pub fn getRookMovable(board: Board, from: u81, color: Game.PlayerColor) u81 {
 }
 
 /// 先手の龍王の移動できる範囲
-pub fn getPromotedRookMovable(board: Board, from: u81, color: Game.PlayerColor) u81 {
+pub fn promotedRook(board: Board, from: u81, color: Game.PlayerColor) u81 {
     const ally_pieces = board.getColorPieces(color);
     const enemy_pieces = board.getColorPieces(color.turn());
     const empty_squares = ~(ally_pieces | enemy_pieces);
@@ -319,7 +319,7 @@ pub fn getPromotedRookMovable(board: Board, from: u81, color: Game.PlayerColor) 
 }
 
 /// 先手の王将の移動できる範囲
-pub fn getKingMovable(board: Board, from: u81, color: Game.PlayerColor) u81 {
+pub fn king(board: Board, from: u81, color: Game.PlayerColor) u81 {
     const ally_pieces = board.getColorPieces(color);
 
     const masked_e = from & east_mask;

@@ -19,42 +19,42 @@ test {
 /// 駒の種類
 pub const PieceKind = enum {
     /// 王将
-    king_general,
+    king,
     /// 飛車
-    fly_car,
+    rook,
     /// 角行
-    corner_line,
+    bishop,
     /// 金将
-    gold_general,
+    gold,
     /// 銀将
-    silver_general,
+    silver,
     /// 桂馬
-    cinnamon_horse,
+    knight,
     /// 香車
-    incense_car,
+    lance,
     /// 歩兵
-    step_soldier,
+    pawn,
     /// 龍王
-    dragon_king,
+    rook_promoted,
     /// 龍馬
-    dragon_horse,
+    bishop_promoted,
     /// 成銀
-    promoted_silver_general,
+    silver_promoted,
     /// 成桂
-    promoted_cinnamon_horse,
+    knight_promoted,
     /// 成香
-    promoted_incense_car,
+    lance_prmonoted,
     /// と金
-    to_gold,
+    pawn_promoted,
 
     pub fn isPromoted(self: PieceKind) bool {
         return switch (self) {
-            .dragon_king,
-            .dragon_horse,
-            .promoted_silver_general,
-            .promoted_cinnamon_horse,
-            .promoted_incense_car,
-            .to_gold,
+            .rook_promoted,
+            .bishop_promoted,
+            .silver_promoted,
+            .knight_promoted,
+            .lance_prmonoted,
+            .pawn_promoted,
             => true,
             else => false,
         };
@@ -62,24 +62,24 @@ pub const PieceKind = enum {
 
     pub fn promote(self: PieceKind) ?PieceKind {
         return switch (self) {
-            .fly_car => .dragon_king,
-            .corner_line => .dragon_horse,
-            .silver_general => .promoted_silver_general,
-            .cinnamon_horse => .promoted_cinnamon_horse,
-            .incense_car => .promoted_incense_car,
-            .step_soldier => .to_gold,
+            .rook => .rook_promoted,
+            .bishop => .bishop_promoted,
+            .silver => .silver_promoted,
+            .knight => .knight_promoted,
+            .lance => .lance_prmonoted,
+            .pawn => .pawn_promoted,
             else => null,
         };
     }
 
     pub fn unpromote(self: PieceKind) ?PieceKind {
         return switch (self) {
-            .dragon_king => .fly_car,
-            .dragon_horse => .corner_line,
-            .promoted_silver_general => .silver_general,
-            .promoted_cinnamon_horse => .cinnamon_horse,
-            .promoted_incense_car => .incense_car,
-            .to_gold => .step_soldier,
+            .rook_promoted => .rook,
+            .bishop_promoted => .bishop,
+            .silver_promoted => .silver,
+            .knight_promoted => .knight,
+            .lance_prmonoted => .lance,
+            .pawn_promoted => .pawn,
             else => null,
         };
     }
@@ -103,69 +103,69 @@ pub const PlayerColor = enum {
 /// マス目の状態すべて
 pub const Square = enum {
     empty,
-    black_king_general,
-    black_fly_car,
-    black_corner_line,
-    black_gold_general,
-    black_silver_general,
-    black_cinnamon_horse,
-    black_incense_car,
-    black_step_soldier,
-    black_dragon_king,
-    black_dragon_horse,
-    black_promoted_silver_general,
-    black_promoted_cinnamon_horse,
-    black_promoted_incense_car,
-    black_to_gold,
-    white_king_general,
-    white_fly_car,
-    white_corner_line,
-    white_gold_general,
-    white_silver_general,
-    white_cinnamon_horse,
-    white_incense_car,
-    white_step_soldier,
-    white_dragon_king,
-    white_dragon_horse,
-    white_promoted_silver_general,
-    white_promoted_cinnamon_horse,
-    white_promoted_incense_car,
-    white_to_gold,
+    black_king,
+    black_rook,
+    black_bishop,
+    black_gold,
+    black_silver,
+    black_knight,
+    black_lance,
+    black_pawn,
+    black_rook_promoted,
+    black_bishop_promoted,
+    black_silver_promoted,
+    black_knight_promoted,
+    black_lance_promoted,
+    black_pawn_promoted,
+    white_king,
+    white_rook,
+    white_bishop,
+    white_gold,
+    white_silver,
+    white_knight,
+    white_lance,
+    white_pawn,
+    white_rook_promoted,
+    white_bishop_promoted,
+    white_silver_promoted,
+    white_knight_promoted,
+    white_lance_promoted,
+    white_pawn_promoted,
 
     pub fn color(self: Square) ?PlayerColor {
         return switch (self) {
             .empty => null,
 
-            .black_king_general,
-            .black_fly_car,
-            .black_corner_line,
-            .black_gold_general,
-            .black_silver_general,
-            .black_cinnamon_horse,
-            .black_incense_car,
-            .black_step_soldier,
-            .black_dragon_king,
-            .black_dragon_horse,
-            .black_promoted_silver_general,
-            .black_promoted_cinnamon_horse,
-            .black_promoted_incense_car,
-            .black_to_gold,
+            .black_king,
+            .black_rook,
+            .black_bishop,
+            .black_gold,
+            .black_silver,
+            .black_knight,
+            .black_lance,
+            .black_pawn,
+            .black_rook_promoted,
+            .black_bishop_promoted,
+            .black_silver_promoted,
+            .black_knight_promoted,
+            .black_lance_promoted,
+            .black_pawn_promoted,
             => .black,
 
-            .white_king_general,
-            .white_fly_car,
-            .white_corner_line,
-            .white_gold_general,
-            .white_silver_general,
-            .white_cinnamon_horse,
-            .white_incense_car,
-            .white_step_soldier,
-            .white_dragon_king,
-            .white_dragon_horse,
-            .white_promoted_silver_general,
-            .white_promoted_cinnamon_horse,
-            .white_promoted_incense_car,
-            .white_to_gold,
+            .white_king,
+            .white_rook,
+            .white_bishop,
+            .white_gold,
+            .white_silver,
+            .white_knight,
+            .white_lance,
+            .white_pawn,
+            .white_rook_promoted,
+            .white_bishop_promoted,
+            .white_silver_promoted,
+            .white_knight_promoted,
+            .white_lance_promoted,
+            .white_pawn_promoted,
             => .white,
         };
     }
@@ -174,21 +174,21 @@ pub const Square = enum {
         return switch (self) {
             .empty => null,
 
-            .black_king_general, .white_king_general => .king_general,
-            .black_fly_car, .white_fly_car => .fly_car,
-            .black_corner_line, .white_corner_line => .corner_line,
-            .black_gold_general, .white_gold_general => .gold_general,
-            .black_silver_general, .white_silver_general => .silver_general,
-            .black_cinnamon_horse, .white_cinnamon_horse => .cinnamon_horse,
-            .black_incense_car, .white_incense_car => .incense_car,
-            .black_step_soldier, .white_step_soldier => .step_soldier,
+            .black_king, .white_king => .king,
+            .black_rook, .white_rook => .rook,
+            .black_bishop, .white_bishop => .bishop,
+            .black_gold, .white_gold => .gold,
+            .black_silver, .white_silver => .silver,
+            .black_knight, .white_knight => .knight,
+            .black_lance, .white_lance => .lance,
+            .black_pawn, .white_pawn => .pawn,
 
-            .black_dragon_king, .white_dragon_king => .dragon_king,
-            .black_dragon_horse, .white_dragon_horse => .dragon_horse,
-            .black_promoted_silver_general, .white_promoted_silver_general => .promoted_silver_general,
-            .black_promoted_cinnamon_horse, .white_promoted_cinnamon_horse => .promoted_cinnamon_horse,
-            .black_promoted_incense_car, .white_promoted_incense_car => .promoted_incense_car,
-            .black_to_gold, .white_to_gold => .to_gold,
+            .black_rook_promoted, .white_rook_promoted => .rook_promoted,
+            .black_bishop_promoted, .white_bishop_promoted => .bishop_promoted,
+            .black_silver_promoted, .white_silver_promoted => .silver_promoted,
+            .black_knight_promoted, .white_knight_promoted => .knight_promoted,
+            .black_lance_promoted, .white_lance_promoted => .lance_prmonoted,
+            .black_pawn_promoted, .white_pawn_promoted => .pawn_promoted,
         };
     }
 };
@@ -209,35 +209,35 @@ pub fn setBoard(game: Game, board_slice: *[]u8) void {
 
     @memset(board_slice.*, 0);
 
-    setPieceToBoard(board_slice, board.white_step_soldier, .white_step_soldier);
-    setPieceToBoard(board_slice, board.white_incense_car, .white_incense_car);
-    setPieceToBoard(board_slice, board.white_cinnamon_horse, .white_cinnamon_horse);
-    setPieceToBoard(board_slice, board.white_silver_general, .white_silver_general);
-    setPieceToBoard(board_slice, board.white_gold_general, .white_gold_general);
-    setPieceToBoard(board_slice, board.white_corner_line, .white_corner_line);
-    setPieceToBoard(board_slice, board.white_fly_car, .white_fly_car);
-    setPieceToBoard(board_slice, board.white_to_gold, .white_to_gold);
-    setPieceToBoard(board_slice, board.white_promoted_cinnamon_horse, .white_promoted_cinnamon_horse);
-    setPieceToBoard(board_slice, board.white_promoted_incense_car, .white_promoted_incense_car);
-    setPieceToBoard(board_slice, board.white_promoted_silver_general, .white_promoted_silver_general);
-    setPieceToBoard(board_slice, board.white_dragon_horse, .white_dragon_horse);
-    setPieceToBoard(board_slice, board.white_dragon_king, .white_dragon_king);
-    setPieceToBoard(board_slice, board.white_king_general, .white_king_general);
+    setPieceToBoard(board_slice, board.white_pawn, .white_pawn);
+    setPieceToBoard(board_slice, board.white_lance, .white_lance);
+    setPieceToBoard(board_slice, board.white_knight, .white_knight);
+    setPieceToBoard(board_slice, board.white_silver, .white_silver);
+    setPieceToBoard(board_slice, board.white_gold, .white_gold);
+    setPieceToBoard(board_slice, board.white_bishop, .white_bishop);
+    setPieceToBoard(board_slice, board.white_rook, .white_rook);
+    setPieceToBoard(board_slice, board.white_pawn_promoted, .white_pawn_promoted);
+    setPieceToBoard(board_slice, board.white_knight_promoted, .white_knight_promoted);
+    setPieceToBoard(board_slice, board.white_lance_promoted, .white_lance_promoted);
+    setPieceToBoard(board_slice, board.white_silver_promoted, .white_silver_promoted);
+    setPieceToBoard(board_slice, board.white_bishop_promoted, .white_bishop_promoted);
+    setPieceToBoard(board_slice, board.white_rook_promoted, .white_rook_promoted);
+    setPieceToBoard(board_slice, board.white_king, .white_king);
 
-    setPieceToBoard(board_slice, board.black_step_soldier, .black_step_soldier);
-    setPieceToBoard(board_slice, board.black_incense_car, .black_incense_car);
-    setPieceToBoard(board_slice, board.black_cinnamon_horse, .black_cinnamon_horse);
-    setPieceToBoard(board_slice, board.black_silver_general, .black_silver_general);
-    setPieceToBoard(board_slice, board.black_gold_general, .black_gold_general);
-    setPieceToBoard(board_slice, board.black_corner_line, .black_corner_line);
-    setPieceToBoard(board_slice, board.black_fly_car, .black_fly_car);
-    setPieceToBoard(board_slice, board.black_to_gold, .black_to_gold);
-    setPieceToBoard(board_slice, board.black_promoted_cinnamon_horse, .black_promoted_cinnamon_horse);
-    setPieceToBoard(board_slice, board.black_promoted_incense_car, .black_promoted_incense_car);
-    setPieceToBoard(board_slice, board.black_promoted_silver_general, .black_promoted_silver_general);
-    setPieceToBoard(board_slice, board.black_dragon_horse, .black_dragon_horse);
-    setPieceToBoard(board_slice, board.black_dragon_king, .black_dragon_king);
-    setPieceToBoard(board_slice, board.black_king_general, .black_king_general);
+    setPieceToBoard(board_slice, board.black_pawn, .black_pawn);
+    setPieceToBoard(board_slice, board.black_lance, .black_lance);
+    setPieceToBoard(board_slice, board.black_knight, .black_knight);
+    setPieceToBoard(board_slice, board.black_silver, .black_silver);
+    setPieceToBoard(board_slice, board.black_gold, .black_gold);
+    setPieceToBoard(board_slice, board.black_bishop, .black_bishop);
+    setPieceToBoard(board_slice, board.black_rook, .black_rook);
+    setPieceToBoard(board_slice, board.black_pawn_promoted, .black_pawn_promoted);
+    setPieceToBoard(board_slice, board.black_knight_promoted, .black_knight_promoted);
+    setPieceToBoard(board_slice, board.black_lance_promoted, .black_lance_promoted);
+    setPieceToBoard(board_slice, board.black_silver_promoted, .black_silver_promoted);
+    setPieceToBoard(board_slice, board.black_bishop_promoted, .black_bishop_promoted);
+    setPieceToBoard(board_slice, board.black_rook_promoted, .black_rook_promoted);
+    setPieceToBoard(board_slice, board.black_king, .black_king);
 }
 
 /// ボードに駒を設定する

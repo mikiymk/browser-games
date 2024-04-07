@@ -26,7 +26,7 @@ test "moves.getWhitePawnMovable: 先手の歩兵が動ける範囲" {
     ;
     const board = Board.fromString(board_str);
 
-    const moved_board = moves.getMovablePositions(board, BitBoard.fromString(board_str, 'P'));
+    const moved_board = moves.move(board, BitBoard.fromString(board_str, 'P'));
 
     try BitBoard.expect(moved_board,
         \\.........
@@ -55,7 +55,7 @@ test "moves.getBlackPawnMovable: 後手の歩兵が動ける範囲" {
     ;
     const board = Board.fromString(board_str);
 
-    const moved_board = moves.getMovablePositions(board, BitBoard.fromString(board_str, 'p'));
+    const moved_board = moves.move(board, BitBoard.fromString(board_str, 'p'));
 
     try BitBoard.expect(moved_board,
         \\.........
@@ -84,7 +84,7 @@ test "moves.getWhiteLanceMovable: 先手の香車が動ける範囲" {
     ;
     const board = Board.fromString(board_str);
 
-    const moved_board = moves.getMovablePositions(board, BitBoard.fromString(board_str, 'L'));
+    const moved_board = moves.move(board, BitBoard.fromString(board_str, 'L'));
 
     try BitBoard.expect(moved_board,
         \\o.o......
@@ -113,7 +113,7 @@ test "moves.getBlackLanceMovable: 後手の香車が動ける範囲" {
     ;
     const board = Board.fromString(board_str);
 
-    const moved_board = moves.getMovablePositions(board, BitBoard.fromString(board_str, 'l'));
+    const moved_board = moves.move(board, BitBoard.fromString(board_str, 'l'));
 
     try BitBoard.expect(moved_board,
         \\.........
@@ -142,7 +142,7 @@ test "moves.getWhiteKnightMovable: 先手の桂馬が動ける範囲" {
     ;
     const board = Board.fromString(board_str);
 
-    const moved_board = moves.getMovablePositions(board, BitBoard.fromString(board_str, 'N'));
+    const moved_board = moves.move(board, BitBoard.fromString(board_str, 'N'));
 
     try BitBoard.expect(moved_board,
         \\.......o.
@@ -171,7 +171,7 @@ test "moves.getBlackKnightMovable: 後手の桂馬が動ける範囲" {
     ;
     const board = Board.fromString(board_str);
 
-    const moved_board = moves.getMovablePositions(board, BitBoard.fromString(board_str, 'n'));
+    const moved_board = moves.move(board, BitBoard.fromString(board_str, 'n'));
 
     try BitBoard.expect(moved_board,
         \\.........
