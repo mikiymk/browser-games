@@ -254,6 +254,50 @@ pub fn movedBoard(board: Board, from: u81, to: u81) Board {
     return new_board;
 }
 
+pub fn promotedBoard(board: Board, position: u81) Board {
+    var new_board = board;
+
+    if (new_board.black_rook & position != 0) {
+        new_board.black_rook &= ~position;
+        new_board.black_rook_promoted |= position;
+    } else if (new_board.black_bishop & position != 0) {
+        new_board.black_bishop &= ~position;
+        new_board.black_bishop_promoted |= position;
+    } else if (new_board.black_silver & position != 0) {
+        new_board.black_silver &= ~position;
+        new_board.black_silver_promoted |= position;
+    } else if (new_board.black_knight & position != 0) {
+        new_board.black_knight &= ~position;
+        new_board.black_knight_promoted |= position;
+    } else if (new_board.black_lance & position != 0) {
+        new_board.black_lance &= ~position;
+        new_board.black_lance_promoted |= position;
+    } else if (new_board.black_pawn & position != 0) {
+        new_board.black_pawn &= ~position;
+        new_board.black_pawn_promoted |= position;
+    } else if (new_board.white_rook & position != 0) {
+        new_board.white_rook &= ~position;
+        new_board.white_rook_promoted |= position;
+    } else if (new_board.white_bishop & position != 0) {
+        new_board.white_bishop &= ~position;
+        new_board.white_bishop_promoted |= position;
+    } else if (new_board.white_silver & position != 0) {
+        new_board.white_silver &= ~position;
+        new_board.white_silver_promoted |= position;
+    } else if (new_board.white_knight & position != 0) {
+        new_board.white_knight &= ~position;
+        new_board.white_knight_promoted |= position;
+    } else if (new_board.white_lance & position != 0) {
+        new_board.white_lance &= ~position;
+        new_board.white_lance_promoted |= position;
+    } else if (new_board.white_pawn & position != 0) {
+        new_board.white_pawn &= ~position;
+        new_board.white_pawn_promoted |= position;
+    }
+
+    return new_board;
+}
+
 pub fn getColorPiecesArray(board: Board, color: Game.PlayerColor) [14]u81 {
     return switch (color) {
         .black => .{
@@ -461,4 +505,107 @@ pub fn isCheckmated(board: Board, color: Game.PlayerColor) bool {
     }
 
     return true;
+}
+
+const black_farest = BitBoard.fromString(
+    \\.........
+    \\.........
+    \\.........
+    \\.........
+    \\.........
+    \\.........
+    \\.........
+    \\.........
+    \\ooooooooo
+, 'o');
+const black_farest2 = BitBoard.fromString(
+    \\.........
+    \\.........
+    \\.........
+    \\.........
+    \\.........
+    \\.........
+    \\.........
+    \\ooooooooo
+    \\ooooooooo
+, 'o');
+const black_farest3 = BitBoard.fromString(
+    \\.........
+    \\.........
+    \\.........
+    \\.........
+    \\.........
+    \\.........
+    \\ooooooooo
+    \\ooooooooo
+    \\ooooooooo
+, 'o');
+const white_farest = BitBoard.fromString(
+    \\ooooooooo
+    \\.........
+    \\.........
+    \\.........
+    \\.........
+    \\.........
+    \\.........
+    \\.........
+    \\.........
+, 'o');
+const white_farest2 = BitBoard.fromString(
+    \\ooooooooo
+    \\ooooooooo
+    \\.........
+    \\.........
+    \\.........
+    \\.........
+    \\.........
+    \\.........
+    \\.........
+, 'o');
+const white_farest3 = BitBoard.fromString(
+    \\ooooooooo
+    \\ooooooooo
+    \\ooooooooo
+    \\.........
+    \\.........
+    \\.........
+    \\.........
+    \\.........
+    \\.........
+, 'o');
+
+/// 成るかどうか選択できる場合
+/// 移動元または移動先が奥から3つ以内
+/// 成れる駒の種類
+pub fn canPromotion(board: Board, from: u81, to: u81) bool {
+    const piece_type = board.getPieceAt(to);
+    const is_promotionable_piece = switch (piece_type.piece() orelse return false) {
+        .rook, .bishop, .silver, .knight, .lance, .pawn => true,
+        else => false,
+    };
+
+    if (!is_promotionable_piece) {
+        return false;
+    }
+
+    return switch (piece_type.color() orelse return false) {
+        .black => black_farest3 & (from | to) != 0,
+        .white => white_farest3 & (from | to) != 0,
+    };
+}
+
+/// 必ず成らないといけない場合
+///
+/// - 歩兵、香車が最も奥にいる
+/// - 桂馬が奥から2つ以内にいる
+pub fn needsPromotion(board: Board, to: u81) bool {
+    const piece_type = board.getPieceAt(to);
+
+    return switch (piece_type) {
+        .black_pawn, .black_lance => to & black_farest != 0,
+        .black_knight => to & black_farest2 != 0,
+        .white_pawn, .white_lance => to & white_farest != 0,
+        .white_knight => to & white_farest2 != 0,
+        else => false,
+    };
 }

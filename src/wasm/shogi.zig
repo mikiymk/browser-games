@@ -47,13 +47,13 @@ export fn player(game: *shogi.Game) u8 {
 }
 
 /// 勝利したプレイヤーの種類を得る
-export fn winner(game_ptr: *shogi.Game) u8 {
-    return @intFromEnum(game_ptr.getWinner() orelse return 255);
+export fn winner(game: *shogi.Game) u8 {
+    return @intFromEnum(game.getWinner() orelse return 255);
 }
 
 /// 選択したマスの駒の動ける範囲を得る
-export fn movePoses(game_ptr: *shogi.Game, board: [*]u8, from: u8) void {
-    const positions = game_ptr.movePositions(from);
+export fn movePoses(game: *shogi.Game, board: [*]u8, from: u8) void {
+    const positions = game.movePositions(indexToBoardBits(from));
     var board_slice: []u8 = board[0..81];
 
     @memset(board_slice, 0);
@@ -63,26 +63,22 @@ export fn movePoses(game_ptr: *shogi.Game, board: [*]u8, from: u8) void {
 
 /// 移動元と移動先を指定して駒を動かす
 /// 成りを選択できる場合はtrueを返す
-export fn move(game_ptr: *shogi.Game, from: u8, to: u8) bool {
-    _ = game_ptr;
-    _ = from;
-    _ = to;
-
-    @panic("not implement yet");
+export fn move(game: *shogi.Game, from: u8, to: u8) bool {
+    return game.move(indexToBoardBits(from), indexToBoardBits(to));
 }
 
 /// 移動元と変化先の駒を指定して駒を動かす
-export fn promote(game_ptr: *shogi.Game, from: u8, piece: u8) void {
-    _ = game_ptr;
-    _ = from;
-    _ = piece;
+export fn promote(game: *shogi.Game, position: u8) void {
+    game.promote(indexToBoardBits(position));
+}
+
+/// AIで自動で駒を動かす
+export fn moveAi(game: *shogi.Game) void {
+    _ = game;
 
     @panic("not implement yet");
 }
 
-/// AIで自動で駒を動かす
-export fn moveAi(game_ptr: *shogi.Game) void {
-    _ = game_ptr;
-
-    @panic("not implement yet");
+fn indexToBoardBits(position: u8) u81 {
+    return @as(u81, 1) << @truncate(position);
 }

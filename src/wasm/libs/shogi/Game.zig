@@ -264,3 +264,22 @@ pub fn getWinner(game: Game) ?PlayerColor {
 pub fn movePositions(game: Game, from: u81) u81 {
     return game.current_board.movePositions(from);
 }
+
+/// 駒を移動する
+/// 必ず成る場合は成る
+/// 成るかどうか選択できる場合はtrueを返す
+pub fn move(game: *Game, from: u81, to: u81) bool {
+    game.current_board = game.current_board.movedBoard(from, to);
+
+    if (game.current_board.needsPromotion(to)) {
+        game.current_board = game.current_board.promotedBoard(to);
+    } else if (game.current_board.canPromotion(from, to)) {
+        return true;
+    }
+
+    return false;
+}
+
+pub fn promote(game: *Game, position: u81) void {
+    game.current_board = game.current_board.promotedBoard(position);
+}
