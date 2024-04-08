@@ -53,11 +53,12 @@ export fn winner(game_ptr: *shogi.Game) u8 {
 
 /// 選択したマスの駒の動ける範囲を得る
 export fn movePoses(game_ptr: *shogi.Game, board: [*]u8, from: u8) void {
-    _ = game_ptr;
-    _ = board;
-    _ = from;
+    const positions = game_ptr.movePositions(from);
+    var board_slice: []u8 = board[0..81];
 
-    @panic("not implement yet");
+    @memset(board_slice, 0);
+
+    shogi.Game.setPieceToBoard(&board_slice, positions, 1);
 }
 
 /// 移動元と移動先を指定して駒を動かす

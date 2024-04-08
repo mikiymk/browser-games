@@ -88,6 +88,14 @@ pub fn move(board: Board, from: u81) u81 {
     };
 }
 
+/// 歩兵の移動できる範囲
+pub fn pawn(board: Board, from: u81, color: Game.PlayerColor) u81 {
+    return switch (color) {
+        .black => blackPawn(board, from),
+        .white => whitePawn(board, from),
+    };
+}
+
 /// 先手の歩兵の移動できる範囲
 pub fn whitePawn(board: Board, from: u81) u81 {
     const to: u81 = BitBoard.move(from, .n);
@@ -102,6 +110,14 @@ pub fn blackPawn(board: Board, from: u81) u81 {
     const ally_pieces = board.getColorPieces(.black);
 
     return to & ~ally_pieces;
+}
+
+/// 香車の移動できる範囲
+pub fn lance(board: Board, from: u81, color: Game.PlayerColor) u81 {
+    return switch (color) {
+        .black => blackLance(board, from),
+        .white => whiteLance(board, from),
+    };
 }
 
 /// 先手の香車の移動できる範囲
@@ -134,6 +150,14 @@ pub fn blackLance(board: Board, from: u81) u81 {
     return BitBoard.move(to, .s) & ~ally_pieces;
 }
 
+/// 桂馬の移動できる範囲
+pub fn knight(board: Board, from: u81, color: Game.PlayerColor) u81 {
+    return switch (color) {
+        .black => blackKnight(board, from),
+        .white => whiteKnight(board, from),
+    };
+}
+
 /// 先手の桂馬の移動できる範囲
 pub fn whiteKnight(board: Board, from: u81) u81 {
     const to_nne: u81 = BitBoard.move(BitBoard.move(from & east_mask, .ne), .n);
@@ -150,6 +174,14 @@ pub fn blackKnight(board: Board, from: u81) u81 {
     const ally_pieces = board.getColorPieces(.black);
 
     return (to_sse | to_ssw) & ~ally_pieces;
+}
+
+/// 銀将の移動できる範囲
+pub fn silver(board: Board, from: u81, color: Game.PlayerColor) u81 {
+    return switch (color) {
+        .black => blackSilver(board, from),
+        .white => whiteSilver(board, from),
+    };
 }
 
 /// 先手の銀将の移動できる範囲
@@ -180,6 +212,14 @@ pub fn blackSilver(board: Board, from: u81) u81 {
     const ally_pieces = board.getColorPieces(.black);
 
     return (to_s | to_ne | to_nw | to_se | to_sw) & ~ally_pieces;
+}
+
+/// 金将の移動できる範囲
+pub fn gold(board: Board, from: u81, color: Game.PlayerColor) u81 {
+    return switch (color) {
+        .black => blackGold(board, from),
+        .white => whiteGold(board, from),
+    };
 }
 
 /// 先手の金将の移動できる範囲
@@ -214,7 +254,7 @@ pub fn blackGold(board: Board, from: u81) u81 {
     return (to_s | to_se | to_sw | to_e | to_w | to_n) & ~ally_pieces;
 }
 
-/// 先手の角行の移動できる範囲
+/// 角行の移動できる範囲
 pub fn bishop(board: Board, from: u81, color: Game.PlayerColor) u81 {
     const ally_pieces = board.getColorPieces(color);
     const enemy_pieces = board.getColorPieces(color.turn());
@@ -236,7 +276,7 @@ pub fn bishop(board: Board, from: u81, color: Game.PlayerColor) u81 {
     return (to_ne_sw | to_nw_se) & ~ally_pieces;
 }
 
-/// 先手の龍馬の移動できる範囲
+/// 龍馬の移動できる範囲
 pub fn promotedBishop(board: Board, from: u81, color: Game.PlayerColor) u81 {
     const ally_pieces = board.getColorPieces(color);
     const enemy_pieces = board.getColorPieces(color.turn());
@@ -266,7 +306,7 @@ pub fn promotedBishop(board: Board, from: u81, color: Game.PlayerColor) u81 {
     return (to_ne_sw | to_nw_se | to_n | to_s | to_e | to_w) & ~ally_pieces;
 }
 
-/// 先手の飛車の移動できる範囲
+/// 飛車の移動できる範囲
 pub fn rook(board: Board, from: u81, color: Game.PlayerColor) u81 {
     const ally_pieces = board.getColorPieces(color);
     const enemy_pieces = board.getColorPieces(color.turn());
@@ -288,7 +328,7 @@ pub fn rook(board: Board, from: u81, color: Game.PlayerColor) u81 {
     return (to_n_s | to_e_w) & ~ally_pieces;
 }
 
-/// 先手の龍王の移動できる範囲
+/// 龍王の移動できる範囲
 pub fn promotedRook(board: Board, from: u81, color: Game.PlayerColor) u81 {
     const ally_pieces = board.getColorPieces(color);
     const enemy_pieces = board.getColorPieces(color.turn());
@@ -318,7 +358,7 @@ pub fn promotedRook(board: Board, from: u81, color: Game.PlayerColor) u81 {
     return (to_n_s | to_e_w | to_ne | to_nw | to_se | to_sw) & ~ally_pieces;
 }
 
-/// 先手の王将の移動できる範囲
+/// 王将の移動できる範囲
 pub fn king(board: Board, from: u81, color: Game.PlayerColor) u81 {
     const ally_pieces = board.getColorPieces(color);
 

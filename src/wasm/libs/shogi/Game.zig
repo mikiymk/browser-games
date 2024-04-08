@@ -209,42 +209,42 @@ pub fn setBoard(game: Game, board_slice: *[]u8) void {
 
     @memset(board_slice.*, 0);
 
-    setPieceToBoard(board_slice, board.white_pawn, .white_pawn);
-    setPieceToBoard(board_slice, board.white_lance, .white_lance);
-    setPieceToBoard(board_slice, board.white_knight, .white_knight);
-    setPieceToBoard(board_slice, board.white_silver, .white_silver);
-    setPieceToBoard(board_slice, board.white_gold, .white_gold);
-    setPieceToBoard(board_slice, board.white_bishop, .white_bishop);
-    setPieceToBoard(board_slice, board.white_rook, .white_rook);
-    setPieceToBoard(board_slice, board.white_pawn_promoted, .white_pawn_promoted);
-    setPieceToBoard(board_slice, board.white_knight_promoted, .white_knight_promoted);
-    setPieceToBoard(board_slice, board.white_lance_promoted, .white_lance_promoted);
-    setPieceToBoard(board_slice, board.white_silver_promoted, .white_silver_promoted);
-    setPieceToBoard(board_slice, board.white_bishop_promoted, .white_bishop_promoted);
-    setPieceToBoard(board_slice, board.white_rook_promoted, .white_rook_promoted);
-    setPieceToBoard(board_slice, board.white_king, .white_king);
+    setPieceToBoard(board_slice, board.white_pawn, @intFromEnum(Square.white_pawn));
+    setPieceToBoard(board_slice, board.white_lance, @intFromEnum(Square.white_lance));
+    setPieceToBoard(board_slice, board.white_knight, @intFromEnum(Square.white_knight));
+    setPieceToBoard(board_slice, board.white_silver, @intFromEnum(Square.white_silver));
+    setPieceToBoard(board_slice, board.white_gold, @intFromEnum(Square.white_gold));
+    setPieceToBoard(board_slice, board.white_bishop, @intFromEnum(Square.white_bishop));
+    setPieceToBoard(board_slice, board.white_rook, @intFromEnum(Square.white_rook));
+    setPieceToBoard(board_slice, board.white_pawn_promoted, @intFromEnum(Square.white_pawn_promoted));
+    setPieceToBoard(board_slice, board.white_knight_promoted, @intFromEnum(Square.white_knight_promoted));
+    setPieceToBoard(board_slice, board.white_lance_promoted, @intFromEnum(Square.white_lance_promoted));
+    setPieceToBoard(board_slice, board.white_silver_promoted, @intFromEnum(Square.white_silver_promoted));
+    setPieceToBoard(board_slice, board.white_bishop_promoted, @intFromEnum(Square.white_bishop_promoted));
+    setPieceToBoard(board_slice, board.white_rook_promoted, @intFromEnum(Square.white_rook_promoted));
+    setPieceToBoard(board_slice, board.white_king, @intFromEnum(Square.white_king));
 
-    setPieceToBoard(board_slice, board.black_pawn, .black_pawn);
-    setPieceToBoard(board_slice, board.black_lance, .black_lance);
-    setPieceToBoard(board_slice, board.black_knight, .black_knight);
-    setPieceToBoard(board_slice, board.black_silver, .black_silver);
-    setPieceToBoard(board_slice, board.black_gold, .black_gold);
-    setPieceToBoard(board_slice, board.black_bishop, .black_bishop);
-    setPieceToBoard(board_slice, board.black_rook, .black_rook);
-    setPieceToBoard(board_slice, board.black_pawn_promoted, .black_pawn_promoted);
-    setPieceToBoard(board_slice, board.black_knight_promoted, .black_knight_promoted);
-    setPieceToBoard(board_slice, board.black_lance_promoted, .black_lance_promoted);
-    setPieceToBoard(board_slice, board.black_silver_promoted, .black_silver_promoted);
-    setPieceToBoard(board_slice, board.black_bishop_promoted, .black_bishop_promoted);
-    setPieceToBoard(board_slice, board.black_rook_promoted, .black_rook_promoted);
-    setPieceToBoard(board_slice, board.black_king, .black_king);
+    setPieceToBoard(board_slice, board.black_pawn, @intFromEnum(Square.black_pawn));
+    setPieceToBoard(board_slice, board.black_lance, @intFromEnum(Square.black_lance));
+    setPieceToBoard(board_slice, board.black_knight, @intFromEnum(Square.black_knight));
+    setPieceToBoard(board_slice, board.black_silver, @intFromEnum(Square.black_silver));
+    setPieceToBoard(board_slice, board.black_gold, @intFromEnum(Square.black_gold));
+    setPieceToBoard(board_slice, board.black_bishop, @intFromEnum(Square.black_bishop));
+    setPieceToBoard(board_slice, board.black_rook, @intFromEnum(Square.black_rook));
+    setPieceToBoard(board_slice, board.black_pawn_promoted, @intFromEnum(Square.black_pawn_promoted));
+    setPieceToBoard(board_slice, board.black_knight_promoted, @intFromEnum(Square.black_knight_promoted));
+    setPieceToBoard(board_slice, board.black_lance_promoted, @intFromEnum(Square.black_lance_promoted));
+    setPieceToBoard(board_slice, board.black_silver_promoted, @intFromEnum(Square.black_silver_promoted));
+    setPieceToBoard(board_slice, board.black_bishop_promoted, @intFromEnum(Square.black_bishop_promoted));
+    setPieceToBoard(board_slice, board.black_rook_promoted, @intFromEnum(Square.black_rook_promoted));
+    setPieceToBoard(board_slice, board.black_king, @intFromEnum(Square.black_king));
 }
 
-/// ボードに駒を設定する
-fn setPieceToBoard(board: *[]u8, target: u81, value: Game.Square) void {
+/// ボードのスライスに駒を設定する
+pub fn setPieceToBoard(board: *[]u8, target: u81, value: u8) void {
     var iter = BitBoard.iterator(target);
     while (iter.next()) |n| {
-        board.*[@ctz(n)] = @intFromEnum(value);
+        board.*[@ctz(n)] = value;
     }
 }
 
@@ -259,4 +259,8 @@ pub fn getWinner(game: Game) ?PlayerColor {
     }
 
     return null;
+}
+
+pub fn movePositions(game: Game, from: u81) u81 {
+    return game.current_board.movePositions(from);
 }

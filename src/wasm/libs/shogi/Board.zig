@@ -324,6 +324,48 @@ pub fn getColorPieces(board: Board, color: Game.PlayerColor) u81 {
     };
 }
 
+/// 駒を指定して、その駒の行ける範囲を得る
+pub fn movePositions(board: Board, from: u81) u81 {
+    const piece_type = board.getPieceAt(from);
+
+    const move_to = switch (piece_type) {
+        .empty => return 0,
+        .black_king => moves.king(board, from, .black),
+        .black_rook => moves.rook(board, from, .black),
+        .black_bishop => moves.bishop(board, from, .black),
+        .black_gold => moves.gold(board, from, .black),
+        .black_silver => moves.silver(board, from, .black),
+        .black_knight => moves.knight(board, from, .black),
+        .black_lance => moves.lance(board, from, .black),
+        .black_pawn => moves.pawn(board, from, .black),
+        .black_rook_promoted => moves.promotedRook(board, from, .black),
+        .black_bishop_promoted => moves.promotedBishop(board, from, .black),
+        .black_silver_promoted => moves.gold(board, from, .black),
+        .black_knight_promoted => moves.gold(board, from, .black),
+        .black_lance_promoted => moves.gold(board, from, .black),
+        .black_pawn_promoted => moves.gold(board, from, .black),
+        .white_king => moves.king(board, from, .white),
+        .white_rook => moves.rook(board, from, .white),
+        .white_bishop => moves.bishop(board, from, .white),
+        .white_gold => moves.gold(board, from, .white),
+        .white_silver => moves.silver(board, from, .white),
+        .white_knight => moves.knight(board, from, .white),
+        .white_lance => moves.lance(board, from, .white),
+        .white_pawn => moves.pawn(board, from, .white),
+        .white_rook_promoted => moves.promotedRook(board, from, .white),
+        .white_bishop_promoted => moves.promotedBishop(board, from, .white),
+        .white_silver_promoted => moves.gold(board, from, .white),
+        .white_knight_promoted => moves.gold(board, from, .white),
+        .white_lance_promoted => moves.gold(board, from, .white),
+        .white_pawn_promoted => moves.gold(board, from, .white),
+    };
+
+    const color = piece_type.color() orelse unreachable; // nullになるやつは前でリターンされている
+    const filtered_move_to = board.filterMove(color, from, move_to);
+
+    return filtered_move_to;
+}
+
 /// その色の駒の行ける範囲をすべて得る
 pub fn getAllMoves(board: Board, color: Game.PlayerColor) u81 {
     switch (color) {
