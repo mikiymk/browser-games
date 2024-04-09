@@ -1,6 +1,7 @@
 const std = @import("std");
 const builtin = @import("builtin");
 const shogi = @import("libs/shogi/main.zig");
+const common = @import("libs/common/main.zig");
 
 /// アロケーター
 const allocator = if (builtin.target.isWasm()) std.heap.wasm_allocator else std.heap.page_allocator;
@@ -78,7 +79,7 @@ export fn promote(game: *shogi.Game, position: u8) void {
 
 /// AIで自動で駒を動かす
 export fn moveAi(game: *shogi.Game) void {
-    const ai_move = shogi.ai.move(game.*);
+    const ai_move = shogi.ai.move(game.*, common.random.random);
 
     switch (ai_move) {
         .move => |m| {

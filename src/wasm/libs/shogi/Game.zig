@@ -16,7 +16,7 @@ test {
     _ = @import("./Game.test.zig");
 }
 
-const PrimaryPiece = enum { king, rook, bishop, gold, silver, knight, lance, pawn };
+pub const PrimaryPiece = enum { king, rook, bishop, gold, silver, knight, lance, pawn };
 
 /// 駒の種類
 pub const PieceKind = enum {
@@ -65,6 +65,19 @@ pub const PieceKind = enum {
             .knight_promoted => .knight,
             .lance_promoted => .lance,
             .pawn_promoted => .pawn,
+        };
+    }
+
+    pub fn fromPrimary(prim: PrimaryPiece, prom: bool) PieceKind {
+        return switch (prim) {
+            .king => .king,
+            .rook => if (prom) .rook_promoted else .rook,
+            .bishop => if (prom) .bishop_promoted else .bishop,
+            .gold => .gold,
+            .silver => if (prom) .silver_promoted else .silver,
+            .knight => if (prom) .knight_promoted else .knight,
+            .lance => if (prom) .lance_promoted else .lance,
+            .pawn => if (prom) .pawn_promoted else .pawn,
         };
     }
 
@@ -273,6 +286,13 @@ pub fn setPieceToBoard(board: *[]u8, target: u81, value: u8) void {
     while (iter.next()) |n| {
         board.*[@ctz(n)] = value;
     }
+}
+
+pub fn getHandPtr(game: Game, color: PlayerColor) Hands {
+    return switch (color) {
+        .black => game.black_hands,
+        .white => game.white_hands,
+    };
 }
 
 /// 勝利したプレイヤーを得る
