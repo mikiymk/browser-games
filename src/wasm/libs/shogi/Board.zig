@@ -298,6 +298,49 @@ pub fn promotedBoard(board: Board, position: u81) Board {
     return new_board;
 }
 
+/// 駒を盤上に追加する
+pub fn hitBoard(board: Board, color: Game.PlayerColor, piece: Game.PieceKind, to: u81) Board {
+    var new_board = board;
+
+    switch (piece) {
+        .king => switch (color) {
+            .black => new_board.black_king |= to,
+            .white => new_board.white_king |= to,
+        },
+        .rook => switch (color) {
+            .black => new_board.black_rook |= to,
+            .white => new_board.white_rook |= to,
+        },
+        .bishop => switch (color) {
+            .black => new_board.black_bishop |= to,
+            .white => new_board.white_bishop |= to,
+        },
+        .gold => switch (color) {
+            .black => new_board.black_gold |= to,
+            .white => new_board.white_gold |= to,
+        },
+        .silver => switch (color) {
+            .black => new_board.black_silver |= to,
+            .white => new_board.white_silver |= to,
+        },
+        .knight => switch (color) {
+            .black => new_board.black_knight |= to,
+            .white => new_board.white_knight |= to,
+        },
+        .lance => switch (color) {
+            .black => new_board.black_lance |= to,
+            .white => new_board.white_lance |= to,
+        },
+        .pawn => switch (color) {
+            .black => new_board.black_pawn |= to,
+            .white => new_board.white_pawn |= to,
+        },
+        else => {},
+    }
+
+    return new_board;
+}
+
 pub fn getColorPiecesArray(board: Board, color: Game.PlayerColor) [14]u81 {
     return switch (color) {
         .black => .{

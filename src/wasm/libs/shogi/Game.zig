@@ -16,6 +16,8 @@ test {
     _ = @import("./Game.test.zig");
 }
 
+const PrimaryPiece = enum { king, rook, bishop, gold, silver, knight, lance, pawn };
+
 /// 駒の種類
 pub const PieceKind = enum {
     /// 王将
@@ -43,9 +45,28 @@ pub const PieceKind = enum {
     /// 成桂
     knight_promoted,
     /// 成香
-    lance_prmonoted,
+    lance_promoted,
     /// と金
     pawn_promoted,
+
+    pub fn primary(self: PieceKind) PrimaryPiece {
+        return switch (self) {
+            .king => .king,
+            .rook => .rook,
+            .bishop => .bishop,
+            .gold => .gold,
+            .silver => .silver,
+            .knight => .knight,
+            .lance => .lance,
+            .pawn => .pawn,
+            .rook_promoted => .rook,
+            .bishop_promoted => .bishop,
+            .silver_promoted => .silver,
+            .knight_promoted => .knight,
+            .lance_promoted => .lance,
+            .pawn_promoted => .pawn,
+        };
+    }
 
     pub fn isPromoted(self: PieceKind) bool {
         return switch (self) {
@@ -53,7 +74,7 @@ pub const PieceKind = enum {
             .bishop_promoted,
             .silver_promoted,
             .knight_promoted,
-            .lance_prmonoted,
+            .lance_promoted,
             .pawn_promoted,
             => true,
             else => false,
@@ -66,7 +87,7 @@ pub const PieceKind = enum {
             .bishop => .bishop_promoted,
             .silver => .silver_promoted,
             .knight => .knight_promoted,
-            .lance => .lance_prmonoted,
+            .lance => .lance_promoted,
             .pawn => .pawn_promoted,
             else => null,
         };
@@ -78,7 +99,7 @@ pub const PieceKind = enum {
             .bishop_promoted => .bishop,
             .silver_promoted => .silver,
             .knight_promoted => .knight,
-            .lance_prmonoted => .lance,
+            .lance_promoted => .lance,
             .pawn_promoted => .pawn,
             else => null,
         };
@@ -187,18 +208,24 @@ pub const Square = enum {
             .black_bishop_promoted, .white_bishop_promoted => .bishop_promoted,
             .black_silver_promoted, .white_silver_promoted => .silver_promoted,
             .black_knight_promoted, .white_knight_promoted => .knight_promoted,
-            .black_lance_promoted, .white_lance_promoted => .lance_prmonoted,
+            .black_lance_promoted, .white_lance_promoted => .lance_promoted,
             .black_pawn_promoted, .white_pawn_promoted => .pawn_promoted,
         };
     }
 };
 
+const Hands = std.EnumMap(PrimaryPiece, u8);
+
 current_board: Board,
+black_hands: Hands,
+white_hands: Hands,
 current_player: PlayerColor,
 
 pub fn init() Game {
     return .{
         .current_board = Board.init(),
+        .black_hands = .{},
+        .white_hands = .{},
         .current_player = .white,
     };
 }
@@ -269,8 +296,23 @@ pub fn movePositions(game: Game, from: u81) u81 {
 /// 必ず成る場合は成る
 /// 成るかどうか選択できる場合はtrueを返す
 pub fn move(game: *Game, from: u81, to: u81) bool {
+    // 持ち駒を増やす
+    const capture_piece = game.current_board.getPieceAt(to);
+    if (capture_piece.piece()) |p| {
+        const primary_piece = p.primary();
+        const hands = switch (game.current_player) {
+            .black => &game.black_hands,
+            .white => &game.white_hands,
+        };
+
+        const num_hand = hands.get(primary_piece) orelse 0;
+        hands.put(primary_piece, num_hand +% 1);
+    }
+
+    // 駒を移動する
     game.current_board = game.current_board.movedBoard(from, to);
 
+    // 成る
     if (game.current_board.needsPromotion(to)) {
         game.current_board = game.current_board.promotedBoard(to);
     } else if (game.current_board.canPromotion(from, to)) {
@@ -278,6 +320,20 @@ pub fn move(game: *Game, from: u81, to: u81) bool {
     }
 
     return false;
+}
+
+pub fn hit(game: *Game, piece: PieceKind, to: u81) void {
+    // 持ち駒を減らす
+    const primary_piece = piece.primary();
+    const hands = switch (game.current_player) {
+        .black => &game.black_hands,
+        .white => &game.white_hands,
+    };
+    const num_hand = hands.get(primary_piece) orelse 0;
+    hands.put(primary_piece, num_hand -| 1);
+
+    // 駒を追加する
+    game.current_board = game.current_board.hitBoard(game.current_player, piece, to);
 }
 
 pub fn promote(game: *Game, position: u81) void {

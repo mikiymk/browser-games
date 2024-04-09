@@ -67,6 +67,10 @@ export fn move(game: *shogi.Game, from: u8, to: u8) bool {
     return game.move(indexToBoardBits(from), indexToBoardBits(to));
 }
 
+export fn hit(game: *shogi.Game, piece: u8, to: u8) void {
+    game.hit(@enumFromInt(piece), indexToBoardBits(to));
+}
+
 /// 移動元と変化先の駒を指定して駒を動かす
 export fn promote(game: *shogi.Game, position: u8) void {
     game.promote(indexToBoardBits(position));
@@ -74,9 +78,19 @@ export fn promote(game: *shogi.Game, position: u8) void {
 
 /// AIで自動で駒を動かす
 export fn moveAi(game: *shogi.Game) void {
-    _ = game;
+    const ai_move = shogi.ai.move(game.*);
 
-    @panic("not implement yet");
+    switch (ai_move) {
+        .move => |m| {
+            const promotion = game.move(m.from, m.to);
+            if (promotion) {
+                game.promote(m.to);
+            }
+        },
+        .hit => |h| {
+            game.hit(h.piece, h.to);
+        },
+    }
 }
 
 fn indexToBoardBits(position: u8) u81 {
