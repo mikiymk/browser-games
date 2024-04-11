@@ -17,23 +17,7 @@ import nariKeiKanji from "@/images/shogi/nari-kei.svg";
 import nariKyoKanji from "@/images/shogi/nari-kyo.svg";
 import toKinKanji from "@/images/shogi/to-kin.svg";
 import { kanjiStyle, pieceStyle, redKanjiStyle } from "../style.css";
-import {
-  Ginsyo,
-  Gyokusyo,
-  Hisya,
-  Huhyo,
-  Kakugyo,
-  Keima,
-  Kinsyo,
-  Kyosya,
-  NariGin,
-  NariKei,
-  NariKyo,
-  Osyo,
-  Ryuma,
-  Ryuo,
-  Tokin,
-} from "../constants";
+import { BISHOP, COLOR, GOLD, KING, KNIGHT, LANCE, PAWN, PIECE, PROMOTED, ROOK, SILVER } from "../constants";
 
 type SquareProperties = {
   readonly x: number;
@@ -43,64 +27,77 @@ type SquareProperties = {
 };
 export const Square = (properties: SquareProperties): JSXElement => {
   const source = (): string | undefined => {
-    switch (properties.square) {
-      case Osyo:
-        return oShoKanji.src;
-      case Gyokusyo:
-        return gyokuShoKanji.src;
-      case Hisya:
+    if (!properties.square) {
+      return;
+    }
+
+    switch (properties.square & (PIECE | PROMOTED)) {
+      case KING:
+        return properties.square & COLOR ? gyokuShoKanji.src : oShoKanji.src;
+      case ROOK:
         return hiShaKanji.src;
-      case Kakugyo:
-        return kakuGyoKanji.src;
-      case Kinsyo:
-        return kinShoKanji.src;
-      case Ginsyo:
-        return ginShoKanji.src;
-      case Keima:
-        return keiMaKanji.src;
-      case Kyosya:
-        return kyoShaKanji.src;
-      case Huhyo:
-        return huHyoKanji.src;
-      case Ryuo:
+      case ROOK | PROMOTED:
         return ryuoKanji.src;
-      case Ryuma:
+      case BISHOP:
+        return kakuGyoKanji.src;
+      case BISHOP | PROMOTED:
         return ryuMeKanji.src;
-      case NariGin:
+      case GOLD:
+        return kinShoKanji.src;
+      case SILVER:
+        return ginShoKanji.src;
+      case SILVER | PROMOTED:
         return nariGinKanji.src;
-      case NariKei:
+      case KNIGHT:
+        return keiMaKanji.src;
+      case KNIGHT | PROMOTED:
         return nariKeiKanji.src;
-      case NariKyo:
+      case LANCE:
+        return kyoShaKanji.src;
+      case LANCE | PROMOTED:
         return nariKyoKanji.src;
-      case Tokin:
+      case PAWN:
+        return huHyoKanji.src;
+      case PAWN | PROMOTED:
         return toKinKanji.src;
+
       default:
         return;
     }
   };
 
   const style = (): string => {
-    switch (properties.square) {
-      case Ryuo:
-      case Ryuma:
-      case NariGin:
-      case NariKei:
-      case NariKyo:
-      case Tokin:
-        return redKanjiStyle;
-      default:
-        return kanjiStyle;
-    }
+    return properties.square & PROMOTED ? redKanjiStyle : kanjiStyle;
+  };
+
+  const rotate = (): string => {
+    return properties.square & COLOR ? "" : `rotate(180, ${properties.x + 5}, ${properties.y + 5})`;
   };
 
   return (
     <>
       <Show when={properties.square}>
-        <use href={`${piece.src}#root`} height={10} width={10} x={properties.x} y={properties.y} class={pieceStyle} />
+        <use
+          href={`${piece.src}#root`}
+          height={10}
+          width={10}
+          x={properties.x}
+          y={properties.y}
+          class={pieceStyle}
+          transform={rotate()}
+        />
       </Show>
       <Show when={source()}>
         {(source) => (
-          <use href={`${source()}#root`} height={10} width={10} x={properties.x} y={properties.y} class={style()} />
+          <use
+            href={`${source()}#root`}
+            height={10}
+            width={10}
+            x={properties.x}
+            y={properties.y}
+            class={style()}
+            transform={rotate()}
+          />
         )}
       </Show>
     </>
