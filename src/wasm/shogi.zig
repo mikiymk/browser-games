@@ -53,7 +53,7 @@ export fn winner(game: *shogi.Game) u8 {
 }
 
 /// 選択したマスの駒の動ける範囲を得る
-export fn movePoses(game: *shogi.Game, board: [*]u8, from: u8) void {
+export fn movePos(game: *shogi.Game, board: [*]u8, from: u8) void {
     const positions = game.movePositions(indexToBoardBits(from));
     var board_slice: []u8 = board[0..81];
 

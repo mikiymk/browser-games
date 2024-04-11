@@ -11,6 +11,7 @@
     "Dtarget",
     "knip",
     "Reversi",
+    "Shogi",
     "wasm_bindgen",
     "wasms"
   ],
