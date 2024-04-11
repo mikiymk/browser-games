@@ -2,6 +2,7 @@ import type { MultiPromise } from "@/scripts/multi-promise";
 import type { PlayerType } from "@/scripts/player";
 import { PlayerTypeHuman } from "@/scripts/player";
 import { sleep } from "@/scripts/sleep";
+import type { BLACK, WHITE } from "./constants";
 import { MOVE_TARGET } from "./constants";
 
 type GamePtr = 0 | (number & { readonly __uniqueShogiGame: "Wasm pointer of Game struct" });
@@ -45,15 +46,19 @@ const AI_SLEEP_TIME_MS = 500;
 const EmptyBoard: readonly number[] = Array.from({ length: 81 }, () => 0);
 
 const getWasm = async (): Promise<WasmConnect> => {
-  const wasm = await WebAssembly.instantiateStreaming(fetch(`${import.meta.env.BASE_URL}/wasm/shogi.wasm`), {});
+  const memory = new WebAssembly.Memory({ initial: 10, maximum: 100 });
+  const wasm = await WebAssembly.instantiateStreaming(fetch(`${import.meta.env.BASE_URL}/wasm/shogi.wasm`), {
+    js: { mem: memory },
+  });
 
   const exports = wasm.instance.exports as WasmExports;
   const buffer = new Uint8Array(exports.memory.buffer);
 
   const getBoard = (board: BoardArray): readonly number[] => {
+    console.log({ buffer, board });
     // UInt8ArrayからArrayに変換する
     // eslint-disable-next-line unicorn/no-useless-spread
-    return [...buffer.slice(board, board + 81)];
+    return [...new Uint8Array(exports.memory.buffer).slice(board, board + 81)];
   };
 
   return {
@@ -95,9 +100,9 @@ const getWasm = async (): Promise<WasmConnect> => {
   };
 };
 
-type Players = { readonly [Key in number]: PlayerType };
+type Players = { readonly [BLACK]: PlayerType; readonly [WHITE]: PlayerType };
 const isHuman = (players: Players, color: number): boolean => {
-  return players[color] === PlayerTypeHuman;
+  return players[color as typeof BLACK | typeof WHITE] === PlayerTypeHuman;
 };
 
 const askPromote = async (humanInput: MultiPromise<number>): Promise<boolean> => {
@@ -123,7 +128,7 @@ const gameLoop = (
     movePos,
 
     move,
-    hit,
+    // hit,
     promote,
 
     ai: moveAi,
@@ -180,6 +185,7 @@ const gameLoop = (
   };
 
   const run = async (): Promise<void> => {
+    console.log("board", board(game));
     setBoard(board(game));
     const color = player(game);
     console.log("color", color);
