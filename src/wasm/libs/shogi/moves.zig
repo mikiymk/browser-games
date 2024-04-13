@@ -270,8 +270,8 @@ pub fn bishop(board: Board, from: u81, color: Game.PlayerColor) u81 {
         to_nw_se |= (BitBoard.move(to_nw_se, .nw) | BitBoard.move(to_nw_se, .se)) & mask;
     }
 
-    to_ne_sw |= (BitBoard.move(to_ne_sw, .ne) & east_mask) | (BitBoard.move(to_ne_sw, .sw) & west_mask);
-    to_nw_se |= (BitBoard.move(to_nw_se, .nw) & west_mask) | (BitBoard.move(to_nw_se, .se) & east_mask);
+    to_ne_sw |= BitBoard.move(to_ne_sw, .ne) | BitBoard.move(to_ne_sw, .sw);
+    to_nw_se |= BitBoard.move(to_nw_se, .nw) | BitBoard.move(to_nw_se, .se);
 
     return (to_ne_sw | to_nw_se) & ~ally_pieces;
 }
@@ -292,8 +292,8 @@ pub fn promotedBishop(board: Board, from: u81, color: Game.PlayerColor) u81 {
         to_nw_se |= (BitBoard.move(to_nw_se, .nw) | BitBoard.move(to_nw_se, .se)) & mask;
     }
 
-    to_ne_sw |= (BitBoard.move(to_ne_sw, .ne) & east_mask) | (BitBoard.move(to_ne_sw, .sw) & west_mask);
-    to_nw_se |= (BitBoard.move(to_nw_se, .nw) & west_mask) | (BitBoard.move(to_nw_se, .se) & east_mask);
+    to_ne_sw |= BitBoard.move(to_ne_sw, .ne) | BitBoard.move(to_ne_sw, .sw);
+    to_nw_se |= BitBoard.move(to_nw_se, .nw) | BitBoard.move(to_nw_se, .se);
 
     const masked_e = from & east_mask;
     const masked_w = from & west_mask;
@@ -323,7 +323,7 @@ pub fn rook(board: Board, from: u81, color: Game.PlayerColor) u81 {
     }
 
     to_n_s |= BitBoard.move(to_n_s, .s) | BitBoard.move(to_n_s, .n);
-    to_e_w |= (BitBoard.move(to_e_w, .e) & east_mask) | (BitBoard.move(to_e_w, .w) & west_mask);
+    to_e_w |= BitBoard.move(to_e_w, .e) | BitBoard.move(to_e_w, .w);
 
     return (to_n_s | to_e_w) & ~ally_pieces;
 }
@@ -345,7 +345,7 @@ pub fn promotedRook(board: Board, from: u81, color: Game.PlayerColor) u81 {
     }
 
     to_n_s |= BitBoard.move(to_n_s, .s) | BitBoard.move(to_n_s, .n);
-    to_e_w |= (BitBoard.move(to_e_w, .e) & east_mask) | (BitBoard.move(to_e_w, .w) & west_mask);
+    to_e_w |= BitBoard.move(to_e_w, .e) | BitBoard.move(to_e_w, .w);
 
     const masked_e = from & east_mask;
     const masked_w = from & west_mask;
