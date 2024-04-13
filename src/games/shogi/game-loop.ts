@@ -207,7 +207,7 @@ const gameLoop = (
     setMove(EmptyBoard);
 
     const end = winner(game);
-    if (end !== 0) {
+    if (end !== 255) {
       setWinner(end);
       terminate();
     }
