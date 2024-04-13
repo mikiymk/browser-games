@@ -336,6 +336,8 @@ pub fn move(game: *Game, from: u81, to: u81) bool {
     // 駒を移動する
     game.current_board = game.current_board.movedBoard(from, to);
 
+    game.changePlayer();
+
     // 成る
     if (game.current_board.needsPromotion(to)) {
         game.current_board = game.current_board.promotedBoard(to);
@@ -343,7 +345,6 @@ pub fn move(game: *Game, from: u81, to: u81) bool {
         return true;
     }
 
-    game.changePlayer();
     return false;
 }
 
@@ -365,8 +366,6 @@ pub fn hit(game: *Game, piece: PieceKind, to: u81) void {
 
 pub fn promote(game: *Game, position: u81) void {
     game.current_board = game.current_board.promotedBoard(position);
-
-    game.changePlayer();
 }
 
 fn changePlayer(game: *Game) void {
