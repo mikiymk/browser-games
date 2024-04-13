@@ -220,36 +220,36 @@ pub fn movedBoard(board: Board, from: u81, to: u81) Board {
     else
         return new_board;
 
-    new_board.black_king |= ~to;
-    new_board.black_rook |= ~to;
-    new_board.black_bishop |= ~to;
-    new_board.black_gold |= ~to;
-    new_board.black_silver |= ~to;
-    new_board.black_knight |= ~to;
-    new_board.black_lance |= ~to;
-    new_board.black_pawn |= ~to;
-    new_board.black_rook_promoted |= ~to;
-    new_board.black_bishop_promoted |= ~to;
-    new_board.black_silver_promoted |= ~to;
-    new_board.black_knight_promoted |= ~to;
-    new_board.black_lance_promoted |= ~to;
-    new_board.black_pawn_promoted |= ~to;
-    new_board.white_king |= ~to;
-    new_board.white_rook |= ~to;
-    new_board.white_bishop |= ~to;
-    new_board.white_gold |= ~to;
-    new_board.white_silver |= ~to;
-    new_board.white_knight |= ~to;
-    new_board.white_lance |= ~to;
-    new_board.white_pawn |= ~to;
-    new_board.white_rook_promoted |= ~to;
-    new_board.white_bishop_promoted |= ~to;
-    new_board.white_silver_promoted |= ~to;
-    new_board.white_knight_promoted |= ~to;
-    new_board.white_lance_promoted |= ~to;
-    new_board.white_pawn_promoted |= ~to;
+    new_board.black_king &= ~to;
+    new_board.black_rook &= ~to;
+    new_board.black_bishop &= ~to;
+    new_board.black_gold &= ~to;
+    new_board.black_silver &= ~to;
+    new_board.black_knight &= ~to;
+    new_board.black_lance &= ~to;
+    new_board.black_pawn &= ~to;
+    new_board.black_rook_promoted &= ~to;
+    new_board.black_bishop_promoted &= ~to;
+    new_board.black_silver_promoted &= ~to;
+    new_board.black_knight_promoted &= ~to;
+    new_board.black_lance_promoted &= ~to;
+    new_board.black_pawn_promoted &= ~to;
+    new_board.white_king &= ~to;
+    new_board.white_rook &= ~to;
+    new_board.white_bishop &= ~to;
+    new_board.white_gold &= ~to;
+    new_board.white_silver &= ~to;
+    new_board.white_knight &= ~to;
+    new_board.white_lance &= ~to;
+    new_board.white_pawn &= ~to;
+    new_board.white_rook_promoted &= ~to;
+    new_board.white_bishop_promoted &= ~to;
+    new_board.white_silver_promoted &= ~to;
+    new_board.white_knight_promoted &= ~to;
+    new_board.white_lance_promoted &= ~to;
+    new_board.white_pawn_promoted &= ~to;
 
-    piece_board.* ^= from & to;
+    piece_board.* ^= from | to;
 
     return new_board;
 }
