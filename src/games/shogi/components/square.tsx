@@ -16,7 +16,7 @@ import nariGinKanji from "@/images/shogi/nari-gin.svg";
 import nariKeiKanji from "@/images/shogi/nari-kei.svg";
 import nariKyoKanji from "@/images/shogi/nari-kyo.svg";
 import toKinKanji from "@/images/shogi/to-kin.svg";
-import { kanjiStyle, pieceStyle, redKanjiStyle } from "../style.css";
+import { kanjiStyle, moveTargetStyle, pieceStyle, redKanjiStyle } from "../style.css";
 import { BISHOP, COLOR, GOLD, KING, KNIGHT, LANCE, PAWN, PIECE, PROMOTED, ROOK, SILVER } from "../constants";
 
 type SquareProperties = {
@@ -24,6 +24,7 @@ type SquareProperties = {
   readonly y: number;
 
   readonly square: number;
+  readonly move: boolean;
 };
 export const Square = (properties: SquareProperties): JSXElement => {
   const source = (): string | undefined => {
@@ -76,28 +77,31 @@ export const Square = (properties: SquareProperties): JSXElement => {
 
   return (
     <>
-      <Show when={properties.square}>
-        <use
-          href={`${piece.src}#root`}
-          height={10}
-          width={10}
-          x={properties.x}
-          y={properties.y}
-          class={pieceStyle}
-          transform={rotate()}
-        />
+      <Show when={properties.move}>
+        <rect x={properties.x + 1} y={properties.y + 1} height={8} width={8} class={moveTargetStyle} />
       </Show>
       <Show when={source()}>
         {(source) => (
-          <use
-            href={`${source()}#root`}
-            height={10}
-            width={10}
-            x={properties.x}
-            y={properties.y}
-            class={style()}
-            transform={rotate()}
-          />
+          <>
+            <use
+              href={`${piece.src}#root`}
+              height={10}
+              width={10}
+              x={properties.x}
+              y={properties.y}
+              class={pieceStyle}
+              transform={rotate()}
+            />
+            <use
+              href={`${source()}#root`}
+              height={10}
+              width={10}
+              x={properties.x}
+              y={properties.y}
+              class={style()}
+              transform={rotate()}
+            />
+          </>
         )}
       </Show>
     </>

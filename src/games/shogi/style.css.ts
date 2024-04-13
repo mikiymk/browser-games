@@ -17,3 +17,7 @@ export const redKanjiStyle = style([
     fill: "red",
   },
 ]);
+
+export const moveTargetStyle = style({
+  fill: "#fa1",
+});

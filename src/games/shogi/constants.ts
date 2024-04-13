@@ -1,5 +1,5 @@
-export const BLACK = 1; // 先手
-export const WHITE = 2; // 後手
+export const WHITE = 1; // 先手
+export const BLACK = 2; // 後手
 
 export const BLACK_KING = 0b1000_0000;
 export const BLACK_ROOK = 0b1000_0001;

@@ -18,6 +18,7 @@
     "lint:format-zig": "zig fmt --check ./src",
     "lint-fix:eslint": "eslint src --cache --fix",
     "lint-fix:biome": "biome check . --apply",
+    "format": "run-z format:biome format:wasm",
     "format:biome": "biome format . --write",
     "format:wasm": "zig fmt ./src",
     "build": "run-z build-wasm:fast build-js",

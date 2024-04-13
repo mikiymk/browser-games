@@ -120,11 +120,11 @@ pub const PieceKind = enum {
 };
 
 /// プレイヤーの種類
-pub const PlayerColor = enum {
+pub const PlayerColor = enum(u8) {
     /// 先手
-    white,
+    white = 1,
     /// 後手
-    black,
+    black = 2,
 
     pub fn turn(self: PlayerColor) PlayerColor {
         return switch (self) {

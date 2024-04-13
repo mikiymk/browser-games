@@ -2,7 +2,7 @@ import type { MultiPromise } from "@/scripts/multi-promise";
 import type { PlayerType } from "@/scripts/player";
 import { PlayerTypeHuman } from "@/scripts/player";
 import { sleep } from "@/scripts/sleep";
-import type { BLACK, WHITE } from "./constants";
+import type { WHITE, BLACK } from "./constants";
 import { MOVE_TARGET } from "./constants";
 
 type GamePtr = 0 | (number & { readonly __uniqueShogiGame: "Wasm pointer of Game struct" });
@@ -52,10 +52,8 @@ const getWasm = async (): Promise<WasmConnect> => {
   });
 
   const exports = wasm.instance.exports as WasmExports;
-  const buffer = new Uint8Array(exports.memory.buffer);
 
   const getBoard = (board: BoardArray): readonly number[] => {
-    console.log({ buffer, board });
     // UInt8ArrayからArrayに変換する
     // eslint-disable-next-line unicorn/no-useless-spread
     return [...new Uint8Array(exports.memory.buffer).slice(board, board + 81)];
@@ -100,7 +98,7 @@ const getWasm = async (): Promise<WasmConnect> => {
   };
 };
 
-type Players = { readonly [BLACK]: PlayerType; readonly [WHITE]: PlayerType };
+type Players = { readonly [WHITE]: PlayerType; readonly [BLACK]: PlayerType };
 const isHuman = (players: Players, color: number): boolean => {
   return players[color as typeof BLACK | typeof WHITE] === PlayerTypeHuman;
 };
@@ -145,16 +143,23 @@ const gameLoop = (
 
   // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: 長い関数
   const ply = async (color: number): Promise<void> => {
+    console.log("players", players, color);
+
     if (isHuman(players, color)) {
-      let from: number;
-      let to: number;
+      console.log("human input");
 
       for (;;) {
         setMove(EmptyBoard);
 
-        from = await humanInput.request();
+        console.log("human input request");
+
+        const from = await humanInput.request();
+
+        console.log("human input from =", from);
 
         const moves = movePos(game, from);
+
+        console.log("human input move", moves);
 
         if (!moves.includes(MOVE_TARGET)) {
           continue;
@@ -162,20 +167,23 @@ const gameLoop = (
 
         setMove(moves);
 
-        to = await humanInput.request();
+        const to = await humanInput.request();
+        console.log("human input to =", to);
 
         if (moves[to] === MOVE_TARGET) {
-          break;
-        }
-      }
+          if (move(game, from, to)) {
+            const isPromote = await askPromote(humanInput);
+            if (isPromote) {
+              promote(game, to);
+            }
+          }
 
-      if (move(game, from, to)) {
-        const isPromote = await askPromote(humanInput);
-        if (isPromote) {
-          promote(game, to);
+          return;
         }
       }
     } else {
+      console.log("ai");
+
       console.time("ai think");
       moveAi(game);
       console.timeEnd("ai think");
@@ -190,7 +198,9 @@ const gameLoop = (
     const color = player(game);
     console.log("color", color);
 
+    console.log("ply start");
     await ply(color);
+    console.log("ply end");
 
     setPlayer(player(game));
     setBoard(board(game));
@@ -210,6 +220,7 @@ const gameLoop = (
     }
   };
 
+  console.log("game loop start");
   setTimeout(() => {
     void run();
   }, 0);
