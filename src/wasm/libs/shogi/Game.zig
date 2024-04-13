@@ -343,6 +343,7 @@ pub fn move(game: *Game, from: u81, to: u81) bool {
         return true;
     }
 
+    game.changePlayer();
     return false;
 }
 
@@ -358,8 +359,16 @@ pub fn hit(game: *Game, piece: PieceKind, to: u81) void {
 
     // 駒を追加する
     game.current_board = game.current_board.hitBoard(game.current_player, piece, to);
+
+    game.changePlayer();
 }
 
 pub fn promote(game: *Game, position: u81) void {
     game.current_board = game.current_board.promotedBoard(position);
+
+    game.changePlayer();
+}
+
+fn changePlayer(game: *Game) void {
+    game.current_player = game.current_player.turn();
 }
