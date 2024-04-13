@@ -46,9 +46,13 @@ const AI_SLEEP_TIME_MS = 500;
 const EmptyBoard: readonly number[] = Array.from({ length: 81 }, () => 0);
 
 const getWasm = async (): Promise<WasmConnect> => {
-  const memory = new WebAssembly.Memory({ initial: 10, maximum: 100 });
+  const decoder = new TextDecoder();
   const wasm = await WebAssembly.instantiateStreaming(fetch(`${import.meta.env.BASE_URL}/wasm/shogi.wasm`), {
-    js: { mem: memory },
+    env: {
+      consoleLog: (ptr: number, length: number) => {
+        console.log(decoder.decode(new Uint8Array((wasm.instance.exports as WasmExports).memory.buffer, ptr, length)));
+      },
+    },
   });
 
   const exports = wasm.instance.exports as WasmExports;
@@ -129,7 +133,7 @@ const gameLoop = (
     // hit,
     promote,
 
-    ai: moveAi,
+    ai,
   } = wasm;
 
   let game: Game = init();
@@ -185,7 +189,7 @@ const gameLoop = (
       console.log("ai");
 
       console.time("ai think");
-      moveAi(game);
+      ai(game);
       console.timeEnd("ai think");
 
       await sleep(AI_SLEEP_TIME_MS);
@@ -213,17 +217,15 @@ const gameLoop = (
     }
 
     if (game.game !== 0) {
-      setTimeout(() => {
-        console.log(`game continue id(${game.game}, ${game.board})`);
-        void run();
-      }, 0);
+      console.log(`game continue id(${game.game}, ${game.board})`);
+      // eslint-disable-next-line @typescript-eslint/no-misused-promises
+      setTimeout(run, 0);
     }
   };
 
   console.log("game loop start");
-  setTimeout(() => {
-    void run();
-  }, 0);
+  // eslint-disable-next-line @typescript-eslint/no-misused-promises
+  setTimeout(run, 0);
 
   return terminate;
 };

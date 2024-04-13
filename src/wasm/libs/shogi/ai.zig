@@ -5,6 +5,7 @@ const builtin = @import("builtin");
 // common import
 const common = @import("../common/main.zig");
 const BitBoard = common.bit_board.BitBoard(9, 9);
+const console = common.console;
 
 // internal import
 const main = @import("./main.zig");
@@ -26,6 +27,8 @@ fn moveHit(piece: Game.PieceKind, to: u81) Move {
 }
 
 pub fn move(game: Game, r: std.rand.Random) Move {
+    console.log("ai move start", .{});
+
     if (r.boolean()) {
         // 持ち駒を打つ
         const piece = selectHandPiece(game, r);
