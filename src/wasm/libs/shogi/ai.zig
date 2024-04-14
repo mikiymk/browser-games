@@ -1,6 +1,8 @@
 // std import
 const std = @import("std");
 const builtin = @import("builtin");
+const Random = std.rand.Random;
+const assert = std.debug.assert;
 
 // common import
 const common = @import("../common/main.zig");
@@ -19,14 +21,20 @@ pub const Move = union(enum) {
 };
 
 fn moveMove(from: u81, to: u81) Move {
+    assert(@popCount(from) == 1);
+    assert(@popCount(to) == 1);
+
     return .{ .move = .{ .from = from, .to = to } };
 }
 
 fn moveHit(piece: Game.PieceKind, to: u81) Move {
+    assert(@popCount(to) == 1);
+
     return .{ .hit = .{ .piece = piece, .to = to } };
 }
 
-pub fn move(game: Game, r: std.rand.Random) Move {
+/// 自動で動かす手を決める関数
+pub fn move(game: Game, r: Random) Move {
     console.log("ai move start", .{});
 
     if (r.boolean()) {
@@ -43,15 +51,23 @@ pub fn move(game: Game, r: std.rand.Random) Move {
     }
 
     // 駒を動かす
-    const from_list = game.current_board.getColorPieces(game.current_player);
-    const from = selectPlace(r, from_list);
-    const to_list = moves.move(game.current_board, from);
-    const to = selectPlace(r, to_list);
+    while (true) {
+        const from_list = game.current_board.getColorPieces(game.current_player);
+        const from = selectPlace(r, from_list);
+        const to_list = moves.move(game.current_board, from);
+        if (to_list == 0) {
+            continue;
+        }
 
-    return moveMove(from, to);
+        const to = selectPlace(r, to_list);
+
+        return moveMove(from, to);
+    }
+
+    unreachable;
 }
 
-fn selectHandPiece(game: Game, r: std.rand.Random) ?Game.PrimaryPiece {
+fn selectHandPiece(game: Game, r: Random) ?Game.PrimaryPiece {
     var hands = game.getHandPtr(game.current_player);
     var set = std.EnumSet(Game.PrimaryPiece).initEmpty();
     var hands_iter = hands.iterator();
@@ -66,6 +82,8 @@ fn selectHandPiece(game: Game, r: std.rand.Random) ?Game.PrimaryPiece {
     }
 
     var index = r.intRangeLessThan(usize, 0, count);
+
+    console.log("ai hands = {}, index = {}", .{ set, index });
     var i = set.iterator();
     while (i.next()) |hand| {
         if (index == 0) {
@@ -103,12 +121,16 @@ fn hitArea(game: Game, piece: Game.PieceKind) u81 {
     return area & empty;
 }
 
-fn selectPlace(r: std.rand.Random, place: u81) u81 {
+fn selectPlace(r: Random, place: u81) u81 {
+    console.log("select start\n{s}", .{BitBoard.toString(place, 'o', '.')});
+
     var index = r.intRangeLessThan(usize, 0, @popCount(place));
     var iter = BitBoard.iterator(place);
 
     while (iter.next()) |p| {
         if (index == 0) {
+            console.log("selected\n{s}", .{BitBoard.toString(p, 'o', '.')});
+
             return p;
         }
 
