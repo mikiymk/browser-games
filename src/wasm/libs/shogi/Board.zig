@@ -513,7 +513,7 @@ pub fn filterMove(board: Board, color: Game.PlayerColor, from: u81, to: u81) u81
 
 /// 指定したマスが攻撃されているか
 pub fn isAttacked(board: Board, place: u81, color: Game.PlayerColor) bool {
-    return place & board.getAllMoves(color) != 0;
+    return place & board.getAllMoves(color.turn()) != 0;
 }
 
 /// 指定した色の王が王手状態になっているかどうか
