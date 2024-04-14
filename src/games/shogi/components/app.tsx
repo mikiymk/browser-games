@@ -10,9 +10,8 @@ import { MultiPromise } from "@/scripts/multi-promise";
 
 
 // memo
-// oute no hantei
 // motigoma
-// ai error
+
 
 export const App = (): JSXElement => {
   const query = new URLSearchParams(location.search);

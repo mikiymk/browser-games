@@ -43,48 +43,24 @@ const west_mask = BitBoard.fromString(
 
 pub fn move(board: Board, from: u81) u81 {
     const piece = board.getPieceAt(from);
-    return switch (piece) {
-        .white_pawn => whitePawn(board, from),
-        .black_pawn => blackPawn(board, from),
+    const color = piece.color() orelse return 0;
 
-        .white_lance => whiteLance(board, from),
-        .black_lance => blackLance(board, from),
-
-        .white_knight => whiteKnight(board, from),
-        .black_knight => blackKnight(board, from),
-
-        .white_silver => whiteSilver(board, from),
-        .black_silver => blackSilver(board, from),
-
-        .white_gold,
-        .white_pawn_promoted,
-        .white_lance_promoted,
-        .white_knight_promoted,
-        .white_silver_promoted,
-        => whiteGold(board, from),
-        .black_gold,
-        .black_pawn_promoted,
-        .black_lance_promoted,
-        .black_knight_promoted,
-        .black_silver_promoted,
-        => blackGold(board, from),
-
-        .white_bishop => bishop(board, from, .white),
-        .black_bishop => bishop(board, from, .white),
-
-        .white_rook => rook(board, from, .white),
-        .black_rook => rook(board, from, .black),
-
-        .white_bishop_promoted => promotedBishop(board, from, .white),
-        .black_bishop_promoted => promotedBishop(board, from, .black),
-
-        .white_rook_promoted => promotedRook(board, from, .white),
-        .black_rook_promoted => promotedRook(board, from, .black),
-
-        .white_king => king(board, from, .white),
-        .black_king => king(board, from, .black),
-
-        else => 0,
+    return switch (piece.piece() orelse unreachable) {
+        .pawn => pawn(board, from, color),
+        .lance => lance(board, from, color),
+        .knight => knight(board, from, color),
+        .silver => silver(board, from, color),
+        .gold,
+        .pawn_promoted,
+        .lance_promoted,
+        .knight_promoted,
+        .silver_promoted,
+        => gold(board, from, color),
+        .bishop => bishop(board, from, color),
+        .rook => rook(board, from, color),
+        .bishop_promoted => promotedBishop(board, from, color),
+        .rook_promoted => promotedRook(board, from, color),
+        .king => king(board, from, color),
     };
 }
 
