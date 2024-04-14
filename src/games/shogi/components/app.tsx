@@ -8,6 +8,12 @@ import { WHITE, EMPTY, MOVE_TARGET, BLACK } from "../constants";
 import { createStore, produce } from "solid-js/store";
 import { MultiPromise } from "@/scripts/multi-promise";
 
+
+// memo
+// oute no hantei
+// motigoma
+// ai error
+
 export const App = (): JSXElement => {
   const query = new URLSearchParams(location.search);
 
