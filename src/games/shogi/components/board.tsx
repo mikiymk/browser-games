@@ -42,12 +42,40 @@ export const ShogiBoard = (properties: BoardProperties): JSXElement => {
         <tbody>
           <tr>
             <th class={handCellStyle}>☗</th>
-            <For each={properties.hands[0]}>{(piece) => <td class={handCellStyle}>{piece}</td>}</For>
+            <For each={properties.hands[0]}>
+              {(piece, index) => (
+                <td
+                  class={handCellStyle}
+                  onClick={() => {
+                    properties.onSquareClick(index() + 100);
+                  }}
+                  onKeyPress={() => {
+                    properties.onSquareClick(index() + 100);
+                  }}
+                >
+                  {piece}
+                </td>
+              )}
+            </For>
           </tr>
 
           <tr>
             <th class={handCellStyle}>☖</th>
-            <For each={properties.hands[1]}>{(piece) => <td class={handCellStyle}>{piece}</td>}</For>
+            <For each={properties.hands[1]}>
+              {(piece, index) => (
+                <td
+                  class={handCellStyle}
+                  onClick={() => {
+                    properties.onSquareClick(index() + 100);
+                  }}
+                  onKeyPress={() => {
+                    properties.onSquareClick(index() + 100);
+                  }}
+                >
+                  {piece}
+                </td>
+              )}
+            </For>
           </tr>
         </tbody>
       </table>

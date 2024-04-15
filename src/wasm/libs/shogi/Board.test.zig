@@ -368,6 +368,34 @@ test "Board.movePositions: 指定した位置の駒の行ける場所を取得�
     );
 }
 
+test "Board.hitPositions: 指定した駒の打てる場所を取得する" {
+    const board = Board.init();
+
+    try BitBoard.expect(board.hitPositions(.white, .bishop),
+        \\.........
+        \\o.ooooo.o
+        \\.........
+        \\ooooooooo
+        \\ooooooooo
+        \\ooooooooo
+        \\.........
+        \\o.ooooo.o
+        \\.........
+    );
+
+    try BitBoard.expect(board.hitPositions(.white, .knight),
+        \\.........
+        \\.........
+        \\.........
+        \\ooooooooo
+        \\ooooooooo
+        \\ooooooooo
+        \\.........
+        \\o.ooooo.o
+        \\.........
+    );
+}
+
 test "Board.filterMove: 自分が王手になる移動を除外する" {
     const board = Board.fromString(
         \\....k....

@@ -316,6 +316,10 @@ pub fn movePositions(game: Game, from: u81) u81 {
     return game.current_board.movePositions(from);
 }
 
+pub fn hitPositions(game: Game, piece: PrimaryPiece) u81 {
+    return game.current_board.hitPositions(game.current_player, piece);
+}
+
 /// 駒を移動する
 /// 必ず成る場合は成る
 /// 成るかどうか選択できる場合はtrueを返す

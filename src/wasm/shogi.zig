@@ -52,6 +52,7 @@ export fn winner(game: *shogi.Game) u8 {
     return @intFromEnum(game.getWinner() orelse return 255);
 }
 
+/// 持ち駒の数を得る
 export fn hands(game: *shogi.Game, hands_ptr: [*]u8) void {
     var hands_slice = hands_ptr[0..16];
     @memset(hands_slice, 0);
@@ -78,6 +79,16 @@ export fn hands(game: *shogi.Game, hands_ptr: [*]u8) void {
 /// 選択したマスの駒の動ける範囲を得る
 export fn movePos(game: *shogi.Game, board: [*]u8, from: u8) void {
     const positions = game.movePositions(indexToBoardBits(from));
+    var board_slice: []u8 = board[0..81];
+
+    @memset(board_slice, 0);
+
+    shogi.Game.setPieceToBoard(&board_slice, positions, 1);
+}
+
+/// 選択した駒の打てる場所を得る
+export fn hitPos(game: *shogi.Game, board: [*]u8, piece: u8) void {
+    const positions = game.hitPositions(@enumFromInt(piece));
     var board_slice: []u8 = board[0..81];
 
     @memset(board_slice, 0);

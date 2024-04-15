@@ -19,6 +19,7 @@ type WasmExports = {
   winner: (g: GamePtr) => number;
   hands: (g: GamePtr, b: BoardArray) => void;
   movePos: (g: GamePtr, b: BoardArray, from: number) => void;
+  hitPos: (g: GamePtr, b: BoardArray, piece: number) => void;
   move: (g: GamePtr, from: number, to: number) => boolean;
   hit: (g: GamePtr, piece: number, position: number) => void;
   promote: (g: GamePtr, position: number) => void;
@@ -36,6 +37,7 @@ type WasmConnect = {
   readonly player: (g: Game) => number;
   readonly winner: (g: Game) => number;
   readonly movePos: (g: Game, from: number) => readonly number[];
+  readonly hitPos: (g: Game, piece: number) => readonly number[];
 
   readonly move: (g: Game, from: number, to: number) => boolean;
   readonly hit: (g: Game, piece: number, position: number) => void;
@@ -96,6 +98,11 @@ const getWasm = async (): Promise<WasmConnect> => {
 
       return getBoard(board, 81);
     },
+    hitPos: ({ game, board }: Game, piece: number): readonly number[] => {
+      exports.hitPos(game, board, piece);
+
+      return getBoard(board, 81);
+    },
 
     move: ({ game }: Game, from: number, to: number): boolean => exports.move(game, from, to),
     hit: ({ game }: Game, piece: number, position: number): void => {
@@ -139,9 +146,10 @@ const gameLoop = (
     player,
     winner,
     movePos,
+    hitPos,
 
     move,
-    // hit,
+    hit,
     promote,
 
     ai,
@@ -169,8 +177,29 @@ const gameLoop = (
         console.log("human input request");
 
         const from = await humanInput.request();
-
         console.log("human input from =", from);
+        if (from > 99) {
+          console.log("持ち駒");
+
+          const hits = hitPos(game, from - 100);
+          console.log("human input hit", hits);
+          if (!hits.includes(MOVE_TARGET)) {
+            continue;
+          }
+          setMove(hits);
+          const to = await humanInput.request();
+          console.log("human input to =", to);
+          if (to > 99) {
+            continue;
+          }
+
+          if (hits[to] === MOVE_TARGET) {
+            hit(game, from - 100, to);
+            return;
+          }
+
+          continue;
+        }
 
         const moves = movePos(game, from);
 
@@ -184,6 +213,9 @@ const gameLoop = (
 
         const to = await humanInput.request();
         console.log("human input to =", to);
+        if (to > 99) {
+          continue;
+        }
 
         if (moves[to] === MOVE_TARGET) {
           if (move(game, from, to)) {
