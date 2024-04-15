@@ -49,7 +49,7 @@ export fn player(game: *shogi.Game) u8 {
 
 /// 勝利したプレイヤーの種類を得る
 export fn winner(game: *shogi.Game) u8 {
-    return @intFromEnum(game.getWinner() orelse return 255);
+    return @intFromEnum(game.getWinner() orelse return 0);
 }
 
 /// 持ち駒の数を得る

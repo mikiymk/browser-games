@@ -134,6 +134,7 @@ const gameLoop = (
   setWinner: (winner: number) => void,
   setMove: (move: readonly number[]) => void,
   setHands: (hands: readonly [Hand, Hand]) => void,
+  setPromotion: (promotion: boolean) => void,
   humanInput: MultiPromise<number>,
   players: Players,
 ): (() => void) => {
@@ -219,7 +220,10 @@ const gameLoop = (
 
         if (moves[to] === MOVE_TARGET) {
           if (move(game, from, to)) {
+            setPromotion(true);
             const isPromote = await askPromote(humanInput);
+            setPromotion(false);
+
             if (isPromote) {
               promote(game, to);
             }
@@ -255,7 +259,7 @@ const gameLoop = (
     setMove(EmptyBoard);
 
     const end = winner(game);
-    if (end !== 255) {
+    if (end !== 0) {
       setWinner(end);
       terminate();
     }

@@ -1,4 +1,4 @@
-import { createEffect, createResource, createSignal } from "solid-js";
+import { Show, createEffect, createResource, createSignal } from "solid-js";
 import type { JSXElement } from "solid-js";
 import { ShogiBoard } from "./board";
 import { PlayerTypeAi, PlayerTypeHuman, playerType } from "@/scripts/player";
@@ -9,6 +9,7 @@ import { WHITE, EMPTY, MOVE_TARGET, BLACK } from "../constants";
 import { produce } from "solid-js/store";
 import { MultiPromise } from "@/scripts/multi-promise";
 import { MoveTarget } from "@/games/chess/constants";
+import { buttonStyle, dialogInnerStyle, dialogStyle } from "../style.css";
 
 // memo
 // motigoma
@@ -24,6 +25,8 @@ export const App = (): JSXElement => {
   );
   const [whiteHands, setWhiteHands] = createSignal<Hand>([0, 0, 0, 0, 0, 0, 0, 0]);
   const [blackHands, setBlackHands] = createSignal<Hand>([0, 0, 0, 0, 0, 0, 0, 0]);
+  const [gameOver, setGameOver] = createSignal<number>(0);
+  const [promotion, setPromotion] = createSignal(false);
   const [wasm] = createResource(getWasm);
 
   createEffect(() => {
@@ -94,10 +97,20 @@ export const App = (): JSXElement => {
     if (wasmObject === undefined) {
       return;
     }
-    terminate = gameLoop(wasmObject, doNothingFunction, setBoard, doNothingFunction, setMove, setHands, humanInput, {
-      [WHITE]: playerBlack,
-      [BLACK]: playerWhite,
-    });
+    terminate = gameLoop(
+      wasmObject,
+      doNothingFunction,
+      setBoard,
+      setGameOver,
+      setMove,
+      setHands,
+      setPromotion,
+      humanInput,
+      {
+        [WHITE]: playerBlack,
+        [BLACK]: playerWhite,
+      },
+    );
   };
 
   const handleBoardClick = (index: number): void => {
@@ -111,6 +124,49 @@ export const App = (): JSXElement => {
       <button type="button" onClick={start}>
         Start
       </button>
+      <Show when={gameOver()}>
+        <dialog open class={dialogStyle}>
+          <div class={dialogInnerStyle}>
+            Game End
+            <br />
+            <button
+              type="button"
+              onClick={() => {
+                setGameOver(0);
+              }}
+              class={buttonStyle}
+            >
+              Close
+            </button>
+          </div>
+        </dialog>
+      </Show>
+      <Show when={promotion()}>
+        <dialog open class={dialogStyle}>
+          <div class={dialogInnerStyle}>
+            Promotion?
+            <br />
+            <button
+              type="button"
+              onClick={() => {
+                resolve(1);
+              }}
+              class={buttonStyle}
+            >
+              Yes
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                resolve(0);
+              }}
+              class={buttonStyle}
+            >
+              No
+            </button>
+          </div>
+        </dialog>
+      </Show>
     </>
   );
 };

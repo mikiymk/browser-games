@@ -36,3 +36,23 @@ export const handHeaderCellStyle = style([
     textAlign: "center",
   },
 ]);
+
+export const dialogStyle = style({
+  position: "fixed",
+  height: "100%",
+  width: "100%",
+  background: "#0001",
+});
+
+export const dialogInnerStyle = style({
+  width: "20rem",
+  margin: "auto",
+  padding: "1rem",
+  textAlign: "center",
+  background: "#fff",
+});
+
+export const buttonStyle = style({
+  textDecoration: "black underline double",
+  margin: "0 1rem",
+});
