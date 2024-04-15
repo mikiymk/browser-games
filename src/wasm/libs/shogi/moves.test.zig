@@ -185,3 +185,151 @@ test "moves.getBlackKnightMovable: 後手の桂馬が動ける範囲" {
         \\.......o.
     );
 }
+
+test "moves.silver: 銀将が動ける範囲" {
+    const board_str =
+        \\......S..
+        \\.krb.....
+        \\.lSn....S
+        \\.gsp.....
+        \\.........
+        \\.........
+        \\.........
+        \\.S.......
+        \\......S..
+    ;
+    const board = Board.fromString(board_str);
+
+    const moved_board = moves.move(board, BitBoard.fromString(board_str, 'S'));
+
+    try BitBoard.expect(moved_board,
+        \\.........
+        \\.ooo.o.oo
+        \\.........
+        \\.o.o...o.
+        \\.........
+        \\.........
+        \\ooo......
+        \\.....ooo.
+        \\o.o......
+    );
+}
+
+test "moves.gold: 金将が動ける範囲" {
+    const board_str =
+        \\......G..
+        \\.krb.....
+        \\.lGn....G
+        \\.gsp.....
+        \\.........
+        \\.........
+        \\.........
+        \\.G.......
+        \\......G..
+    ;
+    const board = Board.fromString(board_str);
+
+    const moved_board = moves.move(board, BitBoard.fromString(board_str, 'G'));
+
+    try BitBoard.expect(moved_board,
+        \\.....o.o.
+        \\.ooo..ooo
+        \\.o.o...o.
+        \\..o.....o
+        \\.........
+        \\.........
+        \\ooo......
+        \\o.o..ooo.
+        \\.o...o.o.
+    );
+}
+
+test "moves.bishop: 角行が動ける範囲" {
+    const board_str =
+        \\......B..
+        \\.krb.....
+        \\.lBn....B
+        \\.gsp.....
+        \\.........
+        \\.........
+        \\.........
+        \\.B.......
+        \\......B..
+    ;
+    const board = Board.fromString(board_str);
+
+    const moved_board = moves.move(board, BitBoard.fromString(board_str, 'B'));
+
+    const expected =
+        \\........o
+        \\.o.o.o.o.
+        \\....o.o..
+        \\.o.o.o.o.
+        \\..o.o.o..
+        \\...o.o...
+        \\o.o.o...o
+        \\...o.o.o.
+        \\o.o......
+    ;
+    try BitBoard.expect(moved_board, expected);
+}
+
+test "moves.rook: 飛車が動ける範囲" {
+    const board_str =
+        \\......R..
+        \\.krb.....
+        \\.lRn....R
+        \\.gsp.....
+        \\.........
+        \\.........
+        \\.........
+        \\.R.......
+        \\......R..
+    ;
+    const board = Board.fromString(board_str);
+
+    const moved_board = moves.move(board, BitBoard.fromString(board_str, 'R'));
+
+    const expected =
+        \\oooooo.oo
+        \\..o...o.o
+        \\.o.ooooo.
+        \\.oo...o.o
+        \\.o....o.o
+        \\.o....o.o
+        \\.o....o.o
+        \\o.ooooooo
+        \\oooooo.oo
+    ;
+    try BitBoard.expect(moved_board, expected);
+}
+
+test "moves.king: 王将が動ける範囲" {
+    const board_str =
+        \\......K..
+        \\.krb.....
+        \\.lKn....K
+        \\.gsp.....
+        \\.........
+        \\.........
+        \\.........
+        \\.K.......
+        \\......K..
+    ;
+    const board = Board.fromString(board_str);
+
+    const moved_board = moves.move(board, BitBoard.fromString(board_str, 'K'));
+
+    const expected =
+        \\.....o.o.
+        \\.ooo.oooo
+        \\.o.o...o.
+        \\.ooo...oo
+        \\.........
+        \\.........
+        \\ooo......
+        \\o.o..ooo.
+        \\ooo..o.o.
+    ;
+    try BitBoard.expect(moved_board, expected);
+}
