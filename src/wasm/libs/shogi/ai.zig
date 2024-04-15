@@ -43,7 +43,7 @@ pub fn move(game: Game, r: Random) Move {
 
         if (piece) |p| {
             const piece_kind = Game.PieceKind.fromPrimary(p, false);
-            const area = hitArea(game, piece_kind);
+            const area = game.hitPositions(p);
             const to = selectPlace(r, area);
 
             return moveHit(piece_kind, to);
@@ -54,7 +54,7 @@ pub fn move(game: Game, r: Random) Move {
     while (true) {
         const from_list = game.current_board.getColorPieces(game.current_player);
         const from = selectPlace(r, from_list);
-        const to_list = moves.move(game.current_board, from);
+        const to_list = game.movePositions(from);
         if (to_list == 0) {
             continue;
         }
@@ -93,32 +93,6 @@ fn selectHandPiece(game: Game, r: Random) ?Game.PrimaryPiece {
     }
 
     unreachable;
-}
-
-fn hitArea(game: Game, piece: Game.PieceKind) u81 {
-    const normal_area = ~@as(u81, 0);
-    const black_knight_area = ~Board.black_farest2;
-    const black_pawn_area = ~Board.black_farest;
-    const white_knight_area = ~Board.white_farest2;
-    const white_pawn_area = ~Board.white_farest;
-
-    const area = switch (piece) {
-        .pawn, .lance => switch (game.current_player) {
-            .black => black_pawn_area,
-            .white => white_pawn_area,
-        },
-        .knight => switch (game.current_player) {
-            .black => black_knight_area,
-            .white => white_knight_area,
-        },
-        else => normal_area,
-    };
-
-    const black_pieces = game.current_board.getColorPieces(.black);
-    const white_pieces = game.current_board.getColorPieces(.white);
-    const empty = ~(black_pieces | white_pieces);
-
-    return area & empty;
 }
 
 fn selectPlace(r: Random, place: u81) u81 {
