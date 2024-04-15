@@ -490,6 +490,9 @@ pub fn getAllMoves(board: Board, color: Game.PlayerColor) u81 {
             move_places |= moves.whiteGold(board, board.white_knight_promoted);
             move_places |= moves.whiteGold(board, board.white_silver_promoted);
 
+            move_places |= moves.promotedRook(board, board.white_rook_promoted, .white);
+            move_places |= moves.promotedBishop(board, board.white_bishop_promoted, .white);
+
             return move_places;
         },
         .black => {
@@ -507,6 +510,9 @@ pub fn getAllMoves(board: Board, color: Game.PlayerColor) u81 {
             move_places |= moves.blackGold(board, board.black_lance_promoted);
             move_places |= moves.blackGold(board, board.black_knight_promoted);
             move_places |= moves.blackGold(board, board.black_silver_promoted);
+
+            move_places |= moves.promotedRook(board, board.black_rook_promoted, .black);
+            move_places |= moves.promotedBishop(board, board.black_bishop_promoted, .black);
 
             return move_places;
         },
