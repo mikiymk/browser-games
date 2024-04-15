@@ -16,7 +16,7 @@ import { MultiPromise } from "@/scripts/multi-promise";
 import { PlayerTypeAi, PlayerTypeHuman, playerType } from "@/scripts/player";
 import type { JSXElement } from "solid-js";
 import { createSignal, onMount } from "solid-js";
-import { Board } from "./board";
+import { NncBoard } from "./board";
 import { Controller } from "./controller";
 import { History } from "./history";
 
@@ -81,7 +81,7 @@ export const App = (): JSXElement => {
 
   return (
     <>
-      <Board board={board()} click={handleClick} />
+      <NncBoard board={board()} click={handleClick} />
       <Controller statusMessage={status()} onReset={reset} />
       <History history={history()} />
     </>

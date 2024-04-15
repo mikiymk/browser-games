@@ -1,3 +1,4 @@
+import { Board } from "@/components/board/board";
 import {
   FieldBomb,
   FieldFlag,
@@ -37,7 +38,7 @@ import number6 from "@/images/letter/6.svg";
 import number7 from "@/images/letter/7.svg";
 import number8 from "@/images/letter/8.svg";
 import type { JSXElement } from "solid-js";
-import { For, Show } from "solid-js";
+import { Show } from "solid-js";
 
 type MineCellProperties = {
   readonly field: number;
@@ -90,8 +91,8 @@ const MineCell = (properties: MineCellProperties): JSXElement => {
       <rect
         x={properties.x}
         y={properties.y}
-        height={1}
-        width={1}
+        height={10}
+        width={10}
         class={isClosed() ? closeFieldStyle : openFieldStyle}
       />
 
@@ -101,8 +102,8 @@ const MineCell = (properties: MineCellProperties): JSXElement => {
             href={`${source()[0]}#root`}
             x={properties.x}
             y={properties.y}
-            height={1}
-            width={1}
+            height={10}
+            width={10}
             class={source()[1]}
           />
         )}
@@ -111,8 +112,8 @@ const MineCell = (properties: MineCellProperties): JSXElement => {
       <rect
         x={properties.x}
         y={properties.y}
-        height={1}
-        width={1}
+        height={10}
+        width={10}
         tabindex={0}
         onClick={() => {
           properties.onClick();
@@ -137,22 +138,18 @@ type MineFieldsProperties = {
 };
 export const MineFields = (properties: MineFieldsProperties): JSXElement => {
   return (
-    <svg viewBox={`0 0 ${properties.width} ${properties.height}`} xmlns="http://www.w3.org/2000/svg">
-      <title>mine sweeper field</title>
-
-      <For each={properties.fields}>
-        {(field, index) => (
-          <MineCell
-            field={field}
-            x={index() % properties.width}
-            y={Math.floor(index() / properties.width)}
-            onClick={() => {
-              properties.open(index());
-            }}
-            onContextMenu={() => properties.flag(index())}
-          />
-        )}
-      </For>
-    </svg>
+    <Board height={properties.height} width={properties.width} data={properties.fields}>
+      {(field, index, x, y) => (
+        <MineCell
+          field={field}
+          x={x()}
+          y={y()}
+          onClick={() => {
+            properties.open(index());
+          }}
+          onContextMenu={() => properties.flag(index())}
+        />
+      )}
+    </Board>
   );
 };

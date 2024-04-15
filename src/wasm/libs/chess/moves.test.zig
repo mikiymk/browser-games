@@ -1,8 +1,15 @@
+// std import
 const std = @import("std");
+const builtin = @import("builtin");
 
-const bit_board = @import("../bit-board/main.zig");
-const Board = @import("Board.zig");
-const moves = @import("moves.zig");
+// common import
+const common = @import("../common/main.zig");
+const BitBoard = common.bit_board.BitBoard(8, 8);
+
+// internal import
+const main = @import("./main.zig");
+const Board = main.Board;
+const moves = main.moves;
 
 const TestCase = struct {
     desc: []const u8,
@@ -980,11 +987,11 @@ fn testCases(comptime cases: []const TestCase, comptime char: u8, comptime moves
 
     inline for (cases) |case| {
         const board = Board.fromString(case.board);
-        const pos = bit_board.fromString(case.board, char);
+        const pos = BitBoard.fromString(case.board, char);
 
         const pawnmove = moves_fn(board, pos, .black);
 
-        bit_board.expectBitBoard(pawnmove, case.expect_move_places) catch {
+        BitBoard.expect(pawnmove, case.expect_move_places) catch {
             std.debug.print("test failed: {s}\n", .{case.desc});
 
             has_fail = true;
@@ -1005,11 +1012,11 @@ test "white pawn" {
 
     inline for (white_pawn_cases) |case| {
         const board = Board.fromString(case.board);
-        const pos = bit_board.fromString(case.board, 'p');
+        const pos = BitBoard.fromString(case.board, 'p');
 
         const pawnmove = moves.pawn(board, pos, .white);
 
-        bit_board.expectBitBoard(pawnmove, case.expect_move_places) catch {
+        BitBoard.expect(pawnmove, case.expect_move_places) catch {
             std.debug.print("test failed: {s}\n", .{case.desc});
 
             has_fail = true;

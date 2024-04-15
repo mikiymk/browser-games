@@ -1,0 +1,13 @@
+---
+import GameBody from "@/components/game-template.astro";
+import { App } from "@/games/shogi/components/app";
+---
+
+<link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap"
+/>
+
+<GameBody title="Play Shogi">
+    <App client:only="solid-js" />
+</GameBody>

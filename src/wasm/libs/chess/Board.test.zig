@@ -1,7 +1,15 @@
+// std import
 const std = @import("std");
-const bit_board = @import("../bit-board/main.zig");
-const moves = @import("moves.zig");
-const Board = @import("Board.zig");
+const builtin = @import("builtin");
+
+// common import
+const common = @import("../common/main.zig");
+const BitBoard = common.bit_board.BitBoard(8, 8);
+
+// internal import
+const main = @import("./main.zig");
+const Board = main.Board;
+const moves = main.moves;
 
 test "chess board from string" {
     const board = Board.fromString(
@@ -15,7 +23,7 @@ test "chess board from string" {
         \\rnbqkbnr
     );
 
-    try bit_board.expectBitBoard(board.black_pawn,
+    try BitBoard.expect(board.black_pawn,
         \\........
         \\oooooooo
         \\........
@@ -26,7 +34,7 @@ test "chess board from string" {
         \\........
     );
 
-    try bit_board.expectBitBoard(board.white_rook,
+    try BitBoard.expect(board.white_rook,
         \\........
         \\........
         \\........
@@ -50,12 +58,12 @@ test "filter check move" {
         \\...k....
     ;
     const board = Board.fromString(board_str);
-    const from = bit_board.fromString(board_str, 'r');
+    const from = BitBoard.fromString(board_str, 'r');
     const to = moves.rook(board, from, .white);
 
     const actual = board.filterValidMove(from, to);
 
-    try bit_board.expectBitBoard(actual,
+    try BitBoard.expect(actual,
         \\........
         \\...o....
         \\...o....
@@ -383,9 +391,9 @@ test "get moves: normal moves" {
         \\........
     );
 
-    const move = board.getMove(bit_board.fromNotation("d4"));
+    const move = board.getMove(BitBoard.fromCoordinate(3, 3));
 
-    try bit_board.expectBitBoard(move,
+    try BitBoard.expect(move,
         \\...o....
         \\...o....
         \\...o....
@@ -409,9 +417,9 @@ test "get moves: castling" {
         \\........
     );
 
-    const move = board.getMove(bit_board.fromNotation("e8"));
+    const move = board.getMove(BitBoard.fromCoordinate(4, 7));
 
-    try bit_board.expectBitBoard(move,
+    try BitBoard.expect(move,
         \\o..o.o.o
         \\...ooo..
         \\........
@@ -434,11 +442,11 @@ test "get moves: en passant" {
         \\........
         \\........
     );
-    board.enpassant_target = bit_board.fromNotation("f3");
+    board.enpassant_target = BitBoard.fromCoordinate(5, 2);
 
-    const move = board.getMove(bit_board.fromNotation("e4"));
+    const move = board.getMove(BitBoard.fromCoordinate(4, 3));
 
-    try bit_board.expectBitBoard(move,
+    try BitBoard.expect(move,
         \\........
         \\........
         \\........
@@ -462,7 +470,7 @@ test "detect promotion move" {
         \\........
     );
 
-    try std.testing.expectEqual(board.isPromotion(bit_board.fromNotation("e7"), bit_board.fromNotation("e8")), true);
+    try std.testing.expect(board.isPromotion(BitBoard.fromCoordinate(4, 6), BitBoard.fromCoordinate(4, 7)));
 }
 
 test "moved board 1: single pawn" {
@@ -478,11 +486,11 @@ test "moved board 1: single pawn" {
     );
 
     const actual = board.getMovedBoard(
-        bit_board.fromNotation("e3"),
-        bit_board.fromNotation("e4"),
+        BitBoard.fromCoordinate(4, 2),
+        BitBoard.fromCoordinate(4, 3),
     );
 
-    try bit_board.expectBitBoard(actual.white_pawn,
+    try BitBoard.expect(actual.white_pawn,
         \\........
         \\........
         \\........
@@ -507,11 +515,11 @@ test "moved board 2: multiple pawns" {
     );
 
     const actual = board.getMovedBoard(
-        bit_board.fromNotation("e4"),
-        bit_board.fromNotation("e5"),
+        BitBoard.fromCoordinate(4, 3),
+        BitBoard.fromCoordinate(4, 4),
     );
 
-    try bit_board.expectBitBoard(actual.white_pawn,
+    try BitBoard.expect(actual.white_pawn,
         \\........
         \\........
         \\........
@@ -536,11 +544,11 @@ test "moved board 3: pawns and other pieces" {
     );
 
     const actual = board.getMovedBoard(
-        bit_board.fromNotation("e5"),
-        bit_board.fromNotation("e6"),
+        BitBoard.fromCoordinate(4, 4),
+        BitBoard.fromCoordinate(4, 5),
     );
 
-    try bit_board.expectBitBoard(actual.white_pawn,
+    try BitBoard.expect(actual.white_pawn,
         \\........
         \\........
         \\....o...
@@ -551,7 +559,7 @@ test "moved board 3: pawns and other pieces" {
         \\........
     );
 
-    try bit_board.expectBitBoard(actual.white_knight,
+    try BitBoard.expect(actual.white_knight,
         \\........
         \\........
         \\........
@@ -576,11 +584,11 @@ test "moved board 4: capture" {
     );
 
     const actual = board.getMovedBoard(
-        bit_board.fromNotation("e6"),
-        bit_board.fromNotation("d7"),
+        BitBoard.fromCoordinate(4, 5),
+        BitBoard.fromCoordinate(3, 6),
     );
 
-    try bit_board.expectBitBoard(actual.white_pawn,
+    try BitBoard.expect(actual.white_pawn,
         \\........
         \\...o....
         \\........
@@ -591,7 +599,7 @@ test "moved board 4: capture" {
         \\........
     );
 
-    try bit_board.expectBitBoard(actual.black_pawn,
+    try BitBoard.expect(actual.black_pawn,
         \\........
         \\..o.....
         \\........
@@ -616,11 +624,11 @@ test "moved board 5: rook" {
     );
 
     const actual = board.getMovedBoard(
-        bit_board.fromNotation("e1"),
-        bit_board.fromNotation("e7"),
+        BitBoard.fromCoordinate(4, 0),
+        BitBoard.fromCoordinate(4, 6),
     );
 
-    try bit_board.expectBitBoard(actual.white_pawn,
+    try BitBoard.expect(actual.white_pawn,
         \\........
         \\........
         \\........
@@ -631,7 +639,7 @@ test "moved board 5: rook" {
         \\........
     );
 
-    try bit_board.expectBitBoard(actual.white_rook,
+    try BitBoard.expect(actual.white_rook,
         \\........
         \\....o...
         \\........
@@ -656,11 +664,11 @@ test "moved board 6: castling" {
     );
 
     const actual = board.getMovedBoard(
-        bit_board.fromNotation("e1"),
-        bit_board.fromNotation("a1"),
+        BitBoard.fromCoordinate(4, 0),
+        BitBoard.fromCoordinate(0, 0),
     );
 
-    try bit_board.expectBitBoard(actual.white_rook,
+    try BitBoard.expect(actual.white_rook,
         \\........
         \\........
         \\........
@@ -671,7 +679,7 @@ test "moved board 6: castling" {
         \\...o....
     );
 
-    try bit_board.expectBitBoard(actual.white_king,
+    try BitBoard.expect(actual.white_king,
         \\........
         \\........
         \\........
@@ -696,11 +704,11 @@ test "moved board 7: en passant" {
     );
 
     const actual = board.getMovedBoard(
-        bit_board.fromNotation("e5"),
-        bit_board.fromNotation("f6"),
+        BitBoard.fromCoordinate(4, 4),
+        BitBoard.fromCoordinate(5, 5),
     );
 
-    try bit_board.expectBitBoard(actual.white_pawn,
+    try BitBoard.expect(actual.white_pawn,
         \\........
         \\........
         \\.....o..
@@ -711,7 +719,7 @@ test "moved board 7: en passant" {
         \\........
     );
 
-    try bit_board.expectBitBoard(actual.black_pawn,
+    try BitBoard.expect(actual.black_pawn,
         \\........
         \\........
         \\........
@@ -736,8 +744,8 @@ test "moved board 8: castling rook-moved" {
     );
 
     const result = board.getMovedBoard(
-        bit_board.fromNotation("a1"),
-        bit_board.fromNotation("a4"),
+        BitBoard.fromCoordinate(0, 0),
+        BitBoard.fromCoordinate(0, 3),
     );
 
     try std.testing.expectEqual(board.castling_available.white_queenside, true);
@@ -759,8 +767,8 @@ test "moved board 9: castling king-moved" {
     );
 
     const result = board.getMovedBoard(
-        bit_board.fromNotation("e1"),
-        bit_board.fromNotation("e2"),
+        BitBoard.fromCoordinate(4, 0),
+        BitBoard.fromCoordinate(4, 1),
     );
 
     try std.testing.expectEqual(board.castling_available.white_queenside, true);
@@ -782,8 +790,8 @@ test "moved board 10: castling castled" {
     );
 
     const result = board.getMovedBoard(
-        bit_board.fromNotation("e1"),
-        bit_board.fromNotation("h1"),
+        BitBoard.fromCoordinate(4, 0),
+        BitBoard.fromCoordinate(7, 0),
     );
 
     try std.testing.expectEqual(board.castling_available.white_queenside, true);
@@ -805,11 +813,11 @@ test "moved board 11: enpassant white" {
     );
 
     const result = board.getMovedBoard(
-        bit_board.fromNotation("e2"),
-        bit_board.fromNotation("e4"),
+        BitBoard.fromCoordinate(4, 1),
+        BitBoard.fromCoordinate(4, 3),
     );
 
-    try std.testing.expectEqual(result.enpassant_target, bit_board.fromNotation("e3"));
+    try std.testing.expectEqual(result.enpassant_target, BitBoard.fromCoordinate(4, 2));
 }
 
 test "moved board 11: enpassant black" {
@@ -825,11 +833,11 @@ test "moved board 11: enpassant black" {
     );
 
     const result = board.getMovedBoard(
-        bit_board.fromNotation("e7"),
-        bit_board.fromNotation("e5"),
+        BitBoard.fromCoordinate(4, 6),
+        BitBoard.fromCoordinate(4, 4),
     );
 
-    try std.testing.expectEqual(result.enpassant_target, bit_board.fromNotation("e6"));
+    try std.testing.expectEqual(result.enpassant_target, BitBoard.fromCoordinate(4, 5));
 }
 
 test "promotion board 1: white pawn to knight" {
@@ -844,9 +852,9 @@ test "promotion board 1: white pawn to knight" {
         \\........
     );
 
-    const result = board.getPromotionBoard(bit_board.fromNotation("e8"), .knight);
+    const result = board.getPromotionBoard(BitBoard.fromCoordinate(4, 7), .knight);
 
-    try bit_board.expectBitBoard(result.white_pawn,
+    try BitBoard.expect(result.white_pawn,
         \\........
         \\........
         \\........
@@ -856,7 +864,7 @@ test "promotion board 1: white pawn to knight" {
         \\........
         \\........
     );
-    try bit_board.expectBitBoard(result.white_knight,
+    try BitBoard.expect(result.white_knight,
         \\....o...
         \\........
         \\........
@@ -880,9 +888,9 @@ test "promotion board 2: black pawn to queen" {
         \\....P...
     );
 
-    const result = board.getPromotionBoard(bit_board.fromNotation("e1"), .queen);
+    const result = board.getPromotionBoard(BitBoard.fromCoordinate(4, 0), .queen);
 
-    try bit_board.expectBitBoard(result.black_pawn,
+    try BitBoard.expect(result.black_pawn,
         \\........
         \\........
         \\........
@@ -892,7 +900,7 @@ test "promotion board 2: black pawn to queen" {
         \\........
         \\........
     );
-    try bit_board.expectBitBoard(result.black_queen,
+    try BitBoard.expect(result.black_queen,
         \\........
         \\........
         \\........

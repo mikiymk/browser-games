@@ -1,8 +1,19 @@
+// std import
 const std = @import("std");
+const builtin = @import("builtin");
 
-const bit_board = @import("../bit-board/main.zig");
+// common import
+const common = @import("../common/main.zig");
+const BitBoard = common.bit_board.BitBoard(8, 8);
 
-const Board = @import("Board.zig");
+// internal import
+const main = @import("./main.zig");
+const Board = main.Board;
+
+// test import
+test {
+    _ = @import("./ai.test.zig");
+}
 
 /// AIが考えた打つ場所をインデックスで返します。
 pub fn getAiMove(b: Board, comptime random: *const fn () f64) u6 {
@@ -14,7 +25,7 @@ pub fn getAiMove(b: Board, comptime random: *const fn () f64) u6 {
     // ここまでの最も良い手の評価点
     var best_evaluation: i32 = std.math.minInt(i32);
 
-    var move_board = bit_board.iterator(moves);
+    var move_board = BitBoard.iterator(moves);
     while (move_board.next()) |place| {
         var child = b.move(place);
         const evaluation = alphaBeta(child, b.nextColor, 5, std.math.minInt(i32), std.math.maxInt(i32));
@@ -33,7 +44,7 @@ pub fn getAiMove(b: Board, comptime random: *const fn () f64) u6 {
     const select_index: u6 = @intFromFloat(random() * @as(f64, @floatFromInt(best_place_count)));
     const selected_best_place: u64 = best_place[select_index];
 
-    return @truncate(@popCount(selected_best_place - 1));
+    return @truncate(@ctz(selected_best_place));
 }
 
 /// αβ法を使ってよい手を探す
@@ -47,7 +58,7 @@ fn alphaBeta(b: Board, player: Board.Color, depth: u8, alpha: i32, beta: i32) i3
     }
 
     if (b.nextColor == player) {
-        var moves = bit_board.iterator(b.getValidMoves());
+        var moves = BitBoard.iterator(b.getValidMoves());
 
         var new_alpha = alpha;
 
@@ -62,7 +73,7 @@ fn alphaBeta(b: Board, player: Board.Color, depth: u8, alpha: i32, beta: i32) i3
 
         return new_alpha;
     } else {
-        var moves = bit_board.iterator(b.getValidMoves());
+        var moves = BitBoard.iterator(b.getValidMoves());
 
         var new_beta = beta;
 
@@ -129,56 +140,4 @@ fn randomAi(b: Board, comptime random: *const fn () f64) u6 {
 
     // 見つからなかった場合
     return 0;
-}
-
-test "get random move with AI" {
-    const testing = std.testing;
-
-    var board = Board.fromString(
-        \\........
-        \\........
-        \\........
-        \\...ox...
-        \\...xo...
-        \\........
-        \\........
-        \\........
-    );
-
-    var expected: u64 = comptime bit_board.fromString(
-        \\........
-        \\........
-        \\....o...
-        \\.....o..
-        \\..o.....
-        \\...o....
-        \\........
-        \\........
-    , 'o');
-
-    const S = struct {
-        var rand_gen: std.rand.DefaultPrng = undefined;
-        var rand: std.rand.Random = undefined;
-
-        fn random() f64 {
-            return rand.float(f64);
-        }
-    };
-
-    for (0..11) |i| {
-        S.rand_gen = std.rand.DefaultPrng.init(i);
-        S.rand = S.rand_gen.random();
-
-        var actual = @as(u64, 1) << getAiMove(board, S.random);
-
-        testing.expect(actual & expected != 0) catch {
-            const print = std.debug.print;
-            const boardToString = bit_board.toString;
-
-            print("expected {x:0>16}\n{s}\n\n", .{ expected, boardToString(expected, 'o', '.') });
-            print("actual {x:0>16}\n{s}\n\n", .{ actual, boardToString(actual, 'o', '.') });
-
-            return error.UnexpectedBoard;
-        };
-    }
 }

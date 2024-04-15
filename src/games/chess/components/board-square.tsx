@@ -14,19 +14,14 @@ import {
   MoveFrom,
   MoveTarget,
 } from "@/games/chess/constants";
-import {
-  movableSquareStyle,
-  pieceBlackStyle,
-  pieceWhiteStyle,
-  selectedStyle,
-  squareStyle,
-} from "@/games/chess/style.css";
+import { movableSquareStyle, pieceBlackStyle, pieceWhiteStyle, selectedStyle } from "@/games/chess/style.css";
 import bishop from "@/images/chess/bishop.svg";
 import king from "@/images/chess/king.svg";
 import knight from "@/images/chess/knight.svg";
 import pawn from "@/images/chess/pawn.svg";
 import queen from "@/images/chess/queen.svg";
 import rook from "@/images/chess/rook.svg";
+import frame from "@/images/icon/frame.svg";
 import type { JSXElement } from "solid-js";
 import { Show } from "solid-js";
 
@@ -35,8 +30,6 @@ type BoardSquareProperties = {
   readonly mark: number;
   readonly x: number;
   readonly y: number;
-
-  readonly click: () => void;
 };
 
 export const BoardSquare = (properties: BoardSquareProperties): JSXElement => {
@@ -81,28 +74,19 @@ export const BoardSquare = (properties: BoardSquareProperties): JSXElement => {
     }
   };
 
-  const rectStyle = (): string =>
-    properties.mark === MoveTarget ? movableSquareStyle : properties.mark === MoveFrom ? selectedStyle : squareStyle;
+  const markStyle = (): string | undefined =>
+    properties.mark === MoveTarget ? movableSquareStyle : properties.mark === MoveFrom ? selectedStyle : undefined;
 
   return (
     <>
       <Show when={pieceHref()}>
-        {(href) => <use href={href()} x={properties.x} y={properties.y} height={1} width={1} class={pieceStyle()} />}
+        {(href) => <use href={href()} x={properties.x} y={properties.y} height={10} width={10} class={pieceStyle()} />}
       </Show>
-      <rect
-        x={properties.x}
-        y={properties.y}
-        height={1}
-        width={1}
-        class={rectStyle()}
-        tabindex={0}
-        onClick={() => {
-          properties.click();
-        }}
-        onKeyPress={() => {
-          properties.click();
-        }}
-      />
+      <Show when={markStyle()}>
+        {(style) => (
+          <use href={`${frame.src}#root`} x={properties.x} y={properties.y} height={10} width={10} class={style()} />
+        )}
+      </Show>
     </>
   );
 };

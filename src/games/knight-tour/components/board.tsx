@@ -1,7 +1,7 @@
+import { Board } from "@/components/board/board";
 import { boardStyle } from "@/games/knight-tour/style.css";
 import board from "@/images/chess/board.svg";
 import type { JSXElement } from "solid-js";
-import { For } from "solid-js";
 import { Square } from "./square";
 
 type BoardProperties = {
@@ -10,26 +10,21 @@ type BoardProperties = {
   readonly handleClick: (index: number) => void;
 };
 
-export const Board = (properties: BoardProperties): JSXElement => {
+export const KnightBoard = (properties: BoardProperties): JSXElement => {
   return (
-    <svg viewBox="0 0 8 8" xmlns="http://www.w3.org/2000/svg" class={boardStyle}>
-      <title>chess board</title>
-
-      <use href={`${board.src}#root`} />
-
-      <For each={properties.board}>
-        {(cell, index) => (
-          <Square
-            board={properties.board}
-            cell={cell}
-            index={index()}
-            hintMode={properties.hintMode}
-            click={() => {
-              properties.handleClick(index());
-            }}
-          />
-        )}
-      </For>
-    </svg>
+    <Board
+      height={8}
+      width={8}
+      data={properties.board}
+      background={board.src}
+      class={boardStyle}
+      click={(_, index) => {
+        properties.handleClick(index);
+      }}
+    >
+      {(cell, index, x, y) => (
+        <Square board={properties.board} cell={cell} index={index()} x={x()} y={y()} hintMode={properties.hintMode} />
+      )}
+    </Board>
   );
 };

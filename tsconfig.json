@@ -22,7 +22,7 @@
     "allowUnreachableCode": true, // lint/correctness/noUnreachable
     "noFallthroughCasesInSwitch": false, // lint/suspicious/noFallthroughSwitchClause
     "noUnusedLocals": false, // lint/correctness/noUnusedVariables
-    "noUnusedParameters": false, // lint/correctness/noUnusedVariables
+    "noUnusedParameters": false // lint/correctness/noUnusedVariables
   },
   "include": ["**/*.ts", "**/*.tsx", "src/**/*.astro"],
   "exclude": ["./vitest.config.ts"]

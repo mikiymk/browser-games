@@ -1,4 +1,4 @@
-import { blackStoneStyle, rectStyle, whiteStoneStyle } from "@/games/reversi/style.css";
+import { blackStoneStyle, whiteStoneStyle } from "@/games/reversi/style.css";
 import smallStone from "@/images/reversi/stone-small.svg";
 import stone from "@/images/reversi/stone.svg";
 import { Show } from "solid-js";
@@ -7,9 +7,8 @@ import { CellBlack, CellCanMoveBlack, CellCanMoveWhite, CellWhite } from "../con
 
 type CellImageProperties = {
   readonly square: number;
-  readonly index: number;
-
-  readonly click: (square: number, index: number) => void;
+  readonly x: number;
+  readonly y: number;
 };
 export const CellImage = (properties: CellImageProperties): JSXElement => {
   const source = (): string | undefined => {
@@ -31,29 +30,13 @@ export const CellImage = (properties: CellImageProperties): JSXElement => {
     }
   };
 
-  const x = (): number => properties.index % 8;
-  const y = (): number => Math.floor(properties.index / 8);
-
-  const handleClick = (): void => {
-    properties.click(properties.square, properties.index);
-  };
-
   return (
     <>
       <Show when={source()}>
-        {(source) => <use href={`${source()}#root`} x={x()} y={y()} height={1} width={1} class={style()} />}
+        {(source) => (
+          <use href={`${source()}#root`} x={properties.x} y={properties.y} height={10} width={10} class={style()} />
+        )}
       </Show>
-
-      <rect
-        x={x()}
-        y={y()}
-        height={1}
-        width={1}
-        tabindex={0}
-        onClick={handleClick}
-        onKeyPress={handleClick}
-        class={rectStyle}
-      />
     </>
   );
 };

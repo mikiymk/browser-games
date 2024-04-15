@@ -1,29 +1,32 @@
 const std = @import("std");
 
-const Dir = std.Build.Step.InstallArtifact.Options.Dir;
+const Build = std.Build;
+const Dir = Build.Step.InstallArtifact.Options.Dir;
+const Target = std.zig.CrossTarget;
+const Optimize = std.builtin.OptimizeMode;
 
-pub fn build(b: *std.Build) void {
-    const target = b.standardTargetOptions(.{});
-    const optimize = b.standardOptimizeOption(.{});
+pub fn build(b: *Build) void {
+    const target: Target = b.standardTargetOptions(.{});
+    const optimize: Optimize = b.standardOptimizeOption(.{});
 
     const public_dir: Dir = .{ .override = .{ .custom = "../public/wasm" } };
 
     // build
+    const build_all = b.step("all", "Build all library");
 
-    buildLib(b, "reversi", public_dir, target, optimize);
-    buildLib(b, "chess", public_dir, target, optimize);
+    const build_reversi = buildLib(b, "reversi", public_dir, target, optimize);
+    const build_chess = buildLib(b, "chess", public_dir, target, optimize);
+    const build_shogi = buildLib(b, "shogi", public_dir, target, optimize);
+
+    build_all.dependOn(build_reversi);
+    build_all.dependOn(build_chess);
+    build_all.dependOn(build_shogi);
 
     // test
-    buildTest(b, target, optimize);
+    buildTest(b);
 }
 
-fn buildLib(
-    b: *std.Build,
-    comptime name: []const u8,
-    public_dir: Dir,
-    target: std.zig.CrossTarget,
-    optimize: std.builtin.OptimizeMode,
-) void {
+fn buildLib(b: *Build, comptime name: []const u8, public_dir: Dir, target: Target, optimize: Optimize) *Build.Step {
     const lib = b.addSharedLibrary(.{
         .name = name,
         .root_source_file = .{ .path = "src/wasm/" ++ name ++ ".zig" },
@@ -37,19 +40,15 @@ fn buildLib(
     const artifact = b.addInstallArtifact(lib, .{ .dest_dir = public_dir });
     const step = b.step(name, "Build " ++ name ++ " library");
     step.dependOn(&artifact.step);
+
+    return step;
 }
 
-fn buildTest(
-    b: *std.Build,
-    target: std.zig.CrossTarget,
-    optimize: std.builtin.OptimizeMode,
-) void {
+fn buildTest(b: *Build) void {
     const test_step = b.step("test", "Run library tests");
 
     const main_tests = b.addTest(.{
         .root_source_file = .{ .path = "src/wasm/test.zig" },
-        .target = target,
-        .optimize = optimize,
     });
     const run_main_tests = b.addRunArtifact(main_tests);
     test_step.dependOn(&run_main_tests.step);

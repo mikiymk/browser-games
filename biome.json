@@ -35,6 +35,7 @@
         "noApproximativeNumericConstant": "error",
         "noMisrefactoredShorthandAssign": "error"
       }
-    }
+    },
+    "ignore": ["*.astro"]
   }
 }

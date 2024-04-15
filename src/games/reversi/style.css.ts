@@ -14,10 +14,6 @@ export const whiteStoneStyle = style({
   stroke: "#222",
 });
 
-export const rectStyle = style({
-  fill: "#0000",
-});
-
 export const infoStyle = style({
   border: "#222 solid medium",
 });
