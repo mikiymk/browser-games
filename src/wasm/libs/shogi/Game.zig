@@ -231,7 +231,7 @@ pub const Square = enum(u8) {
     }
 };
 
-const Hands = std.EnumMap(PrimaryPiece, u8);
+const Hands = std.EnumArray(PrimaryPiece, u8);
 
 current_board: Board,
 black_hands: Hands,
@@ -241,8 +241,8 @@ current_player: PlayerColor,
 pub fn init() Game {
     return .{
         .current_board = Board.init(),
-        .black_hands = .{},
-        .white_hands = .{},
+        .black_hands = Hands.initFill(0),
+        .white_hands = Hands.initFill(0),
         .current_player = .white,
     };
 }
@@ -329,8 +329,7 @@ pub fn move(game: *Game, from: u81, to: u81) bool {
             .white => &game.white_hands,
         };
 
-        const num_hand = hands.get(primary_piece) orelse 0;
-        hands.put(primary_piece, num_hand +% 1);
+        hands.getPtr(primary_piece).* += 1;
     }
 
     // 駒を移動する
@@ -355,8 +354,7 @@ pub fn hit(game: *Game, piece: PieceKind, to: u81) void {
         .black => &game.black_hands,
         .white => &game.white_hands,
     };
-    const num_hand = hands.get(primary_piece) orelse 0;
-    hands.put(primary_piece, num_hand -| 1);
+    hands.getPtr(primary_piece).* -= 1;
 
     // 駒を追加する
     game.current_board = game.current_board.hitBoard(game.current_player, piece, to);

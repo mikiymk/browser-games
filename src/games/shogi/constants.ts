@@ -47,3 +47,14 @@ export const LANCE = 0b0000_0110;
 export const PAWN = 0b0000_0111;
 
 export const MOVE_TARGET = 1;
+
+export type Hand = readonly [
+  pawn: number,
+  lance: number,
+  knight: number,
+  silver: number,
+  gold: number,
+  bishop: number,
+  rook: number,
+  king: number,
+];

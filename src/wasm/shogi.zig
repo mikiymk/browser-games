@@ -52,6 +52,29 @@ export fn winner(game: *shogi.Game) u8 {
     return @intFromEnum(game.getWinner() orelse return 255);
 }
 
+export fn hands(game: *shogi.Game, hands_ptr: [*]u8) void {
+    var hands_slice = hands_ptr[0..16];
+    @memset(hands_slice, 0);
+
+    hands_slice[0] = game.white_hands.get(.king);
+    hands_slice[1] = game.white_hands.get(.rook);
+    hands_slice[2] = game.white_hands.get(.bishop);
+    hands_slice[3] = game.white_hands.get(.gold);
+    hands_slice[4] = game.white_hands.get(.silver);
+    hands_slice[5] = game.white_hands.get(.knight);
+    hands_slice[6] = game.white_hands.get(.lance);
+    hands_slice[7] = game.white_hands.get(.pawn);
+
+    hands_slice[8] = game.black_hands.get(.king);
+    hands_slice[9] = game.black_hands.get(.rook);
+    hands_slice[10] = game.black_hands.get(.bishop);
+    hands_slice[11] = game.black_hands.get(.gold);
+    hands_slice[12] = game.black_hands.get(.silver);
+    hands_slice[13] = game.black_hands.get(.knight);
+    hands_slice[14] = game.black_hands.get(.lance);
+    hands_slice[15] = game.black_hands.get(.pawn);
+}
+
 /// 選択したマスの駒の動ける範囲を得る
 export fn movePos(game: *shogi.Game, board: [*]u8, from: u8) void {
     const positions = game.movePositions(indexToBoardBits(from));
