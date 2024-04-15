@@ -1,13 +1,12 @@
 import eslintComments from "@eslint-community/eslint-plugin-eslint-comments";
 import js from "@eslint/js";
-import typescript from "@typescript-eslint/eslint-plugin";
-import typescriptParser from "@typescript-eslint/parser";
 import prettier from "eslint-config-prettier";
 import pluginImport from "eslint-plugin-i";
 import solid from "eslint-plugin-solid";
 import unicorn from "eslint-plugin-unicorn";
 import vitest from "eslint-plugin-vitest";
 import globals from "globals";
+import typescript from "typescript-eslint";
 
 export default [
   {
@@ -15,7 +14,7 @@ export default [
     ignores: ["src/env.d.ts"],
 
     plugins: {
-      "@typescript-eslint": typescript,
+      "@typescript-eslint": typescript.plugin,
       import: pluginImport,
       unicorn,
       solid,
@@ -29,7 +28,7 @@ export default [
         ...globals.browser,
       },
 
-      parser: typescriptParser,
+      parser: typescript.parser,
       parserOptions: {
         sourceType: "module",
         project: true,
@@ -44,10 +43,10 @@ export default [
     rules: {
       // extends
       ...js.configs.recommended.rules,
-      ...typescript.configs["eslint-recommended"].overrides[0].rules,
-      ...typescript.configs["recommended-type-checked"].rules,
-      ...typescript.configs["strict-type-checked"].rules,
-      ...typescript.configs["stylistic-type-checked"].rules,
+      ...typescript.plugin.configs["eslint-recommended"].overrides[0].rules,
+      ...typescript.plugin.configs["recommended-type-checked"].rules,
+      ...typescript.plugin.configs["strict-type-checked"].rules,
+      ...typescript.plugin.configs["stylistic-type-checked"].rules,
       ...unicorn.configs.recommended.rules,
       ...solid.configs.typescript.rules,
       ...vitest.configs.recommended.rules,
@@ -105,6 +104,18 @@ export default [
       ],
 
       "@typescript-eslint/consistent-type-definitions": ["warn", "type"],
+      "@typescript-eslint/restrict-template-expressions": [
+        "error",
+        {
+          allowAny: false,
+          allowArray: false,
+          allowBoolean: true,
+          allowNever: false,
+          allowNullish: false,
+          allowNumber: true,
+          allowRegExp: false,
+        },
+      ],
 
       "import/no-empty-named-blocks": "error",
       "import/no-extraneous-dependencies": [

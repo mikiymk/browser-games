@@ -49,8 +49,6 @@
     "@eslint-community/eslint-plugin-eslint-comments": "^4.3.0",
     "@eslint/js": "^9.0.0",
     "@tsconfig/strictest": "^2.0.5",
-    "@typescript-eslint/eslint-plugin": "^6.21.0",
-    "@typescript-eslint/parser": "^6.21.0",
     "@vanilla-extract/vite-plugin": "^3.9.5",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
@@ -64,6 +62,7 @@
     "knip": "^5.9.4",
     "run-z": "^2.0.0",
     "typescript": "^5.4.5",
+    "typescript-eslint": "^7.7.0",
     "vitest": "^1.5.0"
   },
   "dependencies": {
