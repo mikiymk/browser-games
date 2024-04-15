@@ -81,14 +81,11 @@ export default [
       "@typescript-eslint/prefer-destructuring": "error",
       "@typescript-eslint/prefer-readonly": "error",
       "@typescript-eslint/prefer-readonly-parameter-types": [
-        "error",
+        "warn",
         {
           allow: [
-            { from: "lib", name: "MouseEvent" },
-            { from: "lib", name: "KeyboardEvent" },
-            { from: "lib", name: "HTMLInputElement" },
-            { from: "lib", name: "HTMLSelectElement" },
-            { from: "package", name: "JSXElement", package: "solid-js" },
+            { from: "lib", name: ["MouseEvent", "KeyboardEvent", "HTMLInputElement", "HTMLSelectElement"] },
+            { from: "package", package: "solid-js", name: ["JSX", "JSXElement"] },
           ],
           treatMethodsAsReadonly: true,
         },

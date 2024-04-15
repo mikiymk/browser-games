@@ -1,10 +1,11 @@
 import { Board } from "@/components/board/board";
 import board from "@/images/shogi/board.svg";
-import { For } from "solid-js";
 import type { JSXElement } from "solid-js";
 import { Square } from "./square";
+import { BLACK, WHITE } from "../constants";
 import type { Hand } from "../constants";
-import { handCellStyle, handHeaderCellStyle } from "../style.css";
+import { handHeaderCellStyle } from "../style.css";
+import { Hands } from "./hands";
 
 type BoardProperties = {
   readonly board: readonly { readonly piece: number; readonly moveTarget: boolean }[];
@@ -40,43 +41,8 @@ export const ShogiBoard = (properties: BoardProperties): JSXElement => {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <th class={handCellStyle}>☗</th>
-            <For each={properties.hands[0]}>
-              {(piece, index) => (
-                <td
-                  class={handCellStyle}
-                  onClick={() => {
-                    properties.onSquareClick(index() + 100);
-                  }}
-                  onKeyPress={() => {
-                    properties.onSquareClick(index() + 100);
-                  }}
-                >
-                  {piece}
-                </td>
-              )}
-            </For>
-          </tr>
-
-          <tr>
-            <th class={handCellStyle}>☖</th>
-            <For each={properties.hands[1]}>
-              {(piece, index) => (
-                <td
-                  class={handCellStyle}
-                  onClick={() => {
-                    properties.onSquareClick(index() + 100);
-                  }}
-                  onKeyPress={() => {
-                    properties.onSquareClick(index() + 100);
-                  }}
-                >
-                  {piece}
-                </td>
-              )}
-            </For>
-          </tr>
+          <Hands color={WHITE} hands={properties.hands[0]} onClick={properties.onSquareClick} />
+          <Hands color={BLACK} hands={properties.hands[1]} onClick={properties.onSquareClick} />
         </tbody>
       </table>
     </>
