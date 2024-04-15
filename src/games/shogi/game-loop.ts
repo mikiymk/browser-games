@@ -2,7 +2,7 @@ import type { MultiPromise } from "@/scripts/multi-promise";
 import type { PlayerType } from "@/scripts/player";
 import { PlayerTypeHuman } from "@/scripts/player";
 import { sleep } from "@/scripts/sleep";
-import type { WHITE, BLACK, Hand } from "./constants";
+import type { BLACK, Hand, WHITE } from "./constants";
 import { MOVE_TARGET } from "./constants";
 
 type GamePtr = 0 | (number & { readonly __uniqueShogiGame: "Wasm pointer of Game struct" });

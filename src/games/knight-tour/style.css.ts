@@ -31,17 +31,6 @@ export const whiteNumberStyle = style({
   stroke: "#ccc",
 });
 
-export const emptyRectStyle = style({
-  fill: "#0000",
-});
-
-export const moveRectStyle = style([
-  emptyRectStyle,
-  {
-    cursor: "pointer",
-  },
-]);
-
 export const historyStyle = style({
   alignSelf: "stretch",
 

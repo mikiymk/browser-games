@@ -1,6 +1,6 @@
 import type { JSXElement } from "solid-js";
-import { PopUp } from "./pop-up";
 import { Button } from "./button";
+import { PopUp } from "./pop-up";
 
 type GameOverPopUpProperties = {
   readonly gameOver: boolean;

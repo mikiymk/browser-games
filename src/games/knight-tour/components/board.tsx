@@ -1,8 +1,8 @@
+import { Board } from "@/components/board/board";
 import { boardStyle } from "@/games/knight-tour/style.css";
 import board from "@/images/chess/board.svg";
 import type { JSXElement } from "solid-js";
 import { Square } from "./square";
-import { Board } from "@/components/board/board";
 
 type BoardProperties = {
   readonly board: readonly number[];

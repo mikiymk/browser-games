@@ -1,8 +1,8 @@
+import { Board } from "@/components/board/board";
 import { boardStyle } from "@/games/reversi/style.css";
 import board from "@/images/reversi/board.svg";
 import type { JSXElement } from "solid-js";
 import { CellImage } from "./cell-image";
-import { Board } from "@/components/board/board";
 
 type BoardProperties = {
   readonly board: readonly number[];

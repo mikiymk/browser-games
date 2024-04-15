@@ -1,6 +1,6 @@
 import { style } from "@vanilla-extract/css";
 
-export const squareStyle = style({
+const squareStyle = style({
   stroke: "none",
   strokeWidth: 4,
 

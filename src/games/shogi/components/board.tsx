@@ -1,11 +1,11 @@
 import { Board } from "@/components/board/board";
 import board from "@/images/shogi/board.svg";
 import type { JSXElement } from "solid-js";
-import { Square } from "./square";
 import { BLACK, WHITE } from "../constants";
 import type { Hand } from "../constants";
 import { handHeaderCellStyle } from "../style.css";
 import { Hands } from "./hands";
+import { Square } from "./square";
 
 type BoardProperties = {
   readonly board: readonly { readonly piece: number; readonly moveTarget: boolean }[];

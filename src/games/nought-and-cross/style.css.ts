@@ -1,12 +1,5 @@
 import { style } from "@vanilla-extract/css";
 
-export const cellStyle = style({
-  fill: "#0000",
-  stroke: "black",
-
-  cursor: "pointer",
-});
-
 export const oStyle = style({
   fill: "none",
   stroke: "red",

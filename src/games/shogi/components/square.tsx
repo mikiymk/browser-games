@@ -1,23 +1,23 @@
-import { Show } from "solid-js";
-import type { JSXElement } from "solid-js";
-import piece from "@/images/shogi/piece.svg";
-import oShoKanji from "@/images/shogi/o-sho.svg";
+import ginShoKanji from "@/images/shogi/gin-sho.svg";
 import gyokuShoKanji from "@/images/shogi/gyoku-sho.svg";
 import hiShaKanji from "@/images/shogi/hi-sha.svg";
-import kakuGyoKanji from "@/images/shogi/kaku-gyo.svg";
-import kinShoKanji from "@/images/shogi/kin-sho.svg";
-import ginShoKanji from "@/images/shogi/gin-sho.svg";
-import keiMaKanji from "@/images/shogi/kei-ma.svg";
-import kyoShaKanji from "@/images/shogi/kyo-sha.svg";
 import huHyoKanji from "@/images/shogi/hu-hyo.svg";
-import ryuoKanji from "@/images/shogi/ryu-o.svg";
-import ryuMeKanji from "@/images/shogi/ryu-me.svg";
+import kakuGyoKanji from "@/images/shogi/kaku-gyo.svg";
+import keiMaKanji from "@/images/shogi/kei-ma.svg";
+import kinShoKanji from "@/images/shogi/kin-sho.svg";
+import kyoShaKanji from "@/images/shogi/kyo-sha.svg";
 import nariGinKanji from "@/images/shogi/nari-gin.svg";
 import nariKeiKanji from "@/images/shogi/nari-kei.svg";
 import nariKyoKanji from "@/images/shogi/nari-kyo.svg";
+import oShoKanji from "@/images/shogi/o-sho.svg";
+import piece from "@/images/shogi/piece.svg";
+import ryuMeKanji from "@/images/shogi/ryu-me.svg";
+import ryuoKanji from "@/images/shogi/ryu-o.svg";
 import toKinKanji from "@/images/shogi/to-kin.svg";
-import { kanjiStyle, moveTargetStyle, pieceStyle, redKanjiStyle } from "../style.css";
+import { Show } from "solid-js";
+import type { JSXElement } from "solid-js";
 import { BISHOP, COLOR, GOLD, KING, KNIGHT, LANCE, PAWN, PIECE, PROMOTED, ROOK, SILVER } from "../constants";
+import { kanjiStyle, moveTargetStyle, pieceStyle, redKanjiStyle } from "../style.css";
 
 type SquareProperties = {
   readonly x: number;
