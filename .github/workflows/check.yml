@@ -27,11 +27,13 @@ jobs:
         with:
           node-version: 21
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v2
+      - name: Install bun
+        uses: oven-sh/setup-bun@v1
         with:
-          version: latest
-          run_install: true
+          bun-version: latest
+
+      - name: Install Dependencies
+        run: bun install --frozen-lockfile
 
       # zig setup
       - uses: goto-bus-stop/setup-zig@v2
@@ -39,28 +41,25 @@ jobs:
           version: 0.11.0
 
       - name: check zig is formatted
-        run: pnpm run lint:format-zig
+        run: bun run lint:format-zig
 
       - name: test zig
-        run: pnpm run test:wasm
+        run: bun run test:wasm
 
       - name: generate wasm
-        run: pnpm run build-wasm
-
-      - name: check javascript is formatted
-        run: pnpm run lint:format
+        run: bun run build-wasm
 
       - name: check biome
-        run: pnpm run lint:biome
+        run: bun run lint:biome
 
       - name: check eslint
-        run: pnpm run lint:eslint
+        run: bun run lint:eslint
 
       - name: check typescript
-        run: pnpm run lint:typescript
+        run: bun run lint:typescript
 
       - name: check knip
-        run: pnpm run lint:knip
+        run: bun run lint:knip
 
       - name: build astro
-        run: pnpm run build-js
+        run: bun run build-js

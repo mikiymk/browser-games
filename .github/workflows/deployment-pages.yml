@@ -37,11 +37,13 @@ jobs:
         with:
           node-version: 21
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v2
+      - name: Install bun
+        uses: oven-sh/setup-bun@v1
         with:
-          version: latest
-          run_install: true
+          bun-version: latest
+
+      - name: Install Dependencies
+        run: bun install --frozen-lockfile
 
       # zig setup
       - uses: goto-bus-stop/setup-zig@v2
@@ -49,7 +51,7 @@ jobs:
           version: 0.11.0
 
       - name: Build
-        run: pnpm run build
+        run: bun run build
 
       - name: Setup Pages
         uses: actions/configure-pages@v3
