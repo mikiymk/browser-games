@@ -54,13 +54,14 @@ export default [
       ...prettier.rules,
 
       // my custom
+
+      // unicorn
       "unicorn/number-literal-case": "off",
       "unicorn/prefer-query-selector": "off",
 
+      // typescript
       "class-methods-use-this": "off",
       "@typescript-eslint/class-methods-use-this": "error",
-      "@typescript-eslint/consistent-type-exports": "error",
-      "@typescript-eslint/consistent-type-imports": "error",
       "default-param-last": "off",
       "@typescript-eslint/default-param-last": "error",
       "@typescript-eslint/explicit-function-return-type": "error",
@@ -72,8 +73,6 @@ export default [
       "@typescript-eslint/no-unsafe-unary-minus": "error",
       "no-unused-expressions": "off",
       "@typescript-eslint/no-unused-expressions": "error",
-      "no-use-before-define": "off",
-      "@typescript-eslint/no-use-before-define": "error",
       "@typescript-eslint/no-useless-empty-export": "error",
       "@typescript-eslint/parameter-properties": "error",
       "prefer-destructuring": "off",
@@ -117,6 +116,7 @@ export default [
         },
       ],
 
+      // import
       "import/no-empty-named-blocks": "error",
       "import/no-extraneous-dependencies": [
         "error",
@@ -146,6 +146,7 @@ export default [
         },
       ],
 
+      // eslint-comments
       "@eslint-community/eslint-comments/no-unused-disable": "error",
 
       // unnecessary with typescript
@@ -222,6 +223,28 @@ export default [
       "unicorn/no-instanceof-array": "off", // lint/suspicious/useIsArray
       "@typescript-eslint/prefer-namespace-keyword": "off", // lint/suspicious/useNamespaceKeyword
       "valid-typeof": "off", // lint/suspicious/useValidTypeof
+
+      // 1.6.0 promoted
+      "no-unused-private-class-members": "off", // lint/correctness/noUnusedPrivateClassMembers
+      "@typescript-eslint/no-use-before-define": "off", // lint/correctness/noInvalidUseBeforeDeclaration
+      "@typescript-eslint/consistent-type-exports": "off", // lint/style/useExportType
+      "unicorn/filename-case": "off", // lint/style/useFilenamingConvention
+      "unicorn/no-for-loop": "off", // lint/style/useForOf
+      "@typescript-eslint/prefer-for-of": "off", // lint/style/useForOf
+      "@typescript-eslint/consistent-type-imports": "off", // lint/style/useImportType
+      "unicorn/prefer-node-protocol": "off", // lint/style/useNodejsImportProtocol
+      "unicorn/prefer-number-properties": "off", // lint/style/useNumberNamespace
+      "@typescript-eslint/prefer-function-type": "off", // lint/style/useShorthandFunctionType
+      "no-empty": "off", // lint/suspicious/noEmptyBlockStatements
+      "no-empty-static-block": "off", // lint/suspicious/noEmptyBlockStatements
+      "no-empty-function": "off", // lint/suspicious/noEmptyBlockStatements
+      "@typescript-eslint/no-empty-function": "off", // lint/suspicious/noEmptyBlockStatements
+      "no-global-assign": "off", // lint/suspicious/noGlobalAssign
+      "no-misleading-character-class": "off", // lint/suspicious/noMisleadingCharacterClass
+      "unicorn/no-thenable": "off", // lint/suspicious/noThenProperty
+
+      // 1.7.0 promoted
+      
     },
   },
 
