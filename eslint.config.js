@@ -134,11 +134,13 @@ export default typescript.config(
           bundledDependencies: false,
         },
       ],
+      // biome-ignore lint/suspicious/noDuplicateObjectKeys: importがeslint-v9に対応するまでOff
       "import/no-mutable-exports": "error",
       "import/unambiguous": "error",
       "import/no-absolute-path": "error",
       "import/no-useless-path-segments": "error",
       "import/consistent-type-specifier-style": ["error", "prefer-top-level"],
+      // biome-ignore lint/suspicious/noDuplicateObjectKeys: importがeslint-v9に対応するまでOff
       "import/newline-after-import": "error",
       "import/no-anonymous-default-export": "error",
       "import/no-duplicates": "error",
@@ -156,6 +158,15 @@ export default typescript.config(
       // eslint-comments
       "@eslint-community/eslint-comments/no-use": ["error", { allow: ["eslint-disable-next-line"] }],
       "@eslint-community/eslint-comments/require-description": "error",
+
+      // eslint-v9に対応するまでOff
+      "import/no-mutable-exports": "off",
+      "import/newline-after-import": "off",
+      "solid/jsx-uses-vars": "off",
+      "solid/jsx-no-script-url": "off",
+      "solid/reactivity": "off",
+      "solid/jsx-no-undef": "off",
+      "solid/event-handlers": "off",
 
       // unnecessary with typescript
 
