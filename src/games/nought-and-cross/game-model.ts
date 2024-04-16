@@ -11,9 +11,8 @@ const isHumanPlayer = (players: Players, mark: number): boolean => {
   return (mark === MarkO && players.o === PlayerTypeHuman) || (mark === MarkX && players.x === PlayerTypeHuman);
 };
 
-// eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
-const move = (board: number[], index: number, mark: number): void => {
-  board[index] = mark;
+const move = (board: readonly number[], index: number, mark: number): readonly number[] => {
+  return board.with(index, mark);
 };
 
 export const turnMark = (mark: number): number => {
@@ -62,7 +61,7 @@ export const gameLoop = (
 
   console.log(`start game(${id})`);
 
-  const board = Array.from({ length: 9 }, () => Empty);
+  let board: readonly number[] = Array.from({ length: 9 }, () => Empty);
   let mark = MarkO;
   let isRunning = true;
 
@@ -72,7 +71,7 @@ export const gameLoop = (
     isRunning = false;
   };
 
-  setBoard([...board]);
+  setBoard(board);
   setMark(mark);
   setHistory([]);
 
@@ -84,10 +83,10 @@ export const gameLoop = (
       return;
     }
 
-    move(board, index, mark);
+    board = move(board, index, mark);
     mark = turnMark(mark);
 
-    setBoard([...board]);
+    setBoard(board);
     setMark(mark);
     setHistory((history) => [...history, index]);
 

@@ -32,15 +32,16 @@ export const getLegalMove = (index: number): number[] => {
     .map(([x, y]) => (currentKnightRank - x) * 8 + (currentKnightFile - y));
 };
 
-// eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
-export const setKnightMovable = (board: number[], knightIndex: number): number[] => {
+export const setKnightMovable = (board: readonly number[], knightIndex: number): readonly number[] => {
+  const newBoard = [...board];
+
   for (const index of getLegalMove(knightIndex)) {
-    if (board[index] === CellUnvisited) {
-      board[index] = CellMovable;
+    if (newBoard[index] === CellUnvisited) {
+      newBoard[index] = CellMovable;
     }
   }
 
-  board[knightIndex] = CellKnight;
+  newBoard[knightIndex] = CellKnight;
 
-  return board;
+  return newBoard;
 };

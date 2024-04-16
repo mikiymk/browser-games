@@ -15,10 +15,3 @@ export const PopUp = (properties: PopUpProperties): JSXElement => {
     </Show>
   );
 };
-
-
-let id = "x1234";    // this is a "dead store" - this value ("x1234") is never read
-
-id = "x2345";
-
-console.log(id);

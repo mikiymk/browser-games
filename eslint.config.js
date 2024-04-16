@@ -84,8 +84,13 @@ export default typescript.config(
         "warn",
         {
           allow: [
-            { from: "lib", name: ["MouseEvent", "KeyboardEvent", "HTMLInputElement", "HTMLSelectElement", "Node"] },
-            { from: "package", package: "solid-js", name: ["JSX", "JSXElement", "JSX.Element", "JSX.ArrayElement"] },
+            {
+              from: "lib",
+              name: [
+                "MouseEvent",
+                "Element", //  solid-jsのJSXElementに必要
+              ],
+            },
           ],
           treatMethodsAsReadonly: true,
         },
