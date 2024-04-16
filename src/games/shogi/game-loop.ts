@@ -63,7 +63,7 @@ const getWasm = async (): Promise<WasmConnect> => {
 
   const getBoard = (board: BoardArray, length: number): readonly number[] => {
     // UInt8ArrayからArrayに変換する
-    // eslint-disable-next-line unicorn/no-useless-spread
+    // eslint-disable-next-line unicorn/no-useless-spread -- Uint8ArrayからArrayへ変換
     return [...new Uint8Array(exports.memory.buffer).slice(board, board + length)];
   };
 
@@ -266,14 +266,16 @@ const gameLoop = (
 
     if (game.game !== 0) {
       console.log(`game continue id(${game.game}, ${game.board})`);
-      // eslint-disable-next-line @typescript-eslint/no-misused-promises
-      setTimeout(run, 0);
+      setTimeout(() => {
+        void run();
+      }, 0);
     }
   };
 
   console.log("game loop start");
-  // eslint-disable-next-line @typescript-eslint/no-misused-promises
-  setTimeout(run, 0);
+  setTimeout(() => {
+    void run();
+  }, 0);
 
   return terminate;
 };

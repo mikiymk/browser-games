@@ -220,7 +220,6 @@ const inputKind = async (
     const kindIndex = await humanInput.request();
 
     if (color === Black) {
-      // eslint-disable-next-line @typescript-eslint/switch-exhaustiveness-check
       switch (kindIndex) {
         case 26: {
           return CellBlackKnight;
@@ -235,10 +234,10 @@ const inputKind = async (
         case 29: {
           return CellBlackQueen;
         }
+        default:
       }
     }
 
-    // eslint-disable-next-line @typescript-eslint/switch-exhaustiveness-check
     switch (kindIndex) {
       case 26: {
         return CellWhiteKnight;
@@ -252,6 +251,7 @@ const inputKind = async (
       case 29: {
         return CellWhiteQueen;
       }
+      default:
     }
   }
 };

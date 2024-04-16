@@ -18,7 +18,6 @@ export const App = (): JSXElement => {
     }
 
     setHistory((history) => [...history, index]);
-    // eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
     resetBoard((board) => {
       const previousKnightIndex = board.indexOf(CellKnight);
 

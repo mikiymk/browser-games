@@ -53,7 +53,7 @@ export const App = (): JSXElement => {
       x: playerX,
     };
 
-    // eslint-disable-next-line @typescript-eslint/prefer-destructuring
+    // eslint-disable-next-line @typescript-eslint/prefer-destructuring -- 再代入
     terminate = gameLoop(setBoardData, setMark, setHistory, humanInput, players).terminate;
   };
 

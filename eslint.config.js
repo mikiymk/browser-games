@@ -1,21 +1,20 @@
 import eslintComments from "@eslint-community/eslint-plugin-eslint-comments";
-import js from "@eslint/js";
-import typescript from "@typescript-eslint/eslint-plugin";
-import typescriptParser from "@typescript-eslint/parser";
+import eslint from "@eslint/js";
 import prettier from "eslint-config-prettier";
 import pluginImport from "eslint-plugin-i";
 import solid from "eslint-plugin-solid";
 import unicorn from "eslint-plugin-unicorn";
 import vitest from "eslint-plugin-vitest";
 import globals from "globals";
+import typescript from "typescript-eslint";
 
-export default [
+export default typescript.config(
   {
     files: ["**/*.ts", "**/*.tsx"],
     ignores: ["src/env.d.ts"],
 
     plugins: {
-      "@typescript-eslint": typescript,
+      "@typescript-eslint": typescript.plugin,
       import: pluginImport,
       unicorn,
       solid,
@@ -29,7 +28,7 @@ export default [
         ...globals.browser,
       },
 
-      parser: typescriptParser,
+      parser: typescript.parser,
       parserOptions: {
         sourceType: "module",
         project: true,
@@ -37,31 +36,34 @@ export default [
       },
     },
 
-    settings: {
-      "import/resolver": "typescript",
+    linterOptions: {
+      noInlineConfig: false,
+      reportUnusedDisableDirectives: "error",
     },
 
     rules: {
       // extends
-      ...js.configs.recommended.rules,
-      ...typescript.configs["eslint-recommended"].overrides[0].rules,
-      ...typescript.configs["recommended-type-checked"].rules,
-      ...typescript.configs["strict-type-checked"].rules,
-      ...typescript.configs["stylistic-type-checked"].rules,
+      ...eslint.configs.recommended.rules,
+      ...typescript.plugin.configs["eslint-recommended"].overrides[0].rules,
+      ...typescript.plugin.configs["recommended-type-checked"].rules,
+      ...typescript.plugin.configs["strict-type-checked"].rules,
+      ...typescript.plugin.configs["stylistic-type-checked"].rules,
       ...unicorn.configs.recommended.rules,
       ...solid.configs.typescript.rules,
       ...vitest.configs.recommended.rules,
-      ...eslintComments.configs.recommended.rules,
       ...prettier.rules,
 
       // my custom
+
+      // eslint
+
+      // unicorn
       "unicorn/number-literal-case": "off",
       "unicorn/prefer-query-selector": "off",
 
+      // typescript
       "class-methods-use-this": "off",
       "@typescript-eslint/class-methods-use-this": "error",
-      "@typescript-eslint/consistent-type-exports": "error",
-      "@typescript-eslint/consistent-type-imports": "error",
       "default-param-last": "off",
       "@typescript-eslint/default-param-last": "error",
       "@typescript-eslint/explicit-function-return-type": "error",
@@ -73,8 +75,6 @@ export default [
       "@typescript-eslint/no-unsafe-unary-minus": "error",
       "no-unused-expressions": "off",
       "@typescript-eslint/no-unused-expressions": "error",
-      "no-use-before-define": "off",
-      "@typescript-eslint/no-use-before-define": "error",
       "@typescript-eslint/no-useless-empty-export": "error",
       "@typescript-eslint/parameter-properties": "error",
       "prefer-destructuring": "off",
@@ -84,8 +84,13 @@ export default [
         "warn",
         {
           allow: [
-            { from: "lib", name: ["MouseEvent", "KeyboardEvent", "HTMLInputElement", "HTMLSelectElement"] },
-            { from: "package", package: "solid-js", name: ["JSX", "JSXElement"] },
+            {
+              from: "lib",
+              name: [
+                "MouseEvent",
+                "Element", //  solid-jsのJSXElementに必要
+              ],
+            },
           ],
           treatMethodsAsReadonly: true,
         },
@@ -105,7 +110,20 @@ export default [
       ],
 
       "@typescript-eslint/consistent-type-definitions": ["warn", "type"],
+      "@typescript-eslint/restrict-template-expressions": [
+        "error",
+        {
+          allowAny: false,
+          allowArray: false,
+          allowBoolean: true,
+          allowNever: false,
+          allowNullish: false,
+          allowNumber: true,
+          allowRegExp: false,
+        },
+      ],
 
+      // import
       "import/no-empty-named-blocks": "error",
       "import/no-extraneous-dependencies": [
         "error",
@@ -116,11 +134,13 @@ export default [
           bundledDependencies: false,
         },
       ],
+      // biome-ignore lint/suspicious/noDuplicateObjectKeys: importがeslint-v9に対応するまでOff
       "import/no-mutable-exports": "error",
       "import/unambiguous": "error",
       "import/no-absolute-path": "error",
       "import/no-useless-path-segments": "error",
       "import/consistent-type-specifier-style": ["error", "prefer-top-level"],
+      // biome-ignore lint/suspicious/noDuplicateObjectKeys: importがeslint-v9に対応するまでOff
       "import/newline-after-import": "error",
       "import/no-anonymous-default-export": "error",
       "import/no-duplicates": "error",
@@ -135,7 +155,18 @@ export default [
         },
       ],
 
-      "@eslint-community/eslint-comments/no-unused-disable": "error",
+      // eslint-comments
+      "@eslint-community/eslint-comments/no-use": ["error", { allow: ["eslint-disable-next-line"] }],
+      "@eslint-community/eslint-comments/require-description": "error",
+
+      // eslint-v9に対応するまでOff
+      "import/no-mutable-exports": "off",
+      "import/newline-after-import": "off",
+      "solid/jsx-uses-vars": "off",
+      "solid/jsx-no-script-url": "off",
+      "solid/reactivity": "off",
+      "solid/jsx-no-undef": "off",
+      "solid/event-handlers": "off",
 
       // unnecessary with typescript
 
@@ -211,6 +242,27 @@ export default [
       "unicorn/no-instanceof-array": "off", // lint/suspicious/useIsArray
       "@typescript-eslint/prefer-namespace-keyword": "off", // lint/suspicious/useNamespaceKeyword
       "valid-typeof": "off", // lint/suspicious/useValidTypeof
+
+      // 1.6.0 promoted
+      "no-unused-private-class-members": "off", // lint/correctness/noUnusedPrivateClassMembers
+      "@typescript-eslint/no-use-before-define": "off", // lint/correctness/noInvalidUseBeforeDeclaration
+      "@typescript-eslint/consistent-type-exports": "off", // lint/style/useExportType
+      "unicorn/filename-case": "off", // lint/style/useFilenamingConvention
+      "unicorn/no-for-loop": "off", // lint/style/useForOf
+      "@typescript-eslint/prefer-for-of": "off", // lint/style/useForOf
+      "@typescript-eslint/consistent-type-imports": "off", // lint/style/useImportType
+      "unicorn/prefer-node-protocol": "off", // lint/style/useNodejsImportProtocol
+      "unicorn/prefer-number-properties": "off", // lint/style/useNumberNamespace
+      "@typescript-eslint/prefer-function-type": "off", // lint/style/useShorthandFunctionType
+      "no-empty": "off", // lint/suspicious/noEmptyBlockStatements
+      "no-empty-static-block": "off", // lint/suspicious/noEmptyBlockStatements
+      "no-empty-function": "off", // lint/suspicious/noEmptyBlockStatements
+      "@typescript-eslint/no-empty-function": "off", // lint/suspicious/noEmptyBlockStatements
+      "no-global-assign": "off", // lint/suspicious/noGlobalAssign
+      "no-misleading-character-class": "off", // lint/suspicious/noMisleadingCharacterClass
+      "unicorn/no-thenable": "off", // lint/suspicious/noThenProperty
+
+      // 1.7.0 promoted
     },
   },
 
@@ -244,4 +296,4 @@ export default [
 
     rules: {},
   },
-];
+);

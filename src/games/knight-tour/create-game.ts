@@ -6,8 +6,7 @@ import { createSignal } from "solid-js";
 
 type GameObject = {
   board: Accessor<readonly number[]>;
-  // eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
-  resetBoard: (callback: (board: number[]) => number[]) => void;
+  resetBoard: (callback: (board: readonly number[]) => readonly number[]) => void;
   reset: () => void;
   history: Accessor<readonly number[]>;
   setHistory: Setter<readonly number[]>;
@@ -18,8 +17,7 @@ export const createGame = (): GameObject => {
   const [board, setBoard] = createSignal<readonly number[]>([]);
   const [history, setHistory] = createSignal<readonly number[]>([]);
 
-  // eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
-  const resetBoard = (callback: (board: number[]) => number[]): void => {
+  const resetBoard = (callback: (board: readonly number[]) => readonly number[]): void => {
     setBoard((board) => {
       const newBoard = board.map((cell) => {
         return cell === CellMovable ? CellUnvisited : cell;
@@ -41,15 +39,15 @@ export const createGame = (): GameObject => {
     const currentHistory = history();
 
     setHistory(currentHistory.slice(0, index));
-    // eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
     resetBoard((board) => {
+      const newBoard = [...board];
       for (const historyIndex of currentHistory.slice(index)) {
-        board[historyIndex] = CellUnvisited;
+        newBoard[historyIndex] = CellUnvisited;
       }
 
-      const knightIndex = currentHistory[index - 1] ?? board.indexOf(CellVisited);
+      const knightIndex = currentHistory[index - 1] ?? newBoard.indexOf(CellVisited);
 
-      return setKnightMovable(board, knightIndex);
+      return setKnightMovable(newBoard, knightIndex);
     });
   };
 

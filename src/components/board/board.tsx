@@ -43,11 +43,9 @@ export const Board = <T,>(properties: BoardProperties<T>): JSXElement => {
                     width={10}
                     class={rectStyle}
                     tabindex={0}
-                    // eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
                     onClick={() => {
                       click()(square, index());
                     }}
-                    // eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
                     onKeyPress={() => {
                       click()(square, index());
                     }}
