@@ -1,5 +1,5 @@
 import eslintComments from "@eslint-community/eslint-plugin-eslint-comments";
-import js from "@eslint/js";
+import eslint from "@eslint/js";
 import prettier from "eslint-config-prettier";
 import pluginImport from "eslint-plugin-i";
 import solid from "eslint-plugin-solid";
@@ -8,7 +8,7 @@ import vitest from "eslint-plugin-vitest";
 import globals from "globals";
 import typescript from "typescript-eslint";
 
-export default [
+export default typescript.config(
   {
     files: ["**/*.ts", "**/*.tsx"],
     ignores: ["src/env.d.ts"],
@@ -36,13 +36,14 @@ export default [
       },
     },
 
-    settings: {
-      "import/resolver": "typescript",
+    linterOptions: {
+      noInlineConfig: false,
+      reportUnusedDisableDirectives: "error",
     },
 
     rules: {
       // extends
-      ...js.configs.recommended.rules,
+      ...eslint.configs.recommended.rules,
       ...typescript.plugin.configs["eslint-recommended"].overrides[0].rules,
       ...typescript.plugin.configs["recommended-type-checked"].rules,
       ...typescript.plugin.configs["strict-type-checked"].rules,
@@ -50,10 +51,11 @@ export default [
       ...unicorn.configs.recommended.rules,
       ...solid.configs.typescript.rules,
       ...vitest.configs.recommended.rules,
-      ...eslintComments.configs.recommended.rules,
       ...prettier.rules,
 
       // my custom
+
+      // eslint
 
       // unicorn
       "unicorn/number-literal-case": "off",
@@ -82,8 +84,8 @@ export default [
         "warn",
         {
           allow: [
-            { from: "lib", name: ["MouseEvent", "KeyboardEvent", "HTMLInputElement", "HTMLSelectElement"] },
-            { from: "package", package: "solid-js", name: ["JSX", "JSXElement"] },
+            { from: "lib", name: ["MouseEvent", "KeyboardEvent", "HTMLInputElement", "HTMLSelectElement", "Node"] },
+            { from: "package", package: "solid-js", name: ["JSX", "JSXElement", "JSX.Element", "JSX.ArrayElement"] },
           ],
           treatMethodsAsReadonly: true,
         },
@@ -147,7 +149,8 @@ export default [
       ],
 
       // eslint-comments
-      "@eslint-community/eslint-comments/no-unused-disable": "error",
+      "@eslint-community/eslint-comments/no-use": ["error", { allow: ["eslint-disable-next-line"] }],
+      "@eslint-community/eslint-comments/require-description": "error",
 
       // unnecessary with typescript
 
@@ -244,7 +247,6 @@ export default [
       "unicorn/no-thenable": "off", // lint/suspicious/noThenProperty
 
       // 1.7.0 promoted
-      
     },
   },
 
@@ -278,4 +280,4 @@ export default [
 
     rules: {},
   },
-];
+);
