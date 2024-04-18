@@ -14,7 +14,6 @@ import {
   MoveFrom,
   MoveTarget,
 } from "@/games/chess/constants";
-import { movableSquareStyle, pieceBlackStyle, pieceWhiteStyle, selectedStyle } from "@/games/chess/style.css";
 import bishop from "@/images/chess/bishop.svg";
 import king from "@/images/chess/king.svg";
 import knight from "@/images/chess/knight.svg";
@@ -40,8 +39,8 @@ export const BoardSquare = (properties: BoardSquareProperties): JSXElement => {
     properties.piece === CellBlackRook ||
     properties.piece === CellBlackQueen ||
     properties.piece === CellBlackKing
-      ? pieceBlackStyle
-      : pieceWhiteStyle;
+      ? "fill-stone-500 stroke-slate-900"
+      : "fill-stone-200 stroke-slate-900";
 
   const pieceHref = (): string | undefined => {
     switch (properties.piece) {
@@ -75,18 +74,19 @@ export const BoardSquare = (properties: BoardSquareProperties): JSXElement => {
   };
 
   const markStyle = (): string | undefined =>
-    properties.mark === MoveTarget ? movableSquareStyle : properties.mark === MoveFrom ? selectedStyle : undefined;
+    properties.mark === MoveTarget
+      ? "stroke-[4] cursor-pointer stroke-orange-500"
+      : properties.mark === MoveFrom
+        ? "stroke-[4] cursor-pointer stroke-slate-900"
+        : "stroke-[4] cursor-pointer stroke-none";
 
   return (
     <>
       <Show when={pieceHref()}>
         {(href) => <use href={href()} x={properties.x} y={properties.y} height={10} width={10} class={pieceStyle()} />}
       </Show>
-      <Show when={markStyle()}>
-        {(style) => (
-          <use href={`${frame.src}#root`} x={properties.x} y={properties.y} height={10} width={10} class={style()} />
-        )}
-      </Show>
+
+      <use href={`${frame.src}#root`} x={properties.x} y={properties.y} height={10} width={10} class={markStyle()} />
     </>
   );
 };
