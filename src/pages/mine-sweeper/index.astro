@@ -1,13 +1,15 @@
 ---
 import Head from "@/components/head.astro";
+import Header from "@/components/header.astro";
 import Setting from "@/components/setting-form/form.astro";
 import Number from "@/components/setting-form/number.astro";
+import SubHeader from "@/components/sub-header.astro";
 import { h1Style, h2Style } from "@/styles/common.css";
 ---
 
 <Head title="Mine Sweeper" />
 
-<h1 class={h1Style}>Mine Sweeper</h1>
+<Header>Mine Sweeper</Header>
 <Setting action="game/">
     <dt>Height</dt>
     <dd>
@@ -26,7 +28,7 @@ import { h1Style, h2Style } from "@/styles/common.css";
 </Setting>
 
 <p>
-    <h2 class={h2Style}>How to play Mine Sweeper</h2>
+    <SubHeader>How to play Mine Sweeper</SubHeader>
 
     <!-- TODO -->
 </p>

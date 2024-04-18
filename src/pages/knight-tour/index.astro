@@ -1,13 +1,14 @@
 ---
 import Head from "@/components/head.astro";
+import Header from "@/components/header.astro";
 import Setting from "@/components/setting-form/form.astro";
 import Radio from "@/components/setting-form/radio.astro";
-import { h1Style, h2Style } from "@/styles/common.css";
+import SubHeader from "@/components/sub-header.astro";
 ---
 
 <Head title="Knight's Tour" />
 
-<h1 class={h1Style}>Knight's Tour</h1>
+<Header>Knight's Tour</Header>
 <Setting action="game/">
     <dt>Hint mode</dt>
     <dd>
@@ -24,7 +25,7 @@ import { h1Style, h2Style } from "@/styles/common.css";
 </Setting>
 
 <p>
-    <h2 class={h2Style}>How to play Knight's Tour</h2>
+    <SubHeader>How to play Knight's Tour</SubHeader>
 
     <p>
         Knight's Tour is a puzzle using an 8 x 8 chess board and one knight

@@ -1,6 +1,5 @@
 ---
-import { h2Style } from "@/styles/common.css";
-import { formStyle, settingListStyle, startButtonStyle } from "./style.css";
+import SubHeader from "@/components/sub-header.astro";
 
 interface Props {
   readonly action: string;
@@ -9,12 +8,15 @@ interface Props {
 const { action } = Astro.props;
 ---
 
-<form action={action} class={formStyle}>
-  <h2 class={h2Style}>Settings</h2>
+<form
+  action={action}
+  class="flex flex-col w-max border-double border-slate-900 border-4 m-2 p-2"
+>
+  <SubHeader>Settings</SubHeader>
 
-  <dl class={settingListStyle}>
+  <dl class="grid grid-cols-2">
     <slot />
   </dl>
 
-  <button class={startButtonStyle}>Start</button>
+  <button class="underline decoration-black decoration-double">Start</button>
 </form>

@@ -1,16 +1,17 @@
 ---
 import Head from "@/components/head.astro";
+import Header from "@/components/header.astro";
+import SubHeader from "@/components/sub-header.astro";
 import Setting from "@/components/setting-form/form.astro";
 import Radio from "@/components/setting-form/radio.astro";
 import { StyledSvg } from "@/components/styled-svg";
 import cross from "@/images/icon/cross.svg";
 import nought from "@/images/icon/nought.svg";
-import { h1Style, h2Style } from "@/styles/common.css";
 ---
 
 <Head title="Noughts and Crosses" />
 
-<h1 class={h1Style}>Noughts and Crosses</h1>
+<Header>Noughts and Crosses</Header>
 <Setting action="game/">
     <dt>
         <StyledSvg src={nought.src} alt="nought" /> player
@@ -30,7 +31,7 @@ import { h1Style, h2Style } from "@/styles/common.css";
 </Setting>
 
 <p>
-    <h2 class={h2Style}>How to play Noughts and Crosses</h2>
+    <SubHeader>How to play Noughts and Crosses</SubHeader>
 
     <!-- TODO -->
 </p>
