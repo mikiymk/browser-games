@@ -50,6 +50,7 @@
         "useSingleCaseStatement": "error"
       },
       "suspicious": {
+        "noConsoleLog": "error",
         "noEmptyBlockStatements": "error",
         "noSkippedTests": "error",
         "useAwait": "error"
