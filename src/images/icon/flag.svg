@@ -1,18 +1,20 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg id="root" viewBox="0 0 60 60" version="1.1" xmlns="http://www.w3.org/2000/svg">
-    <path d="
-        M 30,5 
-        L 10,30
-        L 30,30
-        Z
-    " />
-    <path d="
-        M 30,5 
-        L 30,50
-    " />
-    <path d="
-        M 10,50
-        L 50,50
-    " />
+<svg viewBox="0 0 60 60" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <symbol id="root" viewBox="0 0 60 60">
+        <path d="
+            M 30,5 
+            L 10,30
+            L 30,30
+            Z
+        " />
+        <path d="
+            M 30,5 
+            L 30,50
+        " />
+        <path d="
+            M 10,50
+            L 50,50
+        " />
+    </symbol>
 
+    <use href="#root" fill="#fff" stroke="#000" />
 </svg>
