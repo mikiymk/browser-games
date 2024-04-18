@@ -23,7 +23,9 @@ export const Board = <T,>(properties: BoardProperties<T>): JSXElement => {
     >
       <title>board</title>
 
-      <Show when={properties.background}>{(bg) => <use href={`${bg()}#root`} />}</Show>
+      <Show when={properties.background}>
+        {(bg) => <image href={bg()} height={properties.height * 10} width={properties.width * 10} />}
+      </Show>
 
       <For each={properties.data}>
         {(square, index) => {

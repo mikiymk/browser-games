@@ -56,3 +56,7 @@ export const buttonStyle = style({
   textDecoration: "black underline double",
   margin: "0 1rem",
 });
+
+export const hiddenStyle = style({
+  display: "none",
+});
