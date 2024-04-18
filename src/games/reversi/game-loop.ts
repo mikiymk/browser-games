@@ -32,8 +32,6 @@ export const gameLoop = (
 
   let bp = init();
 
-  console.log(`game start id(${bp})`);
-
   const updateColor = (): void => {
     if (bp === 0) {
       setColor(CellEmpty);
@@ -45,7 +43,6 @@ export const gameLoop = (
   };
 
   const terminate = (): void => {
-    console.log(`game end id(${bp})`);
     deinit(bp);
     bp = 0;
     onEnd();
