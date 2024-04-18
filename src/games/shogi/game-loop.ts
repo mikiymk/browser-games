@@ -50,14 +50,7 @@ const AI_SLEEP_TIME_MS = 500;
 const EmptyBoard: readonly number[] = Array.from({ length: 81 }, () => 0);
 
 const getWasm = async (): Promise<WasmConnect> => {
-  const decoder = new TextDecoder();
-  const wasm = await WebAssembly.instantiateStreaming(fetch(`${import.meta.env.BASE_URL}/wasm/shogi.wasm`), {
-    env: {
-      consoleLog: (ptr: number, length: number) => {
-        console.log(decoder.decode(new Uint8Array((wasm.instance.exports as WasmExports).memory.buffer, ptr, length)));
-      },
-    },
-  });
+  const wasm = await WebAssembly.instantiateStreaming(fetch(`${import.meta.env.BASE_URL}/wasm/shogi.wasm`), {});
 
   const exports = wasm.instance.exports as WasmExports;
 
@@ -157,39 +150,26 @@ const gameLoop = (
   } = wasm;
 
   let game: Game = init();
-  console.log(`game start id(${game.game}, ${game.board})`);
 
   const terminate = (): void => {
-    console.log(`game end id(${game.game}, ${game.board})`);
     deinit(game);
     game = { game: 0, board: 0 };
   };
 
   // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: 長い関数
   const ply = async (color: number): Promise<void> => {
-    console.log("players", players, color);
-
     if (isHuman(players, color)) {
-      console.log("human input");
-
       for (;;) {
         setMove(EmptyBoard);
 
-        console.log("human input request");
-
         const from = await humanInput.request();
-        console.log("human input from =", from);
         if (from > 99) {
-          console.log("持ち駒");
-
           const hits = hitPos(game, from - 100);
-          console.log("human input hit", hits);
           if (!hits.includes(MOVE_TARGET)) {
             continue;
           }
           setMove(hits);
           const to = await humanInput.request();
-          console.log("human input to =", to);
           if (to > 99) {
             continue;
           }
@@ -204,8 +184,6 @@ const gameLoop = (
 
         const moves = movePos(game, from);
 
-        console.log("human input move", moves);
-
         if (!moves.includes(MOVE_TARGET)) {
           continue;
         }
@@ -213,7 +191,6 @@ const gameLoop = (
         setMove(moves);
 
         const to = await humanInput.request();
-        console.log("human input to =", to);
         if (to > 99) {
           continue;
         }
@@ -233,26 +210,18 @@ const gameLoop = (
         }
       }
     } else {
-      console.log("ai");
-
-      console.time("ai think");
       ai(game);
-      console.timeEnd("ai think");
 
       await sleep(AI_SLEEP_TIME_MS);
     }
   };
 
   const run = async (): Promise<void> => {
-    console.log("board", board(game));
     setBoard(board(game));
     setHands(hands(game));
     const color = player(game);
-    console.log("color", color);
 
-    console.log("ply start");
     await ply(color);
-    console.log("ply end");
 
     setPlayer(player(game));
     setBoard(board(game));
@@ -265,14 +234,12 @@ const gameLoop = (
     }
 
     if (game.game !== 0) {
-      console.log(`game continue id(${game.game}, ${game.board})`);
       setTimeout(() => {
         void run();
       }, 0);
     }
   };
 
-  console.log("game loop start");
   setTimeout(() => {
     void run();
   }, 0);

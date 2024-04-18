@@ -1,7 +1,7 @@
 import { doNothingFunction } from "@/scripts/do-nothing";
 import { MultiPromise } from "@/scripts/multi-promise";
 import { PlayerTypeAi, PlayerTypeHuman, playerType } from "@/scripts/player";
-import { createEffect, createResource, createSignal } from "solid-js";
+import { createResource, createSignal } from "solid-js";
 import type { JSXElement } from "solid-js";
 import type { Hand } from "../constants";
 import { BLACK, MOVE_TARGET, WHITE } from "../constants";
@@ -29,17 +29,7 @@ export const App = (): JSXElement => {
   const [promotion, setPromotion] = createSignal(false);
   const [wasm] = createResource(getWasm);
 
-  createEffect(() => {
-    console.group("state changed");
-    console.log("board", board());
-    console.log("whiteHands", whiteHands());
-    console.log("blackHands", blackHands());
-    console.groupEnd();
-  });
-
   const setBoard = (board: readonly number[]): void => {
-    console.log("setBoard", board);
-
     setFullBoard(
       (
         previousBoard: readonly {
@@ -58,8 +48,6 @@ export const App = (): JSXElement => {
   };
 
   const setMove = (moves: readonly number[]): void => {
-    console.log("setMove", moves);
-
     setFullBoard(
       (
         previousBoard: readonly {
@@ -89,8 +77,6 @@ export const App = (): JSXElement => {
 
   let terminate = doNothingFunction;
   const start = (): void => {
-    console.log("start");
-
     terminate();
 
     const wasmObject = wasm();
@@ -114,7 +100,6 @@ export const App = (): JSXElement => {
   };
 
   const handleBoardClick = (index: number): void => {
-    console.log("index", index);
     resolve(index);
   };
 

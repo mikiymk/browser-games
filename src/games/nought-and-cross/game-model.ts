@@ -57,17 +57,11 @@ export const gameLoop = (
   humanInput: MultiPromise<number>,
   players: Players,
 ): { terminate: () => void } => {
-  const id = Math.floor(Math.random() * 0xff_ff).toString(16);
-
-  console.log(`start game(${id})`);
-
   let board: readonly number[] = Array.from({ length: 9 }, () => Empty);
   let mark = MarkO;
   let isRunning = true;
 
   const terminate = (): void => {
-    console.log(`end game(${id})`);
-
     isRunning = false;
   };
 

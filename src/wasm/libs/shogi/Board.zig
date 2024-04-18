@@ -5,7 +5,6 @@ const builtin = @import("builtin");
 // common import
 const common = @import("../common/main.zig");
 const BitBoard = common.bit_board.BitBoard(9, 9);
-const console = common.console;
 
 // internal import
 const main = @import("./main.zig");
@@ -455,8 +454,6 @@ pub fn movePositions(board: Board, from: u81) u81 {
 }
 
 pub fn hitPositions(board: Board, color: Game.PlayerColor, piece: Game.PrimaryPiece) u81 {
-    console.log("piece = {}", .{piece});
-
     const empty = ~(board.getColorPieces(.black) | board.getColorPieces(.white));
     return switch (piece) {
         .pawn, .lance => switch (color) {

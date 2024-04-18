@@ -81,7 +81,7 @@ export default typescript.config(
       "@typescript-eslint/prefer-destructuring": "error",
       "@typescript-eslint/prefer-readonly": "error",
       "@typescript-eslint/prefer-readonly-parameter-types": [
-        "warn",
+        "error",
         {
           allow: [
             {

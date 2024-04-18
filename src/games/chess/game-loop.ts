@@ -280,10 +280,8 @@ export const gameLoop = (
   } = wasm;
 
   let boardPtr: GamePtr = init();
-  console.log(`game start id(${boardPtr})`);
 
   const terminate = (): void => {
-    console.log(`game end id(${boardPtr})`);
     deinit(boardPtr);
     boardPtr = 0;
   };
@@ -292,7 +290,6 @@ export const gameLoop = (
   const run = async (): Promise<void> => {
     setBoard(getBoard(boardPtr));
     const color = getColor(boardPtr);
-    console.log("color", color);
 
     if (isHuman(color, players)) {
       let from: number;
@@ -343,7 +340,6 @@ export const gameLoop = (
 
     if (boardPtr !== 0) {
       setTimeout(() => {
-        console.log(`game continue id(${boardPtr})`);
         void run();
       }, 0);
     }
