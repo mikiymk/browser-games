@@ -15,10 +15,12 @@ fn noWrite(_: void, bytes: []const u8) WriteError!usize {
 }
 
 const writeFn = if (builtin.target.isWasm()) write else noWrite;
-const Writer = std.io.Writer(void, WriteError, writeFn);
+const Writer = std.io.Writer(void, WriteError, write);
 
 const writer: Writer = .{ .context = void{} };
 
 pub fn log(comptime fmt: []const u8, args: anytype) void {
-    writer.print("zig output: " ++ fmt, args) catch {};
+    if (builtin.target.isWasm()) {
+        writer.print("zig output: " ++ fmt, args) catch {};
+    }
 }

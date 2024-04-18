@@ -7,7 +7,6 @@ const assert = std.debug.assert;
 // common import
 const common = @import("../common/main.zig");
 const BitBoard = common.bit_board.BitBoard(9, 9);
-const console = common.console;
 
 // internal import
 const main = @import("./main.zig");
@@ -35,8 +34,6 @@ fn moveHit(piece: Game.PieceKind, to: u81) Move {
 
 /// 自動で動かす手を決める関数
 pub fn move(game: Game, r: Random) Move {
-    console.log("ai move start", .{});
-
     if (r.boolean()) {
         // 持ち駒を打つ
         const piece = selectHandPiece(game, r);
@@ -83,7 +80,6 @@ fn selectHandPiece(game: Game, r: Random) ?Game.PrimaryPiece {
 
     var index = r.intRangeLessThan(usize, 0, count);
 
-    console.log("ai hands = {}, index = {}", .{ set, index });
     var i = set.iterator();
     while (i.next()) |hand| {
         if (index == 0) {
@@ -96,15 +92,11 @@ fn selectHandPiece(game: Game, r: Random) ?Game.PrimaryPiece {
 }
 
 fn selectPlace(r: Random, place: u81) u81 {
-    console.log("select start\n{s}", .{BitBoard.toString(place, 'o', '.')});
-
     var index = r.intRangeLessThan(usize, 0, @popCount(place));
     var iter = BitBoard.iterator(place);
 
     while (iter.next()) |p| {
         if (index == 0) {
-            console.log("selected\n{s}", .{BitBoard.toString(p, 'o', '.')});
-
             return p;
         }
 
