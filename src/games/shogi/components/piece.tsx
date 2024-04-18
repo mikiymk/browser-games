@@ -1,6 +1,6 @@
-import type { JSXElement } from "solid-js";
 import piece from "@/images/shogi/piece.svg";
-import { kanjiStyle, pieceStyle, redKanjiStyle,  } from "../style.css";
+import type { JSXElement } from "solid-js";
+import { kanjiStyle, pieceStyle, redKanjiStyle } from "../style.css";
 
 type DefinePieceProperties = {
   readonly id: string;

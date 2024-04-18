@@ -3,10 +3,10 @@ import board from "@/images/shogi/board.svg";
 import type { JSXElement } from "solid-js";
 import { BLACK, WHITE } from "../constants";
 import type { Hand } from "../constants";
-import { handHeaderCellStyle } from "../style.css";
+import { handHeaderCellStyle, hiddenStyle } from "../style.css";
 import { Hands } from "./hands";
-import { Square } from "./square";
 import { DefinePiece } from "./piece";
+import { Square } from "./square";
 
 type BoardProperties = {
   readonly board: readonly { readonly piece: number; readonly moveTarget: boolean }[];
@@ -16,7 +16,7 @@ type BoardProperties = {
 export const ShogiBoard = (properties: BoardProperties): JSXElement => {
   return (
     <>
-      <svg viewBox="0 0 0 0" xmlns="http://www.w3.org/2000/svg" style={{ display: "none" }}>
+      <svg viewBox="0 0 0 0" xmlns="http://www.w3.org/2000/svg" class={hiddenStyle}>
         <title>Define pieces</title>
 
         <DefinePiece id="王将" pieces={["王", "将"]} />
