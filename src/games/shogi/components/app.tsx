@@ -1,3 +1,4 @@
+import { Button } from "@/components/button";
 import { doNothingFunction } from "@/scripts/do-nothing";
 import { MultiPromise } from "@/scripts/multi-promise";
 import { PlayerTypeAi, PlayerTypeHuman, playerType } from "@/scripts/player";
@@ -9,7 +10,6 @@ import { gameLoop, getWasm } from "../game-loop";
 import { ShogiBoard } from "./board";
 import { GameOverPopUp } from "./game-over-pop-up";
 import { PromotionPopUp } from "./promotion-pop-up";
-import { Button } from "@/components/button";
 
 // memo
 // motigoma

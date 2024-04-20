@@ -167,6 +167,7 @@ export default typescript.config(
       "solid/reactivity": "off",
       "solid/jsx-no-undef": "off",
       "solid/event-handlers": "off",
+      "solid/style-prop": "off",
 
       // unnecessary with typescript
 

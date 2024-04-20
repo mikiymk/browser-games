@@ -1,6 +1,6 @@
+import { Button } from "@/components/button";
 import type { JSXElement } from "solid-js";
 import { PopUp } from "./pop-up";
-import { Button } from "@/components/button";
 
 type PromotionPopUpProperties = {
   readonly promotion: boolean;

@@ -1,12 +1,12 @@
+import { Button } from "@/components/button";
 import { CellKnight, CellMovable, CellVisited } from "@/games/knight-tour/consts";
 import { createGame } from "@/games/knight-tour/create-game";
 import { setKnightMovable } from "@/games/knight-tour/knight-move";
+import { PopUp } from "@/games/shogi/components/pop-up";
 import type { JSXElement } from "solid-js";
 import { createSignal, onMount } from "solid-js";
 import { KnightBoard } from "./board";
 import { History } from "./history";
-import { PopUp } from "@/games/shogi/components/pop-up";
-import { Button } from "@/components/button";
 
 export const App = (): JSXElement => {
   const query = new URLSearchParams(location.search);

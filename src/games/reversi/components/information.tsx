@@ -1,9 +1,9 @@
+import { Button } from "@/components/button";
+import { StyledSvg } from "@/components/styled-svg";
 import stone from "@/images/reversi/stone.svg";
 import type { JSXElement } from "solid-js";
 import { createMemo } from "solid-js";
 import { CellBlack, CellWhite } from "../const";
-import { StyledSvg } from "@/components/styled-svg";
-import { Button } from "@/components/button";
 
 // ゲーム終了時に結果を表示する
 
