@@ -1,15 +1,9 @@
-import {
-  blackStoneStyle,
-  currentPlayerStyle,
-  infoStoneSymbolStyle,
-  infoStyle,
-  whiteStoneStyle,
-} from "@/games/reversi/style.css";
 import stone from "@/images/reversi/stone.svg";
 import { buttonStyle } from "@/styles/common.css";
 import type { JSXElement } from "solid-js";
 import { createMemo } from "solid-js";
 import { CellBlack, CellWhite } from "../const";
+import { StyledSvg } from "@/components/styled-svg";
 
 // ゲーム終了時に結果を表示する
 
@@ -26,20 +20,14 @@ const StoneCount = (properties: StoneProperties): JSXElement => {
 
   return (
     <>
-      <div class={isBlack() ? currentPlayerStyle : ""}>
-        <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" class={infoStoneSymbolStyle}>
-          <title>black</title>
-          <use href={`${stone.src}#root`} class={blackStoneStyle} />
-        </svg>
+      <div class={isBlack() ? "bg-lime-400" : ""}>
+        <StyledSvg src={stone.src} alt="black" class="fill-stone-500 stroke-slate-900" />
 
         {properties.black}
       </div>
 
-      <div class={isWhite() ? currentPlayerStyle : ""}>
-        <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" class={infoStoneSymbolStyle}>
-          <title>white</title>
-          <use href={`${stone.src}#root`} class={whiteStoneStyle} />
-        </svg>
+      <div class={isWhite() ? "bg-lime-400" : ""}>
+        <StyledSvg src={stone.src} alt="black" class="fill-stone-200 stroke-slate-900" />
 
         {properties.white}
       </div>
@@ -93,7 +81,7 @@ export const Info = (properties: InfoProperties): JSXElement => {
   const countWhite = createMemo(() => count(CellWhite));
 
   return (
-    <div class={infoStyle}>
+    <div>
       <StoneCount playing={properties.playing} black={countBlack()} white={countWhite()} color={properties.color} />
       <PlayButtons start={properties.start} end={properties.end} />
     </div>
