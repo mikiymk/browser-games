@@ -7,9 +7,9 @@ import type { Hand } from "../constants";
 import { BLACK, MOVE_TARGET, WHITE } from "../constants";
 import { gameLoop, getWasm } from "../game-loop";
 import { ShogiBoard } from "./board";
-import { Button } from "./button";
 import { GameOverPopUp } from "./game-over-pop-up";
 import { PromotionPopUp } from "./promotion-pop-up";
+import { Button } from "@/components/button";
 
 // memo
 // motigoma

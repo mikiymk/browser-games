@@ -11,7 +11,7 @@ export const Button = (properties: ButtonProperties): JSXElement => {
       onClick={(event: MouseEvent) => {
         properties.onClick?.(event);
       }}
-      class="underline decoration-black decoration-double"
+      class="underline decoration-black decoration-double mx-1"
     >
       {properties.children}
     </button>

@@ -1,6 +1,5 @@
 import piece from "@/images/shogi/piece.svg";
 import type { JSXElement } from "solid-js";
-import { kanjiStyle, pieceStyle, redKanjiStyle } from "../style.css";
 
 type DefinePieceProperties = {
   readonly id: string;
@@ -10,16 +9,30 @@ type DefinePieceProperties = {
 
 export const DefinePiece = (properties: DefinePieceProperties): JSXElement => {
   const kanji = (): string => {
-    return properties.promoted === true ? redKanjiStyle : kanjiStyle;
+    return properties.promoted === true ? "font-noto text-[20px] fill-red-600" : "font-noto text-[20px]";
   };
 
   return (
     <symbol id={properties.id} viewBox="0 0 60 60">
-      <use href={`${piece.src}#root`} height={60} width={60} class={pieceStyle} />
-      <text x="30" y="28" class={kanji()}>
+      <use href={`${piece.src}#root`} height={60} width={60} class="fill-yellow-300 stroke-slate-900" />
+      <text
+        x="30"
+        y="28"
+        class={kanji()}
+        style={{
+          "text-anchor": "middle",
+        }}
+      >
         {properties.pieces[0]}
       </text>
-      <text x="30" y="50" class={kanji()}>
+      <text
+        x="30"
+        y="50"
+        class={kanji()}
+        style={{
+          "text-anchor": "middle",
+        }}
+      >
         {properties.pieces[1]}
       </text>
     </symbol>
