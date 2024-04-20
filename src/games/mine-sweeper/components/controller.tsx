@@ -1,4 +1,4 @@
-import { buttonStyle } from "@/styles/common.css";
+import { Button } from "@/components/button";
 import type { JSXElement } from "solid-js";
 
 type ControllerProperties = {
@@ -14,15 +14,13 @@ export const Controller = (properties: ControllerProperties): JSXElement => {
         status:
         <output>{properties.message}</output>
       </p>
-      <button
-        type="button"
+      <Button
         onClick={() => {
           properties.reset();
         }}
-        class={buttonStyle}
       >
         reset
-      </button>
+      </Button>
     </>
   );
 };

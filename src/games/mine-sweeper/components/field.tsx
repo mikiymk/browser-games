@@ -12,21 +12,6 @@ import {
   FieldNumber7,
   FieldNumber8,
 } from "@/games/mine-sweeper/consts";
-import {
-  closeFieldStyle,
-  flagStyle,
-  frontRectStyle,
-  mineStyle,
-  number1Style,
-  number2Style,
-  number3Style,
-  number4Style,
-  number5Style,
-  number6Style,
-  number7Style,
-  number8Style,
-  openFieldStyle,
-} from "@/games/mine-sweeper/style.css";
 import flag from "@/images/icon/flag.svg";
 import mine from "@/images/icon/mine.svg";
 import number1 from "@/images/letter/1.svg";
@@ -61,26 +46,26 @@ const MineCell = (properties: MineCellProperties): JSXElement => {
   const imageSource = (): [source: string, style: string] | undefined => {
     switch (properties.field) {
       case FieldBomb:
-        return [mine.src, mineStyle];
+        return [mine.src, "stroke-slate-900 stroke-2 fill-slate-900"];
       case FieldFlag:
-        return [flag.src, flagStyle];
+        return [flag.src, "stroke-slate-900 stroke-2 fill-red-500"];
 
       case FieldNumber1:
-        return [number1.src, number1Style];
+        return [number1.src, "stroke-blue-500 stroke-2 fill-none"];
       case FieldNumber2:
-        return [number2.src, number2Style];
+        return [number2.src, "stroke-green-500 stroke-2 fill-none"];
       case FieldNumber3:
-        return [number3.src, number3Style];
+        return [number3.src, "stroke-red-500 stroke-2 fill-none"];
       case FieldNumber4:
-        return [number4.src, number4Style];
+        return [number4.src, "stroke-fuchsia-500 stroke-2 fill-none"];
       case FieldNumber5:
-        return [number5.src, number5Style];
+        return [number5.src, "stroke-red-800 stroke-2 fill-none"];
       case FieldNumber6:
-        return [number6.src, number6Style];
+        return [number6.src, "stroke-teal-400 stroke-2 fill-none"];
       case FieldNumber7:
-        return [number7.src, number7Style];
+        return [number7.src, "stroke-slate-900 stroke-2 fill-none"];
       case FieldNumber8:
-        return [number8.src, number8Style];
+        return [number8.src, "stroke-stone-500 stroke-2 fill-none"];
       default:
         return;
     }
@@ -88,13 +73,9 @@ const MineCell = (properties: MineCellProperties): JSXElement => {
 
   return (
     <>
-      <rect
-        x={properties.x}
-        y={properties.y}
-        height={10}
-        width={10}
-        class={isClosed() ? closeFieldStyle : openFieldStyle}
-      />
+      <Show when={isClosed()}>
+        <rect x={properties.x} y={properties.y} height={10} width={10} class="fill-slate-400" />
+      </Show>
 
       <Show when={imageSource()}>
         {(source) => (
@@ -122,7 +103,7 @@ const MineCell = (properties: MineCellProperties): JSXElement => {
           properties.onClick();
         }}
         onContextMenu={handleContextMenu}
-        class={frontRectStyle}
+        class="fill-[#00000000] stroke-slate-900 stroke-[0.05]"
       />
     </>
   );
