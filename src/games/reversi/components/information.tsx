@@ -1,9 +1,9 @@
 import stone from "@/images/reversi/stone.svg";
-import { buttonStyle } from "@/styles/common.css";
 import type { JSXElement } from "solid-js";
 import { createMemo } from "solid-js";
 import { CellBlack, CellWhite } from "../const";
 import { StyledSvg } from "@/components/styled-svg";
+import { Button } from "@/components/button";
 
 // ゲーム終了時に結果を表示する
 
@@ -42,25 +42,21 @@ type PlayButtonsProperties = {
 const PlayButtons = (properties: PlayButtonsProperties): JSXElement => {
   return (
     <div>
-      <button
-        class={buttonStyle}
-        type="button"
+      <Button
         onClick={() => {
           properties.start();
         }}
       >
         Start Game
-      </button>
+      </Button>
 
-      <button
-        class={buttonStyle}
-        type="button"
+      <Button
         onClick={() => {
           properties.end();
         }}
       >
         End Game
-      </button>
+      </Button>
     </div>
   );
 };

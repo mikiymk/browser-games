@@ -2,7 +2,7 @@ import { For, Show } from "solid-js";
 import type { JSXElement } from "solid-js";
 import { WHITE } from "../constants";
 import type { Hand } from "../constants";
-import { Button } from "./button";
+import { Button } from "@/components/button";
 
 type HandsProperties = {
   readonly color: number;
