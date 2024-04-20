@@ -1,4 +1,3 @@
-import { historyButtonStyle, historyItemStyle, historyStyle } from "@/games/knight-tour/style.css";
 import type { JSXElement } from "solid-js";
 import { For } from "solid-js";
 
@@ -8,17 +7,17 @@ type HistoryProperties = {
 };
 export const History = (properties: HistoryProperties): JSXElement => {
   return (
-    <ul class={historyStyle}>
+    <ul class="space-x-2 text-start">
       <li>History</li>
       <For each={properties.history_}>
         {(fill, index) => (
-          <li class={historyItemStyle}>
+          <li class="inline">
             <button
               type="button"
               onClick={() => {
                 properties.back_(index());
               }}
-              class={historyButtonStyle}
+              class="w-8 text-center border border-slate-900 border-solid"
             >
               {"abcdefgh"[fill % 8]}-{Math.floor(fill / 8) + 1}
             </button>

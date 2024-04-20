@@ -1,5 +1,4 @@
 import { Board } from "@/components/board/board";
-import { boardStyle } from "@/games/knight-tour/style.css";
 import board from "@/images/chess/board.svg";
 import type { JSXElement } from "solid-js";
 import { Square } from "./square";
@@ -17,7 +16,6 @@ export const KnightBoard = (properties: BoardProperties): JSXElement => {
       width={8}
       data={properties.board}
       background={board.src}
-      class={boardStyle}
       click={(_, index) => {
         properties.handleClick(index);
       }}
