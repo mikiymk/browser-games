@@ -1,3 +1,4 @@
+import { Button } from "@/components/button";
 import {
   Black,
   End5Repetition,
@@ -7,7 +8,6 @@ import {
   EndStalemate,
   EndWhiteWin,
 } from "@/games/chess/constants";
-import { buttonStyle } from "@/styles/common.css";
 import type { JSXElement } from "solid-js";
 
 type ControllerProperties = {
@@ -50,15 +50,13 @@ export const Controller = (properties: ControllerProperties): JSXElement => {
         <output>{message()}</output>
       </p>
 
-      <button
-        type="button"
+      <Button
         onClick={() => {
           properties.start();
         }}
-        class={buttonStyle}
       >
         start
-      </button>
+      </Button>
     </div>
   );
 };

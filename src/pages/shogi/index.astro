@@ -1,13 +1,14 @@
 ---
 import Head from "@/components/head.astro";
+import Header from "@/components/header.astro";
 import Setting from "@/components/setting-form/form.astro";
 import Radio from "@/components/setting-form/radio.astro";
-import { h1Style, h2Style } from "@/styles/common.css";
+import SubHeader from "@/components/sub-header.astro";
 ---
 
 <Head title="Shogi" />
 
-<h1 class={h1Style}>Shogi</h1>
+<Header>Shogi</Header>
 <Setting action="game/">
     <dt>First player</dt>
     <dd>
@@ -23,5 +24,5 @@ import { h1Style, h2Style } from "@/styles/common.css";
 </Setting>
 
 <p>
-    <h2 class={h2Style}>Shogi</h2>
+    <SubHeader>Shogi</SubHeader>
 </p>

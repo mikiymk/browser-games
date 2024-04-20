@@ -1,6 +1,5 @@
 import { CellKnight, CellMovable, CellVisited } from "@/games/knight-tour/consts";
 import { getLegalMove } from "@/games/knight-tour/knight-move";
-import { blackNumberStyle, pieceStyle, whiteNumberStyle } from "@/games/knight-tour/style.css";
 import knight from "@/images/chess/knight.svg";
 import cross from "@/images/icon/cross.svg";
 import nought from "@/images/icon/nought.svg";
@@ -78,25 +77,16 @@ export const Square = (properties: SquareProperties): JSXElement => {
   const imageStyle = (): string => {
     switch (properties.cell) {
       case CellKnight:
-        return pieceStyle;
+        return "fill-stone-200 stroke-slate-900";
       default:
-        return blackIndexes.has(properties.index) ? whiteNumberStyle : blackNumberStyle;
+        return blackIndexes.has(properties.index) ? "fill-none stroke-slate-500" : "fill-none stroke-slate-300";
     }
   };
 
   return (
     <Show when={imageSource()}>
       {(source) => (
-        <>
-          <use
-            href={`${source()}#root`}
-            x={properties.x}
-            y={properties.y}
-            height={10}
-            width={10}
-            class={imageStyle()}
-          />
-        </>
+        <use href={`${source()}#root`} x={properties.x} y={properties.y} height={10} width={10} class={imageStyle()} />
       )}
     </Show>
   );

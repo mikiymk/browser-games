@@ -1,22 +1,19 @@
 ---
 import Head from "@/components/head.astro";
-import { bodyStyle as defaultBodyStyle, linkStyle } from "@/styles/common.css";
 
 interface Props {
   title: string;
-
-  bodyStyle?: string;
 }
 
-const { title, bodyStyle } = Astro.props;
+const { title } = Astro.props;
 ---
 
 <Head title={title} />
 
 <body>
-    <div class={bodyStyle ?? defaultBodyStyle}>
-        <slot />
+  <div class="h-dvh w-dvw flex flex-col items-center gap-5 p-5">
+    <slot />
 
-        <a href="../../" class={linkStyle}>Return to top</a>
-    </div>
+    <a href="../../" class="underline hover:text-slate-600">Return to top</a>
+  </div>
 </body>

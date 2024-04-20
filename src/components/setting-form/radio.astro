@@ -1,6 +1,4 @@
 ---
-import { inputLabelStyle } from "./style.css";
-
 interface Props {
   readonly name: string;
   readonly value: string;
@@ -11,6 +9,12 @@ interface Props {
 const { name, value, checked } = Astro.props;
 ---
 
-<label class={inputLabelStyle}>
-    <input type="radio" name={name} value={value} checked={checked} /><slot />
+<label class="px-2 has-[:checked]:bg-lime-200 decoration-slate-900">
+  <input
+    type="radio"
+    name={name}
+    value={value}
+    checked={checked}
+    class="hidden"
+  /><slot />
 </label>

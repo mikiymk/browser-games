@@ -1,9 +1,9 @@
 import { Board } from "@/components/board/board";
 import board from "@/images/shogi/board.svg";
+import { For } from "solid-js";
 import type { JSXElement } from "solid-js";
 import { BLACK, WHITE } from "../constants";
 import type { Hand } from "../constants";
-import { handHeaderCellStyle, hiddenStyle } from "../style.css";
 import { Hands } from "./hands";
 import { DefinePiece } from "./piece";
 import { Square } from "./square";
@@ -16,7 +16,7 @@ type BoardProperties = {
 export const ShogiBoard = (properties: BoardProperties): JSXElement => {
   return (
     <>
-      <svg viewBox="0 0 0 0" xmlns="http://www.w3.org/2000/svg" class={hiddenStyle}>
+      <svg viewBox="0 0 0 0" xmlns="http://www.w3.org/2000/svg" class="hidden">
         <title>Define pieces</title>
 
         <DefinePiece id="王将" pieces={["王", "将"]} />
@@ -49,15 +49,9 @@ export const ShogiBoard = (properties: BoardProperties): JSXElement => {
       <table>
         <thead>
           <tr>
-            <th class={handHeaderCellStyle} />
-            <th class={handHeaderCellStyle}>王</th>
-            <th class={handHeaderCellStyle}>飛</th>
-            <th class={handHeaderCellStyle}>角</th>
-            <th class={handHeaderCellStyle}>金</th>
-            <th class={handHeaderCellStyle}>銀</th>
-            <th class={handHeaderCellStyle}>桂</th>
-            <th class={handHeaderCellStyle}>香</th>
-            <th class={handHeaderCellStyle}>歩</th>
+            <For each={["", "王", "飛", "角", "金", "銀", "桂", "香", "歩"]}>
+              {(cell) => <th class="px-1 bg-amber-400 text-center border border-slate-900 border-solid">{cell}</th>}
+            </For>
           </tr>
         </thead>
         <tbody>

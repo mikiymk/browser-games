@@ -1,5 +1,5 @@
+import { Button } from "@/components/button";
 import type { JSXElement } from "solid-js";
-import { Button } from "./button";
 import { PopUp } from "./pop-up";
 
 type PromotionPopUpProperties = {

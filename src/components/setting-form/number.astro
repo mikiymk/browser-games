@@ -1,6 +1,4 @@
 ---
-import { inputNumberStyle } from "./style.css";
-
 interface Props {
   readonly name: string;
   readonly value: string;
@@ -9,4 +7,9 @@ interface Props {
 const { name, value } = Astro.props;
 ---
 
-<input type="number" name={name} value={value} class={inputNumberStyle} />
+<input
+  type="number"
+  name={name}
+  value={value}
+  class="text-right border-b-2 border-slate-900 border-solid"
+/>

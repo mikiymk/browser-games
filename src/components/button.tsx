@@ -1,8 +1,7 @@
 import type { JSXElement } from "solid-js";
-import { buttonStyle } from "../style.css";
 
 type ButtonProperties = {
-  readonly onClick: (event: MouseEvent) => void;
+  readonly onClick?: (event: MouseEvent) => void;
   readonly children: JSXElement;
 };
 export const Button = (properties: ButtonProperties): JSXElement => {
@@ -10,9 +9,9 @@ export const Button = (properties: ButtonProperties): JSXElement => {
     <button
       type="button"
       onClick={(event: MouseEvent) => {
-        properties.onClick(event);
+        properties.onClick?.(event);
       }}
-      class={buttonStyle}
+      class="underline decoration-black decoration-double mx-1"
     >
       {properties.children}
     </button>

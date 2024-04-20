@@ -1,5 +1,5 @@
 import solidJs from "@astrojs/solid-js";
-import { vanillaExtractPlugin } from "@vanilla-extract/vite-plugin";
+import tailwind from "@astrojs/tailwind";
 import compress from "astro-compress";
 import { defineConfig } from "astro/config";
 
@@ -7,7 +7,6 @@ import { defineConfig } from "astro/config";
 export default defineConfig({
   site: "https://mikiymk.github.io/",
   base: "js-html-game/",
-
   integrations: [
     solidJs({}),
     compress({
@@ -16,38 +15,31 @@ export default defineConfig({
         "html-minifier-terser": {
           collapseWhitespace: true,
           collapseInlineTagWhitespace: true,
-
           decodeEntities: true,
           removeAttributeQuotes: true,
           removeRedundantAttributes: true,
-
           sortAttributes: true,
           sortClassName: true,
         },
       },
-
       // biome-ignore lint/style/useNamingConvention: ライブラリに合わせる
       Image: {
         sharp: {},
       },
-
       // biome-ignore lint/style/useNamingConvention: ライブラリに合わせる
       CSS: {
         csso: {
           forceMediaMerge: true,
         },
       },
-
       // biome-ignore lint/style/useNamingConvention: ライブラリに合わせる
       JavaScript: {
         terser: {},
       },
-
       // biome-ignore lint/style/useNamingConvention: ライブラリに合わせる
       SVG: {
         svgo: {
           multipass: true,
-
           plugins: [
             {
               name: "cleanupIds",
@@ -67,18 +59,14 @@ export default defineConfig({
         },
       },
     }),
+    tailwind(),
   ],
-
   // biome-ignore lint/style/useNamingConvention: ライブラリに合わせる
   compressHTML: true,
-
   vite: {
-    plugins: [vanillaExtractPlugin()],
-
     esbuild: {
       mangleProps: /_$/,
     },
-
     build: {
       rollupOptions: {
         output: {
@@ -86,7 +74,6 @@ export default defineConfig({
         },
       },
     },
-
     server: {
       watch: {
         ignored: ["**/zig-cache/**"],

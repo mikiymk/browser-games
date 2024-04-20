@@ -1,3 +1,4 @@
+import { Button } from "@/components/button";
 import { doNothingFunction } from "@/scripts/do-nothing";
 import { MultiPromise } from "@/scripts/multi-promise";
 import { PlayerTypeAi, PlayerTypeHuman, playerType } from "@/scripts/player";
@@ -7,7 +8,6 @@ import type { Hand } from "../constants";
 import { BLACK, MOVE_TARGET, WHITE } from "../constants";
 import { gameLoop, getWasm } from "../game-loop";
 import { ShogiBoard } from "./board";
-import { Button } from "./button";
 import { GameOverPopUp } from "./game-over-pop-up";
 import { PromotionPopUp } from "./promotion-pop-up";
 

@@ -1,6 +1,5 @@
 import type { JSXElement } from "solid-js";
 import { Show } from "solid-js";
-import { dialogInnerStyle, dialogStyle } from "../style.css";
 
 type PopUpProperties = {
   readonly open: boolean;
@@ -9,8 +8,8 @@ type PopUpProperties = {
 export const PopUp = (properties: PopUpProperties): JSXElement => {
   return (
     <Show when={properties.open}>
-      <dialog open class={dialogStyle}>
-        <div class={dialogInnerStyle}>{properties.children}</div>
+      <dialog open class="fixed inset-0 h-screen w-screen bg-[#0001]">
+        <div class="w-2/3 m-auto mt-4 p-2 text-center bg-white">{properties.children}</div>
       </dialog>
     </Show>
   );

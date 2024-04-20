@@ -1,4 +1,3 @@
-import { blackStoneStyle, whiteStoneStyle } from "@/games/reversi/style.css";
 import smallStone from "@/images/reversi/stone-small.svg";
 import stone from "@/images/reversi/stone.svg";
 import { Show } from "solid-js";
@@ -24,19 +23,17 @@ export const CellImage = (properties: CellImageProperties): JSXElement => {
     switch (properties.square) {
       case CellBlack:
       case CellCanMoveBlack:
-        return blackStoneStyle;
+        return "fill-stone-500 stroke-slate-900";
       default:
-        return whiteStoneStyle;
+        return "fill-stone-200 stroke-slate-900";
     }
   };
 
   return (
-    <>
-      <Show when={source()}>
-        {(source) => (
-          <use href={`${source()}#root`} x={properties.x} y={properties.y} height={10} width={10} class={style()} />
-        )}
-      </Show>
-    </>
+    <Show when={source()}>
+      {(source) => (
+        <use href={`${source()}#root`} x={properties.x} y={properties.y} height={10} width={10} class={style()} />
+      )}
+    </Show>
   );
 };
