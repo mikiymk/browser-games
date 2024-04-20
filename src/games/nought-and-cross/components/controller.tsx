@@ -1,9 +1,9 @@
+import { Button } from "@/components/button";
 import { StyledSvg } from "@/components/styled-svg";
 import { StatusDraw, StatusNextO, StatusNextX, StatusWinO, StatusWinX } from "@/games/nought-and-cross/types";
 import type { Status } from "@/games/nought-and-cross/types";
 import cross from "@/images/icon/cross.svg";
 import nought from "@/images/icon/nought.svg";
-import { buttonStyle } from "@/styles/common.css";
 import { Match, Switch } from "solid-js";
 import type { JSXElement } from "solid-js";
 
@@ -32,15 +32,13 @@ export const Controller = (properties: ControllerProperties): JSXElement => {
         </Switch>
       </output>
 
-      <button
-        type="button"
+      <Button
         onClick={() => {
           properties.onReset();
         }}
-        class={buttonStyle}
       >
         Restart
-      </button>
+      </Button>
     </div>
   );
 };

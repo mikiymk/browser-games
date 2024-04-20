@@ -1,5 +1,4 @@
 import { Board } from "@/components/board/board";
-import { oStyle, xStyle } from "@/games/nought-and-cross/style.css";
 import { MarkO, MarkX } from "@/games/nought-and-cross/types";
 import cross from "@/images/icon/cross.svg";
 import nought from "@/images/icon/nought.svg";
@@ -14,16 +13,28 @@ type CellProperties = {
 };
 const Cell = (properties: CellProperties): JSXElement => {
   return (
-    <>
-      <Switch>
-        <Match when={properties.mark === MarkO}>
-          <use href={`${nought.src}#root`} x={properties.x} y={properties.y} height={10} width={10} class={xStyle} />
-        </Match>
-        <Match when={properties.mark === MarkX}>
-          <use href={`${cross.src}#root`} x={properties.x} y={properties.y} height={10} width={10} class={oStyle} />
-        </Match>
-      </Switch>
-    </>
+    <Switch>
+      <Match when={properties.mark === MarkO}>
+        <use
+          href={`${nought.src}#root`}
+          x={properties.x}
+          y={properties.y}
+          height={10}
+          width={10}
+          class="fill-none stroke-blue-600 stroke-2"
+        />
+      </Match>
+      <Match when={properties.mark === MarkX}>
+        <use
+          href={`${cross.src}#root`}
+          x={properties.x}
+          y={properties.y}
+          height={10}
+          width={10}
+          class="fill-none stroke-red-600 stroke-2"
+        />
+      </Match>
+    </Switch>
   );
 };
 
