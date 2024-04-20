@@ -1,8 +1,7 @@
 import solidJs from "@astrojs/solid-js";
-import { vanillaExtractPlugin } from "@vanilla-extract/vite-plugin";
+import tailwind from "@astrojs/tailwind";
 import compress from "astro-compress";
 import { defineConfig } from "astro/config";
-import tailwind from "@astrojs/tailwind";
 
 // https://astro.build/config
 export default defineConfig({
@@ -65,7 +64,6 @@ export default defineConfig({
   // biome-ignore lint/style/useNamingConvention: ライブラリに合わせる
   compressHTML: true,
   vite: {
-    plugins: [vanillaExtractPlugin()],
     esbuild: {
       mangleProps: /_$/,
     },
