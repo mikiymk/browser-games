@@ -2,7 +2,7 @@ const std = @import("std");
 
 const Build = std.Build;
 const Dir = Build.Step.InstallArtifact.Options.Dir;
-const Target = std.zig.CrossTarget;
+const Target = std.Build.ResolvedTarget;
 const Optimize = std.builtin.OptimizeMode;
 
 pub fn build(b: *Build) void {
