@@ -27,21 +27,41 @@ pub fn build(b: *Build) void {
 }
 
 fn buildLib(b: *Build, comptime name: []const u8, public_dir: Dir, target: Target, optimize: Optimize) *Build.Step {
-    const lib = b.addSharedLibrary(.{
-        .name = name,
-        .root_source_file = .{ .path = "src/wasm/" ++ name ++ ".zig" },
-        .target = target,
-        .optimize = optimize,
-    });
+    if (target.result.isWasm()) {
+        const exe = b.addExecutable(.{
+            .name = name,
+            .root_source_file = .{ .path = "src/wasm/" ++ name ++ ".zig" },
+            .target = target,
+            .optimize = optimize,
+        });
 
-    // exports all "export" functions
-    lib.rdynamic = true;
+        // exports all "export" functions
+        exe.rdynamic = true;
+        // no-entry
+        exe.entry = .disabled;
 
-    const artifact = b.addInstallArtifact(lib, .{ .dest_dir = public_dir });
-    const step = b.step(name, "Build " ++ name ++ " library");
-    step.dependOn(&artifact.step);
+        const artifact = b.addInstallArtifact(exe, .{ .dest_dir = public_dir });
+        const step = b.step(name, "Build " ++ name ++ " library");
+        step.dependOn(&artifact.step);
 
-    return step;
+        return step;
+    } else {
+        const lib = b.addSharedLibrary(.{
+            .name = name,
+            .root_source_file = .{ .path = "src/wasm/" ++ name ++ ".zig" },
+            .target = target,
+            .optimize = optimize,
+        });
+
+        // exports all "export" functions
+        lib.rdynamic = true;
+
+        const artifact = b.addInstallArtifact(lib, .{ .dest_dir = public_dir });
+        const step = b.step(name, "Build " ++ name ++ " library");
+        step.dependOn(&artifact.step);
+
+        return step;
+    }
 }
 
 fn buildTest(b: *Build) void {
