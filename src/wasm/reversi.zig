@@ -21,7 +21,7 @@ pub fn getRandom() f64 {
 /// 新しいボードをアロケートしてポインタを返す。
 /// メモリの開放に`deinit`を呼び出してください。
 export fn init() ?*Board {
-    var board = allocator.create(Board) catch return null;
+    const board = allocator.create(Board) catch return null;
     board.* = Board.init();
 
     return board;

@@ -353,11 +353,11 @@ test "game is not end" {
 test "board from string" {
     const testing = std.testing;
 
-    var expected = Board{
+    const expected = Board{
         .black = 0x00_00_00_00_00_aa_55_aa,
         .white = 0x55_aa_55_00_00_00_00_00,
     };
-    var actual = Board.fromString(
+    const actual = Board.fromString(
         \\.o.o.o.o
         \\o.o.o.o.
         \\.o.o.o.o

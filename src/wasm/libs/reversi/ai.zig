@@ -27,7 +27,7 @@ pub fn getAiMove(b: Board, comptime random: *const fn () f64) u6 {
 
     var move_board = BitBoard.iterator(moves);
     while (move_board.next()) |place| {
-        var child = b.move(place);
+        const child = b.move(place);
         const evaluation = alphaBeta(child, b.nextColor, 5, std.math.minInt(i32), std.math.maxInt(i32));
 
         if (best_place_count == 0 or evaluation > best_evaluation) {

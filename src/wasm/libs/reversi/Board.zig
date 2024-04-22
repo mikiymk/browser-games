@@ -98,7 +98,7 @@ fn getFlipSquares(b: Board, place: u64) u64 {
         \\.oooooo.
     , 'o');
 
-    var flip: u64 =
+    const flip: u64 =
         // 横方向を探索する
         moveDir(player_board, place, mask, 1) |
         // 縦方向を探索する
