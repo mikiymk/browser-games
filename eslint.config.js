@@ -92,6 +92,7 @@ export default typescript.config(
               ],
             },
           ],
+          ignoreInferredTypes: true,
           treatMethodsAsReadonly: true,
         },
       ],

@@ -29,16 +29,8 @@ type MineCellProperties = {
   readonly field: number;
   readonly x: number;
   readonly y: number;
-  readonly onClick: () => void;
-  readonly onContextMenu: () => boolean;
 };
 const MineCell = (properties: MineCellProperties): JSXElement => {
-  const handleContextMenu = (event: MouseEvent): void => {
-    if (properties.onContextMenu()) {
-      event.preventDefault();
-    }
-  };
-
   const isClosed = (): boolean => {
     return properties.field === FieldBomb || properties.field === FieldFlag || properties.field === FieldNoOpen;
   };
@@ -95,14 +87,6 @@ const MineCell = (properties: MineCellProperties): JSXElement => {
         y={properties.y}
         height={10}
         width={10}
-        tabindex={0}
-        onClick={() => {
-          properties.onClick();
-        }}
-        onKeyPress={() => {
-          properties.onClick();
-        }}
-        onContextMenu={handleContextMenu}
         class="fill-[#00000000] stroke-slate-900 stroke-[0.05]"
       />
     </>
@@ -119,18 +103,20 @@ type MineFieldsProperties = {
 };
 export const MineFields = (properties: MineFieldsProperties): JSXElement => {
   return (
-    <Board height={properties.height} width={properties.width} data={properties.fields}>
-      {(field, index, x, y) => (
-        <MineCell
-          field={field}
-          x={x()}
-          y={y()}
-          onClick={() => {
-            properties.open(index());
-          }}
-          onContextMenu={() => properties.flag(index())}
-        />
-      )}
+    <Board
+      height={properties.height}
+      width={properties.width}
+      data={properties.fields}
+      click={(_, index) => {
+        properties.open(index);
+      }}
+      contextmenu={(_, index, event) => {
+        if (properties.flag(index)) {
+          event.preventDefault();
+        }
+      }}
+    >
+      {(field, _, x, y) => <MineCell field={field} x={x()} y={y()} />}
     </Board>
   );
 };
