@@ -48,7 +48,7 @@ jobs:
       # zig setup
       - uses: goto-bus-stop/setup-zig@v2
         with:
-          version: 0.11.0
+          version: 0.12.0
 
       - name: Build
         run: bun run build
