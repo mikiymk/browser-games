@@ -10,8 +10,8 @@ type BoardProperties<T> = {
   readonly children: (square: T, index: Accessor<number>, x: Accessor<number>, y: Accessor<number>) => JSXElement;
   readonly class?: string;
   readonly background?: string;
-  readonly click?: (square: T, index: number) => void;
-  readonly contextmenu?: (square: T, index: number) => void;
+  readonly click?: (square: T, index: number, event: MouseEvent) => void;
+  readonly contextmenu?: (square: T, index: number, event: MouseEvent) => void;
 };
 
 export const Board = <T,>(properties: BoardProperties<T>): JSXElement => {
@@ -57,8 +57,12 @@ export const Board = <T,>(properties: BoardProperties<T>): JSXElement => {
           onClick={(event) => {
             const [square, index] = handleClick(event);
 
-            properties.click?.(square, index);
-            properties.contextmenu?.(square, index);
+            properties.click?.(square, index, event);
+          }}
+          onContextMenu={(event) => {
+            const [square, index] = handleClick(event);
+
+            properties.contextmenu?.(square, index, event);
           }}
         />
       </Show>
