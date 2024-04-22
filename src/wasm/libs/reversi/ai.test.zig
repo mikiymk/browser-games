@@ -13,7 +13,7 @@ const ai = @import("./ai.zig");
 test "get random move with AI" {
     const testing = std.testing;
 
-    var board = Board.fromString(
+    const board = Board.fromString(
         \\........
         \\........
         \\........
@@ -24,7 +24,7 @@ test "get random move with AI" {
         \\........
     );
 
-    var expected: u64 = comptime BitBoard.fromString(
+    const expected: u64 = comptime BitBoard.fromString(
         \\........
         \\........
         \\....o...
@@ -48,7 +48,7 @@ test "get random move with AI" {
         S.rand_gen = std.rand.DefaultPrng.init(i);
         S.rand = S.rand_gen.random();
 
-        var actual = @as(u64, 1) << ai.getAiMove(board, S.random);
+        const actual = @as(u64, 1) << ai.getAiMove(board, S.random);
 
         testing.expect(actual & expected != 0) catch {
             const print = std.debug.print;
