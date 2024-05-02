@@ -163,12 +163,6 @@ export default typescript.config(
       // eslint-v9に対応するまでOff
       "import/no-mutable-exports": "off",
       "import/newline-after-import": "off",
-      "solid/jsx-uses-vars": "off",
-      "solid/jsx-no-script-url": "off",
-      "solid/reactivity": "off",
-      "solid/jsx-no-undef": "off",
-      "solid/event-handlers": "off",
-      "solid/style-prop": "off",
 
       // unnecessary with typescript
 
