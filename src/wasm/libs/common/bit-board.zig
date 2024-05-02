@@ -18,8 +18,8 @@ pub fn BitBoard(comptime height: u16, comptime width: u16) type {
 
     return struct {
         /// ビットボードの型。
-        /// [高さ] × [幅]ビット、符号無しの整数。
-        pub const Board = types.UInt(size);
+        /// [高さ] × [幅]ビット。
+        pub const Board = std.bit_set.StaticBitSet(size);
 
         /// 高さの型。
         /// 0から[高さ] - 1が全て表現できる最小の整数型。
