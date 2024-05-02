@@ -19,7 +19,9 @@ pub fn BitBoard(comptime height: u16, comptime width: u16) type {
     return struct {
         /// ビットボードの型。
         /// [高さ] × [幅]ビット。
-        pub const Board = std.bit_set.StaticBitSet(size);
+        // pub const Board = std.bit_set.IntegerBitSet(size);
+        pub const Board = std.bit_set.ArrayBitSet(usize, size);
+        // pub const Board = std.bit_set.StaticBitSet(size);
 
         /// 高さの型。
         /// 0から[高さ] - 1が全て表現できる最小の整数型。
@@ -64,11 +66,11 @@ pub fn BitBoard(comptime height: u16, comptime width: u16) type {
         ///
         /// 範囲外のものが1つでもあると0を返す
         pub fn fromString(str: []const u8, piece_symbol: u8) Board {
-            var board: Board = 0;
+            var board: Board = Board.initEmpty();
 
             if (str.len != size + height - 1) {
                 // invalid length
-                return 0;
+                return Board.initEmpty();
             }
 
             var char_count: UCharLength = 0;
@@ -78,7 +80,7 @@ pub fn BitBoard(comptime height: u16, comptime width: u16) type {
                     const char = str[char_count];
 
                     if (char == piece_symbol) {
-                        board |= @as(Board, 1) << bit_count;
+                        board.set(bit_count);
                     }
 
                     char_count += 1;
@@ -91,13 +93,38 @@ pub fn BitBoard(comptime height: u16, comptime width: u16) type {
 
                 if (str[char_count] != '\n') {
                     // invalid character
-                    return 0;
+                    return Board.initEmpty();
                 }
 
                 char_count += 1;
             }
 
             return board;
+        }
+
+        /// 番号からボードを作成する。
+        pub fn fromIndex(index: usize) Board {
+            var board = Board.initEmpty();
+            board.set(index);
+            return board;
+        }
+
+        /// ボードが空かどうか判定する。
+        pub fn isEmpty(board: Board) bool {
+            return board.eql(Board.initEmpty());
+        }
+
+        /// ボードを整数に変換する
+        pub fn toInteger(board: Board) types.UInt(size) {
+            if (Board == std.bit_set.IntegerBitSet(size)) {
+                return board.mask;
+            } else if (Board == std.bit_set.ArrayBitSet(usize, size)) {
+                const masks = board.masks;
+                const masks_int: types.UInt(@bitSizeOf(@TypeOf(masks))) = @bitCast(masks);
+                return @intCast(masks_int);
+            } else {
+                @compileError("board is static bitset");
+            }
         }
 
         /// ビットボードを文字列に変換する。
@@ -129,56 +156,72 @@ pub fn BitBoard(comptime height: u16, comptime width: u16) type {
             return str;
         }
 
-        /// ビットボードのビットが立っている場所のみ繰り返す。
-        pub const Iterator = struct {
-            board: Board,
-
-            pub fn next(self: *Iterator) ?Board {
-                const IBoard = types.Int(size);
-
-                if (self.board == 0) {
-                    return null;
-                }
-
-                // 2の補数表現
-                const minus_board = @as(Board, @bitCast(-%@as(IBoard, @bitCast(self.board))));
-
-                // 一番下の立っているビットを１つ取り出す
-                const current = self.board & minus_board;
-
-                // 一番下のビットを落とす
-                self.board &= self.board - 1;
-
-                return current;
-            }
-        };
-
-        pub fn iterator(board: Board) Iterator {
-            return .{ .board = board };
+        pub fn iterator(board: Board) void {
+            _ = board;
         }
 
-        pub const Direction = enum { n, s, e, w, nw, ne, sw, se };
-        pub fn move(board: Board, direction: Direction) Board {
-            const is_minus: bool = switch (direction) {
-                .n, .w, .ne, .nw => true,
-                .s, .e, .se, .sw => false,
-            };
+        /// board << length
+        fn shl(board: Board, length: usize) Board {
+            if (Board == std.bit_set.IntegerBitSet(size)) {
+                return Board{ .mask = board.mask << length };
+            } else if (Board == std.bit_set.ArrayBitSet(usize, size)) {
+                const ubit = @bitSizeOf(usize);
+                const shift_usize = length / ubit;
+                const shift_bit = length % ubit;
+                _ = shift_bit;
+                const num_masks = @bitSizeOf(@TypeOf(board.masks)) / @bitSizeOf(usize);
 
-            const length: UBitLength = switch (direction) {
-                .n => width,
-                .s => width,
-                .e => 1,
-                .w => 1,
-                .nw => width + 1,
-                .ne => width - 1,
-                .sw => width - 1,
-                .se => width + 1,
-            };
+                // ff    00
+                // ff -> ff
+                // 00    ff
 
-            if (is_minus) {
-                return board >> length;
+                // TODO
+
+                var new_mask = board.masks;
+                @memcpy(new_mask[shift_usize..num_masks], board.masks[0 .. num_masks - shift_usize]);
+
+                return Board{ .masks = new_mask };
             } else {
-                return board << length;
+                @compileError("board is static bitset");
+            }
+        }
+
+        /// board >> length
+        fn shr(board: Board, length: usize) Board {
+            if (Board == std.bit_set.IntegerBitSet(size)) {
+                return Board{ .mask = board.mask >> length };
+            } else if (Board == std.bit_set.ArrayBitSet(usize, size)) {
+                const masks = board.masks;
+                const masks_int: types.UInt(masks.len * @bitSizeOf(@TypeOf(masks))) = @bitCast(masks);
+                _ = masks_int;
+
+                // TODO
+
+                return Board{ .masks = .{0} };
+            } else {
+                @compileError("board is static bitset");
+            }
+        }
+
+        pub const Direction = enum { n, s, e, w, nw, ne, sw, se, ns, ew, nesw, nwse };
+        pub fn move(board: Board, direction: Direction) Board {
+            const length: UBitLength = switch (direction) {
+                .n, .s, .ns => width,
+                .e, .w, .ew => 1,
+                .ne, .sw, .nesw => width - 1,
+                .nw, .se, .nwse => width + 1,
+            };
+
+            switch (direction) {
+                .n, .w, .ne, .nw => {
+                    return shr(board, length);
+                },
+                .s, .e, .se, .sw => {
+                    return shl(board, length);
+                },
+                .ns, .ew, .nesw, .nwse => {
+                    return shl(board, length).intersectWith(shr(board, length));
+                },
             }
         }
 
