@@ -176,8 +176,7 @@ fn moveDir(player_board: BitBoard.Board, place: BitBoard.Board, mask: BitBoard.B
 pub fn getValidMoves(b: Board) BitBoard.Board {
     const player_board = b.getPlayer();
     const opponent_board = b.getOpponent();
-    var empty = player_board.unionWith(opponent_board);
-    empty.toggleAll();
+    const empty = player_board.unionWith(opponent_board).complement();
 
     const mask = opponent_board.intersectWith(BitBoard.fromString(
         \\.oooooo.

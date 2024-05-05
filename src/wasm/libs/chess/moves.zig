@@ -93,162 +93,188 @@ const black_pawn_double_step_target = BitBoard.fromString(
     \\........
 , 'o');
 
-pub fn pawn(b: Board, pawn_place: u64, color: Board.Color) u64 {
+pub fn pawn(b: Board, pawn_place: BitBoard.Board, color: Board.Color) BitBoard.Board {
     return switch (color) {
         .black => pawnBlack(b, pawn_place),
         .white => pawnWhite(b, pawn_place),
     };
 }
 
-fn pawnBlack(b: Board, pawn_place: u64) u64 {
+fn pawnBlack(b: Board, pawn_place: BitBoard.Board) BitBoard.Board {
     const white_pieces = b.getColorPieces(.white);
     const black_pieces = b.getColorPieces(.black);
-    const empties = ~(white_pieces | black_pieces);
 
-    const move_s: u64 = (pawn_place << 8) & empties;
-    const move_s2: u64 = (move_s << 8) & empties & black_pawn_double_step_target;
-    const move_se: u64 = (pawn_place << 7) & east_mask;
-    const move_sw: u64 = (pawn_place << 9) & west_mask;
+    const empties = white_pieces.unionWith(black_pieces).complement();
 
-    return move_s | move_s2 | ((move_se | move_sw) & white_pieces);
+    const move_s = BitBoard.move(pawn_place, .s).intersectWith(empties);
+    const move_s2 = BitBoard.move(move_s, .s).intersectWith(empties).intersectWith(black_pawn_double_step_target);
+    const move_se = BitBoard.move(pawn_place, .se).intersectWith(east_mask);
+    const move_sw = BitBoard.move(pawn_place, .sw).intersectWith(west_mask);
+
+    return move_s.unionWith(move_s2).unionWith(move_se.unionWith(move_sw).intersectWith(white_pieces));
 }
 
-fn pawnWhite(b: Board, pawn_place: u64) u64 {
+fn pawnWhite(b: Board, pawn_place: BitBoard.Board) BitBoard.Board {
     const white_pieces = b.getColorPieces(.white);
     const black_pieces = b.getColorPieces(.black);
-    const empties = ~(white_pieces | black_pieces);
 
-    const move_n: u64 = (pawn_place >> 8) & empties;
-    const move_n2: u64 = (move_n >> 8) & empties & white_pawn_double_step_target;
-    const move_ne: u64 = (pawn_place >> 9) & east_mask;
-    const move_nw: u64 = (pawn_place >> 7) & west_mask;
+    const empties = white_pieces.unionWith(black_pieces).complement();
 
-    return move_n | move_n2 | ((move_ne | move_nw) & black_pieces);
+    const move_n = BitBoard.move(pawn_place, .n).intersectWith(empties);
+    const move_n2 = BitBoard.move(move_n, .n).intersectWith(empties).intersectWith(white_pawn_double_step_target);
+    const move_ne = BitBoard.move(pawn_place, .ne).intersectWith(east_mask);
+    const move_nw = BitBoard.move(pawn_place, .nw).intersectWith(west_mask);
+
+    return move_n.unionWith(move_n2).unionWith(move_ne.unionWith(move_nw).intersectWith(black_pieces));
 }
 
-pub fn knight(b: Board, knight_place: u64, player_color: Board.Color) u64 {
-    const ve_masked = knight_place & east_mask;
-    const vw_masked = knight_place & west_mask;
-    const he_masked = knight_place & east_mask_double;
-    const hw_masked = knight_place & west_mask_double;
+pub fn knight(b: Board, knight_place: BitBoard.Board, player_color: Board.Color) BitBoard.Board {
+    const ve_masked = knight_place.intersectWith(east_mask);
+    const vw_masked = knight_place.intersectWith(west_mask);
+    const he_masked = knight_place.intersectWith(east_mask_double);
+    const hw_masked = knight_place.intersectWith(west_mask_double);
 
-    const move_nne_sse: u64 = ve_masked >> 15 | ve_masked << 17;
-    const move_nnw_ssw: u64 = vw_masked >> 17 | vw_masked << 15;
-    const move_nee_see: u64 = he_masked >> 6 | he_masked << 10;
-    const move_nww_sww: u64 = hw_masked >> 10 | hw_masked << 6;
+    const move_e = BitBoard.move(he_masked, .e);
+    const move_w = BitBoard.move(hw_masked, .w);
 
-    return ~b.getColorPieces(player_color) & (move_nne_sse | move_nnw_ssw | move_nee_see | move_nww_sww);
+    var move = BitBoard.move(BitBoard.move(ve_masked, .n), .ne);
+    move.setUnion(BitBoard.move(BitBoard.move(ve_masked, .s), .se));
+
+    move.setUnion(BitBoard.move(BitBoard.move(vw_masked, .n), .nw));
+    move.setUnion(BitBoard.move(BitBoard.move(vw_masked, .s), .sw));
+
+    move.setUnion(BitBoard.move(move_e, .ne));
+    move.setUnion(BitBoard.move(move_e, .se));
+
+    move.setUnion(BitBoard.move(move_w, .nw));
+    move.setUnion(BitBoard.move(move_w, .sw));
+
+    return move.intersectWith(b.getColorPieces(player_color).complement());
 }
 
-pub fn bishop(b: Board, bishop_place: u64, player_color: Board.Color) u64 {
+pub fn bishop(b: Board, bishop_place: BitBoard.Board, player_color: Board.Color) BitBoard.Board {
     const ally_pieces = b.getColorPieces(player_color);
     const opponent_pieces = b.getColorPieces(player_color.turn());
-    const empties = ~(ally_pieces | opponent_pieces);
 
-    const mask = empties & east_west_mask;
+    const empties = ally_pieces.unionWith(opponent_pieces).complement();
+
+    const mask = empties.intersectWith(east_west_mask);
 
     var move_ne_sw = bishop_place;
-    move_ne_sw |= (move_ne_sw << 7 | move_ne_sw >> 7) & mask;
-    move_ne_sw |= (move_ne_sw << 7 | move_ne_sw >> 7) & mask;
-    move_ne_sw |= (move_ne_sw << 7 | move_ne_sw >> 7) & mask;
-    move_ne_sw |= (move_ne_sw << 7 | move_ne_sw >> 7) & mask;
-    move_ne_sw |= (move_ne_sw << 7 | move_ne_sw >> 7) & mask;
-    move_ne_sw |= (move_ne_sw << 7 | move_ne_sw >> 7) & mask;
-    move_ne_sw |= (move_ne_sw << 7 & east_mask) | (move_ne_sw >> 7 & west_mask);
+    for (0..6) |_| {
+        move_ne_sw.setUnion(BitBoard.move(move_ne_sw, .ne)
+            .unionWith(BitBoard.move(move_ne_sw, .sw))
+            .intersectWith(mask));
+    }
+    move_ne_sw.setUnion(BitBoard.move(move_ne_sw, .ne).intersectWith(east_mask));
+    move_ne_sw.setUnion(BitBoard.move(move_ne_sw, .sw).intersectWith(west_mask));
 
     var move_nw_se = bishop_place;
-    move_nw_se |= (move_nw_se << 9 | move_nw_se >> 9) & mask;
-    move_nw_se |= (move_nw_se << 9 | move_nw_se >> 9) & mask;
-    move_nw_se |= (move_nw_se << 9 | move_nw_se >> 9) & mask;
-    move_nw_se |= (move_nw_se << 9 | move_nw_se >> 9) & mask;
-    move_nw_se |= (move_nw_se << 9 | move_nw_se >> 9) & mask;
-    move_nw_se |= (move_nw_se << 9 | move_nw_se >> 9) & mask;
-    move_nw_se |= (move_nw_se << 9 & west_mask) | (move_nw_se >> 9 & east_mask);
+    for (0..6) |_| {
+        move_nw_se.setUnion(BitBoard.move(move_nw_se, .nw)
+            .unionWith(BitBoard.move(move_nw_se, .se))
+            .intersectWith(mask));
+    }
+    move_nw_se.setUnion(BitBoard.move(move_nw_se, .nw).intersectWith(west_mask));
+    move_nw_se.setUnion(BitBoard.move(move_nw_se, .se).intersectWith(east_mask));
 
-    return ~ally_pieces & (move_ne_sw | move_nw_se);
+    return move_ne_sw.unionWith(move_nw_se).intersectWith(ally_pieces.complement());
 }
 
-pub fn rook(b: Board, rook_place: u64, player_color: Board.Color) u64 {
+pub fn rook(b: Board, rook_place: BitBoard.Board, player_color: Board.Color) BitBoard.Board {
     const ally_pieces = b.getColorPieces(player_color);
     const opponent_pieces = b.getColorPieces(player_color.turn());
-    const empties = ~(ally_pieces | opponent_pieces);
 
-    const mask = empties & east_west_mask;
+    const empties = ally_pieces.unionWith(opponent_pieces).complement();
+
+    const mask = empties.intersectWith(east_west_mask);
 
     var move_n_s = rook_place;
-    move_n_s |= (move_n_s << 8 | move_n_s >> 8) & empties;
-    move_n_s |= (move_n_s << 8 | move_n_s >> 8) & empties;
-    move_n_s |= (move_n_s << 8 | move_n_s >> 8) & empties;
-    move_n_s |= (move_n_s << 8 | move_n_s >> 8) & empties;
-    move_n_s |= (move_n_s << 8 | move_n_s >> 8) & empties;
-    move_n_s |= (move_n_s << 8 | move_n_s >> 8) & empties;
-    move_n_s |= (move_n_s << 8 | move_n_s >> 8);
+    for (0..6) |_| {
+        move_n_s.setUnion(BitBoard.move(move_n_s, .n)
+            .unionWith(BitBoard.move(move_n_s, .s))
+            .intersectWith(empties));
+    }
+    move_n_s.setUnion(BitBoard.move(move_n_s, .n));
+    move_n_s.setUnion(BitBoard.move(move_n_s, .s));
 
     var move_e_w = rook_place;
-    move_e_w |= (move_e_w << 1 | move_e_w >> 1) & mask;
-    move_e_w |= (move_e_w << 1 | move_e_w >> 1) & mask;
-    move_e_w |= (move_e_w << 1 | move_e_w >> 1) & mask;
-    move_e_w |= (move_e_w << 1 | move_e_w >> 1) & mask;
-    move_e_w |= (move_e_w << 1 | move_e_w >> 1) & mask;
-    move_e_w |= (move_e_w << 1 | move_e_w >> 1) & mask;
-    move_e_w |= (move_e_w << 1 & west_mask) | (move_e_w >> 1 & east_mask);
+    for (0..6) |_| {
+        move_e_w.setUnion(BitBoard.move(move_e_w, .e)
+            .unionWith(BitBoard.move(move_e_w, .w))
+            .intersectWith(mask));
+    }
+    move_e_w.setUnion(BitBoard.move(move_e_w, .e).intersectWith(east_mask));
+    move_e_w.setUnion(BitBoard.move(move_e_w, .w).intersectWith(west_mask));
 
-    return ~ally_pieces & (move_n_s | move_e_w);
+    return move_n_s.unionWith(move_e_w).intersectWith(ally_pieces.complement());
 }
 
-pub fn queen(b: Board, queen_place: u64, player_color: Board.Color) u64 {
+pub fn queen(b: Board, queen_place: BitBoard.Board, player_color: Board.Color) BitBoard.Board {
     const ally_pieces = b.getColorPieces(player_color);
     const opponent_pieces = b.getColorPieces(player_color.turn());
-    const empties = ~(ally_pieces | opponent_pieces);
 
-    const mask = empties & east_west_mask;
+    const empties = ally_pieces.unionWith(opponent_pieces).complement();
+
+    const mask = empties.intersectWith(east_west_mask);
 
     var move_n_s = queen_place;
-    move_n_s |= (move_n_s << 8 | move_n_s >> 8) & empties;
-    move_n_s |= (move_n_s << 8 | move_n_s >> 8) & empties;
-    move_n_s |= (move_n_s << 8 | move_n_s >> 8) & empties;
-    move_n_s |= (move_n_s << 8 | move_n_s >> 8) & empties;
-    move_n_s |= (move_n_s << 8 | move_n_s >> 8) & empties;
-    move_n_s |= (move_n_s << 8 | move_n_s >> 8) & empties;
-    move_n_s |= (move_n_s << 8 | move_n_s >> 8);
+    for (0..6) |_| {
+        move_n_s.setUnion(BitBoard.move(move_n_s, .n)
+            .unionWith(BitBoard.move(move_n_s, .s))
+            .intersectWith(empties));
+    }
+    move_n_s.setUnion(BitBoard.move(move_n_s, .n));
+    move_n_s.setUnion(BitBoard.move(move_n_s, .s));
 
     var move_e_w = queen_place;
-    move_e_w |= (move_e_w << 1 | move_e_w >> 1) & mask;
-    move_e_w |= (move_e_w << 1 | move_e_w >> 1) & mask;
-    move_e_w |= (move_e_w << 1 | move_e_w >> 1) & mask;
-    move_e_w |= (move_e_w << 1 | move_e_w >> 1) & mask;
-    move_e_w |= (move_e_w << 1 | move_e_w >> 1) & mask;
-    move_e_w |= (move_e_w << 1 | move_e_w >> 1) & mask;
-    move_e_w |= (move_e_w << 1 & west_mask) | (move_e_w >> 1 & east_mask);
+    for (0..6) |_| {
+        move_e_w.setUnion(BitBoard.move(move_e_w, .e)
+            .unionWith(BitBoard.move(move_e_w, .w))
+            .intersectWith(mask));
+    }
+    move_e_w.setUnion(BitBoard.move(move_e_w, .e).intersectWith(east_mask));
+    move_e_w.setUnion(BitBoard.move(move_e_w, .w).intersectWith(west_mask));
 
     var move_ne_sw = queen_place;
-    move_ne_sw |= (move_ne_sw << 7 | move_ne_sw >> 7) & mask;
-    move_ne_sw |= (move_ne_sw << 7 | move_ne_sw >> 7) & mask;
-    move_ne_sw |= (move_ne_sw << 7 | move_ne_sw >> 7) & mask;
-    move_ne_sw |= (move_ne_sw << 7 | move_ne_sw >> 7) & mask;
-    move_ne_sw |= (move_ne_sw << 7 | move_ne_sw >> 7) & mask;
-    move_ne_sw |= (move_ne_sw << 7 | move_ne_sw >> 7) & mask;
-    move_ne_sw |= (move_ne_sw << 7 & east_mask) | (move_ne_sw >> 7 & west_mask);
+    for (0..6) |_| {
+        move_ne_sw.setUnion(BitBoard.move(move_ne_sw, .ne)
+            .unionWith(BitBoard.move(move_ne_sw, .sw))
+            .intersectWith(mask));
+    }
+    move_ne_sw.setUnion(BitBoard.move(move_ne_sw, .ne).intersectWith(east_mask));
+    move_ne_sw.setUnion(BitBoard.move(move_ne_sw, .sw).intersectWith(west_mask));
 
     var move_nw_se = queen_place;
-    move_nw_se |= (move_nw_se << 9 | move_nw_se >> 9) & mask;
-    move_nw_se |= (move_nw_se << 9 | move_nw_se >> 9) & mask;
-    move_nw_se |= (move_nw_se << 9 | move_nw_se >> 9) & mask;
-    move_nw_se |= (move_nw_se << 9 | move_nw_se >> 9) & mask;
-    move_nw_se |= (move_nw_se << 9 | move_nw_se >> 9) & mask;
-    move_nw_se |= (move_nw_se << 9 | move_nw_se >> 9) & mask;
-    move_nw_se |= (move_nw_se << 9 & west_mask) | (move_nw_se >> 9 & east_mask);
+    for (0..6) |_| {
+        move_nw_se.setUnion(BitBoard.move(move_nw_se, .nw)
+            .unionWith(BitBoard.move(move_nw_se, .se))
+            .intersectWith(mask));
+    }
+    move_nw_se.setUnion(BitBoard.move(move_nw_se, .nw).intersectWith(west_mask));
+    move_nw_se.setUnion(BitBoard.move(move_nw_se, .se).intersectWith(east_mask));
 
-    return ~ally_pieces & (move_n_s | move_e_w | move_ne_sw | move_nw_se);
+    return move_n_s
+        .unionWith(move_e_w)
+        .unionWith(move_ne_sw)
+        .unionWith(move_nw_se)
+        .intersectWith(ally_pieces.complement());
 }
 
-pub fn king(b: Board, king_place: u64, player_color: Board.Color) u64 {
-    const e_masked = king_place & east_mask;
-    const w_masked = king_place & west_mask;
+pub fn king(b: Board, king_place: BitBoard.Board, player_color: Board.Color) BitBoard.Board {
+    const e_masked = king_place.intersectWith(east_mask);
+    const w_masked = king_place.intersectWith(west_mask);
 
-    const move_n_s: u64 = king_place >> 8 | king_place << 8;
-    const move_e_ne_se: u64 = e_masked << 1 | e_masked << 9 | e_masked >> 7;
-    const move_w_nw_sw: u64 = w_masked >> 1 | w_masked << 7 | w_masked >> 9;
+    const ally_pieces = b.getColorPieces(player_color).complement();
 
-    return ~b.getColorPieces(player_color) & (move_n_s | move_e_ne_se | move_w_nw_sw);
+    var move = BitBoard.move(king_place, .n);
+    move.setUnion(BitBoard.move(king_place, .s));
+    move.setUnion(BitBoard.move(e_masked, .e));
+    move.setUnion(BitBoard.move(e_masked, .ne));
+    move.setUnion(BitBoard.move(e_masked, .se));
+    move.setUnion(BitBoard.move(w_masked, .w));
+    move.setUnion(BitBoard.move(w_masked, .nw));
+    move.setUnion(BitBoard.move(w_masked, .sw));
+
+    return move.intersectWith(ally_pieces);
 }

@@ -42,7 +42,7 @@ pub fn BitBoard(comptime height: u16, comptime width: u16) type {
         /// 指定した座標のビット1つのみがオンのビットボードを作成する。
         pub fn fromCoordinate(x: UWidth, y: UHeight) Board {
             const index: UBitLength = x + (@as(UBitLength, height) - y - 1) * @as(UBitLength, width);
-            return @as(Board, 1) << index;
+            return fromIndex(index);
         }
 
         /// 指定した座標のビットをオンにしたビットボードを作成する。
@@ -112,6 +112,11 @@ pub fn BitBoard(comptime height: u16, comptime width: u16) type {
         /// ボードが空かどうか判定する。
         pub fn isEmpty(board: Board) bool {
             return board.eql(Board.initEmpty());
+        }
+
+        /// 2つのボードが重なりを持たないかどうか判定する。
+        pub fn isDisjoint(self: Board, other: Board) bool {
+            return isEmpty(self.intersectWith(other));
         }
 
         /// ボードを整数に変換する
