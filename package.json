@@ -1,5 +1,5 @@
 {
-  "name": "js-html-game",
+  "name": "browser-games",
   "version": "0.1.0",
   "description": "html games",
   "main": "index.js",
@@ -36,14 +36,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mikiymk/js-html-game.git"
+    "url": "git+https://github.com/mikiymk/.git"
   },
   "author": "mikiymk",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/mikiymk/js-html-game/issues"
+    "url": "https://github.com/mikiymk/browser-games/issues"
   },
-  "homepage": "https://github.com/mikiymk/js-html-game#readme",
+  "homepage": "https://github.com/mikiymk/browser-games#readme",
   "devDependencies": {
     "@astrojs/solid-js": "^4.1.0",
     "@astrojs/tailwind": "^5.1.0",
