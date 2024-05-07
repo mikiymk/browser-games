@@ -6,7 +6,7 @@ import { defineConfig } from "astro/config";
 // https://astro.build/config
 export default defineConfig({
   site: "https://mikiymk.github.io/",
-  base: "js-html-game/",
+  base: "browser-games/",
   integrations: [
     solidJs({}),
     compress({
