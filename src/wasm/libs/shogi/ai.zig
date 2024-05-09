@@ -6,28 +6,28 @@ const assert = std.debug.assert;
 
 // common import
 const common = @import("../common/main.zig");
-const BitBoard = common.bit_board.BitBoard(9, 9);
 
 // internal import
 const main = @import("./main.zig");
 const Game = main.Game;
 const Board = main.Board;
+const BitBoard = Board.BitBoard;
 const moves = main.moves;
 
 pub const Move = union(enum) {
-    move: struct { from: u81, to: u81 },
-    hit: struct { piece: Game.PieceKind, to: u81 },
+    move: struct { from: BitBoard, to: BitBoard },
+    hit: struct { piece: Game.PieceKind, to: BitBoard },
 };
 
-fn moveMove(from: u81, to: u81) Move {
-    assert(@popCount(from) == 1);
-    assert(@popCount(to) == 1);
+fn moveMove(from: BitBoard, to: BitBoard) Move {
+    assert(from.count() == 1);
+    assert(to.count() == 1);
 
     return .{ .move = .{ .from = from, .to = to } };
 }
 
-fn moveHit(piece: Game.PieceKind, to: u81) Move {
-    assert(@popCount(to) == 1);
+fn moveHit(piece: Game.PieceKind, to: BitBoard) Move {
+    assert(to.count() == 1);
 
     return .{ .hit = .{ .piece = piece, .to = to } };
 }
@@ -52,7 +52,7 @@ pub fn move(game: Game, r: Random) Move {
         const from_list = game.current_board.getColorPieces(game.current_player);
         const from = selectPlace(r, from_list);
         const to_list = game.movePositions(from);
-        if (to_list == 0) {
+        if (to_list.isEmpty()) {
             continue;
         }
 
@@ -91,13 +91,13 @@ fn selectHandPiece(game: Game, r: Random) ?Game.PrimaryPiece {
     unreachable;
 }
 
-fn selectPlace(r: Random, place: u81) u81 {
-    var index = r.intRangeLessThan(usize, 0, @popCount(place));
+fn selectPlace(r: Random, place: BitBoard) BitBoard {
+    var index = r.intRangeLessThan(usize, 0, place.count());
     var iter = BitBoard.iterator(place);
 
     while (iter.next()) |p| {
         if (index == 0) {
-            return p;
+            return BitBoard.fromIndex(p);
         }
 
         index -= 1;

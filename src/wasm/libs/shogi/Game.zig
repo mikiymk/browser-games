@@ -4,12 +4,12 @@ const builtin = @import("builtin");
 
 // common import
 const common = @import("../common/main.zig");
-const BitBoard = common.bit_board.BitBoard(9, 9);
 
 // internal import
 const main = @import("./main.zig");
 const Game = main.Game;
 const Board = main.Board;
+const BitBoard = Board.BitBoard;
 
 // test import
 test {
@@ -285,7 +285,7 @@ pub fn setBoard(game: Game, board_slice: *[]u8) void {
 }
 
 /// ボードのスライスに駒を設定する
-pub fn setPieceToBoard(board: *[]u8, target: u81, value: u8) void {
+pub fn setPieceToBoard(board: *[]u8, target: BitBoard, value: u8) void {
     var iter = BitBoard.iterator(target);
     while (iter.next()) |n| {
         board.*[@ctz(n)] = value;
@@ -312,18 +312,18 @@ pub fn getWinner(game: Game) ?PlayerColor {
     return null;
 }
 
-pub fn movePositions(game: Game, from: u81) u81 {
+pub fn movePositions(game: Game, from: BitBoard) BitBoard {
     return game.current_board.movePositions(from);
 }
 
-pub fn hitPositions(game: Game, piece: PrimaryPiece) u81 {
+pub fn hitPositions(game: Game, piece: PrimaryPiece) BitBoard {
     return game.current_board.hitPositions(game.current_player, piece);
 }
 
 /// 駒を移動する
 /// 必ず成る場合は成る
 /// 成るかどうか選択できる場合はtrueを返す
-pub fn move(game: *Game, from: u81, to: u81) bool {
+pub fn move(game: *Game, from: BitBoard, to: BitBoard) bool {
     // 持ち駒を増やす
     const capture_piece = game.current_board.getPieceAt(to);
     if (capture_piece.piece()) |p| {
@@ -351,7 +351,7 @@ pub fn move(game: *Game, from: u81, to: u81) bool {
     return false;
 }
 
-pub fn hit(game: *Game, piece: PieceKind, to: u81) void {
+pub fn hit(game: *Game, piece: PieceKind, to: BitBoard) void {
     // 持ち駒を減らす
     const primary_piece = piece.primary();
     const hands = switch (game.current_player) {
@@ -366,7 +366,7 @@ pub fn hit(game: *Game, piece: PieceKind, to: u81) void {
     game.changePlayer();
 }
 
-pub fn promote(game: *Game, position: u81) void {
+pub fn promote(game: *Game, position: BitBoard) void {
     game.current_board = game.current_board.promotedBoard(position);
 }
 

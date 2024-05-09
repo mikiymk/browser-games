@@ -134,18 +134,21 @@ pub fn BitBoard(comptime height: u16, comptime width: u16) type {
         }
 
         /// ボードが空かどうか判定する。
+        /// `self == 0`
         pub fn isEmpty(self: Self) bool {
             return self.board.eql(Board.initEmpty());
         }
 
         /// 2つのボードが重なりを持たないかどうか判定する。
-        pub fn isJoint(self: Self, other: Self) bool {
-            return !self.isDisjoint(other);
+        /// `self & mask != 0`
+        pub fn isJoint(self: Self, mask: Self) bool {
+            return !self.isDisjoint(mask);
         }
 
         /// 2つのボードが重なりを持たないかどうか判定する。
-        pub fn isDisjoint(self: Self, other: Self) bool {
-            return self.masks(other).isEmpty();
+        /// `self & mask == 0`
+        pub fn isDisjoint(self: Self, mask: Self) bool {
+            return self.masks(mask).isEmpty();
         }
 
         /// ボードを整数に変換する
@@ -188,6 +191,11 @@ pub fn BitBoard(comptime height: u16, comptime width: u16) type {
             }
 
             return str;
+        }
+
+        ///  ビットのあるマスを数える。
+        pub fn count(self: Self) usize {
+            return self.board.count();
         }
 
         pub fn iterator(self: Self) Board.Iterator(.{}) {
