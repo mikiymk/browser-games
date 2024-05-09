@@ -25,7 +25,7 @@ pub fn getAiMove(b: Board, comptime random: *const fn () f64) u6 {
     // ここまでの最も良い手の評価点
     var best_evaluation: isize = std.math.minInt(isize);
 
-    var move_board = moves.iterator(.{});
+    var move_board = moves.iterator();
     while (move_board.next()) |place| {
         const child = b.move(BitBoard.fromIndex(place));
         const evaluation = alphaBeta(child, b.nextColor, 5, std.math.minInt(i32), std.math.maxInt(i32));
@@ -58,7 +58,7 @@ fn alphaBeta(b: Board, player: Board.Color, depth: u8, alpha: isize, beta: isize
     }
 
     if (b.nextColor == player) {
-        var moves = b.getValidMoves().iterator(.{});
+        var moves = b.getValidMoves().iterator();
 
         var new_alpha = alpha;
 
@@ -73,7 +73,7 @@ fn alphaBeta(b: Board, player: Board.Color, depth: u8, alpha: isize, beta: isize
 
         return new_alpha;
     } else {
-        var moves = b.getValidMoves().iterator(.{});
+        var moves = b.getValidMoves().iterator();
 
         var new_beta = beta;
 

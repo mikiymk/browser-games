@@ -156,7 +156,7 @@ pub fn BitBoard(comptime height: u16, comptime width: u16) type {
             if (Board == std.bit_set.IntegerBitSet(size)) {
                 return self.mask;
             } else if (Board == std.bit_set.ArrayBitSet(usize, size)) {
-                const mask = self.board.mask;
+                const mask = self.board.masks;
                 const masks_int: types.UInt(@bitSizeOf(@TypeOf(mask))) = @bitCast(mask);
                 return @intCast(masks_int);
             } else {
