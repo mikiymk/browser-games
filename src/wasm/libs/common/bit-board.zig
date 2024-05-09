@@ -35,9 +35,9 @@ pub fn BitBoard(comptime height: u16, comptime width: u16) type {
 
         /// ビットボードの型。
         /// [高さ] × [幅]ビット。
-        // pub const Board = std.bit_set.IntegerBitSet(size);
+        pub const Board = std.bit_set.IntegerBitSet(size);
         // pub const Board = std.bit_set.ArrayBitSet(usize, size);
-        pub const Board: type = std.bit_set.StaticBitSet(size);
+        // pub const Board: type = std.bit_set.StaticBitSet(size);
 
         /// 高さの型。
         /// 0から[高さ] - 1が全て表現できる最小の整数型。

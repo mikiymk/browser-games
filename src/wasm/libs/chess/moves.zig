@@ -161,22 +161,17 @@ pub fn bishop(b: Board, bishop_place: BitBoard, player_color: Board.Color) BitBo
     const mask = empties.masks(east_west_mask);
 
     var move_ne_sw = bishop_place;
-    for (0..6) |_| {
-        move_ne_sw.setUnion(move_ne_sw.move(.ne)
-            .unions(move_ne_sw.move(.sw))
-            .masks(mask));
-    }
-    move_ne_sw.setUnion(move_ne_sw.move(.ne).masks(east_mask));
-    move_ne_sw.setUnion(move_ne_sw.move(.sw).masks(west_mask));
-
     var move_nw_se = bishop_place;
+
     for (0..6) |_| {
-        move_nw_se.setUnion(move_nw_se.move(.nw)
-            .unions(move_nw_se.move(.se))
-            .masks(mask));
+        move_ne_sw.setUnion(move_ne_sw.move(.ne).unions(move_ne_sw.move(.sw)).masks(mask));
+        move_nw_se.setUnion(move_nw_se.move(.nw).unions(move_nw_se.move(.se)).masks(mask));
     }
-    move_nw_se.setUnion(move_nw_se.move(.nw).masks(west_mask));
-    move_nw_se.setUnion(move_nw_se.move(.se).masks(east_mask));
+
+    move_ne_sw.setUnion(move_ne_sw.move(.ne).masks(west_mask));
+    move_ne_sw.setUnion(move_ne_sw.move(.sw).masks(east_mask));
+    move_nw_se.setUnion(move_nw_se.move(.se).masks(west_mask));
+    move_nw_se.setUnion(move_nw_se.move(.nw).masks(east_mask));
 
     return move_ne_sw.unions(move_nw_se).masks(ally_pieces.inversed());
 }
@@ -190,22 +185,17 @@ pub fn rook(b: Board, rook_place: BitBoard, player_color: Board.Color) BitBoard 
     const mask = empties.masks(east_west_mask);
 
     var move_n_s = rook_place;
+    var move_e_w = rook_place;
+
     for (0..6) |_| {
-        move_n_s.setUnion(move_n_s.move(.n)
-            .unions(move_n_s.move(.s))
-            .masks(empties));
+        move_n_s.setUnion(move_n_s.move(.n).unions(move_n_s.move(.s)).masks(empties));
+        move_e_w.setUnion(move_e_w.move(.e).unions(move_e_w.move(.w)).masks(mask));
     }
+
     move_n_s.setUnion(move_n_s.move(.n));
     move_n_s.setUnion(move_n_s.move(.s));
-
-    var move_e_w = rook_place;
-    for (0..6) |_| {
-        move_e_w.setUnion(move_e_w.move(.e)
-            .unions(move_e_w.move(.w))
-            .masks(mask));
-    }
-    move_e_w.setUnion(move_e_w.move(.e).masks(east_mask));
-    move_e_w.setUnion(move_e_w.move(.w).masks(west_mask));
+    move_e_w.setUnion(move_e_w.move(.e).masks(west_mask));
+    move_e_w.setUnion(move_e_w.move(.w).masks(east_mask));
 
     return move_n_s.unions(move_e_w).masks(ally_pieces.inversed());
 }
@@ -219,46 +209,31 @@ pub fn queen(b: Board, queen_place: BitBoard, player_color: Board.Color) BitBoar
     const mask = empties.masks(east_west_mask);
 
     var move_n_s = queen_place;
+    var move_e_w = queen_place;
+    var move_ne_sw = queen_place;
+    var move_nw_se = queen_place;
+
     for (0..6) |_| {
-        move_n_s.setUnion(move_n_s.move(.n)
-            .unions(move_n_s.move(.s))
-            .masks(empties));
+        move_n_s.setUnion(move_n_s.move(.n).unions(move_n_s.move(.s)).masks(empties));
+        move_e_w.setUnion(move_e_w.move(.e).unions(move_e_w.move(.w)).masks(mask));
+        move_ne_sw.setUnion(move_ne_sw.move(.ne).unions(move_ne_sw.move(.sw)).masks(mask));
+        move_nw_se.setUnion(move_nw_se.move(.nw).unions(move_nw_se.move(.se)).masks(mask));
     }
+
     move_n_s.setUnion(move_n_s.move(.n));
     move_n_s.setUnion(move_n_s.move(.s));
-
-    var move_e_w = queen_place;
-    for (0..6) |_| {
-        move_e_w.setUnion(move_e_w.move(.e)
-            .unions(move_e_w.move(.w))
-            .masks(mask));
-    }
-    move_e_w.setUnion(move_e_w.move(.e).masks(east_mask));
-    move_e_w.setUnion(move_e_w.move(.w).masks(west_mask));
-
-    var move_ne_sw = queen_place;
-    for (0..6) |_| {
-        move_ne_sw.setUnion(move_ne_sw.move(.ne)
-            .unions(move_ne_sw.move(.sw))
-            .masks(mask));
-    }
-    move_ne_sw.setUnion(move_ne_sw.move(.ne).masks(east_mask));
-    move_ne_sw.setUnion(move_ne_sw.move(.sw).masks(west_mask));
-
-    var move_nw_se = queen_place;
-    for (0..6) |_| {
-        move_nw_se.setUnion(move_nw_se.move(.nw)
-            .unions(move_nw_se.move(.se))
-            .masks(mask));
-    }
-    move_nw_se.setUnion(move_nw_se.move(.nw).masks(west_mask));
-    move_nw_se.setUnion(move_nw_se.move(.se).masks(east_mask));
+    move_e_w.setUnion(move_e_w.move(.e).masks(west_mask));
+    move_e_w.setUnion(move_e_w.move(.w).masks(east_mask));
+    move_ne_sw.setUnion(move_ne_sw.move(.ne).masks(west_mask));
+    move_ne_sw.setUnion(move_ne_sw.move(.sw).masks(east_mask));
+    move_nw_se.setUnion(move_nw_se.move(.se).masks(west_mask));
+    move_nw_se.setUnion(move_nw_se.move(.nw).masks(east_mask));
 
     return move_n_s
         .unions(move_e_w)
         .unions(move_ne_sw)
         .unions(move_nw_se)
-        .masks(ally_pieces.inversed());
+        .excludes(ally_pieces);
 }
 
 pub fn king(b: Board, king_place: BitBoard, player_color: Board.Color) BitBoard {

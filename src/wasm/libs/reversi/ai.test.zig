@@ -11,8 +11,6 @@ const Board = @import("./Board.zig");
 const ai = @import("./ai.zig");
 
 test "get random move with AI" {
-    const testing = std.testing;
-
     const board = Board.fromString(
         \\........
         \\........
@@ -50,7 +48,7 @@ test "get random move with AI" {
 
         const actual = BitBoard.fromIndex(ai.getAiMove(board, S.random));
 
-        testing.expect(actual.isJoint(expected)) catch {
+        std.testing.expect(actual.isJoint(expected)) catch {
             const print = std.debug.print;
 
             print("expected {x:0>16}\n{s}\n\n", .{ expected.toInteger(), expected.toString('o', '.') });
