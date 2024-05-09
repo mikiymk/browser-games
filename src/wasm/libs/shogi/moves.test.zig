@@ -28,7 +28,7 @@ test "moves.getWhitePawnMovable: 先手の歩兵が動ける範囲" {
 
     const moved_board = moves.move(board, BitBoard.fromString(board_str, 'P'));
 
-    try BitBoard.expect(moved_board,
+    try moved_board.expect(
         \\.........
         \\.........
         \\.........
@@ -57,7 +57,7 @@ test "moves.getBlackPawnMovable: 後手の歩兵が動ける範囲" {
 
     const moved_board = moves.move(board, BitBoard.fromString(board_str, 'p'));
 
-    try BitBoard.expect(moved_board,
+    try moved_board.expect(
         \\.........
         \\.........
         \\.........
@@ -86,7 +86,7 @@ test "moves.getWhiteLanceMovable: 先手の香車が動ける範囲" {
 
     const moved_board = moves.move(board, BitBoard.fromString(board_str, 'L'));
 
-    try BitBoard.expect(moved_board,
+    try moved_board.expect(
         \\o.o......
         \\o........
         \\o........
@@ -115,7 +115,7 @@ test "moves.getBlackLanceMovable: 後手の香車が動ける範囲" {
 
     const moved_board = moves.move(board, BitBoard.fromString(board_str, 'l'));
 
-    try BitBoard.expect(moved_board,
+    try moved_board.expect(
         \\.........
         \\o........
         \\o...o.o..
@@ -144,7 +144,7 @@ test "moves.getWhiteKnightMovable: 先手の桂馬が動ける範囲" {
 
     const moved_board = moves.move(board, BitBoard.fromString(board_str, 'N'));
 
-    try BitBoard.expect(moved_board,
+    try moved_board.expect(
         \\.......o.
         \\.o.......
         \\......o..
@@ -173,7 +173,7 @@ test "moves.getBlackKnightMovable: 後手の桂馬が動ける範囲" {
 
     const moved_board = moves.move(board, BitBoard.fromString(board_str, 'n'));
 
-    try BitBoard.expect(moved_board,
+    try moved_board.expect(
         \\.........
         \\.........
         \\.........
@@ -202,7 +202,7 @@ test "moves.silver: 銀将が動ける範囲" {
 
     const moved_board = moves.move(board, BitBoard.fromString(board_str, 'S'));
 
-    try BitBoard.expect(moved_board,
+    try moved_board.expect(
         \\.........
         \\.ooo.o.oo
         \\.........
@@ -231,7 +231,7 @@ test "moves.gold: 金将が動ける範囲" {
 
     const moved_board = moves.move(board, BitBoard.fromString(board_str, 'G'));
 
-    try BitBoard.expect(moved_board,
+    try moved_board.expect(
         \\.....o.o.
         \\.ooo..ooo
         \\.o.o...o.
@@ -271,7 +271,7 @@ test "moves.bishop: 角行が動ける範囲" {
         \\...o.o.o.
         \\o.o......
     ;
-    try BitBoard.expect(moved_board, expected);
+    try moved_board.expect(expected);
 }
 
 test "moves.rook: 飛車が動ける範囲" {
@@ -301,7 +301,7 @@ test "moves.rook: 飛車が動ける範囲" {
         \\o.ooooooo
         \\oooooo.oo
     ;
-    try BitBoard.expect(moved_board, expected);
+    try moved_board.expect(expected);
 }
 
 test "moves.king: 王将が動ける範囲" {
@@ -331,5 +331,5 @@ test "moves.king: 王将が動ける範囲" {
         \\o.o..ooo.
         \\ooo..o.o.
     ;
-    try BitBoard.expect(moved_board, expected);
+    try moved_board.expect(expected);
 }

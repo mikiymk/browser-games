@@ -157,14 +157,14 @@ pub fn move(b: Board, place: BitBoard) Board {
 
 /// Dirで示された方向にひっくり返す石を探す。
 fn moveDir(player_board: BitBoard, place: BitBoard, mask: BitBoard, dir: BitBoard.Direction) BitBoard {
-    var flip = BitBoard.move(place, dir).masks(mask);
-    flip.setUnion(BitBoard.move(flip, dir).masks(mask));
-    flip.setUnion(BitBoard.move(flip, dir).masks(mask));
-    flip.setUnion(BitBoard.move(flip, dir).masks(mask));
-    flip.setUnion(BitBoard.move(flip, dir).masks(mask));
-    flip.setUnion(BitBoard.move(flip, dir).masks(mask));
+    var flip = place.move(dir).masks(mask);
+    flip.setUnion(flip.move(dir).masks(mask));
+    flip.setUnion(flip.move(dir).masks(mask));
+    flip.setUnion(flip.move(dir).masks(mask));
+    flip.setUnion(flip.move(dir).masks(mask));
+    flip.setUnion(flip.move(dir).masks(mask));
 
-    if (!BitBoard.isEmpty(BitBoard.move(flip, dir).masks(player_board))) {
+    if (!flip.move(dir).masks(player_board).isEmpty()) {
         // 先にプレイヤーの石があれば、ひっくり返せる
         return flip;
     }
@@ -199,15 +199,15 @@ pub fn getValidMoves(b: Board) BitBoard {
 /// Dirで示された方向に挟める場所を探す
 fn getDirMoves(board: BitBoard, mask: BitBoard, dir: BitBoard.Direction) BitBoard {
     var flip = board;
-    flip = BitBoard.move(flip, dir).masks(mask);
+    flip = flip.move(dir).masks(mask);
 
-    flip.setUnion(BitBoard.move(flip, dir).masks(mask));
-    flip.setUnion(BitBoard.move(flip, dir).masks(mask));
-    flip.setUnion(BitBoard.move(flip, dir).masks(mask));
-    flip.setUnion(BitBoard.move(flip, dir).masks(mask));
-    flip.setUnion(BitBoard.move(flip, dir).masks(mask));
+    flip.setUnion(flip.move(dir).masks(mask));
+    flip.setUnion(flip.move(dir).masks(mask));
+    flip.setUnion(flip.move(dir).masks(mask));
+    flip.setUnion(flip.move(dir).masks(mask));
+    flip.setUnion(flip.move(dir).masks(mask));
 
-    return BitBoard.move(flip, dir);
+    return flip.move(dir);
 }
 
 /// ゲームが終了しているか判定する。

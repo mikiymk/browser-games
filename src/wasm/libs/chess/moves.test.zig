@@ -991,7 +991,7 @@ fn testCases(comptime cases: []const TestCase, comptime char: u8, comptime moves
 
         const pawnmove = moves_fn(board, pos, .black);
 
-        BitBoard.expect(pawnmove, case.expect_move_places) catch {
+        pawnmove.expect(case.expect_move_places) catch {
             std.debug.print("test failed: {s}\n", .{case.desc});
 
             has_fail = true;
@@ -1016,7 +1016,7 @@ test "white pawn" {
 
         const pawnmove = moves.pawn(board, pos, .white);
 
-        BitBoard.expect(pawnmove, case.expect_move_places) catch {
+        pawnmove.expect(case.expect_move_places) catch {
             std.debug.print("test failed: {s}\n", .{case.desc});
 
             has_fail = true;

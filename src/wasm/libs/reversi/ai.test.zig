@@ -52,10 +52,9 @@ test "get random move with AI" {
 
         testing.expect(actual & expected != 0) catch {
             const print = std.debug.print;
-            const boardToString = BitBoard.toString;
 
-            print("expected {x:0>16}\n{s}\n\n", .{ expected, boardToString(expected, 'o', '.') });
-            print("actual {x:0>16}\n{s}\n\n", .{ actual, boardToString(actual, 'o', '.') });
+            print("expected {x:0>16}\n{s}\n\n", .{ expected, expected.toString('o', '.') });
+            print("actual {x:0>16}\n{s}\n\n", .{ actual, actual.toString('o', '.') });
 
             return error.UnexpectedBoard;
         };

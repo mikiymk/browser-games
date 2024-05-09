@@ -38,13 +38,13 @@ export fn deinit(board: *Board) void {
 /// ボードの現在状態から黒石の配置を取得する。
 /// 配置はビットボードで表される。
 export fn getBlack(b: *Board) u64 {
-    return BitBoard.toInteger(b.black);
+    return b.black.toInteger();
 }
 
 /// ボードの現在状態から白石の配置を取得する。
 /// 配置はビットボードで表される。
 export fn getWhite(b: *Board) u64 {
-    return BitBoard.toInteger(b.white);
+    return b.white.toInteger();
 }
 
 /// 次の手番で石を置くプレイヤーが黒かどうか取得する。
@@ -69,7 +69,7 @@ export fn move(b: *Board, place: u8) void {
 
     b.nextColor = b.nextColor.turn();
 
-    if (BitBoard.isEmpty(b.getValidMoves())) {
+    if (b.getValidMoves().isEmpty()) {
         b.nextColor = b.nextColor.turn();
     }
 }
@@ -77,7 +77,7 @@ export fn move(b: *Board, place: u8) void {
 /// 現在プレイヤーの有効手を取得する。
 /// 配置はビットボードで表される。
 export fn getValidMoves(b: *Board) u64 {
-    return BitBoard.toInteger(b.getValidMoves());
+    return b.getValidMoves().toInteger();
 }
 
 /// 現在のゲームボードからAIの考えた手を取得する。

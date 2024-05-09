@@ -522,7 +522,7 @@ pub fn getAllMoves(board: Board, color: Game.PlayerColor) BitBoard {
 /// セルフ王手を除く
 pub fn filterMove(board: Board, color: Game.PlayerColor, from: BitBoard, to: BitBoard) BitBoard {
     var filtered = BitBoard.init();
-    var to_iter = BitBoard.iterator(to);
+    var to_iter = to.iterator();
 
     while (to_iter.next()) |t| {
         const to_item = BitBoard.fromIndex(t);
@@ -560,7 +560,7 @@ pub fn isCheckmated(board: Board, color: Game.PlayerColor) bool {
     const pieces = board.getColorPiecesArray(color);
 
     for (pieces) |piece| {
-        var piece_iter = BitBoard.iterator(piece);
+        var piece_iter = piece.iterator();
 
         while (piece_iter.next()) |p| {
             const piece_board = BitBoard.fromIndex(p);

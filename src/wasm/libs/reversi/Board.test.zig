@@ -87,7 +87,7 @@ test "get valid move" {
         \\.x.x.x..
         \\.xxxxxx.
         \\........
-    , &BitBoard.toString(mask, 'x', '.'));
+    , &mask.toString('x', '.'));
 
     var flip = board.black;
     const dir = 1;
@@ -101,7 +101,7 @@ test "get valid move" {
         \\........
         \\.......o
         \\........
-    , &BitBoard.toString(flip, 'o', '.'));
+    , &flip.toString('o', '.'));
 
     // dirで決められた方向に向けて石を置く
     // 正の方向と負の方向の2方向を同時に進める
@@ -116,7 +116,7 @@ test "get valid move" {
         \\........
         \\......o.
         \\........
-    , &BitBoard.toString(flip, 'o', '.'));
+    , &flip.toString('o', '.'));
 
     // さらに進めたものを前回のものとORで重ねる
     flip |= ((flip << dir) | (flip >> dir)) & mask;
@@ -130,7 +130,7 @@ test "get valid move" {
         \\........
         \\.....oo.
         \\........
-    , &BitBoard.toString(flip, 'o', '.'));
+    , &flip.toString('o', '.'));
 
     // 合計で6回進める
     flip |= ((flip << dir) | (flip >> dir)) & mask;
@@ -147,7 +147,7 @@ test "get valid move" {
         \\........
         \\.oooooo.
         \\........
-    , &BitBoard.toString(flip, 'o', '.'));
+    , &flip.toString('o', '.'));
 
     // 最後にマスクなしで進める
     // 自分の石の隣に相手の石が繋がっているものの一番先頭
@@ -163,7 +163,7 @@ test "get valid move" {
         \\........
         \\oooooooo
         \\........
-    , &BitBoard.toString(flip, 'o', '.'));
+    , &flip.toString('o', '.'));
 
     // これを「石が置かれていない場所」でマスク
     flip = flip & ~(board.black | board.white);
@@ -177,7 +177,7 @@ test "get valid move" {
         \\........
         \\o.......
         \\........
-    , &BitBoard.toString(flip, 'o', '.'));
+    , &flip.toString('o', '.'));
 
     // これを縦横斜めの4方向に向ける
     const moves = board.getValidMoves();
@@ -191,7 +191,7 @@ test "get valid move" {
         \\........
         \\o.......
         \\...o....
-    , &BitBoard.toString(moves, 'o', '.'));
+    , &moves.toString('o', '.'));
 }
 
 test "get valid move 1" {
@@ -207,7 +207,7 @@ test "get valid move 1" {
         \\........
         \\oxxxxxx.
     );
-    const actual = BitBoard.toString(board.getValidMoves(), 'o', '.');
+    const actual = board.getValidMoves().toString('o', '.');
 
     const expected =
         \\...o....
@@ -236,7 +236,7 @@ test "get valid move 2" {
         \\.......x
         \\.......o
     );
-    const actual = BitBoard.toString(board.getValidMoves(), 'o', '.');
+    const actual = board.getValidMoves().toString('o', '.');
 
     const expected =
         \\.......o
@@ -265,7 +265,7 @@ test "get valid move 3" {
         \\..x...x.
         \\o..o....
     );
-    const actual = BitBoard.toString(board.getValidMoves(), 'o', '.');
+    const actual = board.getValidMoves().toString('o', '.');
 
     const expected =
         \\........
@@ -294,7 +294,7 @@ test "get valid move 4" {
         \\.x..x...
         \\o.......
     );
-    const actual = BitBoard.toString(board.getValidMoves(), 'o', '.');
+    const actual = board.getValidMoves().toString('o', '.');
 
     const expected =
         \\.......o

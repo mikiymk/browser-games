@@ -93,7 +93,7 @@ fn selectHandPiece(game: Game, r: Random) ?Game.PrimaryPiece {
 
 fn selectPlace(r: Random, place: BitBoard) BitBoard {
     var index = r.intRangeLessThan(usize, 0, place.count());
-    var iter = BitBoard.iterator(place);
+    var iter = place.iterator();
 
     while (iter.next()) |p| {
         if (index == 0) {

@@ -45,7 +45,7 @@ export fn setPiece(g: *Game, kind: ColorPieceType, index: u8) void {
 
 /// ボードの駒を取得する
 export fn getPiece(g: *Game, kind: ColorPieceType) u64 {
-    return BitBoard.toInteger(g.board.getPieces(kind));
+    return g.board.getPieces(kind).toInteger();
 }
 
 /// 今のターンが黒かどうか
@@ -67,7 +67,7 @@ export fn winner(g: *Game) u8 {
 export fn getMove(g: *Game, from_index: u8) u64 {
     const from_place = BitBoard.fromIndex(from_index);
 
-    return BitBoard.toInteger(g.getMove(from_place));
+    return g.getMove(from_place).toInteger();
 }
 
 /// 駒を移動する

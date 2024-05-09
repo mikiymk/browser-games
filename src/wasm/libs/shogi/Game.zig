@@ -286,7 +286,7 @@ pub fn setBoard(game: Game, board_slice: *[]u8) void {
 
 /// ボードのスライスに駒を設定する
 pub fn setPieceToBoard(board: *[]u8, target: BitBoard, value: u8) void {
-    var iter = BitBoard.iterator(target);
+    var iter = target.iterator();
     while (iter.next()) |n| {
         board.*[@ctz(n)] = value;
     }

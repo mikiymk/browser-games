@@ -93,7 +93,7 @@ fn getValidMoves(board: Board, allocator: Allocator, color: Color) AllocError![]
         while (iter.next()) |current| {
             const to = board.getMove(BitBoard.fromIndex(current));
 
-            if (!BitBoard.isEmpty(to)) {
+            if (!to.isEmpty()) {
                 try moves.append(.{
                     .from = BitBoard.fromIndex(current),
                     .to = to,

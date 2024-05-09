@@ -106,10 +106,10 @@ fn pawnBlack(b: Board, pawn_place: BitBoard) BitBoard {
 
     const empties = white_pieces.unions(black_pieces).inversed();
 
-    const move_s = BitBoard.move(pawn_place, .s).masks(empties);
-    const move_s2 = BitBoard.move(move_s, .s).masks(empties).masks(black_pawn_double_step_target);
-    const move_se = BitBoard.move(pawn_place, .se).masks(east_mask);
-    const move_sw = BitBoard.move(pawn_place, .sw).masks(west_mask);
+    const move_s = pawn_place.move(.s).masks(empties);
+    const move_s2 = move_s.move(.s).masks(empties).masks(black_pawn_double_step_target);
+    const move_se = pawn_place.move(.se).masks(east_mask);
+    const move_sw = pawn_place.move(.sw).masks(west_mask);
 
     return move_s.unions(move_s2).unions(move_se.unions(move_sw).masks(white_pieces));
 }
@@ -120,10 +120,10 @@ fn pawnWhite(b: Board, pawn_place: BitBoard) BitBoard {
 
     const empties = white_pieces.unions(black_pieces).inversed();
 
-    const move_n = BitBoard.move(pawn_place, .n).masks(empties);
-    const move_n2 = BitBoard.move(move_n, .n).masks(empties).masks(white_pawn_double_step_target);
-    const move_ne = BitBoard.move(pawn_place, .ne).masks(east_mask);
-    const move_nw = BitBoard.move(pawn_place, .nw).masks(west_mask);
+    const move_n = pawn_place.move(.n).masks(empties);
+    const move_n2 = move_n.move(.n).masks(empties).masks(white_pawn_double_step_target);
+    const move_ne = pawn_place.move(.ne).masks(east_mask);
+    const move_nw = pawn_place.move(.nw).masks(west_mask);
 
     return move_n.unions(move_n2).unions(move_ne.unions(move_nw).masks(black_pieces));
 }
@@ -134,20 +134,20 @@ pub fn knight(b: Board, knight_place: BitBoard, player_color: Board.Color) BitBo
     const he_masked = knight_place.masks(east_mask_double);
     const hw_masked = knight_place.masks(west_mask_double);
 
-    const move_e = BitBoard.move(he_masked, .e);
-    const move_w = BitBoard.move(hw_masked, .w);
+    const move_e = he_masked.move(.e);
+    const move_w = hw_masked.move(.w);
 
-    var move = BitBoard.move(BitBoard.move(ve_masked, .n), .ne);
-    move.setUnion(BitBoard.move(BitBoard.move(ve_masked, .s), .se));
+    var move = ve_masked.move(.n).move(.ne);
+    move.setUnion(ve_masked.move(.s).move(.se));
 
-    move.setUnion(BitBoard.move(BitBoard.move(vw_masked, .n), .nw));
-    move.setUnion(BitBoard.move(BitBoard.move(vw_masked, .s), .sw));
+    move.setUnion(vw_masked.move(.n).move(.nw));
+    move.setUnion(vw_masked.move(.s).move(.sw));
 
-    move.setUnion(BitBoard.move(move_e, .ne));
-    move.setUnion(BitBoard.move(move_e, .se));
+    move.setUnion(move_e.move(.ne));
+    move.setUnion(move_e.move(.se));
 
-    move.setUnion(BitBoard.move(move_w, .nw));
-    move.setUnion(BitBoard.move(move_w, .sw));
+    move.setUnion(move_w.move(.nw));
+    move.setUnion(move_w.move(.sw));
 
     return move.masks(b.getColorPieces(player_color).inversed());
 }
@@ -162,21 +162,21 @@ pub fn bishop(b: Board, bishop_place: BitBoard, player_color: Board.Color) BitBo
 
     var move_ne_sw = bishop_place;
     for (0..6) |_| {
-        move_ne_sw.setUnion(BitBoard.move(move_ne_sw, .ne)
-            .unions(BitBoard.move(move_ne_sw, .sw))
+        move_ne_sw.setUnion(move_ne_sw.move(.ne)
+            .unions(move_ne_sw.move(.sw))
             .masks(mask));
     }
-    move_ne_sw.setUnion(BitBoard.move(move_ne_sw, .ne).masks(east_mask));
-    move_ne_sw.setUnion(BitBoard.move(move_ne_sw, .sw).masks(west_mask));
+    move_ne_sw.setUnion(move_ne_sw.move(.ne).masks(east_mask));
+    move_ne_sw.setUnion(move_ne_sw.move(.sw).masks(west_mask));
 
     var move_nw_se = bishop_place;
     for (0..6) |_| {
-        move_nw_se.setUnion(BitBoard.move(move_nw_se, .nw)
-            .unions(BitBoard.move(move_nw_se, .se))
+        move_nw_se.setUnion(move_nw_se.move(.nw)
+            .unions(move_nw_se.move(.se))
             .masks(mask));
     }
-    move_nw_se.setUnion(BitBoard.move(move_nw_se, .nw).masks(west_mask));
-    move_nw_se.setUnion(BitBoard.move(move_nw_se, .se).masks(east_mask));
+    move_nw_se.setUnion(move_nw_se.move(.nw).masks(west_mask));
+    move_nw_se.setUnion(move_nw_se.move(.se).masks(east_mask));
 
     return move_ne_sw.unions(move_nw_se).masks(ally_pieces.inversed());
 }
@@ -191,21 +191,21 @@ pub fn rook(b: Board, rook_place: BitBoard, player_color: Board.Color) BitBoard 
 
     var move_n_s = rook_place;
     for (0..6) |_| {
-        move_n_s.setUnion(BitBoard.move(move_n_s, .n)
-            .unions(BitBoard.move(move_n_s, .s))
+        move_n_s.setUnion(move_n_s.move(.n)
+            .unions(move_n_s.move(.s))
             .masks(empties));
     }
-    move_n_s.setUnion(BitBoard.move(move_n_s, .n));
-    move_n_s.setUnion(BitBoard.move(move_n_s, .s));
+    move_n_s.setUnion(move_n_s.move(.n));
+    move_n_s.setUnion(move_n_s.move(.s));
 
     var move_e_w = rook_place;
     for (0..6) |_| {
-        move_e_w.setUnion(BitBoard.move(move_e_w, .e)
-            .unions(BitBoard.move(move_e_w, .w))
+        move_e_w.setUnion(move_e_w.move(.e)
+            .unions(move_e_w.move(.w))
             .masks(mask));
     }
-    move_e_w.setUnion(BitBoard.move(move_e_w, .e).masks(east_mask));
-    move_e_w.setUnion(BitBoard.move(move_e_w, .w).masks(west_mask));
+    move_e_w.setUnion(move_e_w.move(.e).masks(east_mask));
+    move_e_w.setUnion(move_e_w.move(.w).masks(west_mask));
 
     return move_n_s.unions(move_e_w).masks(ally_pieces.inversed());
 }
@@ -220,39 +220,39 @@ pub fn queen(b: Board, queen_place: BitBoard, player_color: Board.Color) BitBoar
 
     var move_n_s = queen_place;
     for (0..6) |_| {
-        move_n_s.setUnion(BitBoard.move(move_n_s, .n)
-            .unions(BitBoard.move(move_n_s, .s))
+        move_n_s.setUnion(move_n_s.move(.n)
+            .unions(move_n_s.move(.s))
             .masks(empties));
     }
-    move_n_s.setUnion(BitBoard.move(move_n_s, .n));
-    move_n_s.setUnion(BitBoard.move(move_n_s, .s));
+    move_n_s.setUnion(move_n_s.move(.n));
+    move_n_s.setUnion(move_n_s.move(.s));
 
     var move_e_w = queen_place;
     for (0..6) |_| {
-        move_e_w.setUnion(BitBoard.move(move_e_w, .e)
-            .unions(BitBoard.move(move_e_w, .w))
+        move_e_w.setUnion(move_e_w.move(.e)
+            .unions(move_e_w.move(.w))
             .masks(mask));
     }
-    move_e_w.setUnion(BitBoard.move(move_e_w, .e).masks(east_mask));
-    move_e_w.setUnion(BitBoard.move(move_e_w, .w).masks(west_mask));
+    move_e_w.setUnion(move_e_w.move(.e).masks(east_mask));
+    move_e_w.setUnion(move_e_w.move(.w).masks(west_mask));
 
     var move_ne_sw = queen_place;
     for (0..6) |_| {
-        move_ne_sw.setUnion(BitBoard.move(move_ne_sw, .ne)
-            .unions(BitBoard.move(move_ne_sw, .sw))
+        move_ne_sw.setUnion(move_ne_sw.move(.ne)
+            .unions(move_ne_sw.move(.sw))
             .masks(mask));
     }
-    move_ne_sw.setUnion(BitBoard.move(move_ne_sw, .ne).masks(east_mask));
-    move_ne_sw.setUnion(BitBoard.move(move_ne_sw, .sw).masks(west_mask));
+    move_ne_sw.setUnion(move_ne_sw.move(.ne).masks(east_mask));
+    move_ne_sw.setUnion(move_ne_sw.move(.sw).masks(west_mask));
 
     var move_nw_se = queen_place;
     for (0..6) |_| {
-        move_nw_se.setUnion(BitBoard.move(move_nw_se, .nw)
-            .unions(BitBoard.move(move_nw_se, .se))
+        move_nw_se.setUnion(move_nw_se.move(.nw)
+            .unions(move_nw_se.move(.se))
             .masks(mask));
     }
-    move_nw_se.setUnion(BitBoard.move(move_nw_se, .nw).masks(west_mask));
-    move_nw_se.setUnion(BitBoard.move(move_nw_se, .se).masks(east_mask));
+    move_nw_se.setUnion(move_nw_se.move(.nw).masks(west_mask));
+    move_nw_se.setUnion(move_nw_se.move(.se).masks(east_mask));
 
     return move_n_s
         .unions(move_e_w)
@@ -267,14 +267,14 @@ pub fn king(b: Board, king_place: BitBoard, player_color: Board.Color) BitBoard 
 
     const ally_pieces = b.getColorPieces(player_color).inversed();
 
-    var move = BitBoard.move(king_place, .n);
-    move.setUnion(BitBoard.move(king_place, .s));
-    move.setUnion(BitBoard.move(e_masked, .e));
-    move.setUnion(BitBoard.move(e_masked, .ne));
-    move.setUnion(BitBoard.move(e_masked, .se));
-    move.setUnion(BitBoard.move(w_masked, .w));
-    move.setUnion(BitBoard.move(w_masked, .nw));
-    move.setUnion(BitBoard.move(w_masked, .sw));
+    var move = king_place.move(.n);
+    move.setUnion(king_place.move(.s));
+    move.setUnion(e_masked.move(.e));
+    move.setUnion(e_masked.move(.ne));
+    move.setUnion(e_masked.move(.se));
+    move.setUnion(w_masked.move(.w));
+    move.setUnion(w_masked.move(.nw));
+    move.setUnion(w_masked.move(.sw));
 
     return move.masks(ally_pieces);
 }

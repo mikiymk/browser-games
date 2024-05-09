@@ -281,29 +281,29 @@ pub fn getColorPieces(b: Board, color: Color) BitBoard {
 
 // 場所からそこのマスにいるコマの色と種類を返します。
 pub fn getColorType(b: Board, place: BitBoard) ?ColorPieceType {
-    if (!BitBoard.isDisjoint(b.black_pawn, place)) {
+    if (b.black_pawn.isJoint(place)) {
         return .black_pawn;
-    } else if (!BitBoard.isDisjoint(b.black_knight, place)) {
+    } else if (b.black_knight.isJoint(place)) {
         return .black_knight;
-    } else if (!BitBoard.isDisjoint(b.black_bishop, place)) {
+    } else if (b.black_bishop.isJoint(place)) {
         return .black_bishop;
-    } else if (!BitBoard.isDisjoint(b.black_rook, place)) {
+    } else if (b.black_rook.isJoint(place)) {
         return .black_rook;
-    } else if (!BitBoard.isDisjoint(b.black_queen, place)) {
+    } else if (b.black_queen.isJoint(place)) {
         return .black_queen;
-    } else if (!BitBoard.isDisjoint(b.black_king, place)) {
+    } else if (b.black_king.isJoint(place)) {
         return .black_king;
-    } else if (!BitBoard.isDisjoint(b.white_pawn, place)) {
+    } else if (b.white_pawn.isJoint(place)) {
         return .white_pawn;
-    } else if (!BitBoard.isDisjoint(b.white_knight, place)) {
+    } else if (b.white_knight.isJoint(place)) {
         return .white_knight;
-    } else if (!BitBoard.isDisjoint(b.white_bishop, place)) {
+    } else if (b.white_bishop.isJoint(place)) {
         return .white_bishop;
-    } else if (!BitBoard.isDisjoint(b.white_rook, place)) {
+    } else if (b.white_rook.isJoint(place)) {
         return .white_rook;
-    } else if (!BitBoard.isDisjoint(b.white_queen, place)) {
+    } else if (b.white_queen.isJoint(place)) {
         return .white_queen;
-    } else if (!BitBoard.isDisjoint(b.white_king, place)) {
+    } else if (b.white_king.isJoint(place)) {
         return .white_king;
     }
 
@@ -363,30 +363,20 @@ fn getCastlingMove(b: Board, from: BitBoard) BitBoard {
 }
 
 fn getEnpassant(b: Board, from: BitBoard, color: Color) BitBoard {
-    switch (color) {
-        .black => if (!BitBoard.isDisjoint(from, b.black_pawn) and
-            !BitBoard.isDisjoint(
-            BitBoard.move(from, .se).unions(BitBoard.move(from, .sw)),
-            b.enpassant_target,
-        )) {
-            return b.enpassant_target;
-        },
-        .white => if (!BitBoard.isDisjoint(from, b.white_pawn) and
-            !BitBoard.isDisjoint(
-            BitBoard.move(from, .ne).unions(BitBoard.move(from, .nw)),
-            b.enpassant_target,
-        )) {
-            return b.enpassant_target;
-        },
+    if (switch (color) {
+        .black => from.isJoint(b.black_pawn) and from.move(.se).unions(from.move(.sw)).isJoint(b.enpassant_target),
+        .white => from.isJoint(b.white_pawn) and from.move(.ne).unions(from.move(.nw)).isJoint(b.enpassant_target),
+    }) {
+        return b.enpassant_target;
+    } else {
+        return BitBoard.init();
     }
-
-    return BitBoard.init();
 }
 
 /// プロモーションかどうかを判定する。
 /// ポーンが最終ランクに到達したとき
 pub fn isPromotion(b: Board, from: BitBoard, to: BitBoard) bool {
-    return !BitBoard.isDisjoint(to, position.final_ranks) and b.getType(from) == .pawn;
+    return to.isJoint(position.final_ranks) and b.getType(from) == .pawn;
 }
 
 /// 現在の盤面でキャスリングが可能かどうかを判定する。
@@ -413,24 +403,24 @@ pub fn canCastling(b: Board, color_piece: ColorPieceType) bool {
 
     const pieces = b.getColorPieces(.black).unions(b.getColorPieces(.white));
     switch (color_piece) {
-        .black_king => return !BitBoard.isDisjoint(b.black_king, black_king) and
-            !BitBoard.isDisjoint(b.black_rook, black_kingside_rook) and
-            BitBoard.isDisjoint(pieces, black_kingside_no_pieces) and
+        .black_king => return b.black_king.isJoint(black_king) and
+            b.black_rook.isJoint(black_kingside_rook) and
+            pieces.isDisjoint(black_kingside_no_pieces) and
             !b.isAttacked(black_kingside_no_attacked, .black),
 
-        .black_queen => return !BitBoard.isDisjoint(b.black_king, black_king) and
-            !BitBoard.isDisjoint(b.black_rook, black_queenside_rook) and
-            BitBoard.isDisjoint(pieces, black_queenside_no_pieces) and
+        .black_queen => return b.black_king.isJoint(black_king) and
+            b.black_rook.isJoint(black_queenside_rook) and
+            pieces.isDisjoint(black_queenside_no_pieces) and
             !b.isAttacked(black_queenside_no_attacked, .black),
 
-        .white_king => return !BitBoard.isDisjoint(b.white_king, white_king) and
-            !BitBoard.isDisjoint(b.white_rook, white_kingside_rook) and
-            BitBoard.isDisjoint(pieces, white_kingside_no_pieces) and
+        .white_king => return b.white_king.isJoint(white_king) and
+            b.white_rook.isJoint(white_kingside_rook) and
+            pieces.isDisjoint(white_kingside_no_pieces) and
             !b.isAttacked(white_kingside_no_attacked, .white),
 
-        .white_queen => return !BitBoard.isDisjoint(b.white_king, white_king) and
-            !BitBoard.isDisjoint(b.white_rook, white_queenside_rook) and
-            BitBoard.isDisjoint(pieces, white_queenside_no_pieces) and
+        .white_queen => return b.white_king.isJoint(white_king) and
+            b.white_rook.isJoint(white_queenside_rook) and
+            pieces.isDisjoint(white_queenside_no_pieces) and
             !b.isAttacked(white_queenside_no_attacked, .white),
 
         else => return false,
@@ -467,31 +457,31 @@ pub fn isChecked(b: Board, color: Color) bool {
 /// 攻撃されているならばtrue。
 fn isAttacked(b: Board, place: BitBoard, color: Color) bool {
     if (color == .black) {
-        if (!BitBoard.isDisjoint(place, moves.king(b, b.white_king, .white))) {
+        if (place.isJoint(moves.king(b, b.white_king, .white))) {
             return true;
-        } else if (!BitBoard.isDisjoint(place, moves.queen(b, b.white_queen, .white))) {
+        } else if (place.isJoint(moves.queen(b, b.white_queen, .white))) {
             return true;
-        } else if (!BitBoard.isDisjoint(place, moves.rook(b, b.white_rook, .white))) {
+        } else if (place.isJoint(moves.rook(b, b.white_rook, .white))) {
             return true;
-        } else if (!BitBoard.isDisjoint(place, moves.bishop(b, b.white_bishop, .white))) {
+        } else if (place.isJoint(moves.bishop(b, b.white_bishop, .white))) {
             return true;
-        } else if (!BitBoard.isDisjoint(place, moves.knight(b, b.white_knight, .white))) {
+        } else if (place.isJoint(moves.knight(b, b.white_knight, .white))) {
             return true;
-        } else if (!BitBoard.isDisjoint(place, moves.pawn(b, b.white_pawn, .white))) {
+        } else if (place.isJoint(moves.pawn(b, b.white_pawn, .white))) {
             return true;
         }
     } else {
-        if (!BitBoard.isDisjoint(place, moves.king(b, b.black_king, .black))) {
+        if (place.isJoint(moves.king(b, b.black_king, .black))) {
             return true;
-        } else if (!BitBoard.isDisjoint(place, moves.queen(b, b.black_queen, .black))) {
+        } else if (place.isJoint(moves.queen(b, b.black_queen, .black))) {
             return true;
-        } else if (!BitBoard.isDisjoint(place, moves.rook(b, b.black_rook, .black))) {
+        } else if (place.isJoint(moves.rook(b, b.black_rook, .black))) {
             return true;
-        } else if (!BitBoard.isDisjoint(place, moves.bishop(b, b.black_bishop, .black))) {
+        } else if (place.isJoint(moves.bishop(b, b.black_bishop, .black))) {
             return true;
-        } else if (!BitBoard.isDisjoint(place, moves.knight(b, b.black_knight, .black))) {
+        } else if (place.isJoint(moves.knight(b, b.black_knight, .black))) {
             return true;
-        } else if (!BitBoard.isDisjoint(place, moves.pawn(b, b.black_pawn, .black))) {
+        } else if (place.isJoint(moves.pawn(b, b.black_pawn, .black))) {
             return true;
         }
     }
@@ -505,7 +495,7 @@ pub fn canMove(board: Board, color: Color) bool {
     var iter = board.getColorPieces(color).iterator();
     while (iter.next()) |current| {
         // 動ける場所が1つでもあれば真を返して終了
-        if (!BitBoard.isEmpty(board.getMove(BitBoard.fromIndex(current)))) {
+        if (!board.getMove(BitBoard.fromIndex(current)).isEmpty()) {
             return true;
         }
     }
@@ -518,21 +508,21 @@ pub fn canMove(board: Board, color: Color) bool {
 pub fn isInsufficientMaterial(board: Board) bool {
     // ポーン、ルーク、クイーンのいずれかが1つ以上ある場合、チェックメイトの可能性がある
     // ルークとクイーンは
-    if (!BitBoard.isEmpty(board.black_pawn) or
-        !BitBoard.isEmpty(board.black_rook) or
-        !BitBoard.isEmpty(board.black_queen) or
-        !BitBoard.isEmpty(board.white_pawn) or
-        !BitBoard.isEmpty(board.white_rook) or
-        !BitBoard.isEmpty(board.white_queen))
+    if (!board.black_pawn.isEmpty() or
+        !board.black_rook.isEmpty() or
+        !board.black_queen.isEmpty() or
+        !board.white_pawn.isEmpty() or
+        !board.white_rook.isEmpty() or
+        !board.white_queen.isEmpty())
     {
         return false;
     }
 
     // キング対キング
-    if (BitBoard.isEmpty(board.black_knight) and
-        BitBoard.isEmpty(board.black_bishop) and
-        BitBoard.isEmpty(board.white_knight) and
-        BitBoard.isEmpty(board.white_bishop))
+    if (board.black_knight.isEmpty() and
+        board.black_bishop.isEmpty() and
+        board.white_knight.isEmpty() and
+        board.white_bishop.isEmpty())
     {
         return true;
     }
@@ -588,10 +578,10 @@ pub fn getMovedBoard(b: Board, from: BitBoard, to: BitBoard) Board {
 
         return new_board;
     } else if (piece_type.pieceType() == .pawn and
-        (BitBoard.move(from, .ne).eql(to) or
-        BitBoard.move(from, .se).eql(to) or
-        BitBoard.move(from, .nw).eql(to) or
-        BitBoard.move(from, .sw).eql(to)) and
+        (from.move(.ne).eql(to) or
+        from.move(.se).eql(to) or
+        from.move(.nw).eql(to) or
+        from.move(.sw).eql(to)) and
         to_piece_type == null)
     {
         // ポーンが斜めに動いて動かし先に駒がない場合
@@ -602,10 +592,10 @@ pub fn getMovedBoard(b: Board, from: BitBoard, to: BitBoard) Board {
         new_board.setEnpassant(from, piece_type);
 
         // 次にアンパサンが起こる動きならアンパサンの移動先を代入する
-        if (piece_type.pieceType() == .pawn and BitBoard.move(BitBoard.move(from, .n), .n).eql(to)) {
-            new_board.enpassant_target = BitBoard.move(from, .n);
-        } else if (piece_type.pieceType() == .pawn and BitBoard.move(BitBoard.move(from, .s), .s).eql(to)) {
-            new_board.enpassant_target = BitBoard.move(from, .s);
+        if (piece_type.pieceType() == .pawn and from.move(.n).move(.n).eql(to)) {
+            new_board.enpassant_target = from.move(.n);
+        } else if (piece_type.pieceType() == .pawn and from.move(.s).move(.s).eql(to)) {
+            new_board.enpassant_target = from.move(.s);
         } else {
             new_board.enpassant_target = BitBoard.init();
         }
@@ -705,12 +695,12 @@ fn getMovedBoardEnpassant(b: Board, from: BitBoard, to: BitBoard) Board {
     switch (from_piece_type) {
         .black_pawn => {
             new_board.black_pawn.setToggle(from.unions(to));
-            capture_target = BitBoard.move(to, .n);
+            capture_target = to.move(.n);
         },
 
         .white_pawn => {
             new_board.white_pawn.setToggle(from.unions(to));
-            capture_target = BitBoard.move(to, .s);
+            capture_target = to.move(.s);
         },
 
         else => {},
