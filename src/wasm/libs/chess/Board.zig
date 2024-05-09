@@ -205,7 +205,7 @@ pub fn init() Board {
     );
 }
 
-pub fn fromString(comptime str: []const u8) Board {
+pub fn fromString(str: []const u8) Board {
     return .{
         .black_pawn = BitBoard.fromString(str, 'P'),
         .black_knight = BitBoard.fromString(str, 'N'),

@@ -67,7 +67,7 @@ test "get valid move" {
 
     // マスク
     // 相手の石があるところだけ + 端をループしないように止める
-    const mask: u64 = board.white & BitBoard.fromString(
+    const mask = board.white.masks(BitBoard.fromString(
         \\.oooooo.
         \\.oooooo.
         \\.oooooo.
@@ -76,7 +76,7 @@ test "get valid move" {
         \\.oooooo.
         \\.oooooo.
         \\.oooooo.
-    , 'o');
+    , 'o'));
 
     try testing.expectEqualStrings(
         \\...x..x.
@@ -105,7 +105,7 @@ test "get valid move" {
 
     // dirで決められた方向に向けて石を置く
     // 正の方向と負の方向の2方向を同時に進める
-    flip = ((flip << dir) | (flip >> dir)) & mask;
+    flip = flip.shl(dir).unions(flip.shr(dir)).masks(mask);
 
     try testing.expectEqualStrings(
         \\........
@@ -119,7 +119,7 @@ test "get valid move" {
     , &flip.toString('o', '.'));
 
     // さらに進めたものを前回のものとORで重ねる
-    flip |= ((flip << dir) | (flip >> dir)) & mask;
+    flip.setUnion(flip.shl(dir).unions(flip.shr(dir)).masks(mask));
 
     try testing.expectEqualStrings(
         \\........
@@ -133,10 +133,10 @@ test "get valid move" {
     , &flip.toString('o', '.'));
 
     // 合計で6回進める
-    flip |= ((flip << dir) | (flip >> dir)) & mask;
-    flip |= ((flip << dir) | (flip >> dir)) & mask;
-    flip |= ((flip << dir) | (flip >> dir)) & mask;
-    flip |= ((flip << dir) | (flip >> dir)) & mask;
+    flip.setUnion(flip.shl(dir).unions(flip.shr(dir)).masks(mask));
+    flip.setUnion(flip.shl(dir).unions(flip.shr(dir)).masks(mask));
+    flip.setUnion(flip.shl(dir).unions(flip.shr(dir)).masks(mask));
+    flip.setUnion(flip.shl(dir).unions(flip.shr(dir)).masks(mask));
 
     try testing.expectEqualStrings(
         \\........
@@ -152,7 +152,7 @@ test "get valid move" {
     // 最後にマスクなしで進める
     // 自分の石の隣に相手の石が繋がっているものの一番先頭
 
-    flip = (flip << dir) | (flip >> dir);
+    flip = flip.shl(dir).unions(flip.shr(dir));
 
     try testing.expectEqualStrings(
         \\........
@@ -166,7 +166,7 @@ test "get valid move" {
     , &flip.toString('o', '.'));
 
     // これを「石が置かれていない場所」でマスク
-    flip = flip & ~(board.black | board.white);
+    flip = flip.excludes(board.black.unions(board.white));
 
     try testing.expectEqualStrings(
         \\........
@@ -354,8 +354,8 @@ test "board from string" {
     const testing = std.testing;
 
     const expected = Board{
-        .black = 0x00_00_00_00_00_aa_55_aa,
-        .white = 0x55_aa_55_00_00_00_00_00,
+        .black = BitBoard.fromInteger(0x00_00_00_00_00_aa_55_aa),
+        .white = BitBoard.fromInteger(0x55_aa_55_00_00_00_00_00),
     };
     const actual = Board.fromString(
         \\.o.o.o.o

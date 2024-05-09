@@ -24,7 +24,7 @@ test "get random move with AI" {
         \\........
     );
 
-    const expected: u64 = comptime BitBoard.fromString(
+    const expected = BitBoard.fromString(
         \\........
         \\........
         \\....o...
@@ -48,13 +48,13 @@ test "get random move with AI" {
         S.rand_gen = std.rand.DefaultPrng.init(i);
         S.rand = S.rand_gen.random();
 
-        const actual = @as(u64, 1) << ai.getAiMove(board, S.random);
+        const actual = BitBoard.fromIndex(ai.getAiMove(board, S.random));
 
-        testing.expect(actual & expected != 0) catch {
+        testing.expect(actual.isJoint(expected)) catch {
             const print = std.debug.print;
 
-            print("expected {x:0>16}\n{s}\n\n", .{ expected, expected.toString('o', '.') });
-            print("actual {x:0>16}\n{s}\n\n", .{ actual, actual.toString('o', '.') });
+            print("expected {x:0>16}\n{s}\n\n", .{ expected.toInteger(), expected.toString('o', '.') });
+            print("actual {x:0>16}\n{s}\n\n", .{ actual.toInteger(), actual.toString('o', '.') });
 
             return error.UnexpectedBoard;
         };

@@ -12,7 +12,7 @@ test "BitBoard: 縦と横のサイズからビットサイズを計算して型�
     {
         const B = BitBoard(8, 8);
 
-        try testing.expectEqual(B.Board, u64);
+        try testing.expectEqual(B.Board, std.bit_set.StaticBitSet(64));
         try testing.expectEqual(B.UHeight, u3);
         try testing.expectEqual(B.UWidth, u3);
         try testing.expectEqual(B.UBitLength, u6);
@@ -21,7 +21,7 @@ test "BitBoard: 縦と横のサイズからビットサイズを計算して型�
     {
         const B = BitBoard(9, 7);
 
-        try testing.expectEqual(B.Board, u63);
+        try testing.expectEqual(B.Board, std.bit_set.StaticBitSet(63));
         try testing.expectEqual(B.UHeight, u4);
         try testing.expectEqual(B.UWidth, u3);
         try testing.expectEqual(B.UBitLength, u6);
@@ -31,27 +31,14 @@ test "BitBoard: 縦と横のサイズからビットサイズを計算して型�
 test "BitBoard.fromString: 文字列からボードを作成する" {
     const B = BitBoard(4, 4);
 
-    const board: B.Board = B.fromString(
+    const board = B.fromString(
         \\.o.o
         \\....
         \\....
         \\....
     , 'o');
 
-    try testing.expectEqual(board, 0b0000_0000_0000_1010);
-}
-
-test "BitBoard.fromString: 不正な文字列の場合はすべて0になる" {
-    const B = BitBoard(4, 4);
-
-    const board: B.Board = B.fromString(
-        \\oooo
-        \\oooo
-        \\oooo
-        \\ooooo
-    , 'o');
-
-    try testing.expectEqual(board, 0);
+    try testing.expectEqual(board, B.fromInteger(0b0000_0000_0000_1010));
 }
 
 test "BitBoard.fromCoordinate: 座標からそこだけビットの立ったボードを作成する" {
@@ -64,8 +51,8 @@ test "BitBoard.fromCoordinate: 座標からそこだけビットの立ったボ�
     const B = BitBoard(4, 4);
 
     {
-        const board1: B.Board = B.fromCoordinate(0, 0);
-        const board2: B.Board = B.fromString(
+        const board1 = B.fromCoordinate(0, 0);
+        const board2 = B.fromString(
             \\....
             \\....
             \\....
@@ -76,8 +63,8 @@ test "BitBoard.fromCoordinate: 座標からそこだけビットの立ったボ�
     }
 
     {
-        const board1: B.Board = B.fromCoordinate(1, 0);
-        const board2: B.Board = B.fromString(
+        const board1 = B.fromCoordinate(1, 0);
+        const board2 = B.fromString(
             \\....
             \\....
             \\....
@@ -88,8 +75,8 @@ test "BitBoard.fromCoordinate: 座標からそこだけビットの立ったボ�
     }
 
     {
-        const board1: B.Board = B.fromCoordinate(0, 2);
-        const board2: B.Board = B.fromString(
+        const board1 = B.fromCoordinate(0, 2);
+        const board2 = B.fromString(
             \\....
             \\o...
             \\....
@@ -100,8 +87,8 @@ test "BitBoard.fromCoordinate: 座標からそこだけビットの立ったボ�
     }
 
     {
-        const board1: B.Board = B.fromCoordinate(3, 3);
-        const board2: B.Board = B.fromString(
+        const board1 = B.fromCoordinate(3, 3);
+        const board2 = B.fromString(
             \\...o
             \\....
             \\....
@@ -115,7 +102,7 @@ test "BitBoard.fromCoordinate: 座標からそこだけビットの立ったボ�
 test "BitBoard.toString: ボードから文字列に変換する" {
     const B = BitBoard(4, 4);
 
-    const board: B.Board = B.fromString(
+    const board = B.fromString(
         \\o.oo
         \\oo.o
         \\ooo.
@@ -135,7 +122,7 @@ test "BitBoard.toString: ボードから文字列に変換する" {
 test "BitBoard.Iterator: ボードのONの各ビットを繰り返す" {
     const B = BitBoard(4, 4);
 
-    const board: B.Board = B.fromString(
+    const board: B = B.fromString(
         \\.o..
         \\..o.
         \\o...
@@ -144,25 +131,25 @@ test "BitBoard.Iterator: ボードのONの各ビットを繰り返す" {
 
     var iterator = B.iterator(board);
 
-    try B.expect(iterator.next().?,
+    try B.expect(B.fromIndex(iterator.next().?),
         \\.o..
         \\....
         \\....
         \\....
     );
-    try B.expect(iterator.next().?,
+    try B.expect(B.fromIndex(iterator.next().?),
         \\....
         \\..o.
         \\....
         \\....
     );
-    try B.expect(iterator.next().?,
+    try B.expect(B.fromIndex(iterator.next().?),
         \\....
         \\....
         \\o...
         \\....
     );
-    try B.expect(iterator.next().?,
+    try B.expect(B.fromIndex(iterator.next().?),
         \\....
         \\....
         \\....
@@ -175,55 +162,55 @@ test "BitBoard.Iterator: ボードのONの各ビットを繰り返す" {
 test "BitBoard.move: ボードの駒を1つ動かしたボードを得る" {
     const B = BitBoard(3, 3);
 
-    const board: B.Board = B.fromString(
+    const board = B.fromString(
         \\...
         \\.o.
         \\...
     , 'o');
 
-    try B.expect(B.move(board, .n),
+    try board.move(.n).expect(
         \\.o.
         \\...
         \\...
     );
 
-    try B.expect(B.move(board, .s),
+    try board.move(.s).expect(
         \\...
         \\...
         \\.o.
     );
 
-    try B.expect(B.move(board, .e),
+    try board.move(.e).expect(
         \\...
         \\..o
         \\...
     );
 
-    try B.expect(B.move(board, .w),
+    try board.move(.w).expect(
         \\...
         \\o..
         \\...
     );
 
-    try B.expect(B.move(board, .ne),
+    try board.move(.ne).expect(
         \\..o
         \\...
         \\...
     );
 
-    try B.expect(B.move(board, .nw),
+    try board.move(.nw).expect(
         \\o..
         \\...
         \\...
     );
 
-    try B.expect(B.move(board, .se),
+    try board.move(.se).expect(
         \\...
         \\...
         \\..o
     );
 
-    try B.expect(B.move(board, .sw),
+    try board.move(.sw).expect(
         \\...
         \\...
         \\o..

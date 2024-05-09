@@ -36,8 +36,8 @@ pub fn BitBoard(comptime height: u16, comptime width: u16) type {
         /// ビットボードの型。
         /// [高さ] × [幅]ビット。
         // pub const Board = std.bit_set.IntegerBitSet(size);
-        pub const Board = std.bit_set.ArrayBitSet(usize, size);
-        // pub const Board = std.bit_set.StaticBitSet(size);
+        // pub const Board = std.bit_set.ArrayBitSet(usize, size);
+        pub const Board: type = std.bit_set.StaticBitSet(size);
 
         /// 高さの型。
         /// 0から[高さ] - 1が全て表現できる最小の整数型。
@@ -72,19 +72,30 @@ pub fn BitBoard(comptime height: u16, comptime width: u16) type {
             return fromIndex(coordinateToIndex(x, y));
         }
 
-        /// 指定した座標のビットをオンにしたビットボードを作成する。
-        pub fn withCoordinate(self: Self, x: UWidth, y: UHeight) Self {
-            return self | fromCoordinate(x, y);
-        }
-
-        /// 指定した座標のビットがオンになっているかどうか。
-        pub fn getCoordinate(self: Self, x: UWidth, y: UHeight) bool {
-            return self & fromCoordinate(x, y) == 0;
-        }
-
         // 文字列を使う関数。
 
         const UCharLength: type = types.UInt(std.math.log2_int_ceil(u16, string_size + 1));
+
+        /// 番号からボードを作成する。
+        pub fn fromIndex(index: usize) Self {
+            var board = Board.initEmpty();
+            board.set(index);
+            return .{ .board = board };
+        }
+
+        pub fn fromInteger(int: types.UInt(size)) Self {
+            if (Board == std.bit_set.IntegerBitSet(size)) {
+                return .{ .board = .{ .mask = int } };
+            } else if (Board == std.bit_set.ArrayBitSet(usize, size)) {
+                const usize_bits = @bitSizeOf(usize);
+                const num_masks = (size + usize_bits - 1) / usize_bits;
+                const masks_type = [num_masks]usize;
+                const int_masks: masks_type = @bitCast(@as(std.meta.Int(.unsigned, @bitSizeOf(masks_type)), int));
+                return .{ .board = .{ .masks = int_masks } };
+            } else {
+                @compileError("board is static bitset");
+            }
+        }
 
         /// ビットボードの文字列からビットボードを作成する。
         /// [幅]文字の後'\n'を[高さ]回繰り返す。
@@ -122,13 +133,6 @@ pub fn BitBoard(comptime height: u16, comptime width: u16) type {
             return .{ .board = board };
         }
 
-        /// 番号からボードを作成する。
-        pub fn fromIndex(index: usize) Self {
-            var board = Board.initEmpty();
-            board.set(index);
-            return .{ .board = board };
-        }
-
         pub fn eql(self: Self, other: Self) bool {
             return self.board.eql(other.board);
         }
@@ -153,14 +157,18 @@ pub fn BitBoard(comptime height: u16, comptime width: u16) type {
 
         /// ボードを整数に変換する
         pub fn toInteger(self: Self) types.UInt(size) {
-            if (Board == std.bit_set.IntegerBitSet(size)) {
-                return self.mask;
-            } else if (Board == std.bit_set.ArrayBitSet(usize, size)) {
-                const mask = self.board.masks;
-                const masks_int: types.UInt(@bitSizeOf(@TypeOf(mask))) = @bitCast(mask);
-                return @intCast(masks_int);
-            } else {
-                @compileError("board is static bitset");
+            switch (Board) {
+                std.bit_set.IntegerBitSet(size) => {
+                    return self.board.mask;
+                },
+                std.bit_set.ArrayBitSet(usize, size) => {
+                    const mask = self.board.masks;
+                    const masks_int: types.UInt(@bitSizeOf(@TypeOf(mask))) = @bitCast(mask);
+                    return @intCast(masks_int);
+                },
+                else => {
+                    @compileError("board is static bitset");
+                },
             }
         }
 
@@ -203,49 +211,21 @@ pub fn BitBoard(comptime height: u16, comptime width: u16) type {
         }
 
         /// board << length
-        fn shl(self: Self, length: usize) Self {
+        pub fn shl(self: Self, length: usize) Self {
             assert(length <= size);
 
-            if (Board == std.bit_set.IntegerBitSet(size)) {
-                const mask = self.board.mask;
-                const shifted_mask = mask << @intCast(length);
-
-                return .{ .board = .{ .mask = shifted_mask } };
-            } else if (Board == std.bit_set.ArrayBitSet(usize, size)) {
-                const ubit = @bitSizeOf(usize);
-                const mask = self.board.masks;
-                const masks_length = mask.len;
-                const masks_int: std.meta.Int(.unsigned, ubit * masks_length) = @bitCast(mask);
-                const shifted_masks_int = masks_int << @intCast(length);
-                const shifted_masks: @TypeOf(mask) = @bitCast(shifted_masks_int);
-
-                return .{ .board = .{ .masks = shifted_masks } };
-            } else {
-                @compileError("board is static bitset");
-            }
+            const mask_int = self.toInteger();
+            const shifted_mask = mask_int << @intCast(length);
+            return fromInteger(shifted_mask);
         }
 
         /// board >> length
-        fn shr(self: Self, length: usize) Self {
+        pub fn shr(self: Self, length: usize) Self {
             assert(length <= size);
 
-            if (Board == std.bit_set.IntegerBitSet(size)) {
-                const mask = self.board.mask;
-                const shifted_mask = mask >> @intCast(length);
-
-                return .{ .board = .{ .mask = shifted_mask } };
-            } else if (Board == std.bit_set.ArrayBitSet(usize, size)) {
-                const ubit = @bitSizeOf(usize);
-                const mask = self.board.masks;
-                const masks_length = mask.len;
-                const masks_int: std.meta.Int(.unsigned, ubit * masks_length) = @bitCast(mask);
-                const shifted_masks_int = masks_int >> @intCast(length);
-                const shifted_masks: @TypeOf(mask) = @bitCast(shifted_masks_int);
-
-                return .{ .board = .{ .masks = shifted_masks } };
-            } else {
-                @compileError("board is static bitset");
-            }
+            const mask_int = self.toInteger();
+            const shifted_mask = mask_int >> @intCast(length);
+            return fromInteger(shifted_mask);
         }
 
         /// selfにotherのビットを足し合わせる。
@@ -334,7 +314,7 @@ pub fn BitBoard(comptime height: u16, comptime width: u16) type {
             }
         }
 
-        pub fn expect(self: Self, comptime expected: []const u8) error{TestExpectedEqual}!void {
+        pub fn expect(self: Self, expected: []const u8) error{TestExpectedEqual}!void {
             const expected_board = fromString(expected, 'o');
 
             if (self.eql(expected_board)) {

@@ -982,10 +982,10 @@ const king_cases = [_]TestCase{
     },
 };
 
-fn testCases(comptime cases: []const TestCase, comptime char: u8, comptime moves_fn: fn (b: Board, pawn_place: u64, color: Board.Color) u64) !void {
+fn testCases(cases: []const TestCase, char: u8, moves_fn: fn (b: Board, pawn_place: BitBoard, color: Board.Color) BitBoard) !void {
     var has_fail = false;
 
-    inline for (cases) |case| {
+    for (cases) |case| {
         const board = Board.fromString(case.board);
         const pos = BitBoard.fromString(case.board, char);
 
