@@ -18,7 +18,7 @@ test {
     _ = @import("./ai.test.zig");
 }
 
-const Move = struct { from: BitBoard.Board, to: BitBoard.Board };
+const Move = struct { from: BitBoard, to: BitBoard };
 const MoveList = std.ArrayList(Move);
 
 /// AIが考えた打つ場所を返します。
@@ -35,7 +35,7 @@ pub fn getAiMove(board: Board, allocator: Allocator, color: Color, comptime rand
     for (moves) |from_moves| {
         const from = from_moves.from;
 
-        var to_iter = from_moves.to.iterator(.{});
+        var to_iter = from_moves.to.iterator();
         while (to_iter.next()) |to| {
             const to_board = BitBoard.fromIndex(to);
             const moved = board.getMovedBoard(from, to_board);
@@ -68,7 +68,7 @@ pub fn getAiMove(board: Board, allocator: Allocator, color: Color, comptime rand
 fn getValidMoves(board: Board, allocator: Allocator, color: Color) AllocError![]Move {
     var moves = MoveList.init(allocator);
 
-    const boards: [6]BitBoard.Board = switch (color) {
+    const boards: [6]BitBoard = switch (color) {
         .black => .{
             board.black_pawn,
             board.black_knight,
@@ -88,7 +88,7 @@ fn getValidMoves(board: Board, allocator: Allocator, color: Color) AllocError![]
     };
 
     for (boards) |b| {
-        var iter = b.iterator(.{});
+        var iter = b.iterator();
 
         while (iter.next()) |current| {
             const to = board.getMove(BitBoard.fromIndex(current));
@@ -127,7 +127,7 @@ fn alphaBeta(board: Board, allocator: Allocator, player_color: Color, current_co
         moves_loop: for (moves) |from_moves| {
             const from = from_moves.from;
 
-            var to_iter = from_moves.to.iterator(.{});
+            var to_iter = from_moves.to.iterator();
             while (to_iter.next()) |to| {
                 const moved = board.getMovedBoard(from, BitBoard.fromIndex(to));
 
@@ -169,7 +169,7 @@ fn alphaBeta(board: Board, allocator: Allocator, player_color: Color, current_co
         moves_loop: for (moves) |from_moves| {
             const from = from_moves.from;
 
-            var to_iter = from_moves.to.iterator(.{});
+            var to_iter = from_moves.to.iterator();
             while (to_iter.next()) |to| {
                 const moved = board.getMovedBoard(from, BitBoard.fromIndex(to));
 
@@ -244,7 +244,7 @@ fn evaluate(board: Board) isize {
 
     const black_movable = blk: {
         var movable_count: usize = 0;
-        var iter = board.getColorPieces(.black).iterator(.{});
+        var iter = board.getColorPieces(.black).iterator();
 
         while (iter.next()) |from| {
             const move_targets = board.getMove(BitBoard.fromIndex(from));
@@ -257,7 +257,7 @@ fn evaluate(board: Board) isize {
 
     const white_movable = blk: {
         var movable_count: usize = 0;
-        var iter = board.getColorPieces(.white).iterator(.{});
+        var iter = board.getColorPieces(.white).iterator();
 
         while (iter.next()) |from| {
             const move_targets = board.getMove(BitBoard.fromIndex(from));
