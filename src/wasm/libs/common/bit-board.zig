@@ -204,7 +204,7 @@ pub fn BitBoard(comptime height: u16, comptime width: u16) type {
             return self.board.count();
         }
 
-        pub fn iterator(self: Self) Board.Iterator(.{}) {
+        pub inline fn iterator(self: Self) Board.Iterator(.{}) {
             return self.board.iterator(.{});
         }
 
