@@ -47,7 +47,7 @@ jobs:
         run: bun run test:wasm
 
       - name: generate wasm
-        run: bun run build-wasm
+        run: bun run build:wasm
 
       - name: check biome
         run: bun run lint:biome
@@ -62,4 +62,4 @@ jobs:
         run: bun run lint:knip
 
       - name: build astro
-        run: bun run build-js
+        run: bun run build:js
