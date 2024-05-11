@@ -88,7 +88,7 @@ export fn promote(g: *Game, index: u8, piece_kind: ColorPieceType) void {
 
 /// AIで駒を移動する
 export fn moveAi(g: *Game) void {
-    const ai_move = ai.getAiMove(g.board, allocator, g.next_color, getRamdom) catch return;
+    const ai_move = ai.getAiMove(g.board, allocator, g.next_color, 3, getRamdom) catch return;
 
     if (g.applyMove(ai_move.from, ai_move.to)) {
         g.applyPromote(ai_move.to, .queen);

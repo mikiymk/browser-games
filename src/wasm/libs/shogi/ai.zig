@@ -14,6 +14,10 @@ const Board = main.Board;
 const BitBoard = Board.BitBoard;
 const moves = main.moves;
 
+test {
+    _ = @import("./ai.test.zig");
+}
+
 pub const Move = union(enum) {
     move: struct { from: BitBoard, to: BitBoard },
     hit: struct { piece: Game.PieceKind, to: BitBoard },

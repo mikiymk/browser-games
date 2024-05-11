@@ -336,5 +336,28 @@ pub fn BitBoard(comptime height: u16, comptime width: u16) type {
 
             return error.TestExpectedEqual;
         }
+
+        pub fn expectJoint(self: Self, expected: []const u8) error{TestExpectedEqual}!void {
+            const expected_board = fromString(expected, 'o');
+
+            if (self.isJoint(expected_board)) {
+                return;
+            }
+
+            std.debug.print(
+                \\
+                \\- expected --
+                \\{s}
+                \\
+                \\- actual ----
+                \\{s}
+                \\
+            , .{
+                expected_board.toString('o', '.'),
+                self.toString('o', '.'),
+            });
+
+            return error.TestExpectedEqual;
+        }
     };
 }
