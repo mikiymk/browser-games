@@ -35,21 +35,23 @@ pub fn BitBoard(comptime height: u16, comptime width: u16) type {
 
         /// ビットボードの型。
         /// [高さ] × [幅]ビット。
-        pub const Board = std.bit_set.IntegerBitSet(size);
+        // pub const Board = std.bit_set.IntegerBitSet(size);
         // pub const Board = std.bit_set.ArrayBitSet(usize, size);
-        // pub const Board: type = std.bit_set.StaticBitSet(size);
+        pub const Board: type = std.bit_set.StaticBitSet(size);
 
         /// 高さの型。
         /// 0から[高さ] - 1が全て表現できる最小の整数型。
-        pub const UHeight: type = types.UInt(std.math.log2_int_ceil(u16, height));
+        pub const Height: type = std.meta.Int(.unsigned, std.math.log2_int_ceil(u16, height));
 
         /// 幅の型。
         /// 0から[幅] - 1が全て表現できる最小の整数型。
-        pub const UWidth: type = types.UInt(std.math.log2_int_ceil(u16, width));
+        pub const Width: type = std.meta.Int(.unsigned, std.math.log2_int_ceil(u16, width));
 
         /// ビットボードのビット長さの型。
         /// 0から[高さ] × [幅] - 1が全て表現できる最小の整数型。
-        pub const UBitLength: type = types.UInt(bit_length);
+        pub const Index: type = std.meta.Int(.unsigned, bit_length);
+
+        const UCharLength: type = std.meta.Int(.unsigned, std.math.log2_int_ceil(u16, string_size + 1));
 
         /// ビットボードの値
         board: Board,
@@ -59,22 +61,19 @@ pub fn BitBoard(comptime height: u16, comptime width: u16) type {
             return .{ .board = Board.initEmpty() };
         }
 
-        // 座標を使う関数
-        // 座標は(x, y)の組。
-        // 左下が(0, 0)、右にいくとx、上にいくとyが大きくなる。
-
-        fn coordinateToIndex(x: UWidth, y: UHeight) UBitLength {
-            return x + (@as(UBitLength, height) - y - 1) * @as(UBitLength, width);
+        /// 座標をインデックスに変換する関数
+        /// 座標は(x, y)の組。
+        /// 左下が(0, 0)、右にいくとx、上にいくとyが大きくなる。
+        fn coordinateToIndex(x: Width, y: Height) Index {
+            return x + (@as(Index, height) - y - 1) * @as(Index, width);
         }
 
         /// 指定した座標のビット1つのみがオンのビットボードを作成する。
-        pub fn fromCoordinate(x: UWidth, y: UHeight) Self {
+        pub fn fromCoordinate(x: Width, y: Height) Self {
             return fromIndex(coordinateToIndex(x, y));
         }
 
         // 文字列を使う関数。
-
-        const UCharLength: type = types.UInt(std.math.log2_int_ceil(u16, string_size + 1));
 
         /// 番号からボードを作成する。
         pub fn fromIndex(index: usize) Self {
@@ -83,7 +82,8 @@ pub fn BitBoard(comptime height: u16, comptime width: u16) type {
             return .{ .board = board };
         }
 
-        pub fn fromInteger(int: types.UInt(size)) Self {
+        /// ビットの整数表現から変換する。
+        pub fn fromInteger(int: std.meta.Int(.unsigned, size)) Self {
             if (Board == std.bit_set.IntegerBitSet(size)) {
                 return .{ .board = .{ .mask = int } };
             } else if (Board == std.bit_set.ArrayBitSet(usize, size)) {
@@ -108,7 +108,7 @@ pub fn BitBoard(comptime height: u16, comptime width: u16) type {
 
             var board: Board = Board.initEmpty();
             var char_count: UCharLength = 0;
-            var bit_count: UBitLength = 0;
+            var bit_count: Index = 0;
 
             for (0..height) |n| {
                 for (0..width) |_| {
@@ -156,14 +156,14 @@ pub fn BitBoard(comptime height: u16, comptime width: u16) type {
         }
 
         /// ボードを整数に変換する
-        pub fn toInteger(self: Self) types.UInt(size) {
+        pub fn toInteger(self: Self) std.meta.Int(.unsigned, size) {
             switch (Board) {
                 std.bit_set.IntegerBitSet(size) => {
                     return self.board.mask;
                 },
                 std.bit_set.ArrayBitSet(usize, size) => {
                     const mask = self.board.masks;
-                    const masks_int: types.UInt(@bitSizeOf(@TypeOf(mask))) = @bitCast(mask);
+                    const masks_int: std.meta.Int(.unsigned, @bitSizeOf(@TypeOf(mask))) = @bitCast(mask);
                     return @intCast(masks_int);
                 },
                 else => {
@@ -174,16 +174,14 @@ pub fn BitBoard(comptime height: u16, comptime width: u16) type {
 
         /// ビットボードを文字列に変換する。
         pub fn toString(self: Self, piece_symbol: u8, empty_symbol: u8) [string_size]u8 {
-            var str: [string_size]u8 = .{0} ** string_size;
+            var str: [string_size]u8 = .{empty_symbol} ** string_size;
 
             var char_count: UCharLength = 0;
-            var bit_count: UBitLength = 0;
+            var bit_count: Index = 0;
             for (0..height) |l| {
                 for (0..width) |_| {
                     if (self.board.isSet(bit_count)) {
                         str[char_count] = piece_symbol;
-                    } else {
-                        str[char_count] = empty_symbol;
                     }
 
                     char_count += 1;
@@ -294,7 +292,7 @@ pub fn BitBoard(comptime height: u16, comptime width: u16) type {
 
         pub const Direction = enum { n, s, e, w, nw, ne, sw, se, ns, ew, nesw, nwse };
         pub fn move(self: Self, direction: Direction) Self {
-            const length: UBitLength = switch (direction) {
+            const length: Index = switch (direction) {
                 .n, .s, .ns => width,
                 .e, .w, .ew => 1,
                 .ne, .sw, .nesw => width - 1,

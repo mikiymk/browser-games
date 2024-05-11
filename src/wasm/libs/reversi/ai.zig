@@ -20,7 +20,7 @@ pub fn getAiMove(b: Board, comptime random: *const fn () f64) u6 {
     const moves = b.getValidMoves();
 
     // ここまでの最も良い手
-    var best_place: [32]BitBoard = .{BitBoard.init()} ** 32;
+    var best_place: [32]usize = .{0} ** 32;
     var best_place_count: u5 = 0;
     // ここまでの最も良い手の評価点
     var best_evaluation: isize = std.math.minInt(isize);
@@ -32,11 +32,11 @@ pub fn getAiMove(b: Board, comptime random: *const fn () f64) u6 {
 
         if (best_place_count == 0 or evaluation > best_evaluation) {
             best_evaluation = evaluation;
-            best_place[best_place_count] = BitBoard.fromIndex(place);
+            best_place[best_place_count] = place;
 
             best_place_count += 1;
         } else if (evaluation == best_evaluation) {
-            best_place[0] = BitBoard.fromIndex(place);
+            best_place[0] = place;
             best_place_count = 1;
         }
     }
@@ -44,7 +44,7 @@ pub fn getAiMove(b: Board, comptime random: *const fn () f64) u6 {
     const select_index: u6 = @intFromFloat(random() * @as(f64, @floatFromInt(best_place_count)));
     const selected_best_place = best_place[select_index];
 
-    return @intCast(selected_best_place.board.findFirstSet().?);
+    return @intCast(selected_best_place);
 }
 
 /// αβ法を使ってよい手を探す

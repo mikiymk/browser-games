@@ -14,7 +14,7 @@ fn noWrite(_: void, bytes: []const u8) WriteError!usize {
     return bytes.len;
 }
 
-const writeFn = if (builtin.target.isWasm()) write else noWrite;
+const writeFn: fn (_: void, bytes: []const u8) WriteError!usize = if (builtin.target.isWasm()) write else noWrite;
 const Writer = std.io.Writer(void, WriteError, write);
 
 const writer: Writer = .{ .context = void{} };
