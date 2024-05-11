@@ -1,0 +1,13 @@
+<svg viewBox="0 0 60 60" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <symbol id="root" viewBox="0 0 60 60">
+        <path d="
+            M 30,5
+            L 15,30
+            L 30,55
+            L 45,30
+            Z
+        " />
+    </symbol>
+
+    <use href="#root" fill="#f00" stroke="#000" />
+</svg>
