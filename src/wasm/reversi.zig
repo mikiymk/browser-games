@@ -4,6 +4,9 @@ const reversi = @import("libs/reversi/main.zig");
 const Board = reversi.Board;
 const ai = reversi.ai;
 
+const common = @import("libs/common/main.zig");
+const BitBoard = common.bit_board.BitBoard(8, 8);
+
 /// アロケーター
 const allocator = if (builtin.target.isWasm()) std.heap.wasm_allocator else std.heap.page_allocator;
 
@@ -35,13 +38,13 @@ export fn deinit(board: *Board) void {
 /// ボードの現在状態から黒石の配置を取得する。
 /// 配置はビットボードで表される。
 export fn getBlack(b: *Board) u64 {
-    return b.black;
+    return b.black.toInteger();
 }
 
 /// ボードの現在状態から白石の配置を取得する。
 /// 配置はビットボードで表される。
 export fn getWhite(b: *Board) u64 {
-    return b.white;
+    return b.white.toInteger();
 }
 
 /// 次の手番で石を置くプレイヤーが黒かどうか取得する。
@@ -62,11 +65,11 @@ export fn isGameEnd(b: *Board) bool {
 ///
 /// ゲームボードの現在状態が更新される。
 export fn move(b: *Board, place: u8) void {
-    b.moveMutate(@as(u64, 1) << @truncate(place));
+    b.moveMutate(BitBoard.fromIndex(place));
 
     b.nextColor = b.nextColor.turn();
 
-    if (b.getValidMoves() == 0) {
+    if (b.getValidMoves().isEmpty()) {
         b.nextColor = b.nextColor.turn();
     }
 }
@@ -74,7 +77,7 @@ export fn move(b: *Board, place: u8) void {
 /// 現在プレイヤーの有効手を取得する。
 /// 配置はビットボードで表される。
 export fn getValidMoves(b: *Board) u64 {
-    return b.getValidMoves();
+    return b.getValidMoves().toInteger();
 }
 
 /// 現在のゲームボードからAIの考えた手を取得する。

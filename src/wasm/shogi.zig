@@ -78,7 +78,7 @@ export fn hands(game: *shogi.Game, hands_ptr: [*]u8) void {
 
 /// 選択したマスの駒の動ける範囲を得る
 export fn movePos(game: *shogi.Game, board: [*]u8, from: u8) void {
-    const positions = game.movePositions(indexToBoardBits(from));
+    const positions = game.movePositions(shogi.Board.BitBoard.fromIndex(from));
     var board_slice: []u8 = board[0..81];
 
     @memset(board_slice, 0);
@@ -99,16 +99,16 @@ export fn hitPos(game: *shogi.Game, board: [*]u8, piece: u8) void {
 /// 移動元と移動先を指定して駒を動かす
 /// 成りを選択できる場合はtrueを返す
 export fn move(game: *shogi.Game, from: u8, to: u8) bool {
-    return game.move(indexToBoardBits(from), indexToBoardBits(to));
+    return game.move(shogi.Board.BitBoard.fromIndex(from), shogi.Board.BitBoard.fromIndex(to));
 }
 
 export fn hit(game: *shogi.Game, piece: u8, to: u8) void {
-    game.hit(@enumFromInt(piece), indexToBoardBits(to));
+    game.hit(@enumFromInt(piece), shogi.Board.BitBoard.fromIndex(to));
 }
 
 /// 移動元と変化先の駒を指定して駒を動かす
 export fn promote(game: *shogi.Game, position: u8) void {
-    game.promote(indexToBoardBits(position));
+    game.promote(shogi.Board.BitBoard.fromIndex(position));
 }
 
 /// AIで自動で駒を動かす
@@ -126,8 +126,4 @@ export fn moveAi(game: *shogi.Game) void {
             game.hit(h.piece, h.to);
         },
     }
-}
-
-fn indexToBoardBits(position: u8) u81 {
-    return @as(u81, 1) << @truncate(position);
 }

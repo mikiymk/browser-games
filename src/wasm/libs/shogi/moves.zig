@@ -4,12 +4,12 @@ const builtin = @import("builtin");
 
 // common import
 const common = @import("../common/main.zig");
-const BitBoard = common.bit_board.BitBoard(9, 9);
 
 // internal import
 const main = @import("./main.zig");
 const Game = main.Game;
 const Board = main.Board;
+const BitBoard = Board.BitBoard;
 const moves = main.moves;
 
 // test import
@@ -41,9 +41,9 @@ const west_mask = BitBoard.fromString(
     \\.oooooooo
 , 'o');
 
-pub fn move(board: Board, from: u81) u81 {
+pub fn move(board: Board, from: BitBoard) BitBoard {
     const piece = board.getPieceAt(from);
-    const color = piece.color() orelse return 0;
+    const color = piece.color() orelse return BitBoard.init();
 
     return switch (piece.piece() orelse unreachable) {
         .pawn => pawn(board, from, color),
@@ -65,7 +65,7 @@ pub fn move(board: Board, from: u81) u81 {
 }
 
 /// 歩兵の移動できる範囲
-pub fn pawn(board: Board, from: u81, color: Game.PlayerColor) u81 {
+pub fn pawn(board: Board, from: BitBoard, color: Game.PlayerColor) BitBoard {
     return switch (color) {
         .black => blackPawn(board, from),
         .white => whitePawn(board, from),
@@ -73,23 +73,23 @@ pub fn pawn(board: Board, from: u81, color: Game.PlayerColor) u81 {
 }
 
 /// 先手の歩兵の移動できる範囲
-pub fn whitePawn(board: Board, from: u81) u81 {
-    const to: u81 = BitBoard.move(from, .n);
+pub fn whitePawn(board: Board, from: BitBoard) BitBoard {
+    const to = from.move(.n);
     const ally_pieces = board.getColorPieces(.white);
 
-    return to & ~ally_pieces;
+    return to.masks(ally_pieces.inversed());
 }
 
 /// 後手の歩兵の移動できる範囲
-pub fn blackPawn(board: Board, from: u81) u81 {
-    const to: u81 = BitBoard.move(from, .s);
+pub fn blackPawn(board: Board, from: BitBoard) BitBoard {
+    const to = from.move(.s);
     const ally_pieces = board.getColorPieces(.black);
 
-    return to & ~ally_pieces;
+    return to.excludes(ally_pieces);
 }
 
 /// 香車の移動できる範囲
-pub fn lance(board: Board, from: u81, color: Game.PlayerColor) u81 {
+pub fn lance(board: Board, from: BitBoard, color: Game.PlayerColor) BitBoard {
     return switch (color) {
         .black => blackLance(board, from),
         .white => whiteLance(board, from),
@@ -97,37 +97,37 @@ pub fn lance(board: Board, from: u81, color: Game.PlayerColor) u81 {
 }
 
 /// 先手の香車の移動できる範囲
-pub fn whiteLance(board: Board, from: u81) u81 {
+pub fn whiteLance(board: Board, from: BitBoard) BitBoard {
     const ally_pieces = board.getColorPieces(.white);
     const enemy_pieces = board.getColorPieces(.black);
-    const empty_squares = ~(ally_pieces | enemy_pieces);
+    const empty_squares = ally_pieces.unions(enemy_pieces).inversed();
 
     var to = from;
 
     for (0..7) |_| {
-        to |= BitBoard.move(to, .n) & empty_squares;
+        to.setUnion(to.move(.n).masks(empty_squares));
     }
 
-    return BitBoard.move(to, .n) & ~ally_pieces;
+    return to.move(.n).excludes(ally_pieces);
 }
 
 /// 後手の香車の移動できる範囲
-pub fn blackLance(board: Board, from: u81) u81 {
+pub fn blackLance(board: Board, from: BitBoard) BitBoard {
     const ally_pieces = board.getColorPieces(.black);
     const enemy_pieces = board.getColorPieces(.white);
-    const empty_squares = ~(ally_pieces | enemy_pieces);
+    const empty_squares = ally_pieces.unions(enemy_pieces).inversed();
 
     var to = from;
 
     for (0..7) |_| {
-        to |= BitBoard.move(to, .s) & empty_squares;
+        to.setUnion(to.move(.s).masks(empty_squares));
     }
 
-    return BitBoard.move(to, .s) & ~ally_pieces;
+    return to.move(.s).excludes(ally_pieces);
 }
 
 /// 桂馬の移動できる範囲
-pub fn knight(board: Board, from: u81, color: Game.PlayerColor) u81 {
+pub fn knight(board: Board, from: BitBoard, color: Game.PlayerColor) BitBoard {
     return switch (color) {
         .black => blackKnight(board, from),
         .white => whiteKnight(board, from),
@@ -135,25 +135,25 @@ pub fn knight(board: Board, from: u81, color: Game.PlayerColor) u81 {
 }
 
 /// 先手の桂馬の移動できる範囲
-pub fn whiteKnight(board: Board, from: u81) u81 {
-    const to_nne: u81 = BitBoard.move(BitBoard.move(from & east_mask, .ne), .n);
-    const to_nnw: u81 = BitBoard.move(BitBoard.move(from & west_mask, .nw), .n);
+pub fn whiteKnight(board: Board, from: BitBoard) BitBoard {
+    const to_nne = from.masks(east_mask).move(.ne).move(.n);
+    const to_nnw = from.masks(west_mask).move(.nw).move(.n);
     const ally_pieces = board.getColorPieces(.white);
 
-    return (to_nne | to_nnw) & ~ally_pieces;
+    return (to_nne).unions(to_nnw).excludes(ally_pieces);
 }
 
 /// 後手の桂馬の移動できる範囲
-pub fn blackKnight(board: Board, from: u81) u81 {
-    const to_sse: u81 = BitBoard.move(BitBoard.move(from & east_mask, .se), .s);
-    const to_ssw: u81 = BitBoard.move(BitBoard.move(from & west_mask, .sw), .s);
+pub fn blackKnight(board: Board, from: BitBoard) BitBoard {
+    const to_sse = from.masks(east_mask).move(.se).move(.s);
+    const to_ssw = from.masks(west_mask).move(.sw).move(.s);
     const ally_pieces = board.getColorPieces(.black);
 
-    return (to_sse | to_ssw) & ~ally_pieces;
+    return to_sse.unions(to_ssw).excludes(ally_pieces);
 }
 
 /// 銀将の移動できる範囲
-pub fn silver(board: Board, from: u81, color: Game.PlayerColor) u81 {
+pub fn silver(board: Board, from: BitBoard, color: Game.PlayerColor) BitBoard {
     return switch (color) {
         .black => blackSilver(board, from),
         .white => whiteSilver(board, from),
@@ -161,37 +161,37 @@ pub fn silver(board: Board, from: u81, color: Game.PlayerColor) u81 {
 }
 
 /// 先手の銀将の移動できる範囲
-pub fn whiteSilver(board: Board, from: u81) u81 {
-    const masked_e = from & east_mask;
-    const masked_w = from & west_mask;
+pub fn whiteSilver(board: Board, from: BitBoard) BitBoard {
+    const masked_e = from.masks(east_mask);
+    const masked_w = from.masks(west_mask);
 
-    const to_n: u81 = BitBoard.move(from, .n);
-    const to_ne: u81 = BitBoard.move(masked_e, .ne);
-    const to_nw: u81 = BitBoard.move(masked_w, .nw);
-    const to_se: u81 = BitBoard.move(masked_e, .se);
-    const to_sw: u81 = BitBoard.move(masked_w, .sw);
+    const to_n = from.move(.n);
+    const to_ne = masked_e.move(.ne);
+    const to_nw = masked_w.move(.nw);
+    const to_se = masked_e.move(.se);
+    const to_sw = masked_w.move(.sw);
     const ally_pieces = board.getColorPieces(.white);
 
-    return (to_n | to_ne | to_nw | to_se | to_sw) & ~ally_pieces;
+    return (to_n).unions(to_ne).unions(to_nw).unions(to_se).unions(to_sw).excludes(ally_pieces);
 }
 
 /// 後手の銀将の移動できる範囲
-pub fn blackSilver(board: Board, from: u81) u81 {
-    const masked_e = from & east_mask;
-    const masked_w = from & west_mask;
+pub fn blackSilver(board: Board, from: BitBoard) BitBoard {
+    const masked_e = from.masks(east_mask);
+    const masked_w = from.masks(west_mask);
 
-    const to_s: u81 = BitBoard.move(from, .s);
-    const to_ne: u81 = BitBoard.move(masked_e, .ne);
-    const to_nw: u81 = BitBoard.move(masked_w, .nw);
-    const to_se: u81 = BitBoard.move(masked_e, .se);
-    const to_sw: u81 = BitBoard.move(masked_w, .sw);
+    const to_s = from.move(.s);
+    const to_ne = masked_e.move(.ne);
+    const to_nw = masked_w.move(.nw);
+    const to_se = masked_e.move(.se);
+    const to_sw = masked_w.move(.sw);
     const ally_pieces = board.getColorPieces(.black);
 
-    return (to_s | to_ne | to_nw | to_se | to_sw) & ~ally_pieces;
+    return to_s.unions(to_ne).unions(to_nw).unions(to_se).unions(to_sw).excludes(ally_pieces);
 }
 
 /// 金将の移動できる範囲
-pub fn gold(board: Board, from: u81, color: Game.PlayerColor) u81 {
+pub fn gold(board: Board, from: BitBoard, color: Game.PlayerColor) BitBoard {
     return switch (color) {
         .black => blackGold(board, from),
         .white => whiteGold(board, from),
@@ -199,156 +199,162 @@ pub fn gold(board: Board, from: u81, color: Game.PlayerColor) u81 {
 }
 
 /// 先手の金将の移動できる範囲
-pub fn whiteGold(board: Board, from: u81) u81 {
-    const masked_e = from & east_mask;
-    const masked_w = from & west_mask;
+pub fn whiteGold(board: Board, from: BitBoard) BitBoard {
+    const masked_e = from.masks(east_mask);
+    const masked_w = from.masks(west_mask);
 
-    const to_n: u81 = BitBoard.move(from, .n);
-    const to_ne: u81 = BitBoard.move(masked_e, .ne);
-    const to_nw: u81 = BitBoard.move(masked_w, .nw);
-    const to_e: u81 = BitBoard.move(masked_e, .e);
-    const to_w: u81 = BitBoard.move(masked_w, .w);
-    const to_s: u81 = BitBoard.move(from, .s);
+    const to_n = from.move(.n);
+    const to_ne = masked_e.move(.ne);
+    const to_nw = masked_w.move(.nw);
+    const to_e = masked_e.move(.e);
+    const to_w = masked_w.move(.w);
+    const to_s = from.move(.s);
     const ally_pieces = board.getColorPieces(.white);
 
-    return (to_n | to_ne | to_nw | to_e | to_w | to_s) & ~ally_pieces;
+    return (to_n).unions(to_ne).unions(to_nw).unions(to_e).unions(to_w).unions(to_s).excludes(ally_pieces);
 }
 
 /// 後手の金将の移動できる範囲
-pub fn blackGold(board: Board, from: u81) u81 {
-    const masked_e = from & east_mask;
-    const masked_w = from & west_mask;
+pub fn blackGold(board: Board, from: BitBoard) BitBoard {
+    const masked_e = from.masks(east_mask);
+    const masked_w = from.masks(west_mask);
 
-    const to_s: u81 = BitBoard.move(from, .s);
-    const to_se: u81 = BitBoard.move(masked_e, .se);
-    const to_sw: u81 = BitBoard.move(masked_w, .sw);
-    const to_e: u81 = BitBoard.move(masked_e, .e);
-    const to_w: u81 = BitBoard.move(masked_w, .w);
-    const to_n: u81 = BitBoard.move(from, .n);
+    const to_s = from.move(.s);
+    const to_se = masked_e.move(.se);
+    const to_sw = masked_w.move(.sw);
+    const to_e = masked_e.move(.e);
+    const to_w = masked_w.move(.w);
+    const to_n = from.move(.n);
     const ally_pieces = board.getColorPieces(.black);
 
-    return (to_s | to_se | to_sw | to_e | to_w | to_n) & ~ally_pieces;
+    return to_s
+        .unions(to_se)
+        .unions(to_sw)
+        .unions(to_e)
+        .unions(to_w)
+        .unions(to_n)
+        .excludes(ally_pieces);
 }
 
 /// 角行の移動できる範囲
-pub fn bishop(board: Board, from: u81, color: Game.PlayerColor) u81 {
+pub fn bishop(board: Board, from: BitBoard, color: Game.PlayerColor) BitBoard {
     const ally_pieces = board.getColorPieces(color);
     const enemy_pieces = board.getColorPieces(color.turn());
-    const empty_squares = ~(ally_pieces | enemy_pieces);
+    const empty_squares = ally_pieces.unions(enemy_pieces).inversed();
 
-    const mask = empty_squares & east_mask & west_mask;
+    const mask = empty_squares.masks(east_mask).masks(west_mask);
 
     var to_ne_sw = from;
     var to_nw_se = from;
 
     for (0..7) |_| {
-        to_ne_sw |= (BitBoard.move(to_ne_sw, .ne) | BitBoard.move(to_ne_sw, .sw)) & mask;
-        to_nw_se |= (BitBoard.move(to_nw_se, .nw) | BitBoard.move(to_nw_se, .se)) & mask;
+        to_ne_sw.setUnion(to_ne_sw.move(.nesw).masks(mask));
+        to_nw_se.setUnion(to_nw_se.move(.nwse).masks(mask));
     }
 
-    to_ne_sw |= (BitBoard.move(to_ne_sw, .ne) & west_mask) | (BitBoard.move(to_ne_sw, .sw) & east_mask);
-    to_nw_se |= (BitBoard.move(to_nw_se, .nw) & east_mask) | (BitBoard.move(to_nw_se, .se) & west_mask);
+    to_ne_sw.setUnion(to_ne_sw.move(.ne).masks(west_mask).unions(to_ne_sw.move(.sw).masks(east_mask)));
+    to_nw_se.setUnion(to_nw_se.move(.nw).masks(east_mask).unions(to_nw_se.move(.se).masks(west_mask)));
 
-    return (to_ne_sw | to_nw_se) & ~ally_pieces;
+    return to_ne_sw.unions(to_nw_se).excludes(ally_pieces);
 }
 
 /// 龍馬の移動できる範囲
-pub fn promotedBishop(board: Board, from: u81, color: Game.PlayerColor) u81 {
+pub fn promotedBishop(board: Board, from: BitBoard, color: Game.PlayerColor) BitBoard {
     const ally_pieces = board.getColorPieces(color);
     const enemy_pieces = board.getColorPieces(color.turn());
-    const empty_squares = ~(ally_pieces | enemy_pieces);
+    const empty_squares = ally_pieces.unions(enemy_pieces).inversed();
 
-    const mask = empty_squares & east_mask & west_mask;
+    const mask = empty_squares.masks(east_mask).masks(west_mask);
 
     var to_ne_sw = from;
     var to_nw_se = from;
 
     for (0..7) |_| {
-        to_ne_sw |= (BitBoard.move(to_ne_sw, .ne) | BitBoard.move(to_ne_sw, .sw)) & mask;
-        to_nw_se |= (BitBoard.move(to_nw_se, .nw) | BitBoard.move(to_nw_se, .se)) & mask;
+        to_ne_sw.setUnion(to_ne_sw.move(.nesw).masks(mask));
+        to_nw_se.setUnion(to_nw_se.move(.nwse).masks(mask));
     }
 
-    to_ne_sw |= (BitBoard.move(to_ne_sw, .ne) & west_mask) | (BitBoard.move(to_ne_sw, .sw) & east_mask);
-    to_nw_se |= (BitBoard.move(to_nw_se, .nw) & east_mask) | (BitBoard.move(to_nw_se, .se) & west_mask);
+    to_ne_sw.setUnion(to_ne_sw.move(.ne).masks(west_mask).unions(to_ne_sw.move(.sw).masks(east_mask)));
+    to_nw_se.setUnion(to_nw_se.move(.nw).masks(east_mask).unions(to_nw_se.move(.se).masks(west_mask)));
 
-    const masked_e = from & east_mask;
-    const masked_w = from & west_mask;
+    const masked_e = from.masks(east_mask);
+    const masked_w = from.masks(west_mask);
 
-    const to_n: u81 = BitBoard.move(from, .n);
-    const to_s: u81 = BitBoard.move(from, .s);
-    const to_e: u81 = BitBoard.move(masked_e, .e);
-    const to_w: u81 = BitBoard.move(masked_w, .w);
+    const to_n = from.move(.n);
+    const to_s = from.move(.s);
+    const to_e = masked_e.move(.e);
+    const to_w = masked_w.move(.w);
 
-    return (to_ne_sw | to_nw_se | to_n | to_s | to_e | to_w) & ~ally_pieces;
+    return to_ne_sw.unions(to_nw_se).unions(to_n).unions(to_s).unions(to_e).unions(to_w).excludes(ally_pieces);
 }
 
 /// 飛車の移動できる範囲
-pub fn rook(board: Board, from: u81, color: Game.PlayerColor) u81 {
+pub fn rook(board: Board, from: BitBoard, color: Game.PlayerColor) BitBoard {
     const ally_pieces = board.getColorPieces(color);
     const enemy_pieces = board.getColorPieces(color.turn());
-    const empty_squares = ~(ally_pieces | enemy_pieces);
+    const empty_squares = ally_pieces.unions(enemy_pieces).inversed();
 
-    const mask = empty_squares & east_mask & west_mask;
+    const mask = empty_squares.masks(east_mask).masks(west_mask);
 
     var to_n_s = from;
     var to_e_w = from;
 
     for (0..7) |_| {
-        to_n_s |= (BitBoard.move(to_n_s, .s) | BitBoard.move(to_n_s, .n)) & empty_squares;
-        to_e_w |= (BitBoard.move(to_e_w, .e) | BitBoard.move(to_e_w, .w)) & mask;
+        to_n_s.setUnion(to_n_s.move(.s).unions(to_n_s.move(.n)).masks(empty_squares));
+        to_e_w.setUnion(to_e_w.move(.e).unions(to_e_w.move(.w)).masks(mask));
     }
 
-    to_n_s |= BitBoard.move(to_n_s, .s) | BitBoard.move(to_n_s, .n);
-    to_e_w |= (BitBoard.move(to_e_w, .e) & west_mask) | (BitBoard.move(to_e_w, .w) & east_mask);
+    to_n_s.setUnion(to_n_s.move(.s).unions(to_n_s.move(.n)));
+    to_e_w.setUnion(to_e_w.move(.e).masks(west_mask).unions(to_e_w.move(.w).masks(east_mask)));
 
-    return (to_n_s | to_e_w) & ~ally_pieces;
+    return (to_n_s).unions(to_e_w).excludes(ally_pieces);
 }
 
 /// 龍王の移動できる範囲
-pub fn promotedRook(board: Board, from: u81, color: Game.PlayerColor) u81 {
+pub fn promotedRook(board: Board, from: BitBoard, color: Game.PlayerColor) BitBoard {
     const ally_pieces = board.getColorPieces(color);
     const enemy_pieces = board.getColorPieces(color.turn());
-    const empty_squares = ~(ally_pieces | enemy_pieces);
+    const empty_squares = ally_pieces.unions(enemy_pieces).inversed();
 
-    const mask = empty_squares & east_mask & west_mask;
+    const mask = empty_squares.masks(east_mask).masks(west_mask);
 
     var to_n_s = from;
     var to_e_w = from;
 
     for (0..7) |_| {
-        to_n_s |= (BitBoard.move(to_n_s, .s) | BitBoard.move(to_n_s, .n)) & empty_squares;
-        to_e_w |= (BitBoard.move(to_e_w, .e) | BitBoard.move(to_e_w, .w)) & mask;
+        to_n_s.setUnion(to_n_s.move(.s).unions(to_n_s.move(.n)).masks(empty_squares));
+        to_e_w.setUnion(to_e_w.move(.e).unions(to_e_w.move(.w)).masks(mask));
     }
 
-    to_n_s |= BitBoard.move(to_n_s, .s) | BitBoard.move(to_n_s, .n);
-    to_e_w |= (BitBoard.move(to_e_w, .e) & west_mask) | (BitBoard.move(to_e_w, .w) & east_mask);
+    to_n_s.setUnion(to_n_s.move(.s).unions(to_n_s.move(.n)));
+    to_e_w.setUnion(to_e_w.move(.e).masks(west_mask).unions(to_e_w.move(.w).masks(east_mask)));
 
-    const masked_e = from & east_mask;
-    const masked_w = from & west_mask;
+    const masked_e = from.masks(east_mask);
+    const masked_w = from.masks(west_mask);
 
-    const to_ne: u81 = BitBoard.move(masked_e, .ne);
-    const to_nw: u81 = BitBoard.move(masked_w, .nw);
-    const to_se: u81 = BitBoard.move(masked_e, .se);
-    const to_sw: u81 = BitBoard.move(masked_w, .sw);
+    const to_ne = masked_e.move(.ne);
+    const to_nw = masked_w.move(.nw);
+    const to_se = masked_e.move(.se);
+    const to_sw = masked_w.move(.sw);
 
-    return (to_n_s | to_e_w | to_ne | to_nw | to_se | to_sw) & ~ally_pieces;
+    return (to_n_s).unions(to_e_w).unions(to_ne).unions(to_nw).unions(to_se).unions(to_sw).excludes(ally_pieces);
 }
 
 /// 王将の移動できる範囲
-pub fn king(board: Board, from: u81, color: Game.PlayerColor) u81 {
+pub fn king(board: Board, from: BitBoard, color: Game.PlayerColor) BitBoard {
     const ally_pieces = board.getColorPieces(color);
 
-    const masked_e = from & east_mask;
-    const masked_w = from & west_mask;
+    const masked_e = from.masks(east_mask);
+    const masked_w = from.masks(west_mask);
 
-    const to_n: u81 = BitBoard.move(from, .n);
-    const to_s: u81 = BitBoard.move(from, .s);
-    const to_e: u81 = BitBoard.move(masked_e, .e);
-    const to_w: u81 = BitBoard.move(masked_w, .w);
-    const to_ne: u81 = BitBoard.move(masked_e, .ne);
-    const to_nw: u81 = BitBoard.move(masked_w, .nw);
-    const to_se: u81 = BitBoard.move(masked_e, .se);
-    const to_sw: u81 = BitBoard.move(masked_w, .sw);
+    const to_n = from.move(.n);
+    const to_s = from.move(.s);
+    const to_e = masked_e.move(.e);
+    const to_w = masked_w.move(.w);
+    const to_ne = masked_e.move(.ne);
+    const to_nw = masked_w.move(.nw);
+    const to_se = masked_e.move(.se);
+    const to_sw = masked_w.move(.sw);
 
-    return (to_n | to_s | to_e | to_w | to_ne | to_nw | to_se | to_sw) & ~ally_pieces;
+    return (to_n).unions(to_s).unions(to_e).unions(to_w).unions(to_ne).unions(to_nw).unions(to_se).unions(to_sw).excludes(ally_pieces);
 }

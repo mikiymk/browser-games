@@ -4,6 +4,7 @@ const builtin = @import("builtin");
 
 // common import
 const common = @import("../common/main.zig");
+const BitBoard = common.bit_board.BitBoard(8, 8);
 
 // internal import
 const main = @import("./main.zig");
@@ -63,9 +64,9 @@ pub fn deinit(game: *Game) void {
 
 /// 現在のゲームボードの1マスを指定し、その位置にいる駒の移動先を得る。
 /// キャスリング、アンパサンも含める。
-pub fn getMove(game: Game, from: u64) u64 {
+pub fn getMove(game: Game, from: BitBoard) BitBoard {
     if (game.board.getColor(from) != game.next_color) {
-        return 0;
+        return BitBoard.init();
     }
 
     return game.board.getMove(from);
@@ -73,7 +74,7 @@ pub fn getMove(game: Game, from: u64) u64 {
 
 /// 現在のゲームボードの移動元と移動先を指定し、移動元にある駒を移動先に移動させる。
 /// 移動先にあるその他の駒はすべて取り除かれる。
-pub fn applyMove(game: *Game, from: u64, to: u64) bool {
+pub fn applyMove(game: *Game, from: BitBoard, to: BitBoard) bool {
     const new_board = game.board.getMovedBoard(from, to);
     const is_promotion = game.board.isPromotion(from, to);
 
@@ -95,7 +96,7 @@ pub fn applyMove(game: *Game, from: u64, to: u64) bool {
 }
 
 /// 現在のゲームボードの1マスと変化する駒の種類を指定し、プロモーション(成り)をする。
-pub fn applyPromote(game: *Game, place: u64, piece_type: PieceType) void {
+pub fn applyPromote(game: *Game, place: BitBoard, piece_type: PieceType) void {
     game.board = game.board.getPromotionBoard(place, piece_type);
 }
 

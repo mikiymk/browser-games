@@ -18,33 +18,35 @@ test {
     _ = @import("./ai.test.zig");
 }
 
-const Move = struct { from: u64, to: u64 };
+const Move = struct { from: BitBoard, to: BitBoard };
 const MoveList = std.ArrayList(Move);
 
 /// AIが考えた打つ場所を返します。
-pub fn getAiMove(board: Board, allocator: Allocator, color: Color, comptime random: *const fn () f64) AllocError!Move {
+pub fn getAiMove(board: Board, allocator: Allocator, color: Color, depth: u8, comptime random: *const fn () f64) AllocError!Move {
     // 次の手のリスト
     const moves = try getValidMoves(board, allocator, color);
     defer allocator.free(moves);
 
     // ここまでの最も良い手
     var best_places = MoveList.init(allocator);
+    defer best_places.deinit();
     // ここまでの最も良い手の評価点
-    var best_evaluation: i32 = std.math.minInt(i32);
+    var best_evaluation: isize = std.math.minInt(isize);
 
     for (moves) |from_moves| {
         const from = from_moves.from;
 
-        var to_iter = BitBoard.iterator(from_moves.to);
+        var to_iter = from_moves.to.iterator();
         while (to_iter.next()) |to| {
-            const moved = board.getMovedBoard(from, to);
+            const to_board = BitBoard.fromIndex(to);
+            const moved = board.getMovedBoard(from, to_board);
 
             const evaluation = try alphaBeta(
                 moved,
                 allocator,
                 color,
                 color.turn(),
-                3,
+                depth,
                 std.math.minInt(i32),
                 std.math.maxInt(i32),
             );
@@ -52,9 +54,9 @@ pub fn getAiMove(board: Board, allocator: Allocator, color: Color, comptime rand
             if (best_places.items.len == 0 or evaluation > best_evaluation) {
                 best_evaluation = evaluation;
                 best_places.items.len = 0;
-                try best_places.append(.{ .from = from, .to = to });
+                try best_places.append(.{ .from = from, .to = to_board });
             } else if (evaluation == best_evaluation) {
-                try best_places.append(.{ .from = from, .to = to });
+                try best_places.append(.{ .from = from, .to = to_board });
             }
         }
     }
@@ -67,7 +69,7 @@ pub fn getAiMove(board: Board, allocator: Allocator, color: Color, comptime rand
 fn getValidMoves(board: Board, allocator: Allocator, color: Color) AllocError![]Move {
     var moves = MoveList.init(allocator);
 
-    const boards: [6]u64 = switch (color) {
+    const boards: [6]BitBoard = switch (color) {
         .black => .{
             board.black_pawn,
             board.black_knight,
@@ -87,14 +89,14 @@ fn getValidMoves(board: Board, allocator: Allocator, color: Color) AllocError![]
     };
 
     for (boards) |b| {
-        var iter = BitBoard.iterator(b);
+        var iter = b.iterator();
 
         while (iter.next()) |current| {
-            const to = board.getMove(current);
+            const to = board.getMove(BitBoard.fromIndex(current));
 
-            if (to != 0) {
+            if (!to.isEmpty()) {
                 try moves.append(.{
-                    .from = current,
+                    .from = BitBoard.fromIndex(current),
                     .to = to,
                 });
             }
@@ -106,7 +108,7 @@ fn getValidMoves(board: Board, allocator: Allocator, color: Color) AllocError![]
 
 /// αβ法を使ってよい手を探す
 /// - player_color - 最大の手を見つけたい色
-fn alphaBeta(board: Board, allocator: Allocator, player_color: Color, current_color: Color, depth: u8, alpha: i32, beta: i32) AllocError!i32 {
+fn alphaBeta(board: Board, allocator: Allocator, player_color: Color, current_color: Color, depth: u8, alpha: isize, beta: isize) AllocError!isize {
     const moves = try getValidMoves(board, allocator, current_color);
     defer allocator.free(moves);
 
@@ -121,14 +123,14 @@ fn alphaBeta(board: Board, allocator: Allocator, player_color: Color, current_co
 
     if (current_color == player_color) {
         var new_alpha = alpha;
-        var value: i32 = std.math.minInt(i32);
+        var value: isize = std.math.minInt(isize);
 
         moves_loop: for (moves) |from_moves| {
             const from = from_moves.from;
 
-            var to_iter = BitBoard.iterator(from_moves.to);
+            var to_iter = from_moves.to.iterator();
             while (to_iter.next()) |to| {
-                const moved = board.getMovedBoard(from, to);
+                const moved = board.getMovedBoard(from, BitBoard.fromIndex(to));
 
                 value = @max(value, try alphaBeta(
                     moved,
@@ -163,14 +165,14 @@ fn alphaBeta(board: Board, allocator: Allocator, player_color: Color, current_co
         return new_alpha;
     } else {
         var new_beta = beta;
-        var value: i32 = std.math.maxInt(i32);
+        var value: isize = std.math.maxInt(isize);
 
         moves_loop: for (moves) |from_moves| {
             const from = from_moves.from;
 
-            var to_iter = BitBoard.iterator(from_moves.to);
+            var to_iter = from_moves.to.iterator();
             while (to_iter.next()) |to| {
-                const moved = board.getMovedBoard(from, to);
+                const moved = board.getMovedBoard(from, BitBoard.fromIndex(to));
 
                 value = @min(value, try alphaBeta(
                     moved,
@@ -208,20 +210,20 @@ fn alphaBeta(board: Board, allocator: Allocator, player_color: Color, current_co
 
 /// AI用に現在の盤面の評価点数を計算します。
 /// 黒に有利なら+、白に有利なら-
-fn evaluate(board: Board) i32 {
+fn evaluate(board: Board) isize {
     // 駒の数
-    const black_pawn_count: i32 = @popCount(board.black_pawn);
-    const black_knight_count: i32 = @popCount(board.black_knight);
-    const black_bishop_count: i32 = @popCount(board.black_bishop);
-    const black_rook_count: i32 = @popCount(board.black_rook);
-    const black_queen_count: i32 = @popCount(board.black_queen);
-    const black_king_count: i32 = @popCount(board.black_king);
-    const white_pawn_count: i32 = @popCount(board.white_pawn);
-    const white_knight_count: i32 = @popCount(board.white_knight);
-    const white_bishop_count: i32 = @popCount(board.white_bishop);
-    const white_rook_count: i32 = @popCount(board.white_rook);
-    const white_queen_count: i32 = @popCount(board.white_queen);
-    const white_king_count: i32 = @popCount(board.white_king);
+    const black_pawn_count: isize = @intCast(board.black_pawn.count());
+    const black_knight_count: isize = @intCast(board.black_knight.count());
+    const black_bishop_count: isize = @intCast(board.black_bishop.count());
+    const black_rook_count: isize = @intCast(board.black_rook.count());
+    const black_queen_count: isize = @intCast(board.black_queen.count());
+    const black_king_count: isize = @intCast(board.black_king.count());
+    const white_pawn_count: isize = @intCast(board.white_pawn.count());
+    const white_knight_count: isize = @intCast(board.white_knight.count());
+    const white_bishop_count: isize = @intCast(board.white_bishop.count());
+    const white_rook_count: isize = @intCast(board.white_rook.count());
+    const white_queen_count: isize = @intCast(board.white_queen.count());
+    const white_king_count: isize = @intCast(board.white_king.count());
 
     const black_pieces_count =
         black_pawn_count * 1 +
@@ -241,27 +243,27 @@ fn evaluate(board: Board) i32 {
 
     // 動かせる場所の数
 
-    const black_movable: i32 = blk: {
-        var movable_count: i32 = 0;
-        var iter = BitBoard.iterator(board.getColorPieces(.black));
+    const black_movable = blk: {
+        var movable_count: isize = 0;
+        var iter = board.getColorPieces(.black).iterator();
 
         while (iter.next()) |from| {
-            const move_targets = board.getMove(from);
+            const move_targets = board.getMove(BitBoard.fromIndex(from));
 
-            movable_count += @popCount(move_targets);
+            movable_count += @intCast(move_targets.count());
         }
 
         break :blk movable_count;
     };
 
-    const white_movable: i32 = blk: {
-        var movable_count: i32 = 0;
-        var iter = BitBoard.iterator(board.getColorPieces(.white));
+    const white_movable = blk: {
+        var movable_count: isize = 0;
+        var iter = board.getColorPieces(.white).iterator();
 
         while (iter.next()) |from| {
-            const move_targets = board.getMove(from);
+            const move_targets = board.getMove(BitBoard.fromIndex(from));
 
-            movable_count += @popCount(move_targets);
+            movable_count += @intCast(move_targets.count());
         }
 
         break :blk movable_count;

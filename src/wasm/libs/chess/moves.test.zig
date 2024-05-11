@@ -982,16 +982,16 @@ const king_cases = [_]TestCase{
     },
 };
 
-fn testCases(comptime cases: []const TestCase, comptime char: u8, comptime moves_fn: fn (b: Board, pawn_place: u64, color: Board.Color) u64) !void {
+fn testCases(cases: []const TestCase, char: u8, moves_fn: fn (b: Board, pawn_place: BitBoard, color: Board.Color) BitBoard) !void {
     var has_fail = false;
 
-    inline for (cases) |case| {
+    for (cases) |case| {
         const board = Board.fromString(case.board);
         const pos = BitBoard.fromString(case.board, char);
 
         const pawnmove = moves_fn(board, pos, .black);
 
-        BitBoard.expect(pawnmove, case.expect_move_places) catch {
+        pawnmove.expect(case.expect_move_places) catch {
             std.debug.print("test failed: {s}\n", .{case.desc});
 
             has_fail = true;
@@ -1016,7 +1016,7 @@ test "white pawn" {
 
         const pawnmove = moves.pawn(board, pos, .white);
 
-        BitBoard.expect(pawnmove, case.expect_move_places) catch {
+        pawnmove.expect(case.expect_move_places) catch {
             std.debug.print("test failed: {s}\n", .{case.desc});
 
             has_fail = true;

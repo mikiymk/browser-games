@@ -4,7 +4,7 @@ const builtin = @import("builtin");
 
 // common import
 const common = @import("../common/main.zig");
-const BitBoard = common.bit_board.BitBoard(9, 9);
+pub const BitBoard = common.bit_board.BitBoard(9, 9);
 
 // internal import
 const main = @import("./main.zig");
@@ -17,34 +17,34 @@ test {
     _ = @import("./Board.test.zig");
 }
 
-black_king: u81,
-black_rook: u81,
-black_bishop: u81,
-black_gold: u81,
-black_silver: u81,
-black_knight: u81,
-black_lance: u81,
-black_pawn: u81,
-black_rook_promoted: u81,
-black_bishop_promoted: u81,
-black_silver_promoted: u81,
-black_knight_promoted: u81,
-black_lance_promoted: u81,
-black_pawn_promoted: u81,
-white_king: u81,
-white_rook: u81,
-white_bishop: u81,
-white_gold: u81,
-white_silver: u81,
-white_knight: u81,
-white_lance: u81,
-white_pawn: u81,
-white_rook_promoted: u81,
-white_bishop_promoted: u81,
-white_silver_promoted: u81,
-white_knight_promoted: u81,
-white_lance_promoted: u81,
-white_pawn_promoted: u81,
+black_king: BitBoard,
+black_rook: BitBoard,
+black_bishop: BitBoard,
+black_gold: BitBoard,
+black_silver: BitBoard,
+black_knight: BitBoard,
+black_lance: BitBoard,
+black_pawn: BitBoard,
+black_rook_promoted: BitBoard,
+black_bishop_promoted: BitBoard,
+black_silver_promoted: BitBoard,
+black_knight_promoted: BitBoard,
+black_lance_promoted: BitBoard,
+black_pawn_promoted: BitBoard,
+white_king: BitBoard,
+white_rook: BitBoard,
+white_bishop: BitBoard,
+white_gold: BitBoard,
+white_silver: BitBoard,
+white_knight: BitBoard,
+white_lance: BitBoard,
+white_pawn: BitBoard,
+white_rook_promoted: BitBoard,
+white_bishop_promoted: BitBoard,
+white_silver_promoted: BitBoard,
+white_knight_promoted: BitBoard,
+white_lance_promoted: BitBoard,
+white_pawn_promoted: BitBoard,
 
 pub fn init() Board {
     return fromString(
@@ -94,246 +94,248 @@ pub fn fromString(str: []const u8) Board {
 }
 
 /// 指定したマスにある駒の種類を取得する。
-pub fn getPieceAt(board: Board, position: u81) Game.Square {
-    if (board.black_king & position != 0) {
+pub fn getPieceAt(board: Board, position: BitBoard) Game.Square {
+    if (board.black_king.isJoint(position)) {
         return .black_king;
-    } else if (board.black_rook & position != 0) {
+    } else if (board.black_rook.isJoint(position)) {
         return .black_rook;
-    } else if (board.black_bishop & position != 0) {
+    } else if (board.black_bishop.isJoint(position)) {
         return .black_bishop;
-    } else if (board.black_gold & position != 0) {
+    } else if (board.black_gold.isJoint(position)) {
         return .black_gold;
-    } else if (board.black_silver & position != 0) {
+    } else if (board.black_silver.isJoint(position)) {
         return .black_silver;
-    } else if (board.black_knight & position != 0) {
+    } else if (board.black_knight.isJoint(position)) {
         return .black_knight;
-    } else if (board.black_lance & position != 0) {
+    } else if (board.black_lance.isJoint(position)) {
         return .black_lance;
-    } else if (board.black_pawn & position != 0) {
+    } else if (board.black_pawn.isJoint(position)) {
         return .black_pawn;
-    } else if (board.black_rook_promoted & position != 0) {
+    } else if (board.black_rook_promoted.isJoint(position)) {
         return .black_rook_promoted;
-    } else if (board.black_bishop_promoted & position != 0) {
+    } else if (board.black_bishop_promoted.isJoint(position)) {
         return .black_bishop_promoted;
-    } else if (board.black_silver_promoted & position != 0) {
+    } else if (board.black_silver_promoted.isJoint(position)) {
         return .black_silver_promoted;
-    } else if (board.black_knight_promoted & position != 0) {
+    } else if (board.black_knight_promoted.isJoint(position)) {
         return .black_knight_promoted;
-    } else if (board.black_lance_promoted & position != 0) {
+    } else if (board.black_lance_promoted.isJoint(position)) {
         return .black_lance_promoted;
-    } else if (board.black_pawn_promoted & position != 0) {
+    } else if (board.black_pawn_promoted.isJoint(position)) {
         return .black_pawn_promoted;
-    } else if (board.white_king & position != 0) {
+    } else if (board.white_king.isJoint(position)) {
         return .white_king;
-    } else if (board.white_rook & position != 0) {
+    } else if (board.white_rook.isJoint(position)) {
         return .white_rook;
-    } else if (board.white_bishop & position != 0) {
+    } else if (board.white_bishop.isJoint(position)) {
         return .white_bishop;
-    } else if (board.white_gold & position != 0) {
+    } else if (board.white_gold.isJoint(position)) {
         return .white_gold;
-    } else if (board.white_silver & position != 0) {
+    } else if (board.white_silver.isJoint(position)) {
         return .white_silver;
-    } else if (board.white_knight & position != 0) {
+    } else if (board.white_knight.isJoint(position)) {
         return .white_knight;
-    } else if (board.white_lance & position != 0) {
+    } else if (board.white_lance.isJoint(position)) {
         return .white_lance;
-    } else if (board.white_pawn & position != 0) {
+    } else if (board.white_pawn.isJoint(position)) {
         return .white_pawn;
-    } else if (board.white_rook_promoted & position != 0) {
+    } else if (board.white_rook_promoted.isJoint(position)) {
         return .white_rook_promoted;
-    } else if (board.white_bishop_promoted & position != 0) {
+    } else if (board.white_bishop_promoted.isJoint(position)) {
         return .white_bishop_promoted;
-    } else if (board.white_silver_promoted & position != 0) {
+    } else if (board.white_silver_promoted.isJoint(position)) {
         return .white_silver_promoted;
-    } else if (board.white_knight_promoted & position != 0) {
+    } else if (board.white_knight_promoted.isJoint(position)) {
         return .white_knight_promoted;
-    } else if (board.white_lance_promoted & position != 0) {
+    } else if (board.white_lance_promoted.isJoint(position)) {
         return .white_lance_promoted;
-    } else if (board.white_pawn_promoted & position != 0) {
+    } else if (board.white_pawn_promoted.isJoint(position)) {
         return .white_pawn_promoted;
+    } else {
+        return .empty;
     }
-
-    return .empty;
 }
 
 /// 駒を移動したボードを作成する
-pub fn movedBoard(board: Board, from: u81, to: u81) Board {
+pub fn movedBoard(board: Board, from: BitBoard, to: BitBoard) Board {
     var new_board = board;
 
-    const piece_board: *u81 =
-        if (new_board.black_king & from != 0)
+    const piece_board: *BitBoard =
+        if (new_board.black_king.isJoint(from))
         &new_board.black_king
-    else if (new_board.black_rook & from != 0)
+    else if (new_board.black_rook.isJoint(from))
         &new_board.black_rook
-    else if (new_board.black_bishop & from != 0)
+    else if (new_board.black_bishop.isJoint(from))
         &new_board.black_bishop
-    else if (new_board.black_gold & from != 0)
+    else if (new_board.black_gold.isJoint(from))
         &new_board.black_gold
-    else if (new_board.black_silver & from != 0)
+    else if (new_board.black_silver.isJoint(from))
         &new_board.black_silver
-    else if (new_board.black_knight & from != 0)
+    else if (new_board.black_knight.isJoint(from))
         &new_board.black_knight
-    else if (new_board.black_lance & from != 0)
+    else if (new_board.black_lance.isJoint(from))
         &new_board.black_lance
-    else if (new_board.black_pawn & from != 0)
+    else if (new_board.black_pawn.isJoint(from))
         &new_board.black_pawn
-    else if (new_board.black_rook_promoted & from != 0)
+    else if (new_board.black_rook_promoted.isJoint(from))
         &new_board.black_rook_promoted
-    else if (new_board.black_bishop_promoted & from != 0)
+    else if (new_board.black_bishop_promoted.isJoint(from))
         &new_board.black_bishop_promoted
-    else if (new_board.black_silver_promoted & from != 0)
+    else if (new_board.black_silver_promoted.isJoint(from))
         &new_board.black_silver_promoted
-    else if (new_board.black_knight_promoted & from != 0)
+    else if (new_board.black_knight_promoted.isJoint(from))
         &new_board.black_knight_promoted
-    else if (new_board.black_lance_promoted & from != 0)
+    else if (new_board.black_lance_promoted.isJoint(from))
         &new_board.black_lance_promoted
-    else if (new_board.black_pawn_promoted & from != 0)
+    else if (new_board.black_pawn_promoted.isJoint(from))
         &new_board.black_pawn_promoted
-    else if (new_board.white_king & from != 0)
+    else if (new_board.white_king.isJoint(from))
         &new_board.white_king
-    else if (new_board.white_rook & from != 0)
+    else if (new_board.white_rook.isJoint(from))
         &new_board.white_rook
-    else if (new_board.white_bishop & from != 0)
+    else if (new_board.white_bishop.isJoint(from))
         &new_board.white_bishop
-    else if (new_board.white_gold & from != 0)
+    else if (new_board.white_gold.isJoint(from))
         &new_board.white_gold
-    else if (new_board.white_silver & from != 0)
+    else if (new_board.white_silver.isJoint(from))
         &new_board.white_silver
-    else if (new_board.white_knight & from != 0)
+    else if (new_board.white_knight.isJoint(from))
         &new_board.white_knight
-    else if (new_board.white_lance & from != 0)
+    else if (new_board.white_lance.isJoint(from))
         &new_board.white_lance
-    else if (new_board.white_pawn & from != 0)
+    else if (new_board.white_pawn.isJoint(from))
         &new_board.white_pawn
-    else if (new_board.white_rook_promoted & from != 0)
+    else if (new_board.white_rook_promoted.isJoint(from))
         &new_board.white_rook_promoted
-    else if (new_board.white_bishop_promoted & from != 0)
+    else if (new_board.white_bishop_promoted.isJoint(from))
         &new_board.white_bishop_promoted
-    else if (new_board.white_silver_promoted & from != 0)
+    else if (new_board.white_silver_promoted.isJoint(from))
         &new_board.white_silver_promoted
-    else if (new_board.white_knight_promoted & from != 0)
+    else if (new_board.white_knight_promoted.isJoint(from))
         &new_board.white_knight_promoted
-    else if (new_board.white_lance_promoted & from != 0)
+    else if (new_board.white_lance_promoted.isJoint(from))
         &new_board.white_lance_promoted
-    else if (new_board.white_pawn_promoted & from != 0)
+    else if (new_board.white_pawn_promoted.isJoint(from))
         &new_board.white_pawn_promoted
     else
         return new_board;
 
-    new_board.black_king &= ~to;
-    new_board.black_rook &= ~to;
-    new_board.black_bishop &= ~to;
-    new_board.black_gold &= ~to;
-    new_board.black_silver &= ~to;
-    new_board.black_knight &= ~to;
-    new_board.black_lance &= ~to;
-    new_board.black_pawn &= ~to;
-    new_board.black_rook_promoted &= ~to;
-    new_board.black_bishop_promoted &= ~to;
-    new_board.black_silver_promoted &= ~to;
-    new_board.black_knight_promoted &= ~to;
-    new_board.black_lance_promoted &= ~to;
-    new_board.black_pawn_promoted &= ~to;
-    new_board.white_king &= ~to;
-    new_board.white_rook &= ~to;
-    new_board.white_bishop &= ~to;
-    new_board.white_gold &= ~to;
-    new_board.white_silver &= ~to;
-    new_board.white_knight &= ~to;
-    new_board.white_lance &= ~to;
-    new_board.white_pawn &= ~to;
-    new_board.white_rook_promoted &= ~to;
-    new_board.white_bishop_promoted &= ~to;
-    new_board.white_silver_promoted &= ~to;
-    new_board.white_knight_promoted &= ~to;
-    new_board.white_lance_promoted &= ~to;
-    new_board.white_pawn_promoted &= ~to;
+    const to_inversed = to.inversed();
 
-    piece_board.* ^= from | to;
+    new_board.black_king.setMask(to_inversed);
+    new_board.black_rook.setMask(to_inversed);
+    new_board.black_bishop.setMask(to_inversed);
+    new_board.black_gold.setMask(to_inversed);
+    new_board.black_silver.setMask(to_inversed);
+    new_board.black_knight.setMask(to_inversed);
+    new_board.black_lance.setMask(to_inversed);
+    new_board.black_pawn.setMask(to_inversed);
+    new_board.black_rook_promoted.setMask(to_inversed);
+    new_board.black_bishop_promoted.setMask(to_inversed);
+    new_board.black_silver_promoted.setMask(to_inversed);
+    new_board.black_knight_promoted.setMask(to_inversed);
+    new_board.black_lance_promoted.setMask(to_inversed);
+    new_board.black_pawn_promoted.setMask(to_inversed);
+    new_board.white_king.setMask(to_inversed);
+    new_board.white_rook.setMask(to_inversed);
+    new_board.white_bishop.setMask(to_inversed);
+    new_board.white_gold.setMask(to_inversed);
+    new_board.white_silver.setMask(to_inversed);
+    new_board.white_knight.setMask(to_inversed);
+    new_board.white_lance.setMask(to_inversed);
+    new_board.white_pawn.setMask(to_inversed);
+    new_board.white_rook_promoted.setMask(to_inversed);
+    new_board.white_bishop_promoted.setMask(to_inversed);
+    new_board.white_silver_promoted.setMask(to_inversed);
+    new_board.white_knight_promoted.setMask(to_inversed);
+    new_board.white_lance_promoted.setMask(to_inversed);
+    new_board.white_pawn_promoted.setMask(to_inversed);
+
+    piece_board.setToggle(from.unions(to));
 
     return new_board;
 }
 
-pub fn promotedBoard(board: Board, position: u81) Board {
+pub fn promotedBoard(board: Board, position: BitBoard) Board {
     var new_board = board;
 
-    if (new_board.black_rook & position != 0) {
-        new_board.black_rook &= ~position;
-        new_board.black_rook_promoted |= position;
-    } else if (new_board.black_bishop & position != 0) {
-        new_board.black_bishop &= ~position;
-        new_board.black_bishop_promoted |= position;
-    } else if (new_board.black_silver & position != 0) {
-        new_board.black_silver &= ~position;
-        new_board.black_silver_promoted |= position;
-    } else if (new_board.black_knight & position != 0) {
-        new_board.black_knight &= ~position;
-        new_board.black_knight_promoted |= position;
-    } else if (new_board.black_lance & position != 0) {
-        new_board.black_lance &= ~position;
-        new_board.black_lance_promoted |= position;
-    } else if (new_board.black_pawn & position != 0) {
-        new_board.black_pawn &= ~position;
-        new_board.black_pawn_promoted |= position;
-    } else if (new_board.white_rook & position != 0) {
-        new_board.white_rook &= ~position;
-        new_board.white_rook_promoted |= position;
-    } else if (new_board.white_bishop & position != 0) {
-        new_board.white_bishop &= ~position;
-        new_board.white_bishop_promoted |= position;
-    } else if (new_board.white_silver & position != 0) {
-        new_board.white_silver &= ~position;
-        new_board.white_silver_promoted |= position;
-    } else if (new_board.white_knight & position != 0) {
-        new_board.white_knight &= ~position;
-        new_board.white_knight_promoted |= position;
-    } else if (new_board.white_lance & position != 0) {
-        new_board.white_lance &= ~position;
-        new_board.white_lance_promoted |= position;
-    } else if (new_board.white_pawn & position != 0) {
-        new_board.white_pawn &= ~position;
-        new_board.white_pawn_promoted |= position;
+    if (new_board.black_rook.isJoint(position)) {
+        new_board.black_rook.setMask(position.inversed());
+        new_board.black_rook_promoted.setUnion(position);
+    } else if (new_board.black_bishop.isJoint(position)) {
+        new_board.black_bishop.setMask(position.inversed());
+        new_board.black_bishop_promoted.setUnion(position);
+    } else if (new_board.black_silver.isJoint(position)) {
+        new_board.black_silver.setMask(position.inversed());
+        new_board.black_silver_promoted.setUnion(position);
+    } else if (new_board.black_knight.isJoint(position)) {
+        new_board.black_knight.setMask(position.inversed());
+        new_board.black_knight_promoted.setUnion(position);
+    } else if (new_board.black_lance.isJoint(position)) {
+        new_board.black_lance.setMask(position.inversed());
+        new_board.black_lance_promoted.setUnion(position);
+    } else if (new_board.black_pawn.isJoint(position)) {
+        new_board.black_pawn.setMask(position.inversed());
+        new_board.black_pawn_promoted.setUnion(position);
+    } else if (new_board.white_rook.isJoint(position)) {
+        new_board.white_rook.setMask(position.inversed());
+        new_board.white_rook_promoted.setUnion(position);
+    } else if (new_board.white_bishop.isJoint(position)) {
+        new_board.white_bishop.setMask(position.inversed());
+        new_board.white_bishop_promoted.setUnion(position);
+    } else if (new_board.white_silver.isJoint(position)) {
+        new_board.white_silver.setMask(position.inversed());
+        new_board.white_silver_promoted.setUnion(position);
+    } else if (new_board.white_knight.isJoint(position)) {
+        new_board.white_knight.setMask(position.inversed());
+        new_board.white_knight_promoted.setUnion(position);
+    } else if (new_board.white_lance.isJoint(position)) {
+        new_board.white_lance.setMask(position.inversed());
+        new_board.white_lance_promoted.setUnion(position);
+    } else if (new_board.white_pawn.isJoint(position)) {
+        new_board.white_pawn.setMask(position.inversed());
+        new_board.white_pawn_promoted.setUnion(position);
     }
 
     return new_board;
 }
 
 /// 駒を盤上に追加する
-pub fn hitBoard(board: Board, color: Game.PlayerColor, piece: Game.PieceKind, to: u81) Board {
+pub fn hitBoard(board: Board, color: Game.PlayerColor, piece: Game.PieceKind, to: BitBoard) Board {
     var new_board = board;
 
     switch (piece) {
         .king => switch (color) {
-            .black => new_board.black_king |= to,
-            .white => new_board.white_king |= to,
+            .black => new_board.black_king.setUnion(to),
+            .white => new_board.white_king.setUnion(to),
         },
         .rook => switch (color) {
-            .black => new_board.black_rook |= to,
-            .white => new_board.white_rook |= to,
+            .black => new_board.black_rook.setUnion(to),
+            .white => new_board.white_rook.setUnion(to),
         },
         .bishop => switch (color) {
-            .black => new_board.black_bishop |= to,
-            .white => new_board.white_bishop |= to,
+            .black => new_board.black_bishop.setUnion(to),
+            .white => new_board.white_bishop.setUnion(to),
         },
         .gold => switch (color) {
-            .black => new_board.black_gold |= to,
-            .white => new_board.white_gold |= to,
+            .black => new_board.black_gold.setUnion(to),
+            .white => new_board.white_gold.setUnion(to),
         },
         .silver => switch (color) {
-            .black => new_board.black_silver |= to,
-            .white => new_board.white_silver |= to,
+            .black => new_board.black_silver.setUnion(to),
+            .white => new_board.white_silver.setUnion(to),
         },
         .knight => switch (color) {
-            .black => new_board.black_knight |= to,
-            .white => new_board.white_knight |= to,
+            .black => new_board.black_knight.setUnion(to),
+            .white => new_board.white_knight.setUnion(to),
         },
         .lance => switch (color) {
-            .black => new_board.black_lance |= to,
-            .white => new_board.white_lance |= to,
+            .black => new_board.black_lance.setUnion(to),
+            .white => new_board.white_lance.setUnion(to),
         },
         .pawn => switch (color) {
-            .black => new_board.black_pawn |= to,
-            .white => new_board.white_pawn |= to,
+            .black => new_board.black_pawn.setUnion(to),
+            .white => new_board.white_pawn.setUnion(to),
         },
         else => {},
     }
@@ -341,7 +343,7 @@ pub fn hitBoard(board: Board, color: Game.PlayerColor, piece: Game.PieceKind, to
     return new_board;
 }
 
-pub fn getColorPiecesArray(board: Board, color: Game.PlayerColor) [14]u81 {
+pub fn getColorPiecesArray(board: Board, color: Game.PlayerColor) [14]BitBoard {
     return switch (color) {
         .black => .{
             board.black_king,
@@ -378,45 +380,45 @@ pub fn getColorPiecesArray(board: Board, color: Game.PlayerColor) [14]u81 {
     };
 }
 
-pub fn getColorPieces(board: Board, color: Game.PlayerColor) u81 {
+pub fn getColorPieces(board: Board, color: Game.PlayerColor) BitBoard {
     return switch (color) {
-        .black => board.black_king |
-            board.black_rook |
-            board.black_bishop |
-            board.black_gold |
-            board.black_silver |
-            board.black_knight |
-            board.black_lance |
-            board.black_pawn |
-            board.black_rook_promoted |
-            board.black_bishop_promoted |
-            board.black_silver_promoted |
-            board.black_knight_promoted |
-            board.black_lance_promoted |
-            board.black_pawn_promoted,
-        .white => board.white_king |
-            board.white_rook |
-            board.white_bishop |
-            board.white_gold |
-            board.white_silver |
-            board.white_knight |
-            board.white_lance |
-            board.white_pawn |
-            board.white_rook_promoted |
-            board.white_bishop_promoted |
-            board.white_silver_promoted |
-            board.white_knight_promoted |
-            board.white_lance_promoted |
-            board.white_pawn_promoted,
+        .black => board.black_king
+            .unions(board.black_rook)
+            .unions(board.black_bishop)
+            .unions(board.black_gold)
+            .unions(board.black_silver)
+            .unions(board.black_knight)
+            .unions(board.black_lance)
+            .unions(board.black_pawn)
+            .unions(board.black_rook_promoted)
+            .unions(board.black_bishop_promoted)
+            .unions(board.black_silver_promoted)
+            .unions(board.black_knight_promoted)
+            .unions(board.black_lance_promoted)
+            .unions(board.black_pawn_promoted),
+        .white => board.white_king
+            .unions(board.white_rook)
+            .unions(board.white_bishop)
+            .unions(board.white_gold)
+            .unions(board.white_silver)
+            .unions(board.white_knight)
+            .unions(board.white_lance)
+            .unions(board.white_pawn)
+            .unions(board.white_rook_promoted)
+            .unions(board.white_bishop_promoted)
+            .unions(board.white_silver_promoted)
+            .unions(board.white_knight_promoted)
+            .unions(board.white_lance_promoted)
+            .unions(board.white_pawn_promoted),
     };
 }
 
 /// 駒を指定して、その駒の行ける範囲を得る
-pub fn movePositions(board: Board, from: u81) u81 {
+pub fn movePositions(board: Board, from: BitBoard) BitBoard {
     const piece_type = board.getPieceAt(from);
 
     const move_to = switch (piece_type) {
-        .empty => return 0,
+        .empty => return BitBoard.init(),
         .black_king => moves.king(board, from, .black),
         .black_rook => moves.rook(board, from, .black),
         .black_bishop => moves.bishop(board, from, .black),
@@ -453,63 +455,64 @@ pub fn movePositions(board: Board, from: u81) u81 {
     return filtered_move_to;
 }
 
-pub fn hitPositions(board: Board, color: Game.PlayerColor, piece: Game.PrimaryPiece) u81 {
-    const empty = ~(board.getColorPieces(.black) | board.getColorPieces(.white));
+pub fn hitPositions(board: Board, color: Game.PlayerColor, piece: Game.PrimaryPiece) BitBoard {
+    const empty = board.getColorPieces(.black).unions(board.getColorPieces(.white)).inversed();
+
     return switch (piece) {
         .pawn, .lance => switch (color) {
-            .white => empty & ~white_farest,
-            .black => empty & ~black_farest,
+            .white => empty.excludes(white_farest),
+            .black => empty.excludes(black_farest),
         },
         .knight => switch (color) {
-            .white => empty & ~white_farest2,
-            .black => empty & ~black_farest2,
+            .white => empty.excludes(white_farest2),
+            .black => empty.excludes(black_farest2),
         },
         else => empty,
     };
 }
 
 /// その色の駒の行ける範囲をすべて得る
-pub fn getAllMoves(board: Board, color: Game.PlayerColor) u81 {
+pub fn getAllMoves(board: Board, color: Game.PlayerColor) BitBoard {
     switch (color) {
         .white => {
-            var move_places: u81 = 0;
-            move_places |= moves.whitePawn(board, board.white_pawn);
-            move_places |= moves.whiteLance(board, board.white_lance);
-            move_places |= moves.whiteKnight(board, board.white_knight);
-            move_places |= moves.whiteSilver(board, board.white_silver);
-            move_places |= moves.whiteGold(board, board.white_gold);
-            move_places |= moves.bishop(board, board.white_bishop, .white);
-            move_places |= moves.rook(board, board.white_rook, .white);
-            move_places |= moves.king(board, board.white_king, .white);
+            var move_places = BitBoard.init();
+            move_places.setUnion(moves.whitePawn(board, board.white_pawn));
+            move_places.setUnion(moves.whiteLance(board, board.white_lance));
+            move_places.setUnion(moves.whiteKnight(board, board.white_knight));
+            move_places.setUnion(moves.whiteSilver(board, board.white_silver));
+            move_places.setUnion(moves.whiteGold(board, board.white_gold));
+            move_places.setUnion(moves.bishop(board, board.white_bishop, .white));
+            move_places.setUnion(moves.rook(board, board.white_rook, .white));
+            move_places.setUnion(moves.king(board, board.white_king, .white));
 
-            move_places |= moves.whiteGold(board, board.white_pawn_promoted);
-            move_places |= moves.whiteGold(board, board.white_lance_promoted);
-            move_places |= moves.whiteGold(board, board.white_knight_promoted);
-            move_places |= moves.whiteGold(board, board.white_silver_promoted);
+            move_places.setUnion(moves.whiteGold(board, board.white_pawn_promoted));
+            move_places.setUnion(moves.whiteGold(board, board.white_lance_promoted));
+            move_places.setUnion(moves.whiteGold(board, board.white_knight_promoted));
+            move_places.setUnion(moves.whiteGold(board, board.white_silver_promoted));
 
-            move_places |= moves.promotedRook(board, board.white_rook_promoted, .white);
-            move_places |= moves.promotedBishop(board, board.white_bishop_promoted, .white);
+            move_places.setUnion(moves.promotedRook(board, board.white_rook_promoted, .white));
+            move_places.setUnion(moves.promotedBishop(board, board.white_bishop_promoted, .white));
 
             return move_places;
         },
         .black => {
-            var move_places: u81 = 0;
-            move_places |= moves.blackPawn(board, board.black_pawn);
-            move_places |= moves.blackLance(board, board.black_lance);
-            move_places |= moves.blackKnight(board, board.black_knight);
-            move_places |= moves.blackSilver(board, board.black_silver);
-            move_places |= moves.blackGold(board, board.black_gold);
-            move_places |= moves.bishop(board, board.black_bishop, .black);
-            move_places |= moves.rook(board, board.black_rook, .black);
-            move_places |= moves.king(board, board.black_king, .black);
+            var move_places = BitBoard.init();
+            move_places.setUnion(moves.blackPawn(board, board.black_pawn));
+            move_places.setUnion(moves.blackLance(board, board.black_lance));
+            move_places.setUnion(moves.blackKnight(board, board.black_knight));
+            move_places.setUnion(moves.blackSilver(board, board.black_silver));
+            move_places.setUnion(moves.blackGold(board, board.black_gold));
+            move_places.setUnion(moves.bishop(board, board.black_bishop, .black));
+            move_places.setUnion(moves.rook(board, board.black_rook, .black));
+            move_places.setUnion(moves.king(board, board.black_king, .black));
 
-            move_places |= moves.blackGold(board, board.black_pawn_promoted);
-            move_places |= moves.blackGold(board, board.black_lance_promoted);
-            move_places |= moves.blackGold(board, board.black_knight_promoted);
-            move_places |= moves.blackGold(board, board.black_silver_promoted);
+            move_places.setUnion(moves.blackGold(board, board.black_pawn_promoted));
+            move_places.setUnion(moves.blackGold(board, board.black_lance_promoted));
+            move_places.setUnion(moves.blackGold(board, board.black_knight_promoted));
+            move_places.setUnion(moves.blackGold(board, board.black_silver_promoted));
 
-            move_places |= moves.promotedRook(board, board.black_rook_promoted, .black);
-            move_places |= moves.promotedBishop(board, board.black_bishop_promoted, .black);
+            move_places.setUnion(moves.promotedRook(board, board.black_rook_promoted, .black));
+            move_places.setUnion(moves.promotedBishop(board, board.black_bishop_promoted, .black));
 
             return move_places;
         },
@@ -517,15 +520,16 @@ pub fn getAllMoves(board: Board, color: Game.PlayerColor) u81 {
 }
 
 /// セルフ王手を除く
-pub fn filterMove(board: Board, color: Game.PlayerColor, from: u81, to: u81) u81 {
-    var filtered: u81 = 0;
-    var to_iter = BitBoard.iterator(to);
+pub fn filterMove(board: Board, color: Game.PlayerColor, from: BitBoard, to: BitBoard) BitBoard {
+    var filtered = BitBoard.init();
+    var to_iter = to.iterator();
 
     while (to_iter.next()) |t| {
-        const new_board = board.movedBoard(from, t);
+        const to_item = BitBoard.fromIndex(t);
+        const new_board = board.movedBoard(from, to_item);
 
         if (!new_board.isChecked(color)) {
-            filtered |= t;
+            filtered.setUnion(to_item);
         }
     }
 
@@ -533,8 +537,8 @@ pub fn filterMove(board: Board, color: Game.PlayerColor, from: u81, to: u81) u81
 }
 
 /// 指定したマスが攻撃されているか
-pub fn isAttacked(board: Board, place: u81, color: Game.PlayerColor) bool {
-    return place & board.getAllMoves(color.turn()) != 0;
+pub fn isAttacked(board: Board, place: BitBoard, color: Game.PlayerColor) bool {
+    return place.isJoint(board.getAllMoves(color.turn()));
 }
 
 /// 指定した色の王が王手状態になっているかどうか
@@ -556,13 +560,14 @@ pub fn isCheckmated(board: Board, color: Game.PlayerColor) bool {
     const pieces = board.getColorPiecesArray(color);
 
     for (pieces) |piece| {
-        var piece_iter = BitBoard.iterator(piece);
+        var piece_iter = piece.iterator();
 
         while (piece_iter.next()) |p| {
-            const move_to = moves.move(board, p);
-            const filtered_moves = board.filterMove(color, p, move_to);
+            const piece_board = BitBoard.fromIndex(p);
+            const move_to = moves.move(board, piece_board);
+            const filtered_moves = board.filterMove(color, piece_board, move_to);
 
-            if (filtered_moves != 0) {
+            if (!filtered_moves.isEmpty()) {
                 return false;
             }
         }
@@ -641,7 +646,7 @@ const white_farest3 = BitBoard.fromString(
 /// 成るかどうか選択できる場合
 /// 移動元または移動先が奥から3つ以内
 /// 成れる駒の種類
-pub fn canPromotion(board: Board, from: u81, to: u81) bool {
+pub fn canPromotion(board: Board, from: BitBoard, to: BitBoard) bool {
     const piece_type = board.getPieceAt(to);
     const is_promotionable_piece = switch (piece_type.piece() orelse return false) {
         .rook, .bishop, .silver, .knight, .lance, .pawn => true,
@@ -653,8 +658,8 @@ pub fn canPromotion(board: Board, from: u81, to: u81) bool {
     }
 
     return switch (piece_type.color() orelse return false) {
-        .black => black_farest3 & (from | to) != 0,
-        .white => white_farest3 & (from | to) != 0,
+        .black => black_farest3.isJoint(from.unions(to)),
+        .white => white_farest3.isJoint(from.unions(to)),
     };
 }
 
@@ -662,14 +667,14 @@ pub fn canPromotion(board: Board, from: u81, to: u81) bool {
 ///
 /// - 歩兵、香車が最も奥にいる
 /// - 桂馬が奥から2つ以内にいる
-pub fn needsPromotion(board: Board, to: u81) bool {
+pub fn needsPromotion(board: Board, to: BitBoard) bool {
     const piece_type = board.getPieceAt(to);
 
     return switch (piece_type) {
-        .black_pawn, .black_lance => to & black_farest != 0,
-        .black_knight => to & black_farest2 != 0,
-        .white_pawn, .white_lance => to & white_farest != 0,
-        .white_knight => to & white_farest2 != 0,
+        .black_pawn, .black_lance => to.isJoint(black_farest),
+        .black_knight => to.isJoint(black_farest2),
+        .white_pawn, .white_lance => to.isJoint(white_farest),
+        .white_knight => to.isJoint(white_farest2),
         else => false,
     };
 }
