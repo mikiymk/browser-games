@@ -2,7 +2,7 @@
 import Head from "@/components/head.astro";
 import Header from "@/components/header.astro";
 import Setting from "@/components/setting-form/form.astro";
-import Number from "@/components/setting-form/number.astro";
+import InputNumber from "@/components/setting-form/input-number.astro";
 import SubHeader from "@/components/sub-header.astro";
 ---
 
@@ -12,17 +12,17 @@ import SubHeader from "@/components/sub-header.astro";
 <Setting action="game/">
     <dt>Height</dt>
     <dd>
-        <Number name="height" value="10" />
+        <InputNumber name="height" value="10" />
     </dd>
 
     <dt>Width</dt>
     <dd>
-        <Number name="width" value="10" />
+        <InputNumber name="width" value="10" />
     </dd>
 
     <dt>Count of Mines</dt>
     <dd>
-        <Number name="mines" value="10" />
+        <InputNumber name="mines" value="10" />
     </dd>
 </Setting>
 

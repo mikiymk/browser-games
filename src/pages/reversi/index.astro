@@ -2,7 +2,7 @@
 import Head from "@/components/head.astro";
 import Header from "@/components/header.astro";
 import Setting from "@/components/setting-form/form.astro";
-import Radio from "@/components/setting-form/radio.astro";
+import InputRadio from "@/components/setting-form/input-radio.astro";
 import SubHeader from "@/components/sub-header.astro";
 ---
 
@@ -12,14 +12,14 @@ import SubHeader from "@/components/sub-header.astro";
 <Setting action="game/">
     <dt>Black player</dt>
     <dd>
-        <Radio name="black" value="non-player">Non-Player</Radio>
-        <Radio name="black" value="player" checked>Player</Radio>
+        <InputRadio name="black" value="non-player">Non-Player</InputRadio>
+        <InputRadio name="black" value="player" checked>Player</InputRadio>
     </dd>
 
     <dt>White player</dt>
     <dd>
-        <Radio name="white" value="non-player" checked>Non-Player</Radio>
-        <Radio name="white" value="player">Player</Radio>
+        <InputRadio name="white" value="non-player" checked>Non-Player</InputRadio>
+        <InputRadio name="white" value="player">Player</InputRadio>
     </dd>
 </Setting>
 

@@ -55,7 +55,21 @@
         "noSkippedTests": "error",
         "useAwait": "error"
       }
-    },
-    "ignore": ["*.astro"]
-  }
+    }
+  },
+  "overrides": [
+    {
+      "include": ["*.astro"],
+      "linter": {
+        "rules": {
+          "correctness": {
+            "noUnusedImports": "off",
+            "noUnusedLabels": "off",
+            "noUnusedPrivateClassMembers": "off",
+            "noUnusedVariables": "off"
+          }
+        }
+      }
+    }
+  ]
 }
