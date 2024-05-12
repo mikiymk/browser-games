@@ -7,6 +7,7 @@ import heart from "@/images/card/heart.svg";
 import diamond from "@/images/card/diamond.svg";
 import club from "@/images/card/club.svg";
 import back from "@/images/card/back.svg";
+import empty from "@/images/card/empty.svg";
 
 export const DefineCards = (): JSXElement => {
   return (
@@ -229,14 +230,18 @@ type CardProperties = {
 };
 export const Card = (properties: CardProperties): JSXElement => {
   return (
-    <use href={`#${properties.suit}-${properties.rank}`} x={properties.x} y={properties.y} height={15.6} width={10} />
+    <use href={`#${properties.suit}-${properties.rank}`} x={properties.x} y={properties.y} height={31.2} width={20} />
   );
 };
 
-type CardBackProperties = {
+type CardPlaceProperties = {
   readonly x: number;
   readonly y: number;
 };
-export const CardBack = (properties: CardBackProperties): JSXElement => {
-  return <use href={`${back.src}#root`} x={properties.x} y={properties.y} height={15.6} width={10} />;
+export const CardBack = (properties: CardPlaceProperties): JSXElement => {
+  return <use href={`${back.src}#root`} x={properties.x} y={properties.y} height={31.2} width={20} />;
+};
+
+export const CardEmpty = (properties: CardPlaceProperties): JSXElement => {
+  return <use href={`${empty.src}#root`} x={properties.x} y={properties.y} height={31.2} width={20} />;
 };

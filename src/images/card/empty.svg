@@ -1,0 +1,7 @@
+<svg viewBox="0 0 60 60" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <symbol id="root" viewBox="0 0 100 156">
+        <rect x="0" y="0" height="156" width="100" rx="10" ry="10" fill="lightgreen" stroke="black" />
+    </symbol>
+
+    <use href="#root" />
+</svg>
