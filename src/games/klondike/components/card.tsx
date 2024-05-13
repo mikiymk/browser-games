@@ -116,6 +116,17 @@ const DefineCard = (properties: DefineCardProperties): JSXElement => {
     />
   );
 
+  type UseTextProperties = {
+    readonly children: string;
+  };
+  const UseText = (properties: UseTextProperties): JSXElement => {
+    return (
+      <text x={50} y={88} text-anchor="middle" class="font-noto" fill={suitColor()} font-size="25">
+        {properties.children}
+      </text>
+    );
+  };
+
   return (
     <symbol id={`${properties.suit}-${properties.rank}`} viewBox="0 0 100 156">
       <rect x={0} y={0} height={156} width={100} rx={10} ry={10} fill="#ddd" stroke="black" />
@@ -202,19 +213,19 @@ const DefineCard = (properties: DefineCardProperties): JSXElement => {
           <UseSuit x={70} y={123} rotate />
         </Match>
         <Match when={properties.rank === 11}>
-          <text x={50} y={88} text-anchor="middle" class="font-noto" fill={suitColor()} font-size="25">
-            Jack
-          </text>
+          <UseSuit x={50} y={33} />
+          <UseSuit x={50} y={123} />
+          <UseText>Jack</UseText>
         </Match>
         <Match when={properties.rank === 12}>
-          <text x={50} y={88} text-anchor="middle" class="font-noto" fill={suitColor()} font-size="25">
-            Queen
-          </text>
+          <UseSuit x={50} y={33} />
+          <UseSuit x={50} y={123} />
+          <UseText>Queen</UseText>
         </Match>
         <Match when={properties.rank === 13}>
-          <text x={50} y={88} text-anchor="middle" class="font-noto" fill={suitColor()} font-size="25">
-            King
-          </text>
+          <UseSuit x={50} y={33} />
+          <UseSuit x={50} y={123} />
+          <UseText>King</UseText>
         </Match>
       </Switch>
     </symbol>
@@ -226,17 +237,49 @@ type CardFrontProperties = {
 
   readonly x: number;
   readonly y: number;
+
+  readonly handleClick?: () => void;
 };
 export const CardFront = (properties: CardFrontProperties): JSXElement => {
-  return <use href={`#${properties.card}`} x={properties.x} y={properties.y} height={31.2} width={20} />;
+  return (
+    <use
+      href={`#${properties.card}`}
+      x={properties.x}
+      y={properties.y}
+      height={31.2}
+      width={20}
+      onClick={() => {
+        return properties.handleClick?.();
+      }}
+      onKeyDown={() => {
+        return properties.handleClick?.();
+      }}
+    />
+  );
 };
 
 type CardPlaceProperties = {
   readonly x: number;
   readonly y: number;
+
+  readonly handleClick?: () => void;
 };
 export const CardBack = (properties: CardPlaceProperties): JSXElement => {
-  return <use href={`${back.src}#root`} x={properties.x} y={properties.y} height={31.2} width={20} />;
+  return (
+    <use
+      href={`${back.src}#root`}
+      x={properties.x}
+      y={properties.y}
+      height={31.2}
+      width={20}
+      onClick={() => {
+        return properties.handleClick?.();
+      }}
+      onKeyDown={() => {
+        return properties.handleClick?.();
+      }}
+    />
+  );
 };
 
 export const CardEmpty = (properties: CardPlaceProperties): JSXElement => {

@@ -31,6 +31,11 @@ const printCards = (cards: CardField): void => {
   } satisfies CardField);
 };
 
+const handleClick = (card: Card): void => {
+  // biome-ignore lint/suspicious/noConsoleLog: <explanation>
+  console.log(card);
+};
+
 export const App = (): JSXElement => {
   const [cards, setCards] = createStore<CardFieldMut>({
     tableaus: [
@@ -87,22 +92,13 @@ export const App = (): JSXElement => {
         <rect height={144} width={256} fill="green" />
         <title>cards</title>
 
-        <FieldStock closed={cards.stock} opened={cards.stockOpened} />
+        <FieldStock closed={cards.stock} opened={cards.stockOpened} handleClick={handleClick} />
         <For each={cards.tableaus}>
-          {(cards, index) => <FieldTableau index={index()} opened={cards.opened} closed={cards.closed} />}
+          {(cards, index) => (
+            <FieldTableau index={index()} opened={cards.opened} closed={cards.closed} handleClick={handleClick} />
+          )}
         </For>
-
-        <FieldFoundations foundations={cards.foundation} />
-
-        <Show when={false}>
-          <For each={Array.from({ length: 15 }, (_, n) => n)}>
-            {(index) => <path d={`M0,${index * 10} 256,${index * 10}`} fill="none" stroke="red" />}
-          </For>
-
-          <For each={Array.from({ length: 26 }, (_, n) => n)}>
-            {(index) => <path d={`M${index * 10},0 ${index * 10},144`} fill="none" stroke="red" />}
-          </For>
-        </Show>
+        <FieldFoundations foundations={cards.foundation} handleClick={handleClick} />
       </svg>
 
       <Button onClick={start}>Start</Button>
@@ -113,15 +109,32 @@ export const App = (): JSXElement => {
 type FieldStockProperties = {
   readonly closed: readonly Card[];
   readonly opened: readonly Card[];
+
+  readonly handleClick: (card: Card) => void;
 };
 const FieldStock = (properties: FieldStockProperties): JSXElement => {
   return (
     <>
       <Show when={properties.closed.length} fallback={<CardEmpty x={10} y={10} />}>
-        <CardBack x={10} y={10} />
+        <CardBack
+          x={10}
+          y={10}
+          handleClick={() => {
+            console.log("stock closed");
+          }}
+        />
       </Show>
       <Show when={properties.opened.at(-1)} fallback={<CardEmpty x={45} y={10} />}>
-        {(card) => <CardFront card={card()} x={45} y={10} />}
+        {(card) => (
+          <CardFront
+            card={card()}
+            x={45}
+            y={10}
+            handleClick={() => {
+              console.log("stock opened");
+            }}
+          />
+        )}
       </Show>
     </>
   );
@@ -131,14 +144,35 @@ type FieldTableauProperties = {
   readonly index: number;
   readonly opened: readonly Card[];
   readonly closed: readonly Card[];
+
+  readonly handleClick: (card: Card) => void;
 };
 const FieldTableau = (properties: FieldTableauProperties): JSXElement => {
   const x = (): number => 10 + properties.index * 35;
   return (
     <Show when={properties.opened.length > 0 || properties.closed.length > 0} fallback={<CardEmpty x={x()} y={50} />}>
-      <For each={properties.closed}>{(_, index) => <CardBack x={x()} y={50 + index() * 5} />}</For>
+      <For each={properties.closed}>
+        {(_, index) => (
+          <CardBack
+            x={x()}
+            y={50 + index() * 5}
+            handleClick={() => {
+              console.log("tableau closed", _);
+            }}
+          />
+        )}
+      </For>
       <For each={properties.opened}>
-        {(card, index) => <CardFront card={card} x={x()} y={50 + (properties.closed.length + index()) * 5} />}
+        {(card, index) => (
+          <CardFront
+            card={card}
+            x={x()}
+            y={50 + (properties.closed.length + index()) * 5}
+            handleClick={() => {
+              console.log("tableau opened ", card);
+            }}
+          />
+        )}
       </For>
     </Show>
   );
@@ -146,13 +180,24 @@ const FieldTableau = (properties: FieldTableauProperties): JSXElement => {
 
 type FieldFoundationsProperties = {
   readonly foundations: readonly [CardArray, CardArray, CardArray, CardArray];
+
+  readonly handleClick: (card: Card) => void;
 };
 const FieldFoundations = (propeerties: FieldFoundationsProperties): JSXElement => {
   return (
     <For each={propeerties.foundations}>
       {(foundation, index) => (
         <Show when={foundation.at(-1)} fallback={<CardEmpty x={115 + index() * 35} y={10} />}>
-          {(card) => <CardFront card={card()} x={115 + index() * 35} y={10} />}
+          {(card) => (
+            <CardFront
+              card={card()}
+              x={115 + index() * 35}
+              y={10}
+              handleClick={() => {
+                console.log("foundation", index(), card());
+              }}
+            />
+          )}
         </Show>
       )}
     </For>
