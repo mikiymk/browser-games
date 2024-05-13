@@ -67,17 +67,30 @@ export const Cards = [
   "spade-13",
 ] as const satisfies Card[];
 
+export type CardArray = readonly Card[];
 export type CardField = {
-  readonly tableaus: readonly [
-    readonly [readonly Card[], readonly Card[]],
-    readonly [readonly Card[], readonly Card[]],
-    readonly [readonly Card[], readonly Card[]],
-    readonly [readonly Card[], readonly Card[]],
-    readonly [readonly Card[], readonly Card[]],
-    readonly [readonly Card[], readonly Card[]],
-    readonly [readonly Card[], readonly Card[]],
-  ];
-  readonly stock: readonly Card[];
-  readonly stockOpened: readonly Card[];
-  readonly foundation: readonly [readonly Card[], readonly Card[], readonly Card[], readonly Card[]];
+  readonly tableaus: CardFieldTableaus;
+  readonly stock: CardArray;
+  readonly stockOpened: CardArray;
+  readonly foundation: readonly [CardArray, CardArray, CardArray, CardArray];
 };
+export type CardFieldMut = {
+  tableaus: CardFieldTableaus;
+  stock: CardArray;
+  stockOpened: CardArray;
+  foundation: [CardArray, CardArray, CardArray, CardArray];
+};
+
+export type CardFieldTableau = {
+  readonly opened: CardArray;
+  readonly closed: CardArray;
+};
+export type CardFieldTableaus = readonly [
+  CardFieldTableau,
+  CardFieldTableau,
+  CardFieldTableau,
+  CardFieldTableau,
+  CardFieldTableau,
+  CardFieldTableau,
+  CardFieldTableau,
+];

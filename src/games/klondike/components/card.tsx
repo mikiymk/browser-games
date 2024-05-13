@@ -1,7 +1,7 @@
 import { Match, Switch } from "solid-js";
 import type { JSXElement } from "solid-js";
 import { CLUB, DIAMOND, HEART, SPADE } from "../constants";
-import type { Rank, Suit } from "../constants";
+import type { Card, Rank, Suit } from "../constants";
 import spade from "@/images/card/spade.svg";
 import heart from "@/images/card/heart.svg";
 import diamond from "@/images/card/diamond.svg";
@@ -221,17 +221,14 @@ const DefineCard = (properties: DefineCardProperties): JSXElement => {
   );
 };
 
-type CardProperties = {
-  readonly suit: Suit;
-  readonly rank: Rank;
+type CardFrontProperties = {
+  readonly card: Card;
 
   readonly x: number;
   readonly y: number;
 };
-export const Card = (properties: CardProperties): JSXElement => {
-  return (
-    <use href={`#${properties.suit}-${properties.rank}`} x={properties.x} y={properties.y} height={31.2} width={20} />
-  );
+export const CardFront = (properties: CardFrontProperties): JSXElement => {
+  return <use href={`#${properties.card}`} x={properties.x} y={properties.y} height={31.2} width={20} />;
 };
 
 type CardPlaceProperties = {
