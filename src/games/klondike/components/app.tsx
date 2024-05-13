@@ -1,7 +1,7 @@
 import { For, Show, createEffect } from "solid-js";
 import type { JSXElement } from "solid-js";
 import { Cards } from "../constants";
-import type { Card, CardField, CardFieldMut, CardFieldTableaus } from "../constants";
+import type { Card, CardArray, CardField, CardFieldMut, CardFieldTableaus } from "../constants";
 import { createStore } from "solid-js/store";
 import { Button } from "@/components/button";
 import { shuffledArray } from "@/scripts/random-select";
@@ -71,6 +71,7 @@ export const App = (): JSXElement => {
     openTableaus();
   };
 
+  /** 場札が1枚も開いていないなら開ける */
   const openTableaus = (): void => {
     setCards("tableaus", (previous: CardFieldTableaus): CardFieldTableaus => {
       return previous.map(({ opened, closed }) => ({
@@ -86,10 +87,12 @@ export const App = (): JSXElement => {
         <rect height={144} width={256} fill="green" />
         <title>cards</title>
 
-        <FieldStock stock={cards.stock} />
+        <FieldStock closed={cards.stock} opened={cards.stockOpened} />
         <For each={cards.tableaus}>
           {(cards, index) => <FieldTableau index={index()} opened={cards.opened} closed={cards.closed} />}
         </For>
+
+        <FieldFoundations foundations={cards.foundation} />
 
         <Show when={false}>
           <For each={Array.from({ length: 15 }, (_, n) => n)}>
@@ -108,13 +111,19 @@ export const App = (): JSXElement => {
 };
 
 type FieldStockProperties = {
-  readonly stock: readonly Card[];
+  readonly closed: readonly Card[];
+  readonly opened: readonly Card[];
 };
 const FieldStock = (properties: FieldStockProperties): JSXElement => {
   return (
-    <Show when={properties.stock.length} fallback={<CardEmpty x={10} y={10} />}>
-      <CardBack x={10} y={10} />
-    </Show>
+    <>
+      <Show when={properties.closed.length} fallback={<CardEmpty x={10} y={10} />}>
+        <CardBack x={10} y={10} />
+      </Show>
+      <Show when={properties.opened.at(-1)} fallback={<CardEmpty x={45} y={10} />}>
+        {(card) => <CardFront card={card()} x={45} y={10} />}
+      </Show>
+    </>
   );
 };
 
@@ -132,5 +141,20 @@ const FieldTableau = (properties: FieldTableauProperties): JSXElement => {
         {(card, index) => <CardFront card={card} x={x()} y={50 + (properties.closed.length + index()) * 5} />}
       </For>
     </Show>
+  );
+};
+
+type FieldFoundationsProperties = {
+  readonly foundations: readonly [CardArray, CardArray, CardArray, CardArray];
+};
+const FieldFoundations = (propeerties: FieldFoundationsProperties): JSXElement => {
+  return (
+    <For each={propeerties.foundations}>
+      {(foundation, index) => (
+        <Show when={foundation.at(-1)} fallback={<CardEmpty x={115 + index() * 35} y={10} />}>
+          {(card) => <CardFront card={card()} x={115 + index() * 35} y={10} />}
+        </Show>
+      )}
+    </For>
   );
 };
