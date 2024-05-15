@@ -5,7 +5,7 @@ import type { Card, CardArray, CardField, CardFieldMut, CardFieldTableaus } from
 import { createStore } from "solid-js/store";
 import { Button } from "@/components/button";
 import { shuffledArray } from "@/scripts/random-select";
-import { CardBack, CardEmpty, CardFront } from "./card";
+import { CardFront } from "./card";
 
 /// note: for debug
 const printCards = (cards: CardField): void => {
@@ -86,13 +86,37 @@ export const App = (): JSXElement => {
     });
   };
 
+  /** 山札を1枚めくる */
+  const openStock = (): void => {
+    setCards((previous): CardFieldMut => {
+      if (previous.stock.length === 0) {
+        return {
+          ...previous,
+          stock: previous.stockOpened,
+          stockOpened: [],
+        };
+      }
+
+      return {
+        ...previous,
+        stock: previous.stock.slice(1),
+        stockOpened: [...previous.stockOpened, ...previous.stock.slice(0, 1)],
+      };
+    });
+  };
+
   return (
     <>
       <svg viewBox="0 0 256 144" xmlns="http://www.w3.org/2000/svg">
         <rect height={144} width={256} fill="green" />
         <title>cards</title>
 
-        <FieldStock closed={cards.stock} opened={cards.stockOpened} handleClick={handleClick} />
+        <FieldStock
+          closed={cards.stock}
+          opened={cards.stockOpened}
+          openStock={openStock}
+          selectCard={() => handleClick}
+        />
         <For each={cards.tableaus}>
           {(cards, index) => (
             <FieldTableau index={index()} opened={cards.opened} closed={cards.closed} handleClick={handleClick} />
@@ -110,28 +134,42 @@ type FieldStockProperties = {
   readonly closed: readonly Card[];
   readonly opened: readonly Card[];
 
-  readonly handleClick: (card: Card) => void;
+  readonly openStock: () => void;
+  readonly selectCard: () => void;
 };
 const FieldStock = (properties: FieldStockProperties): JSXElement => {
   return (
     <>
-      <Show when={properties.closed.length} fallback={<CardEmpty x={10} y={10} />}>
-        <CardBack
+      <Show
+        when={properties.closed.length}
+        fallback={
+          <CardFront
+            card="empty"
+            x={10}
+            y={10}
+            handleClick={() => {
+              properties.openStock();
+            }}
+          />
+        }
+      >
+        <CardFront
+          card="back"
           x={10}
           y={10}
           handleClick={() => {
-            console.log("stock closed");
+            properties.openStock();
           }}
         />
       </Show>
-      <Show when={properties.opened.at(-1)} fallback={<CardEmpty x={45} y={10} />}>
+      <Show when={properties.opened.at(-1)} fallback={<CardFront card="empty" x={45} y={10} />}>
         {(card) => (
           <CardFront
             card={card()}
             x={45}
             y={10}
             handleClick={() => {
-              console.log("stock opened");
+              properties.selectCard();
             }}
           />
         )}
@@ -150,10 +188,14 @@ type FieldTableauProperties = {
 const FieldTableau = (properties: FieldTableauProperties): JSXElement => {
   const x = (): number => 10 + properties.index * 35;
   return (
-    <Show when={properties.opened.length > 0 || properties.closed.length > 0} fallback={<CardEmpty x={x()} y={50} />}>
+    <Show
+      when={properties.opened.length > 0 || properties.closed.length > 0}
+      fallback={<CardFront card="empty" x={x()} y={50} />}
+    >
       <For each={properties.closed}>
         {(_, index) => (
-          <CardBack
+          <CardFront
+            card="back"
             x={x()}
             y={50 + index() * 5}
             handleClick={() => {
@@ -187,7 +229,7 @@ const FieldFoundations = (propeerties: FieldFoundationsProperties): JSXElement =
   return (
     <For each={propeerties.foundations}>
       {(foundation, index) => (
-        <Show when={foundation.at(-1)} fallback={<CardEmpty x={115 + index() * 35} y={10} />}>
+        <Show when={foundation.at(-1)} fallback={<CardFront card="empty" x={115 + index() * 35} y={10} />}>
           {(card) => (
             <CardFront
               card={card()}

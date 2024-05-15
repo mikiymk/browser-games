@@ -233,7 +233,7 @@ const DefineCard = (properties: DefineCardProperties): JSXElement => {
 };
 
 type CardFrontProperties = {
-  readonly card: Card;
+  readonly card: Card | "back" | "empty";
 
   readonly x: number;
   readonly y: number;
@@ -241,9 +241,20 @@ type CardFrontProperties = {
   readonly handleClick?: () => void;
 };
 export const CardFront = (properties: CardFrontProperties): JSXElement => {
+  const href = (): string => {
+    const { card } = properties;
+
+    if (card === "back") {
+      return `${back.src}#root`;
+    }
+    if (card === "empty") {
+      return `${empty.src}#root`;
+    }
+    return `#${card}`;
+  };
   return (
     <use
-      href={`#${properties.card}`}
+      href={href()}
       x={properties.x}
       y={properties.y}
       height={31.2}
@@ -256,32 +267,4 @@ export const CardFront = (properties: CardFrontProperties): JSXElement => {
       }}
     />
   );
-};
-
-type CardPlaceProperties = {
-  readonly x: number;
-  readonly y: number;
-
-  readonly handleClick?: () => void;
-};
-export const CardBack = (properties: CardPlaceProperties): JSXElement => {
-  return (
-    <use
-      href={`${back.src}#root`}
-      x={properties.x}
-      y={properties.y}
-      height={31.2}
-      width={20}
-      onClick={() => {
-        return properties.handleClick?.();
-      }}
-      onKeyDown={() => {
-        return properties.handleClick?.();
-      }}
-    />
-  );
-};
-
-export const CardEmpty = (properties: CardPlaceProperties): JSXElement => {
-  return <use href={`${empty.src}#root`} x={properties.x} y={properties.y} height={31.2} width={20} />;
 };
