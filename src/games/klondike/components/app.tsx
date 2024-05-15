@@ -96,8 +96,8 @@ export const App = (): JSXElement => {
     setSelect({ type: "stock" });
   };
 
-  const selectTableau = (index: number, depth: number, card: Card): void => {
-    console.log("tableau", index, depth, card);
+  const selectTableau = (index: number, depth: number): void => {
+    console.log("tableau", index, depth);
 
     const selection = select();
 
@@ -139,8 +139,8 @@ export const App = (): JSXElement => {
               index={index()}
               opened={cards.opened}
               closed={cards.closed}
-              select={(depth, card) => {
-                selectTableau(index(), depth, card);
+              select={(depth) => {
+                selectTableau(index(), depth);
               }}
             />
           )}
@@ -206,14 +206,23 @@ type FieldTableauProperties = {
   readonly opened: readonly Card[];
   readonly closed: readonly Card[];
 
-  readonly select: (depth: number, card: Card) => void;
+  readonly select: (depth: number) => void;
 };
 const FieldTableau = (properties: FieldTableauProperties): JSXElement => {
   const x = (): number => 10 + properties.index * 35;
   return (
     <Show
       when={properties.opened.length > 0 || properties.closed.length > 0}
-      fallback={<CardFront card="empty" x={x()} y={50} />}
+      fallback={
+        <CardFront
+          card="empty"
+          x={x()}
+          y={50}
+          handleClick={() => {
+            properties.select(0);
+          }}
+        />
+      }
     >
       <For each={properties.closed}>{(_, index) => <CardFront card="back" x={x()} y={50 + index() * 5} />}</For>
       <For each={properties.opened}>
@@ -223,7 +232,7 @@ const FieldTableau = (properties: FieldTableauProperties): JSXElement => {
             x={x()}
             y={50 + (properties.closed.length + index()) * 5}
             handleClick={() => {
-              properties.select(index(), card);
+              properties.select(index());
             }}
           />
         )}
