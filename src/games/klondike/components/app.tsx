@@ -159,7 +159,7 @@ export const App = (): JSXElement => {
     }
 
     if (to.type === "foundation") {
-      const foundationTop = cards.foundations[to.index]?.[0];
+      const foundationTop = cards.foundations[to.index]?.at(-1);
 
       if (
         // 組札が空でランクが1の場合
