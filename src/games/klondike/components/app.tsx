@@ -6,6 +6,7 @@ import { shuffledArray } from "@/scripts/random-select";
 import { Field } from "./field";
 import { Cards, colorOf, rankOf, suitOf } from "../card";
 import type { Card } from "../card";
+import { PopUp } from "@/games/shogi/components/pop-up";
 
 export type CardField = {
   tableaus: {
@@ -41,6 +42,7 @@ export const App = (): JSXElement => {
   const [select, setSelect] = createSignal<Select>({
     type: "none",
   });
+  const [popText, setPopText] = createSignal<string | undefined>();
 
   const start = (): void => {
     const cards = shuffledArray(Cards);
@@ -112,6 +114,11 @@ export const App = (): JSXElement => {
 
     if (pushCards(to, moves)) {
       action();
+      setSelect({ type: "none" });
+      openTableaus();
+      if (isCleared()) {
+        setPopText("cleared!");
+      }
       return true;
     }
 
@@ -191,6 +198,18 @@ export const App = (): JSXElement => {
     return false;
   };
 
+  /** クリアしたかを判定する関数 */
+  const isCleared = (): boolean => {
+    // 組札がすべて1から13まで順番に並んでいるか
+    for (const foundation of cards.foundations) {
+      if (foundation.length !== 13) {
+        return false;
+      }
+    }
+
+    return true;
+  };
+
   /** 山札をクリックしたときの関数 */
   const selectStock = (): void => {
     setSelect({ type: "stock" });
@@ -200,10 +219,7 @@ export const App = (): JSXElement => {
   const selectTableau = (index: number, depth: number): void => {
     const current: Select = { type: "tableau", index, depth };
 
-    if (moveCards(select(), current)) {
-      setSelect({ type: "none" });
-      openTableaus();
-    } else {
+    if (!moveCards(select(), current)) {
       setSelect(current);
     }
   };
@@ -212,10 +228,7 @@ export const App = (): JSXElement => {
   const selectFoundation = (index: number): void => {
     const current: Select = { type: "foundation", index };
 
-    if (moveCards(select(), current)) {
-      setSelect({ type: "none" });
-      openTableaus();
-    } else {
+    if (!moveCards(select(), current)) {
       setSelect(current);
     }
   };
@@ -231,6 +244,18 @@ export const App = (): JSXElement => {
         selectFoundation={selectFoundation}
       />
       <Button onClick={start}>Start</Button>
+
+      <PopUp open={popText() !== undefined}>
+        {popText()}
+        <br />
+        <Button
+          onClick={() => {
+            setPopText();
+          }}
+        >
+          Close
+        </Button>
+      </PopUp>
     </>
   );
 };
