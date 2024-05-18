@@ -1,7 +1,8 @@
 import { For, Show } from "solid-js";
 import type { JSXElement } from "solid-js";
-import type { Card } from "../constants";
 import { CardFront } from "./card";
+import type { Card } from "../card";
+
 
 type FieldProperties = {
   readonly stock: readonly Card[];

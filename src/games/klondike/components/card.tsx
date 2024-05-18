@@ -1,13 +1,12 @@
 import { Match, Switch } from "solid-js";
 import type { JSXElement } from "solid-js";
-import { CLUB, DIAMOND, HEART, SPADE } from "../constants";
-import type { Card, Rank, Suit } from "../constants";
 import spade from "@/images/card/spade.svg";
 import heart from "@/images/card/heart.svg";
 import diamond from "@/images/card/diamond.svg";
 import club from "@/images/card/club.svg";
 import back from "@/images/card/back.svg";
 import empty from "@/images/card/empty.svg";
+import type { Card, Rank, Suit } from "../card";
 
 export const DefineCards = (): JSXElement => {
   return (
@@ -80,10 +79,10 @@ type DefineCardProperties = {
 const DefineCard = (properties: DefineCardProperties): JSXElement => {
   const suitImage = (): string => {
     const suitImages = {
-      [CLUB]: club,
-      [DIAMOND]: diamond,
-      [HEART]: heart,
-      [SPADE]: spade,
+      club,
+      diamond,
+      heart,
+      spade,
     };
 
     return `${suitImages[properties.suit].src}#root`;
@@ -91,10 +90,10 @@ const DefineCard = (properties: DefineCardProperties): JSXElement => {
 
   const suitColor = (): string => {
     const suitColors = {
-      [CLUB]: "black",
-      [DIAMOND]: "red",
-      [HEART]: "red",
-      [SPADE]: "black",
+      club: "black",
+      diamond: "red",
+      heart: "red",
+      spade: "black",
     };
     return suitColors[properties.suit];
   };

@@ -1,9 +1,5 @@
-export const CLUB = "club";
-export const DIAMOND = "diamond";
-export const HEART = "heart";
-export const SPADE = "spade";
-
-export type Suit = typeof CLUB | typeof DIAMOND | typeof HEART | typeof SPADE;
+export const Suits = ["club", "diamond", "heart", "spade"] as const;
+export type Suit = (typeof Suits)[number];
 
 export const Ranks = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13] as const;
 export type Rank = (typeof Ranks)[number];
@@ -67,18 +63,21 @@ export const Cards = [
   "spade-13",
 ] as const satisfies Card[];
 
-export type CardField = {
-  tableaus: {
-    opened: Card[];
-    closed: Card[];
-  }[];
-  stock: Card[];
-  stockOpened: Card[];
-  foundations: [Card[], Card[], Card[], Card[]];
+export const suitOf = (card: Card): Suit => {
+  return card.split("-")[0] as Suit;
 };
 
-export type Select =
-  | { readonly type: "foundation"; readonly index: number }
-  | { readonly type: "none" }
-  | { readonly type: "stock" }
-  | { readonly type: "tableau"; readonly index: number; readonly depth: number };
+export const rankOf = (card: Card): Rank => {
+  return Number.parseInt(card.split("-")[1] ?? "") as Rank;
+};
+
+export const colorOf = (card: Suit): "black" | "red" => {
+  return (
+    {
+      spade: "black",
+      club: "black",
+      diamond: "red",
+      heart: "red",
+    } as const
+  )[card];
+};

@@ -1,11 +1,27 @@
 import { createSignal } from "solid-js";
 import type { JSXElement } from "solid-js";
-import { Cards } from "../constants";
-import type { Card, CardField, Select } from "../constants";
 import { createStore } from "solid-js/store";
 import { Button } from "@/components/button";
 import { shuffledArray } from "@/scripts/random-select";
 import { Field } from "./field";
+import { Cards, colorOf, rankOf, suitOf } from "../card";
+import type { Card } from "../card";
+
+export type CardField = {
+  tableaus: {
+    opened: Card[];
+    closed: Card[];
+  }[];
+  stock: Card[];
+  stockOpened: Card[];
+  foundations: [Card[], Card[], Card[], Card[]];
+};
+
+export type Select =
+  | { readonly type: "foundation"; readonly index: number }
+  | { readonly type: "none" }
+  | { readonly type: "stock" }
+  | { readonly type: "tableau"; readonly index: number; readonly depth: number };
 
 export const App = (): JSXElement => {
   const [cards, setCards] = createStore<CardField>({
@@ -88,40 +104,91 @@ export const App = (): JSXElement => {
     }
 
     // 動かすカードのリスト
-    let moves: Card[];
-
-    // 行き元からカードを減らす処理
-    if (from.type === "stock") {
-      moves = cards.stockOpened.slice(-1);
-      setCards("stockOpened", (previous) => previous.slice(0, -1));
-    } else if (from.type === "foundation") {
-      moves = cards.foundations[from.index]?.slice(-1) ?? [];
-
-      setCards("foundations", from.index, (previous) => previous.slice(0, -1));
-    } else {
-      moves = cards.tableaus[from.index]?.opened.slice(from.depth) ?? [];
-
-      setCards("tableaus", from.index, "opened", (previous) => previous.slice(0, from.depth));
-    }
-
-    // カードがないなら何もしない
-    if (moves.length === 0) {
+    const popCard = popCards(from);
+    if (popCard === undefined) {
       return false;
     }
+    const [moves, action] = popCard;
 
-    // 行き先にカードを増やす処理
-    if (to.type === "stock") {
-      // 何もしない
+    if (pushCards(to, moves)) {
+      action();
+      return true;
+    }
+
+    return false;
+  };
+
+  /** 行き元からカードを減らす処理 */
+  const popCards = (from: Select): [moves: Card[], action: () => void] | undefined => {
+    if (from.type === "stock") {
+      return [
+        cards.stockOpened.slice(-1),
+        (): void => {
+          setCards("stockOpened", (previous) => previous.slice(0, -1));
+        },
+      ];
+    }
+
+    if (from.type === "foundation") {
+      return [
+        cards.foundations[from.index]?.slice(-1) ?? [],
+        (): void => {
+          setCards("foundations", from.index, (previous) => previous.slice(0, -1));
+        },
+      ];
+    }
+
+    if (from.type === "tableau") {
+      return [
+        cards.tableaus[from.index]?.opened.slice(from.depth) ?? [],
+        (): void => {
+          setCards("tableaus", from.index, "opened", (previous) => previous.slice(0, from.depth));
+        },
+      ];
+    }
+
+    return undefined;
+  };
+
+  /** 行き先にカードを増やす処理 */
+  // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: 難しい関数
+  const pushCards = (to: Select, moves: readonly Card[]): boolean => {
+    const [moveBottom] = moves;
+    if (moveBottom === undefined) {
       return false;
     }
 
     if (to.type === "foundation") {
-      setCards("foundations", to.index, (previous) => [...previous, ...moves]);
-    } else {
-      setCards("tableaus", to.index, "opened", (previous) => [...previous, ...moves]);
+      const foundationTop = cards.foundations[to.index]?.[0];
+
+      if (
+        // 組札が空でランクが1の場合
+        (foundationTop === undefined && rankOf(moveBottom) === 1) ||
+        // 組札の一番上と動かすカードの一番下がスートが同じでランクが1つ違いの場合
+        (foundationTop !== undefined &&
+          suitOf(foundationTop) === suitOf(moveBottom) &&
+          rankOf(foundationTop) === rankOf(moveBottom) - 1)
+      ) {
+        setCards("foundations", to.index, (previous) => [...previous, ...moves]);
+        return true;
+      }
+    } else if (to.type === "tableau") {
+      const tableauTop = cards.tableaus[to.index]?.opened.at(-1);
+
+      if (
+        // 場札が空でランクが13の場合
+        (tableauTop === undefined && rankOf(moveBottom) === 13) ||
+        // 場札の一番上に比べて動かすカードの一番下が色が違ってランクが1つ小さい場合
+        (tableauTop !== undefined &&
+          colorOf(suitOf(tableauTop)) !== colorOf(suitOf(moveBottom)) &&
+          rankOf(tableauTop) === rankOf(moveBottom) + 1)
+      ) {
+        setCards("tableaus", to.index, "opened", (previous) => [...previous, ...moves]);
+        return true;
+      }
     }
 
-    return true;
+    return false;
   };
 
   /** 山札をクリックしたときの関数 */
