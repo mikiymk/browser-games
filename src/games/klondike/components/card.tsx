@@ -130,8 +130,8 @@ const DefineCard = (properties: DefineCardProperties): JSXElement => {
     <symbol id={`${properties.suit}-${properties.rank}`} viewBox="0 0 100 156">
       <rect x={0} y={0} height={156} width={100} rx={10} ry={10} fill="#ddd" stroke="black" />
 
-      <use href={suitImage()} x={4} y={10} height={16} width={16} fill={suitColor()} />
-      <text x={12} y={35} font-size={"10"} text-anchor="middle" class="font-noto" fill={suitColor()}>
+      <use href={suitImage()} x={4} y={7} height={16} width={16} fill={suitColor()} />
+      <text x={22} y={20} font-size={"16"} class="font-noto" fill={suitColor()}>
         {properties.rank}
       </text>
 
