@@ -1,25 +1,14 @@
-import { For, Show, createEffect, createSignal } from "solid-js";
+import { For, Show, createSignal } from "solid-js";
 import type { JSXElement } from "solid-js";
 import { Cards } from "../constants";
-import type { Card, CardArray, CardField, CardFieldMut, CardFieldTableau, Select } from "../constants";
-import { createStore, unwrap } from "solid-js/store";
+import type { Card, CardField, Select } from "../constants";
+import { createStore } from "solid-js/store";
 import { Button } from "@/components/button";
 import { shuffledArray } from "@/scripts/random-select";
 import { CardFront } from "./card";
 
-/// note: for debug
-const printCards = (cards: CardField): void => {
-  // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-  console.log(unwrap(cards));
-};
-
-const handleClick = (card: Card): void => {
-  // biome-ignore lint/suspicious/noConsoleLog: <explanation>
-  console.log(card);
-};
-
 export const App = (): JSXElement => {
-  const [cards, setCards] = createStore<CardFieldMut>({
+  const [cards, setCards] = createStore<CardField>({
     tableaus: [
       { opened: [], closed: [] },
       { opened: [], closed: [] },
@@ -35,10 +24,6 @@ export const App = (): JSXElement => {
   });
   const [select, setSelect] = createSignal<Select>({
     type: "none",
-  });
-
-  createEffect(() => {
-    printCards(cards);
   });
 
   const start = (): void => {
@@ -63,7 +48,7 @@ export const App = (): JSXElement => {
 
   /** 場札が1枚も開いていないなら開ける */
   const openTableaus = (): void => {
-    setCards("tableaus", (previous): CardFieldTableau[] => {
+    setCards("tableaus", (previous) => {
       return previous.map(({ opened, closed }) => ({
         opened: opened.length > 0 ? opened : closed.slice(0, 1),
         closed: opened.length > 0 ? closed : closed.slice(1),
@@ -73,7 +58,7 @@ export const App = (): JSXElement => {
 
   /** 山札を1枚めくる */
   const openStock = (): void => {
-    setCards((previous): CardFieldMut => {
+    setCards((previous): CardField => {
       if (previous.stock.length === 0) {
         return {
           ...previous,
@@ -90,40 +75,88 @@ export const App = (): JSXElement => {
     });
   };
 
+  /**
+   * カードを移動する
+   * @param from 行き元
+   * @param to 行き先
+   * @returns 移動が成功したらtrue
+   */
+  const moveCards = (from: Select, to: Select): boolean => {
+    // 行き元か行き先がない場合は何もしない
+    if (from.type === "none" || to.type === "none") {
+      return false;
+    }
+
+    // 動かすカードのリスト
+    let moves: Card[];
+
+    // 行き元からカードを減らす処理
+    if (from.type === "stock") {
+      moves = cards.stockOpened.slice(-1);
+      setCards("stockOpened", (previous) => previous.slice(0, -1));
+    } else if (from.type === "foundation") {
+      moves = cards.foundation[from.index]?.slice(-1) ?? [];
+
+      setCards("foundation", from.index, (previous) => previous.slice(0, -1));
+    } else {
+      moves = cards.tableaus[from.index]?.opened.slice(from.depth) ?? [];
+
+      setCards("tableaus", from.index, "opened", (previous) => previous.slice(0, from.depth));
+    }
+
+    // カードがないなら何もしない
+    if (moves.length === 0) {
+      return false;
+    }
+
+    // 行き先にカードを増やす処理
+    if (to.type === "stock") {
+      // 何もしない
+      return false;
+    }
+
+    if (to.type === "foundation") {
+      setCards("foundation", to.index, (previous) => [...previous, ...moves]);
+    } else {
+      setCards("tableaus", to.index, "opened", (previous) => [...previous, ...moves]);
+    }
+
+    return true;
+  };
+
+  /** 山札をクリックしたときの関数 */
   const selectStock = (): void => {
     console.log("stock");
 
     setSelect({ type: "stock" });
   };
 
+  /** 場札をクリックしたときの関数 */
   const selectTableau = (index: number, depth: number): void => {
     console.log("tableau", index, depth);
 
-    const selection = select();
+    const current: Select = { type: "tableau", index, depth };
 
-    if (selection.type === "none") {
-      setSelect({ type: "tableau", index, depth });
-
-      return;
-    }
-
-    if (selection.type === "stock") {
-      const moveCards = cards.stockOpened.slice(-1);
-      setCards("stockOpened", (previous) => previous.slice(0, -1));
-      setCards("tableaus", index, "opened", (previous) => [...previous, ...moveCards]);
+    if (moveCards(select(), current)) {
+      setSelect({ type: "none" });
+      openTableaus();
     } else {
-      const moveCards = cards.tableaus[selection.index]?.opened.slice(selection.depth);
-
-      if (moveCards === undefined) {
-        return;
-      }
-
-      setCards("tableaus", selection.index, "opened", (previous) => previous.slice(0, selection.depth));
-      setCards("tableaus", index, "opened", (previous) => [...previous, ...moveCards]);
+      setSelect(current);
     }
+  };
 
-    setSelect({ type: "none" });
-    openTableaus();
+  /** 組札をクリックしたときの関数 */
+  const selectFoundation = (index: number): void => {
+    console.log("foundation", index);
+
+    const current: Select = { type: "foundation", index };
+
+    if (moveCards(select(), current)) {
+      setSelect({ type: "none" });
+      openTableaus();
+    } else {
+      setSelect(current);
+    }
   };
 
   return (
@@ -145,7 +178,7 @@ export const App = (): JSXElement => {
             />
           )}
         </For>
-        <FieldFoundations foundations={cards.foundation} handleClick={handleClick} />
+        <FieldFoundations foundations={cards.foundation} selectCard={selectFoundation} />
       </svg>
 
       <Button onClick={start}>Start</Button>
@@ -244,20 +277,32 @@ const FieldTableau = (properties: FieldTableauProperties): JSXElement => {
 type FieldFoundationsProperties = {
   readonly foundations: readonly [readonly Card[], readonly Card[], readonly Card[], readonly Card[]];
 
-  readonly handleClick: (card: Card) => void;
+  readonly selectCard: (index: number) => void;
 };
 const FieldFoundations = (properties: FieldFoundationsProperties): JSXElement => {
   return (
     <For each={properties.foundations}>
       {(foundation, index) => (
-        <Show when={foundation.at(-1)} fallback={<CardFront card="empty" x={115 + index() * 35} y={10} />}>
+        <Show
+          when={foundation.at(-1)}
+          fallback={
+            <CardFront
+              card="empty"
+              x={115 + index() * 35}
+              y={10}
+              handleClick={() => {
+                properties.selectCard(index());
+              }}
+            />
+          }
+        >
           {(card) => (
             <CardFront
               card={card()}
               x={115 + index() * 35}
               y={10}
               handleClick={() => {
-                console.log("foundation", index(), card());
+                properties.selectCard(index());
               }}
             />
           )}
