@@ -224,6 +224,7 @@ export const App = (): JSXElement => {
     <>
       <Field
         {...cards}
+        select={select()}
         openStock={openStock}
         selectStock={selectStock}
         selectTableau={selectTableau}

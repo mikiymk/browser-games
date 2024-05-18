@@ -1,4 +1,4 @@
-import { Match, Switch } from "solid-js";
+import { Match, Show, Switch } from "solid-js";
 import type { JSXElement } from "solid-js";
 import spade from "@/images/card/spade.svg";
 import heart from "@/images/card/heart.svg";
@@ -238,6 +238,8 @@ type CardFrontProperties = {
   readonly y: number;
 
   readonly handleClick?: () => void;
+
+  readonly selected?: boolean;
 };
 export const CardFront = (properties: CardFrontProperties): JSXElement => {
   const href = (): string => {
@@ -252,18 +254,23 @@ export const CardFront = (properties: CardFrontProperties): JSXElement => {
     return `#${card}`;
   };
   return (
-    <use
-      href={href()}
-      x={properties.x}
-      y={properties.y}
-      height={31.2}
-      width={20}
-      onClick={() => {
-        return properties.handleClick?.();
-      }}
-      onKeyDown={() => {
-        return properties.handleClick?.();
-      }}
-    />
+    <>
+      <use
+        href={href()}
+        x={properties.x}
+        y={properties.y}
+        height={31.2}
+        width={20}
+        onClick={() => {
+          return properties.handleClick?.();
+        }}
+        onKeyDown={() => {
+          return properties.handleClick?.();
+        }}
+      />
+      <Show when={properties.selected}>
+        <rect x={properties.x} y={properties.y} height={31.2} width={20} rx={2} ry={2} fill="none" stroke="#222" />
+      </Show>
+    </>
   );
 };
