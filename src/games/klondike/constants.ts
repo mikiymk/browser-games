@@ -74,7 +74,7 @@ export type CardField = {
   }[];
   stock: Card[];
   stockOpened: Card[];
-  foundation: [Card[], Card[], Card[], Card[]];
+  foundations: [Card[], Card[], Card[], Card[]];
 };
 
 export type Select =
