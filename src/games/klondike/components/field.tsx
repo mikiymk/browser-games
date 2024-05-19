@@ -5,15 +5,17 @@ import type { Card } from "../card";
 import type { Select } from "./app";
 
 type FieldProperties = {
-  readonly stock: readonly Card[];
-  readonly stockOpened: readonly Card[];
+  readonly stock: {
+    readonly opened: readonly Card[];
+    readonly closed: readonly Card[];
+  };
   readonly tableaus: readonly {
     readonly opened: readonly Card[];
     readonly closed: readonly Card[];
   }[];
   readonly foundations: readonly (readonly Card[])[];
 
-  readonly select: Select;
+  readonly select: Select | undefined;
 
   readonly openStock: () => void;
   readonly selectStock: () => void;
@@ -28,8 +30,8 @@ export const Field = (properties: FieldProperties): JSXElement => {
       <title>cards</title>
 
       <FieldStock
-        closed={properties.stock}
-        opened={properties.stockOpened}
+        closed={properties.stock.closed}
+        opened={properties.stock.opened}
         select={properties.select}
         openStock={properties.openStock}
         selectCard={properties.selectStock}
@@ -59,7 +61,7 @@ export const Field = (properties: FieldProperties): JSXElement => {
 type FieldStockProperties = {
   readonly closed: readonly Card[];
   readonly opened: readonly Card[];
-  readonly select: Select;
+  readonly select: Select | undefined;
 
   readonly openStock: () => void;
   readonly selectCard: () => void;
@@ -102,7 +104,7 @@ const FieldStock = (properties: FieldStockProperties): JSXElement => {
             handleDoubleClick={() => {
               properties.autoFoundation({ type: "stock" });
             }}
-            selected={properties.select.type === "stock"}
+            selected={properties.select?.type === "stock"}
           />
         )}
       </Show>
@@ -114,7 +116,7 @@ type FieldTableauProperties = {
   readonly index: number;
   readonly opened: readonly Card[];
   readonly closed: readonly Card[];
-  readonly select: Select;
+  readonly select: Select | undefined;
 
   readonly selectTableau: (index: number, depth: number) => void;
   readonly autoFoundation: (from: Select) => void;
@@ -146,7 +148,7 @@ const FieldTableau = (properties: FieldTableauProperties): JSXElement => {
               properties.selectTableau(properties.index, index());
             }}
             selected={
-              properties.select.type === "tableau" &&
+              properties.select?.type === "tableau" &&
               properties.select.index === properties.index &&
               properties.select.depth === index()
             }
@@ -164,7 +166,7 @@ const FieldTableau = (properties: FieldTableauProperties): JSXElement => {
 
 type FieldFoundationsProperties = {
   readonly foundations: readonly (readonly Card[])[];
-  readonly select: Select;
+  readonly select: Select | undefined;
 
   readonly selectCard: (index: number) => void;
 };
@@ -193,7 +195,7 @@ const FieldFoundations = (properties: FieldFoundationsProperties): JSXElement =>
               handleClick={() => {
                 properties.selectCard(index());
               }}
-              selected={properties.select.type === "foundation" && properties.select.index === index()}
+              selected={properties.select?.type === "foundation" && properties.select.index === index()}
             />
           )}
         </Show>

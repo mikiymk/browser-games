@@ -8,19 +8,19 @@ import { Cards, colorOf, rankOf, suitOf } from "../card";
 import type { Card } from "../card";
 import { PopUp } from "@/games/shogi/components/pop-up";
 
+export type Pile = {
+  opened: Card[];
+  closed: Card[];
+};
+
 export type CardField = {
-  tableaus: {
-    opened: Card[];
-    closed: Card[];
-  }[];
-  stock: Card[];
-  stockOpened: Card[];
-  foundations: [Card[], Card[], Card[], Card[]];
+  tableaus: Pile[];
+  stock: Pile;
+  foundations: Card[][];
 };
 
 export type Select =
   | { readonly type: "foundation"; readonly index: number }
-  | { readonly type: "none" }
   | { readonly type: "stock" }
   | { readonly type: "tableau"; readonly index: number; readonly depth: number };
 
@@ -35,13 +35,10 @@ export const App = (): JSXElement => {
       { opened: [], closed: [] },
       { opened: [], closed: [] },
     ],
-    stock: [],
-    stockOpened: [],
+    stock: { opened: [], closed: [] },
     foundations: [[], [], [], []],
   });
-  const [select, setSelect] = createSignal<Select>({
-    type: "none",
-  });
+  const [select, setSelect] = createSignal<Select | undefined>();
   const [popText, setPopText] = createSignal<string | undefined>();
 
   const start = (): void => {
@@ -56,8 +53,7 @@ export const App = (): JSXElement => {
         { opened: [], closed: cards.slice(15, 21) },
         { opened: [], closed: cards.slice(21, 28) },
       ],
-      stock: cards.slice(28),
-      stockOpened: [],
+      stock: { opened: [], closed: cards.slice(28) },
       foundations: [[], [], [], []],
     });
 
@@ -77,18 +73,19 @@ export const App = (): JSXElement => {
   /** 山札を1枚めくる */
   const openStock = (): void => {
     setCards((previous): CardField => {
-      if (previous.stock.length === 0) {
+      if (previous.stock.closed.length === 0) {
         return {
           ...previous,
-          stock: previous.stockOpened,
-          stockOpened: [],
+          stock: { opened: [], closed: previous.stock.opened },
         };
       }
 
       return {
         ...previous,
-        stock: previous.stock.slice(1),
-        stockOpened: [...previous.stockOpened, ...previous.stock.slice(0, 1)],
+        stock: {
+          opened: [...previous.stock.opened, ...previous.stock.closed.slice(0, 1)],
+          closed: previous.stock.closed.slice(1),
+        },
       };
     });
   };
@@ -99,9 +96,9 @@ export const App = (): JSXElement => {
    * @param to 行き先
    * @returns 移動が成功したらtrue
    */
-  const moveCards = (from: Select, to: Select): boolean => {
+  const moveCards = (from: Select | undefined, to: Select | undefined): boolean => {
     // 行き元か行き先がない場合は何もしない
-    if (from.type === "none" || to.type === "none") {
+    if (from === undefined || to === undefined) {
       return false;
     }
 
@@ -114,7 +111,7 @@ export const App = (): JSXElement => {
 
     if (pushCards(to, moves)) {
       action();
-      setSelect({ type: "none" });
+      setSelect();
       openTableaus();
       if (isCleared()) {
         setPopText("cleared!");
@@ -129,9 +126,9 @@ export const App = (): JSXElement => {
   const popCards = (from: Select): [moves: Card[], action: () => void] | undefined => {
     if (from.type === "stock") {
       return [
-        cards.stockOpened.slice(-1),
+        cards.stock.opened.slice(-1),
         (): void => {
-          setCards("stockOpened", (previous) => previous.slice(0, -1));
+          setCards("stock", "opened", (previous) => previous.slice(0, -1));
         },
       ];
     }
@@ -145,16 +142,12 @@ export const App = (): JSXElement => {
       ];
     }
 
-    if (from.type === "tableau") {
-      return [
-        cards.tableaus[from.index]?.opened.slice(from.depth) ?? [],
-        (): void => {
-          setCards("tableaus", from.index, "opened", (previous) => previous.slice(0, from.depth));
-        },
-      ];
-    }
-
-    return undefined;
+    return [
+      cards.tableaus[from.index]?.opened.slice(from.depth) ?? [],
+      (): void => {
+        setCards("tableaus", from.index, "opened", (previous) => previous.slice(0, from.depth));
+      },
+    ];
   };
 
   const canSetFoundation = (base: Card | undefined, target: Card): boolean => {
