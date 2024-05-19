@@ -19,6 +19,7 @@ type FieldProperties = {
   readonly selectStock: () => void;
   readonly selectTableau: (index: number, depth: number) => void;
   readonly selectFoundation: (index: number) => void;
+  readonly autoFoundation: (from: Select) => void;
 };
 export const Field = (properties: FieldProperties): JSXElement => {
   return (
@@ -32,6 +33,7 @@ export const Field = (properties: FieldProperties): JSXElement => {
         select={properties.select}
         openStock={properties.openStock}
         selectCard={properties.selectStock}
+        autoFoundation={properties.autoFoundation}
       />
       <For each={properties.tableaus}>
         {(cards, index) => (
@@ -41,6 +43,7 @@ export const Field = (properties: FieldProperties): JSXElement => {
             closed={cards.closed}
             select={properties.select}
             selectTableau={properties.selectTableau}
+            autoFoundation={properties.autoFoundation}
           />
         )}
       </For>
@@ -60,6 +63,7 @@ type FieldStockProperties = {
 
   readonly openStock: () => void;
   readonly selectCard: () => void;
+  readonly autoFoundation: (from: Select) => void;
 };
 const FieldStock = (properties: FieldStockProperties): JSXElement => {
   return (
@@ -95,6 +99,9 @@ const FieldStock = (properties: FieldStockProperties): JSXElement => {
             handleClick={() => {
               properties.selectCard();
             }}
+            handleDoubleClick={() => {
+              properties.autoFoundation({ type: "stock" });
+            }}
             selected={properties.select.type === "stock"}
           />
         )}
@@ -110,6 +117,7 @@ type FieldTableauProperties = {
   readonly select: Select;
 
   readonly selectTableau: (index: number, depth: number) => void;
+  readonly autoFoundation: (from: Select) => void;
 };
 const FieldTableau = (properties: FieldTableauProperties): JSXElement => {
   const x = (): number => 10 + properties.index * 35;
@@ -142,6 +150,11 @@ const FieldTableau = (properties: FieldTableauProperties): JSXElement => {
               properties.select.index === properties.index &&
               properties.select.depth === index()
             }
+            handleDoubleClick={() => {
+              if (index() === properties.opened.length - 1) {
+                properties.autoFoundation({ type: "tableau", index: properties.index, depth: index() });
+              }
+            }}
           />
         )}
       </For>

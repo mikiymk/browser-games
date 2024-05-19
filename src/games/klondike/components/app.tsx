@@ -157,8 +157,16 @@ export const App = (): JSXElement => {
     return undefined;
   };
 
+  const canSetFoundation = (base: Card | undefined, target: Card): boolean => {
+    return (
+      // 組札が空でランクが1の場合
+      (base === undefined && rankOf(target) === 1) ||
+      // 組札の一番上と動かすカードの一番下がスートが同じでランクが1つ違いの場合
+      (base !== undefined && suitOf(base) === suitOf(target) && rankOf(base) === rankOf(target) - 1)
+    );
+  };
+
   /** 行き先にカードを増やす処理 */
-  // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: 難しい関数
   const pushCards = (to: Select, moves: readonly Card[]): boolean => {
     const [moveBottom] = moves;
     if (moveBottom === undefined) {
@@ -168,14 +176,7 @@ export const App = (): JSXElement => {
     if (to.type === "foundation") {
       const foundationTop = cards.foundations[to.index]?.at(-1);
 
-      if (
-        // 組札が空でランクが1の場合
-        (foundationTop === undefined && rankOf(moveBottom) === 1) ||
-        // 組札の一番上と動かすカードの一番下がスートが同じでランクが1つ違いの場合
-        (foundationTop !== undefined &&
-          suitOf(foundationTop) === suitOf(moveBottom) &&
-          rankOf(foundationTop) === rankOf(moveBottom) - 1)
-      ) {
+      if (canSetFoundation(foundationTop, moveBottom)) {
         setCards("foundations", to.index, (previous) => [...previous, ...moves]);
         return true;
       }
@@ -210,6 +211,22 @@ export const App = (): JSXElement => {
     return true;
   };
 
+  /** 自動でカードを組札に送る関数 */
+  const autoFoundation = (from: Select): void => {
+    const foundations: Select[] = [
+      { type: "foundation", index: 0 },
+      { type: "foundation", index: 1 },
+      { type: "foundation", index: 2 },
+      { type: "foundation", index: 3 },
+    ];
+
+    for (const foundation of foundations) {
+      if (moveCards(from, foundation)) {
+        break;
+      }
+    }
+  };
+
   /** 山札をクリックしたときの関数 */
   const selectStock = (): void => {
     setSelect({ type: "stock" });
@@ -242,6 +259,7 @@ export const App = (): JSXElement => {
         selectStock={selectStock}
         selectTableau={selectTableau}
         selectFoundation={selectFoundation}
+        autoFoundation={autoFoundation}
       />
       <Button onClick={start}>Start</Button>
 

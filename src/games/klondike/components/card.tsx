@@ -238,6 +238,7 @@ type CardFrontProperties = {
   readonly y: number;
 
   readonly handleClick?: () => void;
+  readonly handleDoubleClick?: () => void;
 
   readonly selected?: boolean;
 };
@@ -266,6 +267,9 @@ export const CardFront = (properties: CardFrontProperties): JSXElement => {
         }}
         onKeyDown={() => {
           return properties.handleClick?.();
+        }}
+        onDblClick={() => {
+          return properties.handleDoubleClick?.();
         }}
       />
       <Show when={properties.selected}>
