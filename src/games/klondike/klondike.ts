@@ -3,12 +3,12 @@ import { createStore } from "solid-js/store";
 import { Cards, colorOf, rankOf, suitOf } from "./card";
 import type { Card } from "./card";
 
-export type Pile = {
+type Pile = {
   opened: Card[];
   closed: Card[];
 };
 
-export type CardField = {
+type CardField = {
   tableaus: Pile[];
   stock: Pile;
   foundations: Card[][];
