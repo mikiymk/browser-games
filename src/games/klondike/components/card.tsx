@@ -1,11 +1,11 @@
+import back from "@/images/card/back.svg";
+import club from "@/images/card/club.svg";
+import diamond from "@/images/card/diamond.svg";
+import empty from "@/images/card/empty.svg";
+import heart from "@/images/card/heart.svg";
+import spade from "@/images/card/spade.svg";
 import { Match, Show, Switch } from "solid-js";
 import type { JSXElement } from "solid-js";
-import spade from "@/images/card/spade.svg";
-import heart from "@/images/card/heart.svg";
-import diamond from "@/images/card/diamond.svg";
-import club from "@/images/card/club.svg";
-import back from "@/images/card/back.svg";
-import empty from "@/images/card/empty.svg";
 import type { Card, Rank, Suit } from "../card";
 
 export const DefineCards = (): JSXElement => {

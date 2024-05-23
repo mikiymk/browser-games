@@ -1,8 +1,8 @@
 import { For, Show } from "solid-js";
 import type { JSXElement } from "solid-js";
-import { CardFront } from "./card";
 import type { Card } from "../card";
 import type { Select } from "../klondike";
+import { CardFront } from "./card";
 
 type FieldProperties = {
   readonly stock: {

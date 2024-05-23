@@ -1,10 +1,10 @@
+import { Button } from "@/components/button";
+import { PopUp } from "@/games/shogi/components/pop-up";
 import { createSignal } from "solid-js";
 import type { JSXElement } from "solid-js";
-import { Button } from "@/components/button";
-import { Field } from "./field";
-import { PopUp } from "@/games/shogi/components/pop-up";
 import { createKlondike } from "../klondike";
 import type { Select } from "../klondike";
+import { Field } from "./field";
 
 export const App = (): JSXElement => {
   const { start, cards, moveCards, openStock, autoFoundation, isCleared } = createKlondike();

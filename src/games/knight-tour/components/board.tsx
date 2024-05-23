@@ -21,7 +21,7 @@ export const KnightBoard = (properties: BoardProperties): JSXElement => {
       }}
     >
       {(cell, index, x, y) => (
-        <Square board={properties.board} cell={cell} index={index()} x={x()} y={y()} hintMode={properties.hintMode} />
+        <Square board={properties.board} cell={cell} index={index} x={x} y={y} hintMode={properties.hintMode} />
       )}
     </Board>
   );

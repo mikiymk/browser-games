@@ -116,7 +116,7 @@ export const MineFields = (properties: MineFieldsProperties): JSXElement => {
         }
       }}
     >
-      {(field, _, x, y) => <MineCell field={field} x={x()} y={y()} />}
+      {(field, _, x, y) => <MineCell field={field} x={x} y={y} />}
     </Board>
   );
 };
