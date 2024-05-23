@@ -44,7 +44,7 @@ export const ShogiBoard = (properties: BoardProperties): JSXElement => {
           properties.onSquareClick(index);
         }}
       >
-        {(square, _index, x, y) => <Square x={x()} y={y()} square={square.piece} move={square.moveTarget} />}
+        {(square, _index, x, y) => <Square x={x} y={y} square={square.piece} move={square.moveTarget} />}
       </Board>
       <table>
         <thead>

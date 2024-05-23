@@ -2,7 +2,7 @@
 import Head from "@/components/head.astro";
 import Header from "@/components/header.astro";
 import Setting from "@/components/setting-form/form.astro";
-import Radio from "@/components/setting-form/radio.astro";
+import InputRadio from "@/components/setting-form/input-radio.astro";
 import SubHeader from "@/components/sub-header.astro";
 ---
 
@@ -12,15 +12,15 @@ import SubHeader from "@/components/sub-header.astro";
 <Setting action="game/">
     <dt>Hint mode</dt>
     <dd>
-        <Radio name="board" value="hide" checked>O and X only</Radio>
+        <InputRadio name="board" value="hide" checked>O and X only</InputRadio>
     </dd>
     <dt></dt>
     <dd>
-        <Radio name="board" value="hint">Number is order of visit</Radio>
+        <InputRadio name="board" value="hint">Number is order of visit</InputRadio>
     </dd>
     <dt></dt>
     <dd>
-        <Radio name="board" value="history">Number is onward moves</Radio>
+        <InputRadio name="board" value="history">Number is onward moves</InputRadio>
     </dd>
 </Setting>
 

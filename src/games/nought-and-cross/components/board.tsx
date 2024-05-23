@@ -54,7 +54,7 @@ export const NncBoard = (properties: BoardProperties): JSXElement => {
         properties.click(index);
       }}
     >
-      {(mark, _, x, y) => <Cell mark={mark} x={x()} y={y()} />}
+      {(mark, _, x, y) => <Cell mark={mark} x={x} y={y} />}
     </Board>
   );
 };

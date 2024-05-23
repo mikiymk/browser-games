@@ -13,7 +13,7 @@ export const ChessBoard = (properties: BoardProperties): JSXElement => {
   return (
     <Board height={8} width={8} data={properties.board} background={board.src} click={properties.handleClick}>
       {(cell, _, x, y) => {
-        return <BoardSquare piece={cell.piece} mark={cell.mark} x={x()} y={y()} />;
+        return <BoardSquare piece={cell.piece} mark={cell.mark} x={x} y={y} />;
       }}
     </Board>
   );

@@ -1,4 +1,4 @@
-import type { Accessor, JSXElement } from "solid-js";
+import type { JSXElement } from "solid-js";
 import { For, Show } from "solid-js";
 
 type BoardProperties<T> = {
@@ -7,7 +7,7 @@ type BoardProperties<T> = {
 
   readonly data: readonly T[];
 
-  readonly children: (square: T, index: Accessor<number>, x: Accessor<number>, y: Accessor<number>) => JSXElement;
+  readonly children: (square: T, index: number, x: number, y: number) => JSXElement;
   readonly class?: string;
   readonly background?: string;
   readonly click?: (square: T, index: number, event: MouseEvent) => void;
@@ -43,7 +43,7 @@ export const Board = <T,>(properties: BoardProperties<T>): JSXElement => {
           const x = (): number => (index() % properties.width) * 10;
           const y = (): number => Math.floor(index() / properties.width) * 10;
 
-          return properties.children(square, index, x, y);
+          return <>{properties.children(square, index(), x(), y())}</>;
         }}
       </For>
 

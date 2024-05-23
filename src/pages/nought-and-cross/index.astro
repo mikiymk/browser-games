@@ -2,7 +2,7 @@
 import Head from "@/components/head.astro";
 import Header from "@/components/header.astro";
 import Setting from "@/components/setting-form/form.astro";
-import Radio from "@/components/setting-form/radio.astro";
+import InputRadio from "@/components/setting-form/input-radio.astro";
 import { StyledSvg } from "@/components/styled-svg";
 import SubHeader from "@/components/sub-header.astro";
 import cross from "@/images/icon/cross.svg";
@@ -17,16 +17,16 @@ import nought from "@/images/icon/nought.svg";
         <StyledSvg src={nought.src} alt="nought" /> player
     </dt>
     <dd>
-        <Radio name="o" value="non-player">Non-Player</Radio>
-        <Radio name="o" value="player" checked>Player</Radio>
+        <InputRadio name="o" value="non-player">Non-Player</InputRadio>
+        <InputRadio name="o" value="player" checked>Player</InputRadio>
     </dd>
 
     <dt>
         <StyledSvg src={cross.src} alt="cross" /> player
     </dt>
     <dd>
-        <Radio name="x" value="non-player" checked>Non-Player</Radio>
-        <Radio name="x" value="player">Player</Radio>
+        <InputRadio name="x" value="non-player" checked>Non-Player</InputRadio>
+        <InputRadio name="x" value="player">Player</InputRadio>
     </dd>
 </Setting>
 
