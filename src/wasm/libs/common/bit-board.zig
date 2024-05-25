@@ -56,7 +56,7 @@ pub fn BitBoard(comptime height: u16, comptime width: u16) type {
         /// ビットボードの値
         board: Board,
 
-        /// ボードが空かどうか判定する。
+        /// 空のボードを作成する。
         pub fn init() Self {
             return .{ .board = Board.initEmpty() };
         }

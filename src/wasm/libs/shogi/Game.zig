@@ -10,130 +10,19 @@ const main = @import("./main.zig");
 const Game = main.Game;
 const Board = main.Board;
 const BitBoard = Board.BitBoard;
+const Piece = Board.Piece;
+const Color = Board.Color;
+const PromotionPiece = Board.PromotionPiece;
 
 // test import
 test {
     _ = @import("./Game.test.zig");
 }
 
-pub const PrimaryPiece = enum { king, rook, bishop, gold, silver, knight, lance, pawn };
-
-/// 駒の種類
-pub const PieceKind = enum {
-    /// 王将
-    king,
-    /// 飛車
-    rook,
-    /// 角行
-    bishop,
-    /// 金将
-    gold,
-    /// 銀将
-    silver,
-    /// 桂馬
-    knight,
-    /// 香車
-    lance,
-    /// 歩兵
-    pawn,
-    /// 龍王
-    rook_promoted,
-    /// 龍馬
-    bishop_promoted,
-    /// 成銀
-    silver_promoted,
-    /// 成桂
-    knight_promoted,
-    /// 成香
-    lance_promoted,
-    /// と金
-    pawn_promoted,
-
-    pub fn primary(self: PieceKind) PrimaryPiece {
-        return switch (self) {
-            .king => .king,
-            .rook => .rook,
-            .bishop => .bishop,
-            .gold => .gold,
-            .silver => .silver,
-            .knight => .knight,
-            .lance => .lance,
-            .pawn => .pawn,
-            .rook_promoted => .rook,
-            .bishop_promoted => .bishop,
-            .silver_promoted => .silver,
-            .knight_promoted => .knight,
-            .lance_promoted => .lance,
-            .pawn_promoted => .pawn,
-        };
-    }
-
-    pub fn fromPrimary(prim: PrimaryPiece, prom: bool) PieceKind {
-        return switch (prim) {
-            .king => .king,
-            .rook => if (prom) .rook_promoted else .rook,
-            .bishop => if (prom) .bishop_promoted else .bishop,
-            .gold => .gold,
-            .silver => if (prom) .silver_promoted else .silver,
-            .knight => if (prom) .knight_promoted else .knight,
-            .lance => if (prom) .lance_promoted else .lance,
-            .pawn => if (prom) .pawn_promoted else .pawn,
-        };
-    }
-
-    pub fn isPromoted(self: PieceKind) bool {
-        return switch (self) {
-            .rook_promoted,
-            .bishop_promoted,
-            .silver_promoted,
-            .knight_promoted,
-            .lance_promoted,
-            .pawn_promoted,
-            => true,
-            else => false,
-        };
-    }
-
-    pub fn promote(self: PieceKind) ?PieceKind {
-        return switch (self) {
-            .rook => .rook_promoted,
-            .bishop => .bishop_promoted,
-            .silver => .silver_promoted,
-            .knight => .knight_promoted,
-            .lance => .lance_promoted,
-            .pawn => .pawn_promoted,
-            else => null,
-        };
-    }
-
-    pub fn unpromote(self: PieceKind) ?PieceKind {
-        return switch (self) {
-            .rook_promoted => .rook,
-            .bishop_promoted => .bishop,
-            .silver_promoted => .silver,
-            .knight_promoted => .knight,
-            .lance_promoted => .lance,
-            .pawn_promoted => .pawn,
-            else => null,
-        };
-    }
+const SquareStruct = struct {
+    color: Color,
+    piece: PromotionPiece,
 };
-
-/// プレイヤーの種類
-pub const PlayerColor = enum(u8) {
-    /// 先手
-    white = 1,
-    /// 後手
-    black = 2,
-
-    pub fn turn(self: PlayerColor) PlayerColor {
-        return switch (self) {
-            .black => .white,
-            .white => .black,
-        };
-    }
-};
-
 /// マス目の状態すべて
 pub const Square = enum(u8) {
     empty = 0b0000_0000,
@@ -170,73 +59,88 @@ pub const Square = enum(u8) {
     white_lance_promoted = 0b1011_0110,
     white_pawn_promoted = 0b1011_0111,
 
-    pub fn color(self: Square) ?PlayerColor {
-        return switch (self) {
+    pub fn toColorPiece(square: Square) ?SquareStruct {
+        return switch (square) {
             .empty => null,
 
-            .black_king,
-            .black_rook,
-            .black_bishop,
-            .black_gold,
-            .black_silver,
-            .black_knight,
-            .black_lance,
-            .black_pawn,
-            .black_rook_promoted,
-            .black_bishop_promoted,
-            .black_silver_promoted,
-            .black_knight_promoted,
-            .black_lance_promoted,
-            .black_pawn_promoted,
-            => .black,
+            .black_king => .{ .color = .black, .piece = .king },
+            .black_rook => .{ .color = .black, .piece = .rook },
+            .black_bishop => .{ .color = .black, .piece = .bishop },
+            .black_gold => .{ .color = .black, .piece = .gold },
+            .black_silver => .{ .color = .black, .piece = .silver },
+            .black_knight => .{ .color = .black, .piece = .knight },
+            .black_lance => .{ .color = .black, .piece = .lance },
+            .black_pawn => .{ .color = .black, .piece = .pawn },
 
-            .white_king,
-            .white_rook,
-            .white_bishop,
-            .white_gold,
-            .white_silver,
-            .white_knight,
-            .white_lance,
-            .white_pawn,
-            .white_rook_promoted,
-            .white_bishop_promoted,
-            .white_silver_promoted,
-            .white_knight_promoted,
-            .white_lance_promoted,
-            .white_pawn_promoted,
-            => .white,
+            .black_rook_promoted => .{ .color = .black, .piece = .rook_promoted },
+            .black_bishop_promoted => .{ .color = .black, .piece = .bishop_promoted },
+            .black_silver_promoted => .{ .color = .black, .piece = .silver_promoted },
+            .black_knight_promoted => .{ .color = .black, .piece = .knight_promoted },
+            .black_lance_promoted => .{ .color = .black, .piece = .lance_promoted },
+            .black_pawn_promoted => .{ .color = .black, .piece = .pawn_promoted },
+
+            .white_king => .{ .color = .white, .piece = .king },
+            .white_rook => .{ .color = .white, .piece = .rook },
+            .white_bishop => .{ .color = .white, .piece = .bishop },
+            .white_gold => .{ .color = .white, .piece = .gold },
+            .white_silver => .{ .color = .white, .piece = .silver },
+            .white_knight => .{ .color = .white, .piece = .knight },
+            .white_lance => .{ .color = .white, .piece = .lance },
+            .white_pawn => .{ .color = .white, .piece = .pawn },
+
+            .white_rook_promoted => .{ .color = .white, .piece = .rook_promoted },
+            .white_bishop_promoted => .{ .color = .white, .piece = .bishop_promoted },
+            .white_silver_promoted => .{ .color = .white, .piece = .silver_promoted },
+            .white_knight_promoted => .{ .color = .white, .piece = .knight_promoted },
+            .white_lance_promoted => .{ .color = .white, .piece = .lance_promoted },
+            .white_pawn_promoted => .{ .color = .white, .piece = .pawn_promoted },
         };
     }
 
-    pub fn piece(self: Square) ?PieceKind {
-        return switch (self) {
-            .empty => null,
-
-            .black_king, .white_king => .king,
-            .black_rook, .white_rook => .rook,
-            .black_bishop, .white_bishop => .bishop,
-            .black_gold, .white_gold => .gold,
-            .black_silver, .white_silver => .silver,
-            .black_knight, .white_knight => .knight,
-            .black_lance, .white_lance => .lance,
-            .black_pawn, .white_pawn => .pawn,
-
-            .black_rook_promoted, .white_rook_promoted => .rook_promoted,
-            .black_bishop_promoted, .white_bishop_promoted => .bishop_promoted,
-            .black_silver_promoted, .white_silver_promoted => .silver_promoted,
-            .black_knight_promoted, .white_knight_promoted => .knight_promoted,
-            .black_lance_promoted, .white_lance_promoted => .lance_promoted,
-            .black_pawn_promoted, .white_pawn_promoted => .pawn_promoted,
+    pub fn fromColorPiece(color: Color, piece: PromotionPiece) Square {
+        return switch (color) {
+            .black => switch (piece) {
+                .king => .black_king,
+                .rook => .black_rook,
+                .bishop => .black_bishop,
+                .gold => .black_gold,
+                .silver => .black_silver,
+                .knight => .black_knight,
+                .lance => .black_lance,
+                .pawn => .black_pawn,
+                .rook_promoted => .black_rook_promoted,
+                .bishop_promoted => .black_bishop_promoted,
+                .silver_promoted => .black_silver_promoted,
+                .knight_promoted => .black_knight_promoted,
+                .lance_promoted => .black_lance_promoted,
+                .pawn_promoted => .black_pawn_promoted,
+            },
+            .white => switch (piece) {
+                .king => .white_king,
+                .rook => .white_rook,
+                .bishop => .white_bishop,
+                .gold => .white_gold,
+                .silver => .white_silver,
+                .knight => .white_knight,
+                .lance => .white_lance,
+                .pawn => .white_pawn,
+                .rook_promoted => .white_rook_promoted,
+                .bishop_promoted => .white_bishop_promoted,
+                .silver_promoted => .white_silver_promoted,
+                .knight_promoted => .white_knight_promoted,
+                .lance_promoted => .white_lance_promoted,
+                .pawn_promoted => .white_pawn_promoted,
+            },
         };
     }
 };
 
-const Hands = std.EnumArray(PrimaryPiece, u8);
+const Hands = std.EnumArray(Piece, u8);
 
 current_board: Board,
 black_hands: Hands,
 white_hands: Hands,
-current_player: PlayerColor,
+current_player: Color,
 
 pub fn init() Game {
     return .{
@@ -251,37 +155,22 @@ pub fn init() Game {
 pub fn setBoard(game: Game, board_slice: *[]u8) void {
     const board = game.current_board;
 
-    @memset(board_slice.*, 0);
+    @memset(board_slice.*, @intFromEnum(Square.empty));
 
-    setPieceToBoard(board_slice, board.white_pawn, @intFromEnum(Square.white_pawn));
-    setPieceToBoard(board_slice, board.white_lance, @intFromEnum(Square.white_lance));
-    setPieceToBoard(board_slice, board.white_knight, @intFromEnum(Square.white_knight));
-    setPieceToBoard(board_slice, board.white_silver, @intFromEnum(Square.white_silver));
-    setPieceToBoard(board_slice, board.white_gold, @intFromEnum(Square.white_gold));
-    setPieceToBoard(board_slice, board.white_bishop, @intFromEnum(Square.white_bishop));
-    setPieceToBoard(board_slice, board.white_rook, @intFromEnum(Square.white_rook));
-    setPieceToBoard(board_slice, board.white_pawn_promoted, @intFromEnum(Square.white_pawn_promoted));
-    setPieceToBoard(board_slice, board.white_knight_promoted, @intFromEnum(Square.white_knight_promoted));
-    setPieceToBoard(board_slice, board.white_lance_promoted, @intFromEnum(Square.white_lance_promoted));
-    setPieceToBoard(board_slice, board.white_silver_promoted, @intFromEnum(Square.white_silver_promoted));
-    setPieceToBoard(board_slice, board.white_bishop_promoted, @intFromEnum(Square.white_bishop_promoted));
-    setPieceToBoard(board_slice, board.white_rook_promoted, @intFromEnum(Square.white_rook_promoted));
-    setPieceToBoard(board_slice, board.white_king, @intFromEnum(Square.white_king));
+    var boards = board.boards;
+    var color_iter = boards.iterator();
 
-    setPieceToBoard(board_slice, board.black_pawn, @intFromEnum(Square.black_pawn));
-    setPieceToBoard(board_slice, board.black_lance, @intFromEnum(Square.black_lance));
-    setPieceToBoard(board_slice, board.black_knight, @intFromEnum(Square.black_knight));
-    setPieceToBoard(board_slice, board.black_silver, @intFromEnum(Square.black_silver));
-    setPieceToBoard(board_slice, board.black_gold, @intFromEnum(Square.black_gold));
-    setPieceToBoard(board_slice, board.black_bishop, @intFromEnum(Square.black_bishop));
-    setPieceToBoard(board_slice, board.black_rook, @intFromEnum(Square.black_rook));
-    setPieceToBoard(board_slice, board.black_pawn_promoted, @intFromEnum(Square.black_pawn_promoted));
-    setPieceToBoard(board_slice, board.black_knight_promoted, @intFromEnum(Square.black_knight_promoted));
-    setPieceToBoard(board_slice, board.black_lance_promoted, @intFromEnum(Square.black_lance_promoted));
-    setPieceToBoard(board_slice, board.black_silver_promoted, @intFromEnum(Square.black_silver_promoted));
-    setPieceToBoard(board_slice, board.black_bishop_promoted, @intFromEnum(Square.black_bishop_promoted));
-    setPieceToBoard(board_slice, board.black_rook_promoted, @intFromEnum(Square.black_rook_promoted));
-    setPieceToBoard(board_slice, board.black_king, @intFromEnum(Square.black_king));
+    while (color_iter.next()) |color| {
+        var piece_iter = color.value.iterator();
+
+        while (piece_iter.next()) |piece| {
+            setPieceToBoard(
+                board_slice,
+                piece.value.*,
+                @intFromEnum(Square.fromColorPiece(color.key, piece.key)),
+            );
+        }
+    }
 }
 
 /// ボードのスライスに駒を設定する
@@ -292,7 +181,7 @@ pub fn setPieceToBoard(board: *[]u8, target: BitBoard, value: u8) void {
     }
 }
 
-pub fn getHandPtr(game: Game, color: PlayerColor) Hands {
+pub fn getHandPtr(game: Game, color: Color) Hands {
     return switch (color) {
         .black => game.black_hands,
         .white => game.white_hands,
@@ -301,7 +190,7 @@ pub fn getHandPtr(game: Game, color: PlayerColor) Hands {
 
 /// 勝利したプレイヤーを得る
 /// まだゲーム中ならnull
-pub fn getWinner(game: Game) ?PlayerColor {
+pub fn getWinner(game: Game) ?Color {
     if (game.current_board.isCheckmated(.white)) {
         return .black;
     }
@@ -316,7 +205,7 @@ pub fn movePositions(game: Game, from: BitBoard) BitBoard {
     return game.current_board.movePositions(from);
 }
 
-pub fn hitPositions(game: Game, piece: PrimaryPiece) BitBoard {
+pub fn hitPositions(game: Game, piece: Piece) BitBoard {
     return game.current_board.hitPositions(game.current_player, piece);
 }
 
@@ -326,8 +215,8 @@ pub fn hitPositions(game: Game, piece: PrimaryPiece) BitBoard {
 pub fn move(game: *Game, from: BitBoard, to: BitBoard) bool {
     // 持ち駒を増やす
     const capture_piece = game.current_board.getPieceAt(to);
-    if (capture_piece.piece()) |p| {
-        const primary_piece = p.primary();
+    if (capture_piece.toColorPiece()) |cp| {
+        const primary_piece = cp.piece.toPiece().piece;
         const hands = switch (game.current_player) {
             .black => &game.black_hands,
             .white => &game.white_hands,
@@ -351,9 +240,9 @@ pub fn move(game: *Game, from: BitBoard, to: BitBoard) bool {
     return false;
 }
 
-pub fn hit(game: *Game, piece: PieceKind, to: BitBoard) void {
+pub fn hit(game: *Game, piece: PromotionPiece, to: BitBoard) void {
     // 持ち駒を減らす
-    const primary_piece = piece.primary();
+    const primary_piece = piece.toPiece().piece;
     const hands = switch (game.current_player) {
         .black => &game.black_hands,
         .white => &game.white_hands,

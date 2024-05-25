@@ -69,26 +69,9 @@ pub fn getAiMove(board: Board, allocator: Allocator, color: Color, depth: u8, co
 fn getValidMoves(board: Board, allocator: Allocator, color: Color) AllocError![]Move {
     var moves = MoveList.init(allocator);
 
-    const boards: [6]BitBoard = switch (color) {
-        .black => .{
-            board.black_pawn,
-            board.black_knight,
-            board.black_bishop,
-            board.black_rook,
-            board.black_queen,
-            board.black_king,
-        },
-        .white => .{
-            board.white_pawn,
-            board.white_knight,
-            board.white_bishop,
-            board.white_rook,
-            board.white_queen,
-            board.white_king,
-        },
-    };
+    const boards = board.boards.get(color);
 
-    for (boards) |b| {
+    for (boards.values) |b| {
         var iter = b.iterator();
 
         while (iter.next()) |current| {
@@ -212,18 +195,18 @@ fn alphaBeta(board: Board, allocator: Allocator, player_color: Color, current_co
 /// 黒に有利なら+、白に有利なら-
 fn evaluate(board: Board) isize {
     // 駒の数
-    const black_pawn_count: isize = @intCast(board.black_pawn.count());
-    const black_knight_count: isize = @intCast(board.black_knight.count());
-    const black_bishop_count: isize = @intCast(board.black_bishop.count());
-    const black_rook_count: isize = @intCast(board.black_rook.count());
-    const black_queen_count: isize = @intCast(board.black_queen.count());
-    const black_king_count: isize = @intCast(board.black_king.count());
-    const white_pawn_count: isize = @intCast(board.white_pawn.count());
-    const white_knight_count: isize = @intCast(board.white_knight.count());
-    const white_bishop_count: isize = @intCast(board.white_bishop.count());
-    const white_rook_count: isize = @intCast(board.white_rook.count());
-    const white_queen_count: isize = @intCast(board.white_queen.count());
-    const white_king_count: isize = @intCast(board.white_king.count());
+    const black_pawn_count: isize = @intCast(board.boards.get(.black).get(.pawn).count());
+    const black_knight_count: isize = @intCast(board.boards.get(.black).get(.knight).count());
+    const black_bishop_count: isize = @intCast(board.boards.get(.black).get(.bishop).count());
+    const black_rook_count: isize = @intCast(board.boards.get(.black).get(.rook).count());
+    const black_queen_count: isize = @intCast(board.boards.get(.black).get(.queen).count());
+    const black_king_count: isize = @intCast(board.boards.get(.black).get(.king).count());
+    const white_pawn_count: isize = @intCast(board.boards.get(.white).get(.pawn).count());
+    const white_knight_count: isize = @intCast(board.boards.get(.white).get(.knight).count());
+    const white_bishop_count: isize = @intCast(board.boards.get(.white).get(.bishop).count());
+    const white_rook_count: isize = @intCast(board.boards.get(.white).get(.rook).count());
+    const white_queen_count: isize = @intCast(board.boards.get(.white).get(.queen).count());
+    const white_king_count: isize = @intCast(board.boards.get(.white).get(.king).count());
 
     const black_pieces_count =
         black_pawn_count * 1 +

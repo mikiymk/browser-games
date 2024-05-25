@@ -9,8 +9,11 @@ const common = @import("../common/main.zig");
 const main = @import("./main.zig");
 const Game = main.Game;
 const Board = main.Board;
-const BitBoard = Board.BitBoard;
 const moves = main.moves;
+
+const BitBoard = Board.BitBoard;
+const PromotionPiece = Board.PromotionPiece;
+const Color = Board.Color;
 
 // test import
 test {
@@ -42,10 +45,14 @@ const west_mask = BitBoard.fromString(
 , 'o');
 
 pub fn move(board: Board, from: BitBoard) BitBoard {
-    const piece = board.getPieceAt(from);
-    const color = piece.color() orelse return BitBoard.init();
+    const square = board.getPieceAt(from);
+    const color_piece = square.toColorPiece() orelse return BitBoard.init();
 
-    return switch (piece.piece() orelse unreachable) {
+    return moveByPiece(board, from, color_piece.piece, color_piece.color);
+}
+
+pub fn moveByPiece(board: Board, from: BitBoard, piece: PromotionPiece, color: Color) BitBoard {
+    return switch (piece) {
         .pawn => pawn(board, from, color),
         .lance => lance(board, from, color),
         .knight => knight(board, from, color),
@@ -65,7 +72,7 @@ pub fn move(board: Board, from: BitBoard) BitBoard {
 }
 
 /// 歩兵の移動できる範囲
-pub fn pawn(board: Board, from: BitBoard, color: Game.PlayerColor) BitBoard {
+pub fn pawn(board: Board, from: BitBoard, color: Color) BitBoard {
     return switch (color) {
         .black => blackPawn(board, from),
         .white => whitePawn(board, from),
@@ -89,7 +96,7 @@ pub fn blackPawn(board: Board, from: BitBoard) BitBoard {
 }
 
 /// 香車の移動できる範囲
-pub fn lance(board: Board, from: BitBoard, color: Game.PlayerColor) BitBoard {
+pub fn lance(board: Board, from: BitBoard, color: Color) BitBoard {
     return switch (color) {
         .black => blackLance(board, from),
         .white => whiteLance(board, from),
@@ -127,7 +134,7 @@ pub fn blackLance(board: Board, from: BitBoard) BitBoard {
 }
 
 /// 桂馬の移動できる範囲
-pub fn knight(board: Board, from: BitBoard, color: Game.PlayerColor) BitBoard {
+pub fn knight(board: Board, from: BitBoard, color: Color) BitBoard {
     return switch (color) {
         .black => blackKnight(board, from),
         .white => whiteKnight(board, from),
@@ -153,7 +160,7 @@ pub fn blackKnight(board: Board, from: BitBoard) BitBoard {
 }
 
 /// 銀将の移動できる範囲
-pub fn silver(board: Board, from: BitBoard, color: Game.PlayerColor) BitBoard {
+pub fn silver(board: Board, from: BitBoard, color: Color) BitBoard {
     return switch (color) {
         .black => blackSilver(board, from),
         .white => whiteSilver(board, from),
@@ -191,7 +198,7 @@ pub fn blackSilver(board: Board, from: BitBoard) BitBoard {
 }
 
 /// 金将の移動できる範囲
-pub fn gold(board: Board, from: BitBoard, color: Game.PlayerColor) BitBoard {
+pub fn gold(board: Board, from: BitBoard, color: Color) BitBoard {
     return switch (color) {
         .black => blackGold(board, from),
         .white => whiteGold(board, from),
@@ -237,7 +244,7 @@ pub fn blackGold(board: Board, from: BitBoard) BitBoard {
 }
 
 /// 角行の移動できる範囲
-pub fn bishop(board: Board, from: BitBoard, color: Game.PlayerColor) BitBoard {
+pub fn bishop(board: Board, from: BitBoard, color: Color) BitBoard {
     const ally_pieces = board.getColorPieces(color);
     const enemy_pieces = board.getColorPieces(color.turn());
     const empty_squares = ally_pieces.unions(enemy_pieces).inversed();
@@ -259,7 +266,7 @@ pub fn bishop(board: Board, from: BitBoard, color: Game.PlayerColor) BitBoard {
 }
 
 /// 龍馬の移動できる範囲
-pub fn promotedBishop(board: Board, from: BitBoard, color: Game.PlayerColor) BitBoard {
+pub fn promotedBishop(board: Board, from: BitBoard, color: Color) BitBoard {
     const ally_pieces = board.getColorPieces(color);
     const enemy_pieces = board.getColorPieces(color.turn());
     const empty_squares = ally_pieces.unions(enemy_pieces).inversed();
@@ -289,7 +296,7 @@ pub fn promotedBishop(board: Board, from: BitBoard, color: Game.PlayerColor) Bit
 }
 
 /// 飛車の移動できる範囲
-pub fn rook(board: Board, from: BitBoard, color: Game.PlayerColor) BitBoard {
+pub fn rook(board: Board, from: BitBoard, color: Color) BitBoard {
     const ally_pieces = board.getColorPieces(color);
     const enemy_pieces = board.getColorPieces(color.turn());
     const empty_squares = ally_pieces.unions(enemy_pieces).inversed();
@@ -311,7 +318,7 @@ pub fn rook(board: Board, from: BitBoard, color: Game.PlayerColor) BitBoard {
 }
 
 /// 龍王の移動できる範囲
-pub fn promotedRook(board: Board, from: BitBoard, color: Game.PlayerColor) BitBoard {
+pub fn promotedRook(board: Board, from: BitBoard, color: Color) BitBoard {
     const ally_pieces = board.getColorPieces(color);
     const enemy_pieces = board.getColorPieces(color.turn());
     const empty_squares = ally_pieces.unions(enemy_pieces).inversed();
@@ -341,7 +348,7 @@ pub fn promotedRook(board: Board, from: BitBoard, color: Game.PlayerColor) BitBo
 }
 
 /// 王将の移動できる範囲
-pub fn king(board: Board, from: BitBoard, color: Game.PlayerColor) BitBoard {
+pub fn king(board: Board, from: BitBoard, color: Color) BitBoard {
     const ally_pieces = board.getColorPieces(color);
 
     const masked_e = from.masks(east_mask);

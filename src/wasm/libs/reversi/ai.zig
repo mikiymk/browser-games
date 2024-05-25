@@ -15,9 +15,11 @@ test {
     _ = @import("./ai.test.zig");
 }
 
+const ai_depth = 5;
+
 /// AIが考えた打つ場所をインデックスで返します。
-pub fn getAiMove(b: Board, comptime random: *const fn () f64) u6 {
-    const moves = b.getValidMoves();
+pub fn getAiMove(board: Board, comptime random: *const fn () f64) u6 {
+    const moves = board.getValidMoves();
 
     // ここまでの最も良い手
     var best_place: [32]usize = .{0} ** 32;
@@ -27,8 +29,8 @@ pub fn getAiMove(b: Board, comptime random: *const fn () f64) u6 {
 
     var move_board = moves.iterator();
     while (move_board.next()) |place| {
-        const child = b.move(BitBoard.fromIndex(place));
-        const evaluation = alphaBeta(child, b.nextColor, 5, std.math.minInt(i32), std.math.maxInt(i32));
+        const child = board.move(BitBoard.fromIndex(place));
+        const evaluation = alphaBeta(child, board.nextColor, ai_depth, std.math.minInt(i32), std.math.maxInt(i32));
 
         if (best_place_count == 0 or evaluation > best_evaluation) {
             best_evaluation = evaluation;
@@ -48,22 +50,22 @@ pub fn getAiMove(b: Board, comptime random: *const fn () f64) u6 {
 }
 
 /// αβ法を使ってよい手を探す
-fn alphaBeta(b: Board, player: Board.Color, depth: u8, alpha: isize, beta: isize) isize {
-    if (b.isEnd() or depth == 0) {
+fn alphaBeta(board: Board, player: Board.Color, depth: u8, alpha: isize, beta: isize) isize {
+    if (board.isEnd() or depth == 0) {
         if (player == .black) {
-            return evaluate(b);
+            return evaluate(board);
         } else {
-            return -evaluate(b);
+            return -evaluate(board);
         }
     }
 
-    if (b.nextColor == player) {
-        var moves = b.getValidMoves().iterator();
+    if (board.nextColor == player) {
+        var moves = board.getValidMoves().iterator();
 
         var new_alpha = alpha;
 
         while (moves.next()) |cell| {
-            const child = b.move(BitBoard.fromIndex(cell));
+            const child = board.move(BitBoard.fromIndex(cell));
 
             new_alpha = @max(new_alpha, alphaBeta(child, player, depth - 1, new_alpha, beta));
             if (new_alpha >= beta) {
@@ -73,12 +75,12 @@ fn alphaBeta(b: Board, player: Board.Color, depth: u8, alpha: isize, beta: isize
 
         return new_alpha;
     } else {
-        var moves = b.getValidMoves().iterator();
+        var moves = board.getValidMoves().iterator();
 
         var new_beta = beta;
 
         while (moves.next()) |cell| {
-            const child = b.move(BitBoard.fromIndex(cell));
+            const child = board.move(BitBoard.fromIndex(cell));
 
             new_beta = @min(new_beta, alphaBeta(child, player, depth - 1, alpha, new_beta));
             if (alpha >= new_beta) {
@@ -91,23 +93,22 @@ fn alphaBeta(b: Board, player: Board.Color, depth: u8, alpha: isize, beta: isize
 }
 
 /// AI用に現在の盤面の評価点数を計算します。
-fn evaluate(b: Board) isize {
+fn evaluate(board: Board) isize {
     // 石の数
-    const black_stone_count = b.black.count();
-    const white_stone_count = b.white.count();
+    const black_stone_count = board.boards.get(.black).count();
+    const white_stone_count = board.boards.get(.white).count();
 
     // 打てる場所の数
-    const player_valid_count = b.getValidMoves().count();
+    const player_valid_count = board.getValidMoves().count();
     const opponent_board = Board{
-        .black = b.black,
-        .white = b.white,
-        .nextColor = b.nextColor,
+        .boards = board.boards,
+        .nextColor = board.nextColor,
     };
     const opponent_valid_count = opponent_board.getValidMoves().count();
 
     var black_valid_count: usize = undefined;
     var white_valid_count: usize = undefined;
-    if (b.nextColor == .black) {
+    if (board.nextColor == .black) {
         black_valid_count = player_valid_count;
         white_valid_count = opponent_valid_count;
     } else {
@@ -121,8 +122,8 @@ fn evaluate(b: Board) isize {
         black_valid_count * 700 -% white_valid_count * 700);
 }
 
-fn randomAi(b: Board, comptime random: *const fn () f64) u6 {
-    const moves = b.getValidMoves();
+fn randomAi(board: Board, comptime random: *const fn () f64) u6 {
+    const moves = board.getValidMoves();
 
     const moves_count: f64 = @floatFromInt(@popCount(moves));
     const select_number: u6 = @intFromFloat(random() * moves_count);

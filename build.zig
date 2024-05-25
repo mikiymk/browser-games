@@ -33,6 +33,9 @@ fn buildLib(b: *Build, comptime name: []const u8, public_dir: Dir, target: Targe
             .root_source_file = .{ .path = "src/wasm/" ++ name ++ ".zig" },
             .target = target,
             .optimize = optimize,
+
+            // Omit debug symbols
+            .strip = true,
         });
 
         // exports all "export" functions
@@ -51,6 +54,9 @@ fn buildLib(b: *Build, comptime name: []const u8, public_dir: Dir, target: Targe
             .root_source_file = .{ .path = "src/wasm/" ++ name ++ ".zig" },
             .target = target,
             .optimize = optimize,
+
+            // Omit debug symbols
+            .strip = true,
         });
 
         // exports all "export" functions

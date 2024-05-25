@@ -67,7 +67,7 @@ test "get valid move" {
 
     // マスク
     // 相手の石があるところだけ + 端をループしないように止める
-    const mask = board.white.masks(BitBoard.fromString(
+    const mask = board.boards.get(.white).masks(BitBoard.fromString(
         \\.oooooo.
         \\.oooooo.
         \\.oooooo.
@@ -89,7 +89,7 @@ test "get valid move" {
         \\........
     , &mask.toString('x', '.'));
 
-    var flip = board.black;
+    var flip = board.boards.get(.black);
     const dir = 1;
 
     try testing.expectEqualStrings(
@@ -166,7 +166,7 @@ test "get valid move" {
     , &flip.toString('o', '.'));
 
     // これを「石が置かれていない場所」でマスク
-    flip = flip.excludes(board.black.unions(board.white));
+    flip = flip.excludes(board.boards.get(.black).unions(board.boards.get(.white)));
 
     try testing.expectEqualStrings(
         \\........
@@ -354,8 +354,10 @@ test "board from string" {
     const testing = std.testing;
 
     const expected = Board{
-        .black = BitBoard.fromInteger(0x00_00_00_00_00_aa_55_aa),
-        .white = BitBoard.fromInteger(0x55_aa_55_00_00_00_00_00),
+        .boards = Board.ColorBoards.init(.{
+            .black = BitBoard.fromInteger(0x00_00_00_00_00_aa_55_aa),
+            .white = BitBoard.fromInteger(0x55_aa_55_00_00_00_00_00),
+        }),
     };
     const actual = Board.fromString(
         \\.o.o.o.o

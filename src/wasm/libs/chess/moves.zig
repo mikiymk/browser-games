@@ -93,16 +93,16 @@ const black_pawn_double_step_target = BitBoard.fromString(
     \\........
 , 'o');
 
-pub fn pawn(b: Board, pawn_place: BitBoard, color: Board.Color) BitBoard {
+pub fn pawn(board: Board, pawn_place: BitBoard, color: Board.Color) BitBoard {
     return switch (color) {
-        .black => pawnBlack(b, pawn_place),
-        .white => pawnWhite(b, pawn_place),
+        .black => pawnBlack(board, pawn_place),
+        .white => pawnWhite(board, pawn_place),
     };
 }
 
-fn pawnBlack(b: Board, pawn_place: BitBoard) BitBoard {
-    const white_pieces = b.getColorPieces(.white);
-    const black_pieces = b.getColorPieces(.black);
+fn pawnBlack(board: Board, pawn_place: BitBoard) BitBoard {
+    const white_pieces = board.getColorPieces(.white);
+    const black_pieces = board.getColorPieces(.black);
 
     const empties = white_pieces.unions(black_pieces).inversed();
 
@@ -114,9 +114,9 @@ fn pawnBlack(b: Board, pawn_place: BitBoard) BitBoard {
     return move_s.unions(move_s2).unions(move_se.unions(move_sw).masks(white_pieces));
 }
 
-fn pawnWhite(b: Board, pawn_place: BitBoard) BitBoard {
-    const white_pieces = b.getColorPieces(.white);
-    const black_pieces = b.getColorPieces(.black);
+fn pawnWhite(board: Board, pawn_place: BitBoard) BitBoard {
+    const white_pieces = board.getColorPieces(.white);
+    const black_pieces = board.getColorPieces(.black);
 
     const empties = white_pieces.unions(black_pieces).inversed();
 
@@ -128,7 +128,7 @@ fn pawnWhite(b: Board, pawn_place: BitBoard) BitBoard {
     return move_n.unions(move_n2).unions(move_ne.unions(move_nw).masks(black_pieces));
 }
 
-pub fn knight(b: Board, knight_place: BitBoard, player_color: Board.Color) BitBoard {
+pub fn knight(board: Board, knight_place: BitBoard, player_color: Board.Color) BitBoard {
     const ve_masked = knight_place.masks(east_mask);
     const vw_masked = knight_place.masks(west_mask);
     const he_masked = knight_place.masks(east_mask_double);
@@ -149,12 +149,12 @@ pub fn knight(b: Board, knight_place: BitBoard, player_color: Board.Color) BitBo
     move.setUnion(move_w.move(.nw));
     move.setUnion(move_w.move(.sw));
 
-    return move.masks(b.getColorPieces(player_color).inversed());
+    return move.masks(board.getColorPieces(player_color).inversed());
 }
 
-pub fn bishop(b: Board, bishop_place: BitBoard, player_color: Board.Color) BitBoard {
-    const ally_pieces = b.getColorPieces(player_color);
-    const opponent_pieces = b.getColorPieces(player_color.turn());
+pub fn bishop(board: Board, bishop_place: BitBoard, player_color: Board.Color) BitBoard {
+    const ally_pieces = board.getColorPieces(player_color);
+    const opponent_pieces = board.getColorPieces(player_color.turn());
 
     const empties = ally_pieces.unions(opponent_pieces).inversed();
 
@@ -176,9 +176,9 @@ pub fn bishop(b: Board, bishop_place: BitBoard, player_color: Board.Color) BitBo
     return move_ne_sw.unions(move_nw_se).masks(ally_pieces.inversed());
 }
 
-pub fn rook(b: Board, rook_place: BitBoard, player_color: Board.Color) BitBoard {
-    const ally_pieces = b.getColorPieces(player_color);
-    const opponent_pieces = b.getColorPieces(player_color.turn());
+pub fn rook(board: Board, rook_place: BitBoard, player_color: Board.Color) BitBoard {
+    const ally_pieces = board.getColorPieces(player_color);
+    const opponent_pieces = board.getColorPieces(player_color.turn());
 
     const empties = ally_pieces.unions(opponent_pieces).inversed();
 
@@ -200,9 +200,9 @@ pub fn rook(b: Board, rook_place: BitBoard, player_color: Board.Color) BitBoard 
     return move_n_s.unions(move_e_w).masks(ally_pieces.inversed());
 }
 
-pub fn queen(b: Board, queen_place: BitBoard, player_color: Board.Color) BitBoard {
-    const ally_pieces = b.getColorPieces(player_color);
-    const opponent_pieces = b.getColorPieces(player_color.turn());
+pub fn queen(board: Board, queen_place: BitBoard, player_color: Board.Color) BitBoard {
+    const ally_pieces = board.getColorPieces(player_color);
+    const opponent_pieces = board.getColorPieces(player_color.turn());
 
     const empties = ally_pieces.unions(opponent_pieces).inversed();
 
@@ -236,11 +236,11 @@ pub fn queen(b: Board, queen_place: BitBoard, player_color: Board.Color) BitBoar
         .excludes(ally_pieces);
 }
 
-pub fn king(b: Board, king_place: BitBoard, player_color: Board.Color) BitBoard {
+pub fn king(board: Board, king_place: BitBoard, player_color: Board.Color) BitBoard {
     const e_masked = king_place.masks(east_mask);
     const w_masked = king_place.masks(west_mask);
 
-    const ally_pieces = b.getColorPieces(player_color).inversed();
+    const ally_pieces = board.getColorPieces(player_color).inversed();
 
     var move = king_place.move(.n);
     move.setUnion(king_place.move(.s));
