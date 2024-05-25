@@ -34,6 +34,7 @@ fn buildLib(b: *Build, comptime name: []const u8, public_dir: Dir, target: Targe
             .target = target,
             .optimize = optimize,
 
+            // Omit debug symbols
             .strip = true,
         });
 
@@ -54,6 +55,7 @@ fn buildLib(b: *Build, comptime name: []const u8, public_dir: Dir, target: Targe
             .target = target,
             .optimize = optimize,
 
+            // Omit debug symbols
             .strip = true,
         });
 

@@ -38,13 +38,13 @@ export fn deinit(board: *Board) void {
 /// ボードの現在状態から黒石の配置を取得する。
 /// 配置はビットボードで表される。
 export fn getBlack(b: *Board) u64 {
-    return b.black.toInteger();
+    return b.boards.get(.black).toInteger();
 }
 
 /// ボードの現在状態から白石の配置を取得する。
 /// 配置はビットボードで表される。
 export fn getWhite(b: *Board) u64 {
-    return b.white.toInteger();
+    return b.boards.get(.white).toInteger();
 }
 
 /// 次の手番で石を置くプレイヤーが黒かどうか取得する。

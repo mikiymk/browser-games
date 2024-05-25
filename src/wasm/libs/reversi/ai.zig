@@ -93,14 +93,13 @@ fn alphaBeta(b: Board, player: Board.Color, depth: u8, alpha: isize, beta: isize
 /// AI用に現在の盤面の評価点数を計算します。
 fn evaluate(b: Board) isize {
     // 石の数
-    const black_stone_count = b.black.count();
-    const white_stone_count = b.white.count();
+    const black_stone_count = b.boards.get(.black).count();
+    const white_stone_count = b.boards.get(.white).count();
 
     // 打てる場所の数
     const player_valid_count = b.getValidMoves().count();
     const opponent_board = Board{
-        .black = b.black,
-        .white = b.white,
+        .boards = b.boards,
         .nextColor = b.nextColor,
     };
     const opponent_valid_count = opponent_board.getValidMoves().count();

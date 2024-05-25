@@ -2,6 +2,8 @@
 const std = @import("std");
 const builtin = @import("builtin");
 
+const ColorBoards = std.EnumArray(Color, BitBoard);
+
 // common import
 const common = @import("../common/main.zig");
 pub const BitBoard = common.bit_board.BitBoard(8, 8);
@@ -13,26 +15,11 @@ test {
     _ = @import("./Board.test.zig");
 }
 
-// 1 << n
-//
-//  63 62 61 60 59 58 57 56
-//  55 54 53 52 51 50 49 48
-//  47 46 45 44 43 42 41 40
-//  39 38 37 36 35 34 33 32
-//  31 30 29 28 27 26 25 24
-//  23 22 21 20 19 18 17 16
-//  15 14 13 12 11 10  9  8
-//   7  6  5  4  3  2  1  0
-
 const Board = @This();
 
 // properties
 
-/// 黒のビットボード
-black: BitBoard = BitBoard.init(),
-
-/// 白のビットボード
-white: BitBoard = BitBoard.init(),
+boards: ColorBoards = ColorBoards.initDefault(BitBoard.init(), .{}),
 
 /// 次に打つ色
 nextColor: Color = .black,
@@ -68,18 +55,12 @@ pub fn init() Board {
 
 /// 現在のプレイヤー側のビットボードを取得する
 pub fn getPlayer(b: Board) BitBoard {
-    return switch (b.nextColor) {
-        .black => b.black,
-        .white => b.white,
-    };
+    return b.boards.get(b.nextColor);
 }
 
 /// 現在の相手側のビットボードを取得する
 pub fn getOpponent(b: Board) BitBoard {
-    return switch (b.nextColor) {
-        .black => b.white,
-        .white => b.black,
-    };
+    return b.boards.get(b.nextColor.turn());
 }
 
 /// 場所に置いた時、ひっくり返す石を求める
@@ -117,13 +98,13 @@ fn getFlipSquares(b: Board, place: BitBoard) BitBoard {
 pub fn moveMutate(b: *Board, place: BitBoard) void {
     const flip = b.getFlipSquares(place);
 
-    b.black.setToggle(flip);
-    b.white.setToggle(flip);
+    b.boards.getPtr(.black).setToggle(flip);
+    b.boards.getPtr(.white).setToggle(flip);
+    b.boards.getPtr(b.nextColor).setUnion(place);
+    b.nextColor = b.nextColor.turn();
 
-    if (b.nextColor == .black) {
-        b.black.setUnion(place);
-    } else {
-        b.white.setUnion(place);
+    if (b.getValidMoves().isEmpty()) {
+        b.nextColor = b.nextColor.turn();
     }
 }
 
@@ -131,26 +112,8 @@ pub fn moveMutate(b: *Board, place: BitBoard) void {
 /// 既に置いてある石でひっくり返す石がある場合は、それをひっくり返す。
 /// ボードを更新する
 pub fn move(b: Board, place: BitBoard) Board {
-    const flip = b.getFlipSquares(place);
-
-    var black = b.black.toggled(flip);
-    var white = b.white.toggled(flip);
-
-    if (b.nextColor == .black) {
-        black.setUnion(place);
-    } else {
-        white.setUnion(place);
-    }
-
-    var new_board = Board{
-        .black = black,
-        .white = white,
-        .nextColor = b.nextColor.turn(),
-    };
-
-    if (new_board.getValidMoves().isEmpty()) {
-        new_board.nextColor = new_board.nextColor.turn();
-    }
+    var new_board = b;
+    new_board.moveMutate(place);
 
     return new_board;
 }
@@ -218,8 +181,7 @@ pub fn isEnd(b: Board) bool {
     }
 
     const pass_board = Board{
-        .black = b.black,
-        .white = b.white,
+        .boards = b.boards,
         .nextColor = b.nextColor.turn(),
     };
 
@@ -230,7 +192,9 @@ pub fn isEnd(b: Board) bool {
 /// oが黒石、xが白石、それ以外で空白を表す。
 pub fn fromString(comptime str: []const u8) Board {
     return .{
-        .black = BitBoard.fromString(str, 'o'),
-        .white = BitBoard.fromString(str, 'x'),
+        .boards = ColorBoards.init(.{
+            .black = BitBoard.fromString(str, 'o'),
+            .white = BitBoard.fromString(str, 'x'),
+        }),
     };
 }
