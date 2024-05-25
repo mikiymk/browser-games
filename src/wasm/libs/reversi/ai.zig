@@ -15,6 +15,8 @@ test {
     _ = @import("./ai.test.zig");
 }
 
+const ai_depth = 5;
+
 /// AIが考えた打つ場所をインデックスで返します。
 pub fn getAiMove(board: Board, comptime random: *const fn () f64) u6 {
     const moves = board.getValidMoves();
@@ -28,7 +30,7 @@ pub fn getAiMove(board: Board, comptime random: *const fn () f64) u6 {
     var move_board = moves.iterator();
     while (move_board.next()) |place| {
         const child = board.move(BitBoard.fromIndex(place));
-        const evaluation = alphaBeta(child, board.nextColor, 5, std.math.minInt(i32), std.math.maxInt(i32));
+        const evaluation = alphaBeta(child, board.nextColor, ai_depth, std.math.minInt(i32), std.math.maxInt(i32));
 
         if (best_place_count == 0 or evaluation > best_evaluation) {
             best_evaluation = evaluation;

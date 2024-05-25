@@ -66,12 +66,6 @@ export fn isGameEnd(board: *Board) bool {
 /// ゲームボードの現在状態が更新される。
 export fn move(board: *Board, place: u8) void {
     board.moveMutate(BitBoard.fromIndex(place));
-
-    board.nextColor = board.nextColor.turn();
-
-    if (board.getValidMoves().isEmpty()) {
-        board.nextColor = board.nextColor.turn();
-    }
 }
 
 /// 現在プレイヤーの有効手を取得する。
