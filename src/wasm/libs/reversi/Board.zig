@@ -2,7 +2,7 @@
 const std = @import("std");
 const builtin = @import("builtin");
 
-const ColorBoards = std.enums.EnumArray(Color, BitBoard);
+pub const ColorBoards = std.enums.EnumArray(Color, BitBoard);
 
 // common import
 const common = @import("../common/main.zig");
