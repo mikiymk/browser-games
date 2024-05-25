@@ -54,19 +54,19 @@ pub fn init() Board {
 }
 
 /// 現在のプレイヤー側のビットボードを取得する
-pub fn getPlayer(b: Board) BitBoard {
-    return b.boards.get(b.nextColor);
+pub fn getPlayer(board: Board) BitBoard {
+    return board.boards.get(board.nextColor);
 }
 
 /// 現在の相手側のビットボードを取得する
-pub fn getOpponent(b: Board) BitBoard {
-    return b.boards.get(b.nextColor.turn());
+pub fn getOpponent(board: Board) BitBoard {
+    return board.boards.get(board.nextColor.turn());
 }
 
 /// 場所に置いた時、ひっくり返す石を求める
-fn getFlipSquares(b: Board, place: BitBoard) BitBoard {
-    const player_board = b.getPlayer();
-    const opponent_board = b.getOpponent();
+fn getFlipSquares(board: Board, place: BitBoard) BitBoard {
+    const player_board = board.getPlayer();
+    const opponent_board = board.getOpponent();
 
     const mask = opponent_board.masks(BitBoard.fromString(
         \\.oooooo.
@@ -95,24 +95,24 @@ fn getFlipSquares(b: Board, place: BitBoard) BitBoard {
 /// Placeで示された場所に石を置く。
 /// 既に置いてある石でひっくり返す石がある場合は、それをひっくり返す。
 /// ボードを更新する
-pub fn moveMutate(b: *Board, place: BitBoard) void {
-    const flip = b.getFlipSquares(place);
+pub fn moveMutate(board: *Board, place: BitBoard) void {
+    const flip = board.getFlipSquares(place);
 
-    b.boards.getPtr(.black).setToggle(flip);
-    b.boards.getPtr(.white).setToggle(flip);
-    b.boards.getPtr(b.nextColor).setUnion(place);
-    b.nextColor = b.nextColor.turn();
+    board.boards.getPtr(.black).setToggle(flip);
+    board.boards.getPtr(.white).setToggle(flip);
+    board.boards.getPtr(board.nextColor).setUnion(place);
+    board.nextColor = board.nextColor.turn();
 
-    if (b.getValidMoves().isEmpty()) {
-        b.nextColor = b.nextColor.turn();
+    if (board.getValidMoves().isEmpty()) {
+        board.nextColor = board.nextColor.turn();
     }
 }
 
 /// Placeで示された場所に石を置く。
 /// 既に置いてある石でひっくり返す石がある場合は、それをひっくり返す。
 /// ボードを更新する
-pub fn move(b: Board, place: BitBoard) Board {
-    var new_board = b;
+pub fn move(board: Board, place: BitBoard) Board {
+    var new_board = board;
     new_board.moveMutate(place);
 
     return new_board;
@@ -136,9 +136,9 @@ fn moveDir(player_board: BitBoard, place: BitBoard, mask: BitBoard, dir: BitBoar
 }
 
 /// 石を置ける場所のリストを作成する
-pub fn getValidMoves(b: Board) BitBoard {
-    const player_board = b.getPlayer();
-    const opponent_board = b.getOpponent();
+pub fn getValidMoves(board: Board) BitBoard {
+    const player_board = board.getPlayer();
+    const opponent_board = board.getOpponent();
     const empty = player_board.unions(opponent_board).inversed();
 
     const mask = opponent_board.masks(BitBoard.fromString(
@@ -175,14 +175,14 @@ fn getDirMoves(board: BitBoard, mask: BitBoard, dir: BitBoard.Direction) BitBoar
 
 /// ゲームが終了しているか判定する。
 /// どちらのプレイヤーも置く場所がなかったら終了
-pub fn isEnd(b: Board) bool {
-    if (!b.getValidMoves().isEmpty()) {
+pub fn isEnd(board: Board) bool {
+    if (!board.getValidMoves().isEmpty()) {
         return false;
     }
 
     const pass_board = Board{
-        .boards = b.boards,
-        .nextColor = b.nextColor.turn(),
+        .boards = board.boards,
+        .nextColor = board.nextColor.turn(),
     };
 
     return pass_board.getValidMoves().isEmpty();
