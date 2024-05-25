@@ -11,8 +11,11 @@ const common = @import("../common/main.zig");
 const main = @import("./main.zig");
 const Game = main.Game;
 const Board = main.Board;
-const BitBoard = Board.BitBoard;
 const moves = main.moves;
+
+const BitBoard = Board.BitBoard;
+const Piece = Board.Piece;
+const PromotionPiece = Board.PromotionPiece;
 
 test {
     _ = @import("./ai.test.zig");
@@ -20,7 +23,7 @@ test {
 
 pub const Move = union(enum) {
     move: struct { from: BitBoard, to: BitBoard },
-    hit: struct { piece: Game.PieceKind, to: BitBoard },
+    hit: struct { piece: PromotionPiece, to: BitBoard },
 };
 
 fn moveMove(from: BitBoard, to: BitBoard) Move {
@@ -30,7 +33,7 @@ fn moveMove(from: BitBoard, to: BitBoard) Move {
     return .{ .move = .{ .from = from, .to = to } };
 }
 
-fn moveHit(piece: Game.PieceKind, to: BitBoard) Move {
+fn moveHit(piece: PromotionPiece, to: BitBoard) Move {
     assert(to.count() == 1);
 
     return .{ .hit = .{ .piece = piece, .to = to } };
@@ -43,7 +46,7 @@ pub fn move(game: Game, r: Random) Move {
         const piece = selectHandPiece(game, r);
 
         if (piece) |p| {
-            const piece_kind = Game.PieceKind.fromPrimary(p, false);
+            const piece_kind = PromotionPiece.fromPiece(p, .normal);
             const area = game.hitPositions(p);
             const to = selectPlace(r, area);
 
@@ -68,9 +71,9 @@ pub fn move(game: Game, r: Random) Move {
     unreachable;
 }
 
-fn selectHandPiece(game: Game, r: Random) ?Game.PrimaryPiece {
+fn selectHandPiece(game: Game, r: Random) ?Piece {
     var hands = game.getHandPtr(game.current_player);
-    var set = std.EnumSet(Game.PrimaryPiece).initEmpty();
+    var set = std.EnumSet(Piece).initEmpty();
     var hands_iter = hands.iterator();
     while (hands_iter.next()) |hand| {
         if (hand.value.* > 0) {
