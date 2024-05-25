@@ -982,7 +982,7 @@ const king_cases = [_]TestCase{
     },
 };
 
-fn testCases(cases: []const TestCase, char: u8, moves_fn: fn (b: Board, pawn_place: BitBoard, color: Board.Color) BitBoard) !void {
+fn testCases(cases: []const TestCase, char: u8, moves_fn: fn (board: Board, pawn_place: BitBoard, color: Board.Color) BitBoard) !void {
     var has_fail = false;
 
     for (cases) |case| {
