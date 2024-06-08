@@ -2,6 +2,7 @@
 import Head from "@/components/head.astro";
 import Header from "@/components/header.astro";
 import { PageHeader } from "@/components/page-header/page-header";
+import { PageBody } from "@/components/page-body/page-body";
 
 const pages = [
   { title: "Noughts and Crosses", name: "nought-and-cross" },
@@ -17,16 +18,16 @@ const pages = [
 <Head title="Games" />
 
 <PageHeader />
-<div class=" h-[calc(100dvh-3rem)] bg-amber-100 ">
+<PageBody>
     <ul class="list-disc list-inside ml-2">
         {
             pages.map(({ title, name }) => (
                 <li>
-                <a href={`${name}/`} class="underline hover:text-slate-500">
-                    {title}
-                </a>
-            </li>
-        ))
+                    <a href={`${name}/`} class="underline hover:text-slate-500">
+                        {title}
+                    </a>
+                </li>
+            ))
         }
-</ul>
-</div>
+    </ul>
+</PageBody>

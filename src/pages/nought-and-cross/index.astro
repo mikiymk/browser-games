@@ -7,11 +7,13 @@ import { StyledSvg } from "@/components/styled-svg";
 import SubHeader from "@/components/sub-header.astro";
 import cross from "@/images/icon/cross.svg";
 import nought from "@/images/icon/nought.svg";
+import { App } from "@/games/nought-and-cross/components/app";
 ---
 
 <Head title="Noughts and Crosses" />
 
-<Header>Noughts and Crosses</Header>
+<App client:only="solid-js" />
+
 <Setting action="game/">
     <dt>
         <StyledSvg src={nought.src} alt="nought" /> player

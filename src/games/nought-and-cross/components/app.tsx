@@ -17,8 +17,11 @@ import { PlayerTypeAi, PlayerTypeHuman, playerType } from "@/scripts/player";
 import type { JSXElement } from "solid-js";
 import { createSignal, onMount } from "solid-js";
 import { NncBoard } from "./board";
-import { Controller } from "./controller";
 import { History } from "./history";
+import { PageHeader } from "@/components/page-header/page-header";
+import { PageBody } from "@/components/page-body/page-body";
+import { StatusButton } from "./status";
+import { StartButton } from "./start-button";
 
 export const App = (): JSXElement => {
   const query = new URLSearchParams(location.search);
@@ -81,9 +84,18 @@ export const App = (): JSXElement => {
 
   return (
     <>
-      <NncBoard board={board()} click={handleClick} />
-      <Controller statusMessage={status()} onReset={reset} />
-      <History history={history()} />
+      <PageHeader
+        buttons={
+          <>
+            <StatusButton status={status()} />
+            <StartButton start={reset} />
+            <History history={history()} />
+          </>
+        }
+      />
+      <PageBody>
+        <NncBoard board={board()} click={handleClick} />
+      </PageBody>
     </>
   );
 };
