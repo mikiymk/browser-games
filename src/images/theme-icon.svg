@@ -1,0 +1,14 @@
+<svg viewBox="0 0 100 100" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <g stroke="black">
+        <path d="M50,0 50,100" />
+        <path d="M0,50 100,50" />
+
+        <circle cx="25" cy="25" r="20" fill="#222" />
+        <circle cx="75" cy="75" r="20" fill="#ddd" />
+    </g>
+
+    <g stroke-width="2" fill="none">
+        <circle cx="75" cy="25" r="20" stroke="red" />
+        <path d="M5,55 45,95 M5,95 45,55" stroke="blue" />
+    </g>
+</svg>

@@ -4,3 +4,4 @@ dist
 target
 zig-cache
 public/wasm
+.astro

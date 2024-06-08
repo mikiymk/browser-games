@@ -1,5 +1,5 @@
 ---
-import favicon from "@/images/favicon.svg";
+import icon from "@/images/theme-icon.svg";
 
 interface Props {
   title: string;
@@ -10,14 +10,7 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
 ---
 
 <meta charset="UTF-8" />
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<link rel="shortcut icon" type="image/svg+xml" href={favicon.src} />
+<link rel="shortcut icon" type="image/svg+xml" href={icon.src} />
 <link rel="canonical" href={canonicalUrl} />
 <title>{title}</title>
-
-<style>
-    body {
-        color: #222;
-    }
-</style>
