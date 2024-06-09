@@ -44,10 +44,10 @@ export const initializeField = (length: number): readonly number[] => {
 export const message = (state: number, fields: readonly number[], numberMines: number): string => {
   let flagCount = 0;
   if (state === Bombed) {
-    return "bombed";
+    return "\u{1F635}";
   }
   if (state === Clear) {
-    return "cleared";
+    return "\u{1F60E}";
   }
 
   for (const field of fields) {
@@ -56,7 +56,7 @@ export const message = (state: number, fields: readonly number[], numberMines: n
     }
   }
 
-  return `${numberMines - flagCount} mines`;
+  return `${flagCount} / ${numberMines} \u{1F642}`;
 };
 
 export const resetMines = (numberMines: number, height: number, width: number, firstClick: number): Set<number> => {

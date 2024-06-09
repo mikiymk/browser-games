@@ -1,28 +1,14 @@
 ---
 import Head from "@/components/head.astro";
-import Header from "@/components/header.astro";
-import Setting from "@/components/setting-form/form.astro";
-import InputRadio from "@/components/setting-form/input-radio.astro";
-import SubHeader from "@/components/sub-header.astro";
+import { App } from "@/games/shogi/components/app";
 ---
 
 <Head title="Shogi" />
+<link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap"
+/>
 
-<Header>Shogi</Header>
-<Setting action="game/">
-    <dt>First player</dt>
-    <dd>
-        <InputRadio name="first" value="non-player">Non-Player</InputRadio>
-        <InputRadio name="first" value="player" checked>Player</InputRadio>
-    </dd>
-
-    <dt>Second player</dt>
-    <dd>
-        <InputRadio name="second" value="non-player" checked>Non-Player</InputRadio>
-        <InputRadio name="second" value="player">Player</InputRadio>
-    </dd>
-</Setting>
-
-<p>
-    <SubHeader>Shogi</SubHeader>
-</p>
+<div class="text-slate-800">
+    <App client:load />
+</div>

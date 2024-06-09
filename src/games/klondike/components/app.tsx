@@ -1,5 +1,8 @@
 import { Button } from "@/components/button";
-import { PopUp } from "@/games/shogi/components/pop-up";
+import { PageBody } from "@/components/page-body/page-body";
+import { PageHeader } from "@/components/page-header/page-header";
+import { StartButton } from "@/components/page-header/start-button";
+import { PopUp } from "@/components/pop-up/pop-up";
 import { createSignal } from "solid-js";
 import type { JSXElement } from "solid-js";
 import { createKlondike } from "../klondike";
@@ -46,28 +49,37 @@ export const App = (): JSXElement => {
 
   return (
     <>
-      <Field
-        {...cards}
-        select={select()}
-        openStock={openStock}
-        selectStock={selectStock}
-        selectTableau={selectTableau}
-        selectFoundation={selectFoundation}
-        autoFoundation={autoFoundation}
+      <PageHeader
+        buttons={
+          <>
+            <StartButton start={start} />
+          </>
+        }
       />
-      <Button onClick={start}>Start</Button>
 
-      <PopUp open={popText() !== undefined}>
-        {popText()}
-        <br />
-        <Button
-          onClick={() => {
-            setPopText();
-          }}
-        >
-          Close
-        </Button>
-      </PopUp>
+      <PageBody>
+        <Field
+          {...cards}
+          select={select()}
+          openStock={openStock}
+          selectStock={selectStock}
+          selectTableau={selectTableau}
+          selectFoundation={selectFoundation}
+          autoFoundation={autoFoundation}
+        />
+
+        <PopUp open={popText() !== undefined}>
+          {popText()}
+          <br />
+          <Button
+            onClick={() => {
+              setPopText();
+            }}
+          >
+            Close
+          </Button>
+        </PopUp>
+      </PageBody>
     </>
   );
 };

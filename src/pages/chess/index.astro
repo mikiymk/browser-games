@@ -1,30 +1,10 @@
 ---
 import Head from "@/components/head.astro";
-import Header from "@/components/header.astro";
-import Setting from "@/components/setting-form/form.astro";
-import InputRadio from "@/components/setting-form/input-radio.astro";
-import SubHeader from "@/components/sub-header.astro";
+import { App } from "@/games/chess/components/app";
 ---
 
 <Head title="Chess" />
 
-<Header>Chess</Header>
-<Setting action="game/">
-    <dt>White Player</dt>
-    <dd>
-        <InputRadio name="white" value="non-player">Non-Player</InputRadio>
-        <InputRadio name="white" value="player" checked>Player</InputRadio>
-    </dd>
-
-    <dt>Black Player</dt>
-    <dd>
-        <InputRadio name="black" value="non-player" checked>Non-Player</InputRadio>
-        <InputRadio name="black" value="player">Player</InputRadio>
-    </dd>
-</Setting>
-
-<p>
-    <SubHeader>How to play Chess</SubHeader>
-
-    <!-- TODO -->
-</p>
+<div class="text-slate-800">
+    <App client:load />
+</div>
