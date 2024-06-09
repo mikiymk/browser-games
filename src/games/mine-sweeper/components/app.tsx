@@ -7,12 +7,17 @@ import { MineFields } from "./field";
 import { PageHeader } from "@/components/page-header/page-header";
 import { PageBody } from "@/components/page-body/page-body";
 import { StartButton } from "@/components/page-header/start-button";
+import { Settings } from "./settings";
+import { createUrlQuerySignal } from "@/scripts/use-url-query";
 
 export const App = (): JSXElement => {
-  const query = new URLSearchParams(location.search);
-  const height = Number.parseInt(query.get("height") ?? "10");
-  const width = Number.parseInt(query.get("width") ?? "10");
-  const mineCount = Number.parseInt(query.get("mines") ?? "10");
+  const [heightString, setHeight] = createUrlQuerySignal("height", "10");
+  const [widthString, setWidth] = createUrlQuerySignal("width", "10");
+  const [mineCountString, setMineCount] = createUrlQuerySignal("mines", "10");
+
+  const height = (): number => Number.parseInt(heightString());
+  const width = (): number => Number.parseInt(widthString());
+  const mineCount = (): number => Number.parseInt(mineCountString());
 
   const [fields, setFields] = createSignal(initializeField(10 * 10));
   const setFieldOn = (index: number, field: number): void => {
@@ -30,7 +35,7 @@ export const App = (): JSXElement => {
 
   const reset = (): void => {
     setGameState(FirstClick);
-    setFields(initializeField(height * width));
+    setFields(initializeField(height() * width()));
   };
 
   createEffect(() => {
@@ -44,11 +49,11 @@ export const App = (): JSXElement => {
     }
 
     if (gameState() === FirstClick) {
-      mines = resetMines(mineCount, height, width, index);
+      mines = resetMines(mineCount(), height(), width(), index);
       setGameState(Playing);
     }
 
-    const aroundIndexes = getAround(height, width, index);
+    const aroundIndexes = getAround(height(), width(), index);
     let clickResult = 0;
 
     if (mines.has(index)) {
@@ -102,13 +107,21 @@ export const App = (): JSXElement => {
       <PageHeader
         buttons={
           <>
-            <Status message={message(gameState(), fields(), mineCount)} />
+            <Status message={message(gameState(), fields(), mineCount())} />
             <StartButton start={reset} />
+            <Settings
+              height={height()}
+              width={width()}
+              mineCount={mineCount()}
+              setHeight={(height) => setHeight(String(height))}
+              setWidth={(width) => setWidth(String(width))}
+              setMineCount={(mineCount) => setMineCount(String(mineCount))}
+            />
           </>
         }
       />
       <PageBody>
-        <MineFields height={height} width={width} fields={fields()} open={openField} flag={flagField} />
+        <MineFields height={height()} width={width()} fields={fields()} open={openField} flag={flagField} />
       </PageBody>
     </>
   );

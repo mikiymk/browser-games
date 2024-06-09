@@ -2,16 +2,16 @@ import { HeaderButton } from "@/components/page-header/header-button";
 import { PopUp } from "@/games/shogi/components/pop-up";
 import type { JSXElement, Setter } from "solid-js";
 import { createSignal } from "solid-js";
-import { SelectRadio } from "@/components/input/select-radio";
-import { playerValues } from "@/scripts/player";
-import type { PlayerType } from "@/scripts/player";
+import { InputNumber } from "@/components/input/number";
 
 type SettingsProperties = {
-  readonly white: PlayerType;
-  readonly black: PlayerType;
+  readonly height: number;
+  readonly width: number;
+  readonly mineCount: number;
 
-  readonly setWhite: Setter<PlayerType>;
-  readonly setBlack: Setter<PlayerType>;
+  readonly setHeight: Setter<number>;
+  readonly setWidth: Setter<number>;
+  readonly setMineCount: Setter<number>;
 };
 export const Settings = (properties: SettingsProperties): JSXElement => {
   const [open, setOpen] = createSignal(false);
@@ -34,14 +34,19 @@ export const Settings = (properties: SettingsProperties): JSXElement => {
         <h2>Settings</h2>
 
         <dl class="grid grid-cols-2">
-          <dt>White player</dt>
+          <dt>Height</dt>
           <dd>
-            <SelectRadio name="white" values={playerValues} value={properties.white} setValue={properties.setWhite} />
+            <InputNumber name="height" value={properties.height} setValue={properties.setHeight} />
           </dd>
 
-          <dt>Black player</dt>
+          <dt>Width</dt>
           <dd>
-            <SelectRadio name="black" values={playerValues} value={properties.black} setValue={properties.setBlack} />
+            <InputNumber name="width" value={properties.width} setValue={properties.setWidth} />
+          </dd>
+
+          <dt>Mines count</dt>
+          <dd>
+            <InputNumber name="mine-count" value={properties.mineCount} setValue={properties.setMineCount} />
           </dd>
         </dl>
       </PopUp>

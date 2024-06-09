@@ -1,7 +1,7 @@
 import type { Accessor, Setter } from "solid-js";
 import { createEffect, createSignal, onMount } from "solid-js";
 
-export const createUrlQuerySignal = <T extends string>(name: string, defaultValue: T): [Accessor<T>, Setter<T>] => {
+export const createUrlQuerySignal = <T extends string>(name: string, defaultValue: NoInfer<T>): [Accessor<T>, Setter<T>] => {
   const [value, setValue] = createSignal(defaultValue);
 
   const setUrl = (value: T): void => {
