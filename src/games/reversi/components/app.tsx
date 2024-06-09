@@ -3,13 +3,14 @@ import { MultiPromise } from "@/scripts/multi-promise";
 import { PlayerTypeAi, PlayerTypeHuman, playerType } from "@/scripts/player";
 import type { JSXElement } from "solid-js";
 import { createResource, createSignal } from "solid-js";
-import { CellCanMoveBlack, CellCanMoveWhite, CellEmpty } from "../const";
+import { CellBlack, CellCanMoveBlack, CellCanMoveWhite, CellEmpty, CellWhite } from "../const";
 import { gameLoop } from "../game-loop";
 import { getReversiWasm } from "../get-wasm";
 import { ReversiBoard } from "./board";
-import { Info } from "./information";
+import { StoneCount } from "./information";
 import { PageHeader } from "@/components/page-header/page-header";
 import { PageBody } from "@/components/page-body/page-body";
+import { StartButton } from "@/components/page-header/start-button";
 
 const emptyBoard: number[] = Array.from({ length: 64 }, () => CellEmpty);
 
@@ -58,11 +59,6 @@ export const App = (): JSXElement => {
     setGamePlaying(true);
   };
 
-  const handleEnd = (): void => {
-    terminateGame();
-    setBoard(emptyBoard);
-  };
-
   const handleClick = (square: number, index: number): void => {
     if (square !== CellCanMoveBlack && square !== CellCanMoveWhite) {
       return;
@@ -71,12 +67,20 @@ export const App = (): JSXElement => {
     resolve(index);
   };
 
+  const count = (color: number): number => {
+    return board().filter((square) => square === color).length;
+  };
+  const countBlack = (): number => count(CellBlack);
+  const countWhite = (): number => count(CellWhite);
+
   return (
     <>
       <PageHeader
         buttons={
           <>
-            <Info start={handleStart} end={handleEnd} playing={gamePlaying()} board={board()} color={getColor?.()} />
+            <StoneCount count={countBlack()} color={CellBlack} isNext={gamePlaying() && getColor?.() === CellBlack} />
+            <StoneCount count={countWhite()} color={CellWhite} isNext={gamePlaying() && getColor?.() === CellWhite} />
+            <StartButton start={handleStart} />
           </>
         }
       />
