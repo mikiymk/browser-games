@@ -1,5 +1,6 @@
 import type { JSXElement } from "solid-js";
-import { Show } from "solid-js";
+import { createEffect } from "solid-js";
+import { Portal } from "solid-js/web";
 
 type PopUpProperties = {
   readonly open: boolean;
@@ -7,11 +8,22 @@ type PopUpProperties = {
   readonly children: JSXElement;
 };
 export const PopUp = (properties: PopUpProperties): JSXElement => {
+  let dialogReference: HTMLDialogElement | undefined = undefined;
+
+  createEffect(() => {
+    console.trace();
+
+    if (properties.open) {
+      dialogReference?.showModal();
+    } else {
+      dialogReference?.close();
+    }
+  });
+
   return (
-    <Show when={properties.open}>
+    <Portal>
       <dialog
-        open
-        class="flex items-center justify-center fixed inset-0 h-screen w-screen bg-[#0001]"
+        class="backdrop:fixed backdrop:inset-0 backdrop:h-screen backdrop:w-screen backdrop:bg-[#0001] h-4/5 w-2/3 border-slate-800 border-2 bg-yellow-100"
         onClick={(event) => {
           if (event.target === event.currentTarget) {
             properties.outerClick?.();
@@ -20,9 +32,12 @@ export const PopUp = (properties: PopUpProperties): JSXElement => {
         onKeyPress={() => {
           // empty
         }}
+        ref={(element) => {
+          dialogReference = element;
+        }}
       >
-        <div class="h-4/5 w-2/3 p-4 border-slate-800 border-2 bg-yellow-100">{properties.children}</div>
+        <div class="h-full w-full p-4">{properties.children}</div>
       </dialog>
-    </Show>
+    </Portal>
   );
 };

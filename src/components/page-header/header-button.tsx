@@ -2,7 +2,7 @@ import { Show } from "solid-js";
 import type { JSXElement } from "solid-js";
 
 type HeaderButtonProperites = {
-  readonly icon?: string;
+  readonly icon?: string | undefined;
   readonly children: string;
 };
 export const HeaderButton = (properties: HeaderButtonProperites): JSXElement => {
