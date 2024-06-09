@@ -5,7 +5,6 @@ import type { JSXElement } from "solid-js";
 import { For, Show, createSignal } from "solid-js";
 import cross from "@/images/icon/cross.svg";
 import nought from "@/images/icon/nought.svg";
-import history from "@/images/icon/history.svg";
 
 const historyFillArray = [-1, -1, -1, -1, -1, -1, -1, -1, -1];
 
@@ -27,7 +26,7 @@ export const History = (properties: HistoryProperties): JSXElement => {
         setOpen(true);
       }}
     >
-      <HeaderButton icon={history.src}>History</HeaderButton>
+      <HeaderButton icon="history">History</HeaderButton>
 
       <PopUp
         open={open()}

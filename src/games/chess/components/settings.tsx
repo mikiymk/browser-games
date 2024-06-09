@@ -2,7 +2,6 @@ import { HeaderButton } from "@/components/page-header/header-button";
 import { PopUp } from "@/games/shogi/components/pop-up";
 import type { JSXElement, Setter } from "solid-js";
 import { createSignal } from "solid-js";
-import history from "@/images/icon/history.svg";
 import { SelectRadio } from "@/components/select-radio/select-radio";
 import { playerValues } from "@/scripts/player";
 import type { PlayerType } from "@/scripts/player";
@@ -24,7 +23,7 @@ export const Settings = (properties: SettingsProperties): JSXElement => {
         setOpen(true);
       }}
     >
-      <HeaderButton icon={history.src}>Settings</HeaderButton>
+      <HeaderButton icon="settings">Settings</HeaderButton>
 
       <PopUp
         open={open()}

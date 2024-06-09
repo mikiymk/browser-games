@@ -1,5 +1,4 @@
 import { HeaderButton } from "./header-button";
-import start from "@/images/icon/start.svg";
 import type { JSXElement } from "solid-js";
 
 type StartButtonProperties = {
@@ -13,7 +12,7 @@ export const StartButton = (properties: StartButtonProperties): JSXElement => {
         properties.start();
       }}
     >
-      <HeaderButton icon={start.src}>Start</HeaderButton>
+      <HeaderButton icon="replay">Start</HeaderButton>
     </button>
   );
 };
