@@ -5,6 +5,9 @@ import type { JSXElement } from "solid-js";
 import { createKlondike } from "../klondike";
 import type { Select } from "../klondike";
 import { Field } from "./field";
+import { PageHeader } from "@/components/page-header/page-header";
+import { PageBody } from "@/components/page-body/page-body";
+import { StartButton } from "@/components/page-header/start-button";
 
 export const App = (): JSXElement => {
   const { start, cards, moveCards, openStock, autoFoundation, isCleared } = createKlondike();
@@ -46,28 +49,37 @@ export const App = (): JSXElement => {
 
   return (
     <>
-      <Field
-        {...cards}
-        select={select()}
-        openStock={openStock}
-        selectStock={selectStock}
-        selectTableau={selectTableau}
-        selectFoundation={selectFoundation}
-        autoFoundation={autoFoundation}
+      <PageHeader
+        buttons={
+          <>
+            <StartButton start={start} />
+          </>
+        }
       />
-      <Button onClick={start}>Start</Button>
 
-      <PopUp open={popText() !== undefined}>
-        {popText()}
-        <br />
-        <Button
-          onClick={() => {
-            setPopText();
-          }}
-        >
-          Close
-        </Button>
-      </PopUp>
+      <PageBody>
+        <Field
+          {...cards}
+          select={select()}
+          openStock={openStock}
+          selectStock={selectStock}
+          selectTableau={selectTableau}
+          selectFoundation={selectFoundation}
+          autoFoundation={autoFoundation}
+        />
+
+        <PopUp open={popText() !== undefined}>
+          {popText()}
+          <br />
+          <Button
+            onClick={() => {
+              setPopText();
+            }}
+          >
+            Close
+          </Button>
+        </PopUp>
+      </PageBody>
     </>
   );
 };
