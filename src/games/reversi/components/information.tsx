@@ -1,4 +1,3 @@
-import { Button } from "@/components/button";
 import { StyledSvg } from "@/components/styled-svg";
 import stone from "@/images/reversi/stone.svg";
 import { Show } from "solid-js";
@@ -24,32 +23,6 @@ export const StoneCount = (properties: StoneProperties): JSXElement => {
       </Show>
 
       {properties.count}
-    </div>
-  );
-};
-
-type PlayButtonsProperties = {
-  readonly start: () => void;
-  readonly end: () => void;
-};
-export const PlayButtons = (properties: PlayButtonsProperties): JSXElement => {
-  return (
-    <div>
-      <Button
-        onClick={() => {
-          properties.start();
-        }}
-      >
-        Start Game
-      </Button>
-
-      <Button
-        onClick={() => {
-          properties.end();
-        }}
-      >
-        End Game
-      </Button>
     </div>
   );
 };
