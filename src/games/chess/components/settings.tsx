@@ -1,10 +1,8 @@
-import { HeaderButton } from "@/components/page-header/header-button";
-import { PopUp } from "@/games/shogi/components/pop-up";
 import type { JSXElement, Setter } from "solid-js";
-import { createSignal } from "solid-js";
 import { SelectRadio } from "@/components/input/select-radio";
 import { playerValues } from "@/scripts/player";
 import type { PlayerType } from "@/scripts/player";
+import { HeaderPopup } from "@/components/page-header/header-popup";
 
 type SettingsProperties = {
   readonly white: PlayerType;
@@ -14,37 +12,21 @@ type SettingsProperties = {
   readonly setBlack: Setter<PlayerType>;
 };
 export const Settings = (properties: SettingsProperties): JSXElement => {
-  const [open, setOpen] = createSignal(false);
-
   return (
-    <button
-      type="button"
-      onClick={() => {
-        setOpen(true);
-      }}
-    >
-      <HeaderButton icon="settings">Settings</HeaderButton>
+    <HeaderPopup icon="settings" label="Settings">
+      <h2>Settings</h2>
 
-      <PopUp
-        open={open()}
-        outerClick={() => {
-          setOpen(false);
-        }}
-      >
-        <h2>Settings</h2>
+      <dl class="grid grid-cols-2">
+        <dt>White player</dt>
+        <dd>
+          <SelectRadio name="white" values={playerValues} value={properties.white} setValue={properties.setWhite} />
+        </dd>
 
-        <dl class="grid grid-cols-2">
-          <dt>White player</dt>
-          <dd>
-            <SelectRadio name="white" values={playerValues} value={properties.white} setValue={properties.setWhite} />
-          </dd>
-
-          <dt>Black player</dt>
-          <dd>
-            <SelectRadio name="black" values={playerValues} value={properties.black} setValue={properties.setBlack} />
-          </dd>
-        </dl>
-      </PopUp>
-    </button>
+        <dt>Black player</dt>
+        <dd>
+          <SelectRadio name="black" values={playerValues} value={properties.black} setValue={properties.setBlack} />
+        </dd>
+      </dl>
+    </HeaderPopup>
   );
 };
