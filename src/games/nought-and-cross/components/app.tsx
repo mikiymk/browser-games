@@ -16,7 +16,7 @@ import { MultiPromise } from "@/scripts/multi-promise";
 import { PlayerTypeAi, PlayerTypeHuman } from "@/scripts/player";
 import type { PlayerType } from "@/scripts/player";
 import type { JSXElement } from "solid-js";
-import { createSignal } from "solid-js";
+import { createSignal, onMount } from "solid-js";
 import { NncBoard } from "./board";
 import { History } from "./history";
 import { PageHeader } from "@/components/page-header/page-header";
@@ -80,6 +80,8 @@ export const App = (): JSXElement => {
 
     return StatusNone;
   };
+
+  onMount(reset);
 
   return (
     <>

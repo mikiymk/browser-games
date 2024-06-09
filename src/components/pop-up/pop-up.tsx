@@ -11,8 +11,6 @@ export const PopUp = (properties: PopUpProperties): JSXElement => {
   let dialogReference: HTMLDialogElement | undefined = undefined;
 
   createEffect(() => {
-    console.trace();
-
     if (properties.open) {
       dialogReference?.showModal();
     } else {

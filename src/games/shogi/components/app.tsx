@@ -2,7 +2,7 @@ import { doNothingFunction } from "@/scripts/do-nothing";
 import { MultiPromise } from "@/scripts/multi-promise";
 import { PlayerTypeAi, PlayerTypeHuman } from "@/scripts/player";
 import type { PlayerType } from "@/scripts/player";
-import { createResource, createSignal } from "solid-js";
+import { createSignal } from "solid-js";
 import type { JSXElement } from "solid-js";
 import type { Hand } from "../constants";
 import { BLACK, MOVE_TARGET, WHITE } from "../constants";
@@ -15,6 +15,7 @@ import { PageBody } from "@/components/page-body/page-body";
 import { StartButton } from "@/components/page-header/start-button";
 import { createUrlQuerySignal } from "@/scripts/use-url-query";
 import { Settings } from "./settings";
+import { usePromise } from "@/scripts/use-promise";
 
 export const App = (): JSXElement => {
   const [black, setBlack] = createUrlQuerySignal<PlayerType>("first", PlayerTypeHuman);
@@ -27,7 +28,7 @@ export const App = (): JSXElement => {
   const [blackHands, setBlackHands] = createSignal<Hand>([0, 0, 0, 0, 0, 0, 0, 0]);
   const [gameOver, setGameOver] = createSignal<number>(0);
   const [promotion, setPromotion] = createSignal(false);
-  const [wasm] = createResource(getWasm);
+  const wasm = usePromise(getWasm);
 
   const setBoard = (board: readonly number[]): void => {
     setFullBoard(

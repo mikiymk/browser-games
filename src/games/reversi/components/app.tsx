@@ -3,7 +3,7 @@ import { MultiPromise } from "@/scripts/multi-promise";
 import { PlayerTypeAi, PlayerTypeHuman } from "@/scripts/player";
 import type { PlayerType } from "@/scripts/player";
 import type { JSXElement } from "solid-js";
-import { createResource, createSignal } from "solid-js";
+import { createSignal } from "solid-js";
 import { CellBlack, CellCanMoveBlack, CellCanMoveWhite, CellEmpty, CellWhite } from "../const";
 import { gameLoop } from "../game-loop";
 import { getReversiWasm } from "../get-wasm";
@@ -15,6 +15,7 @@ import { StartButton } from "@/components/page-header/start-button";
 import { createUrlQuerySignal } from "@/scripts/use-url-query";
 import { Settings } from "./settings";
 import { HowToPlay } from "./how-to-play";
+import { usePromise } from "@/scripts/use-promise";
 
 const emptyBoard: number[] = Array.from({ length: 64 }, () => CellEmpty);
 
@@ -26,7 +27,7 @@ export const App = (): JSXElement => {
 
   const [board, setBoard] = createSignal(emptyBoard);
 
-  const [wasm] = createResource(getReversiWasm);
+  const wasm = usePromise(getReversiWasm);
   let terminateGame: () => void = doNothingFunction;
   let getColor: (() => number) | undefined;
 

@@ -1,5 +1,5 @@
 import { Button } from "@/components/button";
-import { PopUp } from "@/games/shogi/components/pop-up";
+import { PopUp } from "@/components/pop-up/pop-up";
 import { createSignal } from "solid-js";
 import type { JSXElement } from "solid-js";
 import { createKlondike } from "../klondike";
