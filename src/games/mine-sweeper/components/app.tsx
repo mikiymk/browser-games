@@ -4,6 +4,8 @@ import type { JSXElement } from "solid-js";
 import { batch, createEffect, createSignal } from "solid-js";
 import { Controller } from "./controller";
 import { MineFields } from "./field";
+import { PageHeader } from "@/components/page-header/page-header";
+import { PageBody } from "@/components/page-body/page-body";
 
 export const App = (): JSXElement => {
   const query = new URLSearchParams(location.search);
@@ -96,8 +98,16 @@ export const App = (): JSXElement => {
 
   return (
     <>
-      <MineFields height={height} width={width} fields={fields()} open={openField} flag={flagField} />
-      <Controller message={message(gameState(), fields(), mineCount)} reset={reset} />
+      <PageHeader
+        buttons={
+          <>
+            <Controller message={message(gameState(), fields(), mineCount)} reset={reset} />
+          </>
+        }
+      />
+      <PageBody>
+        <MineFields height={height} width={width} fields={fields()} open={openField} flag={flagField} />
+      </PageBody>
     </>
   );
 };
