@@ -3,7 +3,7 @@ import type { JSXElement } from "solid-js";
 
 export const HowToPlay = (): JSXElement => {
   return (
-    <HeaderPopup icon="question_mark" label="How to Play">
+    <HeaderPopup icon="help" label="How to Play">
       <h2>How to Play</h2>
 
       <p>

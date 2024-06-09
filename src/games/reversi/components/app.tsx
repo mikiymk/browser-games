@@ -8,6 +8,8 @@ import { gameLoop } from "../game-loop";
 import { getReversiWasm } from "../get-wasm";
 import { ReversiBoard } from "./board";
 import { Info } from "./information";
+import { PageHeader } from "@/components/page-header/page-header";
+import { PageBody } from "@/components/page-body/page-body";
 
 const emptyBoard: number[] = Array.from({ length: 64 }, () => CellEmpty);
 
@@ -71,8 +73,16 @@ export const App = (): JSXElement => {
 
   return (
     <>
-      <ReversiBoard board={board()} click={handleClick} />
-      <Info start={handleStart} end={handleEnd} playing={gamePlaying()} board={board()} color={getColor?.()} />
+      <PageHeader
+        buttons={
+          <>
+            <Info start={handleStart} end={handleEnd} playing={gamePlaying()} board={board()} color={getColor?.()} />
+          </>
+        }
+      />
+      <PageBody>
+        <ReversiBoard board={board()} click={handleClick} />
+      </PageBody>
     </>
   );
 };
