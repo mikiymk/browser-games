@@ -39,7 +39,7 @@ export const History = (properties: HistoryProperties): JSXElement => {
         <ol class="list-inside list-decimal">
           <For each={paddedHistory()}>
             {(history, index) => (
-              <li class=" w-32 m-auto text-left bg-yellow-100">
+              <li class="w-32 m-auto text-left bg-yellow-100">
                 <Show when={index() % 2} fallback={<StyledSvg src={nought.src} alt="nought" />}>
                   <StyledSvg src={cross.src} alt="cross" />
                 </Show>

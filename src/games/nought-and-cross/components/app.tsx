@@ -13,9 +13,10 @@ import {
 import type { Status } from "@/games/nought-and-cross/types";
 import { doNothingFunction } from "@/scripts/do-nothing";
 import { MultiPromise } from "@/scripts/multi-promise";
-import { PlayerTypeAi, PlayerTypeHuman, playerType } from "@/scripts/player";
+import { PlayerTypeAi, PlayerTypeHuman } from "@/scripts/player";
+import type { PlayerType } from "@/scripts/player";
 import type { JSXElement } from "solid-js";
-import { createSignal, onMount } from "solid-js";
+import { createSignal } from "solid-js";
 import { NncBoard } from "./board";
 import { History } from "./history";
 import { PageHeader } from "@/components/page-header/page-header";
@@ -23,12 +24,11 @@ import { PageBody } from "@/components/page-body/page-body";
 import { StatusButton } from "./status";
 import { StartButton } from "./start-button";
 import { Settings } from "./settings";
+import { createUrlQuerySignal } from "@/scripts/use-url-query";
 
 export const App = (): JSXElement => {
-  const query = new URLSearchParams(location.search);
-
-  const [playerO, setPlayerO] = createSignal(playerType(query.get("o"), PlayerTypeHuman));
-  const [playerX, setPlayerX] = createSignal(playerType(query.get("x"), PlayerTypeAi));
+  const [playerO, setPlayerO] = createUrlQuerySignal<PlayerType>("o", PlayerTypeHuman);
+  const [playerX, setPlayerX] = createUrlQuerySignal<PlayerType>("x", PlayerTypeAi);
 
   const [board, setBoardData] = createSignal<readonly number[]>([]);
   const [mark, setMark] = createSignal(MarkO);
@@ -60,8 +60,6 @@ export const App = (): JSXElement => {
     // eslint-disable-next-line @typescript-eslint/prefer-destructuring -- 再代入
     terminate = gameLoop(setBoardData, setMark, setHistory, humanInput, players).terminate;
   };
-
-  onMount(reset);
 
   const status = (): Status => {
     if (isWin(board(), MarkO)) {
