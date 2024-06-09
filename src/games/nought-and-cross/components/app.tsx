@@ -22,12 +22,13 @@ import { PageHeader } from "@/components/page-header/page-header";
 import { PageBody } from "@/components/page-body/page-body";
 import { StatusButton } from "./status";
 import { StartButton } from "./start-button";
+import { Settings } from "./settings";
 
 export const App = (): JSXElement => {
   const query = new URLSearchParams(location.search);
 
-  const playerO = playerType(query.get("o"), PlayerTypeHuman);
-  const playerX = playerType(query.get("x"), PlayerTypeAi);
+  const [playerO, setPlayerO] = createSignal(playerType(query.get("o"), PlayerTypeHuman));
+  const [playerX, setPlayerX] = createSignal(playerType(query.get("x"), PlayerTypeAi));
 
   const [board, setBoardData] = createSignal<readonly number[]>([]);
   const [mark, setMark] = createSignal(MarkO);
@@ -52,8 +53,8 @@ export const App = (): JSXElement => {
     terminate();
 
     const players = {
-      o: playerO,
-      x: playerX,
+      o: playerO(),
+      x: playerX(),
     };
 
     // eslint-disable-next-line @typescript-eslint/prefer-destructuring -- 再代入
@@ -90,6 +91,7 @@ export const App = (): JSXElement => {
             <StatusButton status={status()} />
             <StartButton start={reset} />
             <History history={history()} />
+            <Settings o={playerO()} x={playerX()} setO={setPlayerO} setX={setPlayerX} />
           </>
         }
       />
