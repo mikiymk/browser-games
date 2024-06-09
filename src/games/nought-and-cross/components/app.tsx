@@ -22,7 +22,7 @@ import { History } from "./history";
 import { PageHeader } from "@/components/page-header/page-header";
 import { PageBody } from "@/components/page-body/page-body";
 import { StatusButton } from "./status";
-import { StartButton } from "./start-button";
+import { StartButton } from "@/components/page-header/start-button";
 import { Settings } from "./settings";
 import { createUrlQuerySignal } from "@/scripts/use-url-query";
 

@@ -1,4 +1,4 @@
-import { HeaderButton } from "@/components/page-header/header-button";
+import { HeaderButton } from "./header-button";
 import start from "@/images/icon/start.svg";
 import type { JSXElement } from "solid-js";
 

@@ -4,19 +4,21 @@ import { EndNotYet, White } from "@/games/chess/constants";
 import { gameLoop, getWasm } from "@/games/chess/game-loop";
 import { doNothingFunction } from "@/scripts/do-nothing";
 import { MultiPromise } from "@/scripts/multi-promise";
-import { PlayerTypeAi, PlayerTypeHuman, playerType } from "@/scripts/player";
+import { PlayerTypeAi, PlayerTypeHuman } from "@/scripts/player";
+import type { PlayerType } from "@/scripts/player";
 import type { JSXElement } from "solid-js";
 import { createResource, createSignal } from "solid-js";
 import { ChessBoard } from "./board";
-import { Controller } from "./controller";
+import { Status } from "./status";
 import { PageHeader } from "@/components/page-header/page-header";
 import { PageBody } from "@/components/page-body/page-body";
+import { StartButton } from "@/components/page-header/start-button";
+import { createUrlQuerySignal } from "@/scripts/use-url-query";
+import { Settings } from "./settings";
 
 export const App = (): JSXElement => {
-  const query = new URLSearchParams(location.search);
-
-  const playerWhite = playerType(query.get("white"), PlayerTypeHuman);
-  const playerBlack = playerType(query.get("black"), PlayerTypeAi);
+  const [white, setWhite] = createUrlQuerySignal<PlayerType>("white", PlayerTypeHuman);
+  const [black, setBlack] = createUrlQuerySignal<PlayerType>("black", PlayerTypeAi);
 
   const [color, setColor] = createSignal(White);
   const [end, setEnd] = createSignal(EndNotYet);
@@ -38,8 +40,8 @@ export const App = (): JSXElement => {
       return;
     }
     terminate = gameLoop(wasmObject, setColor, setPiece, setEnd, setMark, humanInput, {
-      white: playerWhite,
-      black: playerBlack,
+      white: white(),
+      black: black(),
     });
   };
 
@@ -52,7 +54,9 @@ export const App = (): JSXElement => {
       <PageHeader
         buttons={
           <>
-            <Controller color={color()} end={end()} start={start} />
+            <Status color={color()} end={end()} />
+            <StartButton start={start} />
+            <Settings white={white()} black={black()} setWhite={setWhite} setBlack={setBlack} />
           </>
         }
       />

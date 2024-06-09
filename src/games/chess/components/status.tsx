@@ -1,4 +1,3 @@
-import { Button } from "@/components/button";
 import {
   Black,
   End5Repetition,
@@ -10,14 +9,12 @@ import {
 } from "@/games/chess/constants";
 import type { JSXElement } from "solid-js";
 
-type ControllerProperties = {
+type StatusProperties = {
   readonly color: number;
   readonly end: number;
-
-  readonly start: () => void;
 };
 
-export const Controller = (properties: ControllerProperties): JSXElement => {
+export const Status = (properties: StatusProperties): JSXElement => {
   const message = (): string => {
     switch (properties.end) {
       case EndBlackWin: {
@@ -43,20 +40,5 @@ export const Controller = (properties: ControllerProperties): JSXElement => {
       }
     }
   };
-  return (
-    <div>
-      <p>
-        status:
-        <output>{message()}</output>
-      </p>
-
-      <Button
-        onClick={() => {
-          properties.start();
-        }}
-      >
-        start
-      </Button>
-    </div>
-  );
+  return <output>{message()}</output>;
 };
