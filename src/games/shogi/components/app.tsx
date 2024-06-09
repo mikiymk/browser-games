@@ -1,6 +1,7 @@
 import { doNothingFunction } from "@/scripts/do-nothing";
 import { MultiPromise } from "@/scripts/multi-promise";
-import { PlayerTypeAi, PlayerTypeHuman, playerType } from "@/scripts/player";
+import { PlayerTypeAi, PlayerTypeHuman } from "@/scripts/player";
+import type { PlayerType } from "@/scripts/player";
 import { createResource, createSignal } from "solid-js";
 import type { JSXElement } from "solid-js";
 import type { Hand } from "../constants";
@@ -12,15 +13,12 @@ import { PromotionPopUp } from "./promotion-pop-up";
 import { PageHeader } from "@/components/page-header/page-header";
 import { PageBody } from "@/components/page-body/page-body";
 import { StartButton } from "@/components/page-header/start-button";
-
-// memo
-// motigoma
+import { createUrlQuerySignal } from "@/scripts/use-url-query";
+import { Settings } from "./settings";
 
 export const App = (): JSXElement => {
-  const query = new URLSearchParams(location.search);
-
-  const playerBlack = playerType(query.get("first"), PlayerTypeHuman);
-  const playerWhite = playerType(query.get("second"), PlayerTypeAi);
+  const [black, setBlack] = createUrlQuerySignal<PlayerType>("first", PlayerTypeHuman);
+  const [white, setWhite] = createUrlQuerySignal<PlayerType>("second", PlayerTypeAi);
 
   const [board, setFullBoard] = createSignal<readonly { piece: number; moveTarget: boolean }[]>(
     Array.from({ length: 81 }, () => ({ piece: 0, moveTarget: false })),
@@ -95,8 +93,8 @@ export const App = (): JSXElement => {
       setPromotion,
       humanInput,
       {
-        [WHITE]: playerBlack,
-        [BLACK]: playerWhite,
+        [WHITE]: black(),
+        [BLACK]: white(),
       },
     );
   };
@@ -111,6 +109,7 @@ export const App = (): JSXElement => {
         buttons={
           <>
             <StartButton start={start} />
+            <Settings white={white()} black={black()} setWhite={setWhite} setBlack={setBlack} />
             <GameOverPopUp gameOver={gameOver() !== 0} set={setGameOver} />
             <PromotionPopUp
               promotion={promotion()}
