@@ -1,4 +1,3 @@
-import { Button } from "@/components/button";
 import { doNothingFunction } from "@/scripts/do-nothing";
 import { MultiPromise } from "@/scripts/multi-promise";
 import { PlayerTypeAi, PlayerTypeHuman, playerType } from "@/scripts/player";
@@ -10,6 +9,9 @@ import { gameLoop, getWasm } from "../game-loop";
 import { ShogiBoard } from "./board";
 import { GameOverPopUp } from "./game-over-pop-up";
 import { PromotionPopUp } from "./promotion-pop-up";
+import { PageHeader } from "@/components/page-header/page-header";
+import { PageBody } from "@/components/page-body/page-body";
+import { StartButton } from "@/components/page-header/start-button";
 
 // memo
 // motigoma
@@ -105,15 +107,23 @@ export const App = (): JSXElement => {
 
   return (
     <>
-      <ShogiBoard board={board()} hands={[whiteHands(), blackHands()]} onSquareClick={handleBoardClick} />
-      <Button onClick={start}>Start</Button>
-      <GameOverPopUp gameOver={gameOver() !== 0} set={setGameOver} />
-      <PromotionPopUp
-        promotion={promotion()}
-        resolve={(value) => {
-          resolve(value);
-        }}
+      <PageHeader
+        buttons={
+          <>
+            <StartButton start={start} />
+            <GameOverPopUp gameOver={gameOver() !== 0} set={setGameOver} />
+            <PromotionPopUp
+              promotion={promotion()}
+              resolve={(value) => {
+                resolve(value);
+              }}
+            />
+          </>
+        }
       />
+      <PageBody>
+        <ShogiBoard board={board()} hands={[whiteHands(), blackHands()]} onSquareClick={handleBoardClick} />
+      </PageBody>
     </>
   );
 };
