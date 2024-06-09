@@ -7,6 +7,8 @@ import type { JSXElement } from "solid-js";
 import { createSignal, onMount } from "solid-js";
 import { KnightBoard } from "./board";
 import { History } from "./history";
+import { PageHeader } from "@/components/page-header/page-header";
+import { PageBody } from "@/components/page-body/page-body";
 
 export const App = (): JSXElement => {
   const query = new URLSearchParams(location.search);
@@ -39,12 +41,20 @@ export const App = (): JSXElement => {
 
   return (
     <>
-      <KnightBoard board={board()} handleClick={handleClick} hintMode={hintMode} />
-      <Button onClick={handleOpen}>History</Button>
-      <PopUp open={open()}>
-        <History history_={history()} back_={backHistory} />
-        <Button onClick={handleClose}>Close</Button>
-      </PopUp>
+      <PageHeader
+        buttons={
+          <>
+            <Button onClick={handleOpen}>History</Button>
+            <PopUp open={open()}>
+              <History history_={history()} back_={backHistory} />
+              <Button onClick={handleClose}>Close</Button>
+            </PopUp>
+          </>
+        }
+      />
+      <PageBody>
+        <KnightBoard board={board()} handleClick={handleClick} hintMode={hintMode} />
+      </PageBody>
     </>
   );
 };
