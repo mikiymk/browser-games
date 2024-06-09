@@ -1,5 +1,5 @@
-import type { JSXElement } from "solid-js";
 import { HeaderPopup } from "@/components/page-header/header-popup";
+import type { JSXElement } from "solid-js";
 
 export const HowToPlay = (): JSXElement => {
   return (

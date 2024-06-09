@@ -1,3 +1,6 @@
+import { PageBody } from "@/components/page-body/page-body";
+import { PageHeader } from "@/components/page-header/page-header";
+import { StartButton } from "@/components/page-header/start-button";
 import { filledBoard, gameLoop, isWin } from "@/games/nought-and-cross/game-model";
 import {
   Empty,
@@ -15,16 +18,13 @@ import { doNothingFunction } from "@/scripts/do-nothing";
 import { MultiPromise } from "@/scripts/multi-promise";
 import { PlayerTypeAi, PlayerTypeHuman } from "@/scripts/player";
 import type { PlayerType } from "@/scripts/player";
+import { createUrlQuerySignal } from "@/scripts/use-url-query";
 import type { JSXElement } from "solid-js";
 import { createSignal, onMount } from "solid-js";
 import { NncBoard } from "./board";
 import { History } from "./history";
-import { PageHeader } from "@/components/page-header/page-header";
-import { PageBody } from "@/components/page-body/page-body";
-import { StatusButton } from "./status";
-import { StartButton } from "@/components/page-header/start-button";
 import { Settings } from "./settings";
-import { createUrlQuerySignal } from "@/scripts/use-url-query";
+import { StatusButton } from "./status";
 
 export const App = (): JSXElement => {
   const [playerO, setPlayerO] = createUrlQuerySignal<PlayerType>("o", PlayerTypeHuman);

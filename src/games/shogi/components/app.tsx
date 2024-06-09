@@ -1,7 +1,12 @@
+import { PageBody } from "@/components/page-body/page-body";
+import { PageHeader } from "@/components/page-header/page-header";
+import { StartButton } from "@/components/page-header/start-button";
 import { doNothingFunction } from "@/scripts/do-nothing";
 import { MultiPromise } from "@/scripts/multi-promise";
 import { PlayerTypeAi, PlayerTypeHuman } from "@/scripts/player";
 import type { PlayerType } from "@/scripts/player";
+import { usePromise } from "@/scripts/use-promise";
+import { createUrlQuerySignal } from "@/scripts/use-url-query";
 import { createSignal } from "solid-js";
 import type { JSXElement } from "solid-js";
 import type { Hand } from "../constants";
@@ -10,12 +15,7 @@ import { gameLoop, getWasm } from "../game-loop";
 import { ShogiBoard } from "./board";
 import { GameOverPopUp } from "./game-over-pop-up";
 import { PromotionPopUp } from "./promotion-pop-up";
-import { PageHeader } from "@/components/page-header/page-header";
-import { PageBody } from "@/components/page-body/page-body";
-import { StartButton } from "@/components/page-header/start-button";
-import { createUrlQuerySignal } from "@/scripts/use-url-query";
 import { Settings } from "./settings";
-import { usePromise } from "@/scripts/use-promise";
 
 export const App = (): JSXElement => {
   const [black, setBlack] = createUrlQuerySignal<PlayerType>("first", PlayerTypeHuman);

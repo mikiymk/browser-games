@@ -1,13 +1,13 @@
 import { Button } from "@/components/button";
+import { PageBody } from "@/components/page-body/page-body";
+import { PageHeader } from "@/components/page-header/page-header";
+import { StartButton } from "@/components/page-header/start-button";
 import { PopUp } from "@/components/pop-up/pop-up";
 import { createSignal } from "solid-js";
 import type { JSXElement } from "solid-js";
 import { createKlondike } from "../klondike";
 import type { Select } from "../klondike";
 import { Field } from "./field";
-import { PageHeader } from "@/components/page-header/page-header";
-import { PageBody } from "@/components/page-body/page-body";
-import { StartButton } from "@/components/page-header/start-button";
 
 export const App = (): JSXElement => {
   const { start, cards, moveCards, openStock, autoFoundation, isCleared } = createKlondike();

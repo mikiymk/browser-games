@@ -1,15 +1,15 @@
+import { PageBody } from "@/components/page-body/page-body";
+import { PageHeader } from "@/components/page-header/page-header";
 import { CellKnight, CellMovable, CellVisited } from "@/games/knight-tour/consts";
 import { createGame } from "@/games/knight-tour/create-game";
 import { setKnightMovable } from "@/games/knight-tour/knight-move";
+import { createUrlQuerySignal } from "@/scripts/use-url-query";
 import type { JSXElement } from "solid-js";
 import { onMount } from "solid-js";
 import { KnightBoard } from "./board";
 import { History } from "./history";
-import { PageHeader } from "@/components/page-header/page-header";
-import { PageBody } from "@/components/page-body/page-body";
-import { createUrlQuerySignal } from "@/scripts/use-url-query";
-import { Settings } from "./settings";
 import { HowToPlay } from "./how-to-play";
+import { Settings } from "./settings";
 
 export const App = (): JSXElement => {
   const [hint, setHint] = createUrlQuerySignal("board", "hide");

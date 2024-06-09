@@ -1,14 +1,14 @@
+import { PageBody } from "@/components/page-body/page-body";
+import { PageHeader } from "@/components/page-header/page-header";
+import { StartButton } from "@/components/page-header/start-button";
 import { Bombed, Clear, FieldBomb, FieldFlag, FieldNoOpen, FirstClick, Playing } from "@/games/mine-sweeper/consts";
 import { getAround, initializeField, isClear, message, resetMines } from "@/games/mine-sweeper/field";
+import { createUrlQuerySignal } from "@/scripts/use-url-query";
 import type { JSXElement } from "solid-js";
 import { batch, createEffect, createSignal } from "solid-js";
 import { Status } from "./controller";
 import { MineFields } from "./field";
-import { PageHeader } from "@/components/page-header/page-header";
-import { PageBody } from "@/components/page-body/page-body";
-import { StartButton } from "@/components/page-header/start-button";
 import { Settings } from "./settings";
-import { createUrlQuerySignal } from "@/scripts/use-url-query";
 
 export const App = (): JSXElement => {
   const [heightString, setHeight] = createUrlQuerySignal("height", "10");

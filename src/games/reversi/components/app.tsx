@@ -1,21 +1,21 @@
+import { PageBody } from "@/components/page-body/page-body";
+import { PageHeader } from "@/components/page-header/page-header";
+import { StartButton } from "@/components/page-header/start-button";
 import { doNothingFunction } from "@/scripts/do-nothing";
 import { MultiPromise } from "@/scripts/multi-promise";
 import { PlayerTypeAi, PlayerTypeHuman } from "@/scripts/player";
 import type { PlayerType } from "@/scripts/player";
+import { usePromise } from "@/scripts/use-promise";
+import { createUrlQuerySignal } from "@/scripts/use-url-query";
 import type { JSXElement } from "solid-js";
 import { createSignal } from "solid-js";
 import { CellBlack, CellCanMoveBlack, CellCanMoveWhite, CellEmpty, CellWhite } from "../const";
 import { gameLoop } from "../game-loop";
 import { getReversiWasm } from "../get-wasm";
 import { ReversiBoard } from "./board";
-import { StoneCount } from "./information";
-import { PageHeader } from "@/components/page-header/page-header";
-import { PageBody } from "@/components/page-body/page-body";
-import { StartButton } from "@/components/page-header/start-button";
-import { createUrlQuerySignal } from "@/scripts/use-url-query";
-import { Settings } from "./settings";
 import { HowToPlay } from "./how-to-play";
-import { usePromise } from "@/scripts/use-promise";
+import { StoneCount } from "./information";
+import { Settings } from "./settings";
 
 const emptyBoard: number[] = Array.from({ length: 64 }, () => CellEmpty);
 

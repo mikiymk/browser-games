@@ -1,9 +1,9 @@
+import { HeaderPopup } from "@/components/page-header/header-popup";
 import { StyledSvg } from "@/components/styled-svg";
-import type { JSXElement } from "solid-js";
-import { For, Show } from "solid-js";
 import cross from "@/images/icon/cross.svg";
 import nought from "@/images/icon/nought.svg";
-import { HeaderPopup } from "@/components/page-header/header-popup";
+import type { JSXElement } from "solid-js";
+import { For, Show } from "solid-js";
 
 const historyFillArray = [-1, -1, -1, -1, -1, -1, -1, -1, -1];
 

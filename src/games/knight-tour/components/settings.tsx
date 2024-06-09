@@ -1,6 +1,6 @@
-import type { JSXElement, Setter } from "solid-js";
 import { SelectRadio } from "@/components/input/select-radio";
 import { HeaderPopup } from "@/components/page-header/header-popup";
+import type { JSXElement, Setter } from "solid-js";
 
 type SettingsProperties = {
   readonly hint: string;

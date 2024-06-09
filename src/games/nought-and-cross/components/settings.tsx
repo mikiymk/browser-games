@@ -1,11 +1,11 @@
+import { SelectRadio } from "@/components/input/select-radio";
+import { HeaderPopup } from "@/components/page-header/header-popup";
 import { StyledSvg } from "@/components/styled-svg";
-import type { JSXElement, Setter } from "solid-js";
 import cross from "@/images/icon/cross.svg";
 import nought from "@/images/icon/nought.svg";
-import { SelectRadio } from "@/components/input/select-radio";
 import { playerValues } from "@/scripts/player";
 import type { PlayerType } from "@/scripts/player";
-import { HeaderPopup } from "@/components/page-header/header-popup";
+import type { JSXElement, Setter } from "solid-js";
 
 type SettingsProperties = {
   readonly o: PlayerType;

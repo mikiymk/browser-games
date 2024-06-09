@@ -1,3 +1,6 @@
+import { PageBody } from "@/components/page-body/page-body";
+import { PageHeader } from "@/components/page-header/page-header";
+import { StartButton } from "@/components/page-header/start-button";
 import { createBoard } from "@/games/chess/board";
 import type { BoardCell } from "@/games/chess/board";
 import { EndNotYet, White } from "@/games/chess/constants";
@@ -6,16 +9,13 @@ import { doNothingFunction } from "@/scripts/do-nothing";
 import { MultiPromise } from "@/scripts/multi-promise";
 import { PlayerTypeAi, PlayerTypeHuman } from "@/scripts/player";
 import type { PlayerType } from "@/scripts/player";
+import { usePromise } from "@/scripts/use-promise";
+import { createUrlQuerySignal } from "@/scripts/use-url-query";
 import type { JSXElement } from "solid-js";
 import { createSignal } from "solid-js";
 import { ChessBoard } from "./board";
-import { Status } from "./status";
-import { PageHeader } from "@/components/page-header/page-header";
-import { PageBody } from "@/components/page-body/page-body";
-import { StartButton } from "@/components/page-header/start-button";
-import { createUrlQuerySignal } from "@/scripts/use-url-query";
 import { Settings } from "./settings";
-import { usePromise } from "@/scripts/use-promise";
+import { Status } from "./status";
 
 export const App = (): JSXElement => {
   const [white, setWhite] = createUrlQuerySignal<PlayerType>("white", PlayerTypeHuman);

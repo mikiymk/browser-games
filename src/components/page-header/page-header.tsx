@@ -1,6 +1,5 @@
-import type { JSXElement } from "solid-js";
 import icon from "@/images/theme-icon.svg";
-
+import type { JSXElement } from "solid-js";
 
 type PageHeaderProperites = {
   readonly buttons?: JSXElement;

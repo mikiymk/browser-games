@@ -1,5 +1,5 @@
-import { HeaderButton } from "./header-button";
 import type { JSXElement } from "solid-js";
+import { HeaderButton } from "./header-button";
 
 type StartButtonProperties = {
   readonly start: () => void;

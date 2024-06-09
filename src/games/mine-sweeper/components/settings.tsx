@@ -1,6 +1,6 @@
-import type { JSXElement, Setter } from "solid-js";
 import { InputNumber } from "@/components/input/number";
 import { HeaderPopup } from "@/components/page-header/header-popup";
+import type { JSXElement, Setter } from "solid-js";
 
 type SettingsProperties = {
   readonly height: number;
