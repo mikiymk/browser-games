@@ -9,6 +9,7 @@ export default defineConfig({
   base: "browser-games/",
   integrations: [
     solidJs({}),
+    tailwind(),
     compress({
       // biome-ignore lint/style/useNamingConvention: ライブラリに合わせる
       HTML: {
@@ -59,7 +60,6 @@ export default defineConfig({
         },
       },
     }),
-    tailwind(),
   ],
   // biome-ignore lint/style/useNamingConvention: ライブラリに合わせる
   compressHTML: true,
@@ -71,12 +71,14 @@ export default defineConfig({
       rollupOptions: {
         output: {
           assetFileNames: "_assets/[hash:16][extname]",
+          chunkFileNames: "_astro/[hash:16].js",
+          entryFileNames: "_astro/[hash:16].js",
         },
       },
     },
     server: {
       watch: {
-        ignored: ["**/zig-cache/**"],
+        ignored: ["**/.zig-cache/**"],
       },
     },
   },
