@@ -1,12 +1,31 @@
 ---
 import Head from "@/components/head.astro";
 import { App } from "@/games/shogi/components/app";
+
+const pieceNames = [
+  "歩兵",
+  "香車",
+  "桂馬",
+  "銀将",
+  "金将",
+  "角行",
+  "飛車",
+  "王将",
+  "と金",
+  "成香",
+  "成桂",
+  "成銀",
+  "龍馬",
+  "龍王",
+];
+
+const pieceNameKanji = [...new Set(pieceNames.flatMap((name) => [...name]))].toSorted().join("");
 ---
 
 <Head title="Shogi" />
 <link
     rel="stylesheet"
-    href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap"
+    href=`https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap&text=${pieceNameKanji}`
 />
 
 <div class="text-slate-800">

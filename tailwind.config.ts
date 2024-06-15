@@ -6,6 +6,7 @@ export default {
     extend: {
       fontFamily: {
         noto: ["Noto Sans JP", "sans-serif"],
+        "noto-emoji": ["Noto Color Emoji", "sans-serif"],
       },
     },
   },

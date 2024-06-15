@@ -1,9 +1,16 @@
 ---
 import Head from "@/components/head.astro";
 import { App } from "@/games/mine-sweeper/components/app";
+import { EmojiBombed, EmojiClear, EmojiSmile } from "@/games/mine-sweeper/consts";
+
+const emojis = [EmojiSmile, EmojiBombed, EmojiClear].join("");
 ---
 
 <Head title="Mine Sweeper" />
+<link
+    rel="stylesheet"
+    href=`https://fonts.googleapis.com/css2?family=Noto+Color+Emoji&display=swap&text=${emojis}`
+/>
 
 <div class="text-slate-800">
     <App client:load />

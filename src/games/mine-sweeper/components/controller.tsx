@@ -5,5 +5,5 @@ type ControllerProperties = {
 };
 
 export const Status = (properties: ControllerProperties): JSXElement => {
-  return <output>{properties.message}</output>;
+  return <output class="font-noto-emoji">{properties.message}</output>;
 };

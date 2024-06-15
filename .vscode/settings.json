@@ -55,7 +55,7 @@
   },
   "zig.initialSetupDone": true,
   "[markdown]": {
-    "editor.defaultFormatter": "yzhang.markdown-all-in-one"
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "[jsonc]": {
     "editor.defaultFormatter": "biomejs.biome"

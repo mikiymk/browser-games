@@ -30,7 +30,7 @@ fn buildLib(b: *Build, comptime name: []const u8, public_dir: Dir, target: Targe
     if (target.result.isWasm()) {
         const exe = b.addExecutable(.{
             .name = name,
-            .root_source_file = .{ .path = "src/wasm/" ++ name ++ ".zig" },
+            .root_source_file = b.path("src/wasm/" ++ name ++ ".zig"),
             .target = target,
             .optimize = optimize,
 
@@ -51,7 +51,7 @@ fn buildLib(b: *Build, comptime name: []const u8, public_dir: Dir, target: Targe
     } else {
         const lib = b.addSharedLibrary(.{
             .name = name,
-            .root_source_file = .{ .path = "src/wasm/" ++ name ++ ".zig" },
+            .root_source_file = b.path("src/wasm/" ++ name ++ ".zig"),
             .target = target,
             .optimize = optimize,
 
@@ -74,7 +74,7 @@ fn buildTest(b: *Build) void {
     const test_step = b.step("test", "Run library tests");
 
     const main_tests = b.addTest(.{
-        .root_source_file = .{ .path = "src/wasm/test.zig" },
+        .root_source_file = b.path("src/wasm/test.zig"),
     });
     const run_main_tests = b.addRunArtifact(main_tests);
     test_step.dependOn(&run_main_tests.step);

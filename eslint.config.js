@@ -88,7 +88,15 @@ export default typescript.config(
               from: "lib",
               name: [
                 "MouseEvent",
+                "Node", //  solid-jsのJSXElementに必要
                 "Element", //  solid-jsのJSXElementに必要
+              ],
+            },
+            {
+              from: "package",
+              package: "solid-js",
+              name: [
+                "ArrayElement", //  solid-jsのJSXElementに必要
               ],
             },
           ],
