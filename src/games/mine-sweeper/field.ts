@@ -1,4 +1,4 @@
-import { Bombed, Clear, FieldFlag, FieldNoOpen } from "./consts";
+import { Bombed, Clear, EmojiBombed, EmojiClear, EmojiSmile, FieldFlag, FieldNoOpen } from "./consts";
 
 const diffArray: [number, number][] = [
   [1, 0],
@@ -44,10 +44,10 @@ export const initializeField = (length: number): readonly number[] => {
 export const message = (state: number, fields: readonly number[], numberMines: number): string => {
   let flagCount = 0;
   if (state === Bombed) {
-    return "\u{1F635}";
+    return EmojiBombed;
   }
   if (state === Clear) {
-    return "\u{1F60E}";
+    return EmojiClear;
   }
 
   for (const field of fields) {
@@ -56,7 +56,7 @@ export const message = (state: number, fields: readonly number[], numberMines: n
     }
   }
 
-  return `${flagCount} / ${numberMines} \u{1F642}`;
+  return `${flagCount} / ${numberMines} ${EmojiSmile}`;
 };
 
 export const resetMines = (numberMines: number, height: number, width: number, firstClick: number): Set<number> => {
