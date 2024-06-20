@@ -88,14 +88,8 @@ const DefineCard = (properties: DefineCardProperties): JSXElement => {
     return `${suitImages[properties.suit].src}#root`;
   };
 
-  const suitColor = (): string => {
-    const suitColors = {
-      club: "black",
-      diamond: "red",
-      heart: "red",
-      spade: "black",
-    };
-    return suitColors[properties.suit];
+  const isRed = (): boolean => {
+    return properties.suit === "heart" || properties.suit === "diamond";
   };
 
   type UseSuitProperties = {
@@ -111,7 +105,7 @@ const DefineCard = (properties: DefineCardProperties): JSXElement => {
       height={30}
       width={30}
       transform={properties.rotate === true ? `rotate(180, ${properties.x}, ${properties.y})` : ""}
-      fill={suitColor()}
+      class={isRed() ? "fill-red-500" : "fill-slate-900"}
     />
   );
 
@@ -120,7 +114,12 @@ const DefineCard = (properties: DefineCardProperties): JSXElement => {
   };
   const UseText = (properties: UseTextProperties): JSXElement => {
     return (
-      <text x={50} y={88} text-anchor="middle" class="font-noto" fill={suitColor()} font-size="25">
+      <text
+        x={50}
+        y={88}
+        text-anchor="middle"
+        class={`font-noto font-[25px] ${isRed() ? "fill-red-500" : "fill-slate-900"}`}
+      >
         {properties.children}
       </text>
     );
@@ -128,10 +127,10 @@ const DefineCard = (properties: DefineCardProperties): JSXElement => {
 
   return (
     <symbol id={`${properties.suit}-${properties.rank}`} viewBox="0 0 100 156">
-      <rect x={0} y={0} height={156} width={100} rx={10} ry={10} fill="#ddd" stroke="black" />
+      <rect x={0} y={0} height={156} width={100} rx={10} ry={10} class="fill-slate-200 stroke-slate-900" />
 
-      <use href={suitImage()} x={4} y={7} height={16} width={16} fill={suitColor()} />
-      <text x={22} y={20} font-size={"16"} class="font-noto" fill={suitColor()}>
+      <use href={suitImage()} x={4} y={7} height={16} width={16} class={isRed() ? "fill-red-500" : "fill-slate-900"} />
+      <text x={22} y={20} class={`font-noto font-[16px] ${isRed() ? "fill-red-500" : "fill-slate-900"}`}>
         {properties.rank}
       </text>
 
@@ -273,7 +272,15 @@ export const CardFront = (properties: CardFrontProperties): JSXElement => {
         }}
       />
       <Show when={properties.selected}>
-        <rect x={properties.x} y={properties.y} height={31.2} width={20} rx={2} ry={2} fill="none" stroke="#222" />
+        <rect
+          x={properties.x}
+          y={properties.y}
+          height={31.2}
+          width={20}
+          rx={2}
+          ry={2}
+          class="fill-none stroke-slate-900"
+        />
       </Show>
     </>
   );

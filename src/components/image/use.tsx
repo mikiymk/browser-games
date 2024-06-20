@@ -15,7 +15,7 @@ export const Use = (properties: UseProperties): JSXElement => {
       y={properties.y}
       height={10}
       width={10}
-      class={`stroke-slate-900 stroke-2 ${properties.class}`}
+      class={`stroke-2 ${properties.class}`}
     />
   );
 };

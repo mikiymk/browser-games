@@ -2,7 +2,7 @@ import { PageBody } from "@/components/page-body/page-body";
 import { PageHeader } from "@/components/page-header/page-header";
 import { StartButton } from "@/components/page-header/start-button";
 import { Bombed, Clear, FieldBomb, FieldFlag, FieldNoOpen, FirstClick, Playing } from "@/games/mine-sweeper/consts";
-import { getAround, initializeField, isClear, message, resetMines } from "@/games/mine-sweeper/field";
+import { getAround, initializeField, isClear, resetMines } from "@/games/mine-sweeper/field";
 import { createUrlQuerySignal } from "@/scripts/use-url-query";
 import type { JSXElement } from "solid-js";
 import { batch, createEffect, createSignal } from "solid-js";
@@ -107,7 +107,7 @@ export const App = (): JSXElement => {
       <PageHeader
         buttons={
           <>
-            <Status message={message(gameState(), fields(), mineCount())} />
+            <Status state={gameState()} fields={fields()} mines={mineCount()} />
             <StartButton start={reset} />
             <Settings
               height={height()}

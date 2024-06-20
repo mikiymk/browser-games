@@ -34,11 +34,11 @@ const MineCell = (properties: MineCellProperties): JSXElement => {
       <Switch>
         <Match when={properties.field === FieldBomb}>
           <Closed />
-          <Use href={mine.src} x={properties.x} y={properties.y} class="fill-slate-900" />
+          <Use href={mine.src} x={properties.x} y={properties.y} class="fill-slate-900 stroke-slate-900" />
         </Match>
         <Match when={properties.field === FieldFlag}>
           <Closed />
-          <Use href={flag.src} x={properties.x} y={properties.y} class="fill-red-500" />
+          <Use href={flag.src} x={properties.x} y={properties.y} class="fill-red-500 stroke-slate-900" />
         </Match>
         <Match when={properties.field === FieldNoOpen}>
           <Closed />

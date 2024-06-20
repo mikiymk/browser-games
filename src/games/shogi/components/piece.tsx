@@ -8,30 +8,20 @@ type DefinePieceProperties = {
 };
 
 export const DefinePiece = (properties: DefinePieceProperties): JSXElement => {
-  const kanji = (): string => {
-    return properties.promoted === true ? "font-noto text-[20px] fill-red-600" : "font-noto text-[20px]";
-  };
-
   return (
     <symbol id={properties.id} viewBox="0 0 60 60">
       <use href={`${piece.src}#root`} height={60} width={60} class="fill-yellow-300 stroke-slate-900" />
       <text
         x="30"
         y="28"
-        class={kanji()}
-        style={{
-          "text-anchor": "middle",
-        }}
+        class={`font-noto text-[20px] anchor-mid ${properties.promoted === true ? "fill-red-600" : ""}`}
       >
         {properties.pieces[0]}
       </text>
       <text
         x="30"
         y="50"
-        class={kanji()}
-        style={{
-          "text-anchor": "middle",
-        }}
+        class={`font-noto text-[20px] anchor-mid ${properties.promoted === true ? "fill-red-600" : ""}`}
       >
         {properties.pieces[1]}
       </text>
@@ -47,11 +37,14 @@ type UsePieceProperties = {
   readonly rotate: boolean;
 };
 export const UsePiece = (properties: UsePieceProperties): JSXElement => {
-  const rotate = (): string => {
-    return properties.rotate ? "" : `rotate(180, ${properties.x + 5}, ${properties.y + 5})`;
-  };
-
   return (
-    <use href={`#${properties.piece}`} height={10} width={10} x={properties.x} y={properties.y} transform={rotate()} />
+    <use
+      href={`#${properties.piece}`}
+      height={10}
+      width={10}
+      x={properties.x}
+      y={properties.y}
+      transform={properties.rotate ? "" : `rotate(180, ${properties.x + 5}, ${properties.y + 5})`}
+    />
   );
 };

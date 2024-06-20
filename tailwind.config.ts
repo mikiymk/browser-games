@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+import plugin from "tailwindcss/plugin";
 
 export default {
   content: ["./src/**/*.{astro,html,js,jsx,md,mdx,ts,tsx}"],
@@ -10,5 +11,13 @@ export default {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    plugin(({ addComponents }) => {
+      addComponents({
+        ".anchor-mid": {
+          textAnchor: "middle",
+        },
+      });
+    }),
+  ],
 } satisfies Config;

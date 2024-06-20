@@ -35,7 +35,7 @@ export const Square = (properties: SquareProperties): JSXElement => {
       case CellKnight:
         return "fill-stone-200 stroke-slate-900";
       default:
-        return blackIndexes.has(properties.index) ? "fill-none stroke-slate-500" : "fill-none stroke-slate-300";
+        return blackIndexes.has(properties.index) ? "fill-none stroke-slate-900" : "fill-none stroke-slate-300";
     }
   };
 
@@ -45,7 +45,14 @@ export const Square = (properties: SquareProperties): JSXElement => {
         return <Use href={cross.src} x={properties.x} y={properties.y} class={imageStyle()} />;
       case CellMovable: {
         if (properties.hintMode) {
-          return <Numbers number={getMovableCount()} x={properties.x} y={properties.y} class={imageStyle()} />;
+          return (
+            <Numbers
+              number={getMovableCount()}
+              x={properties.x}
+              y={properties.y}
+              class={blackIndexes.has(properties.index) ? "fill-slate-900" : "fill-slate-300"}
+            />
+          );
         }
 
         return <Use href={nought.src} x={properties.x} y={properties.y} class={imageStyle()} />;

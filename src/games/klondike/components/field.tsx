@@ -26,7 +26,7 @@ type FieldProperties = {
 export const Field = (properties: FieldProperties): JSXElement => {
   return (
     <svg viewBox="0 0 256 144" xmlns="http://www.w3.org/2000/svg">
-      <rect height={144} width={256} fill="green" />
+      <rect height={144} width={256} class="fill-green-700" />
       <title>cards</title>
 
       <FieldStock

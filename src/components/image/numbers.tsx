@@ -12,10 +12,7 @@ export const Numbers = (properties: NumbersProperties): JSXElement => {
     <text
       x={properties.x + 5}
       y={properties.y + 9}
-      class={`font-noto text-[10px] ${properties.class}`}
-      style={{
-        "text-anchor": "middle",
-      }}
+      class={`font-noto text-[10px] stroke-none anchor-mid ${properties.class}`}
     >
       {properties.number}
     </text>
