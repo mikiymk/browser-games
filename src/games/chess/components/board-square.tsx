@@ -20,7 +20,6 @@ import knight from "@/images/chess/knight.svg";
 import pawn from "@/images/chess/pawn.svg";
 import queen from "@/images/chess/queen.svg";
 import rook from "@/images/chess/rook.svg";
-import frame from "@/images/icon/frame.svg";
 import type { JSXElement } from "solid-js";
 import { Show } from "solid-js";
 
@@ -75,18 +74,17 @@ export const BoardSquare = (properties: BoardSquareProperties): JSXElement => {
 
   const markStyle = (): string | undefined =>
     properties.mark === MoveTarget
-      ? "stroke-[4] cursor-pointer stroke-orange-500"
+      ? "cursor-pointer fill-orange-500"
       : properties.mark === MoveFrom
-        ? "stroke-[4] cursor-pointer stroke-slate-900"
-        : "stroke-[4] cursor-pointer stroke-none";
+        ? "cursor-pointer fill-slate-900"
+        : "fill-none";
 
   return (
     <>
+      <rect x={properties.x + 1} y={properties.y + 1} height={8} width={8} class={markStyle()} />
       <Show when={pieceHref()}>
         {(href) => <use href={href()} x={properties.x} y={properties.y} height={10} width={10} class={pieceStyle()} />}
       </Show>
-
-      <use href={`${frame.src}#root`} x={properties.x} y={properties.y} height={10} width={10} class={markStyle()} />
     </>
   );
 };
