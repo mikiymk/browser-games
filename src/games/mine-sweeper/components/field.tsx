@@ -1,4 +1,6 @@
 import { Board } from "@/components/board/board";
+import { Numbers } from "@/components/image/numbers";
+import { Use } from "@/components/image/use";
 import {
   FieldBomb,
   FieldFlag,
@@ -14,16 +16,8 @@ import {
 } from "@/games/mine-sweeper/consts";
 import flag from "@/images/icon/flag.svg";
 import mine from "@/images/icon/mine.svg";
-import number1 from "@/images/letter/1.svg";
-import number2 from "@/images/letter/2.svg";
-import number3 from "@/images/letter/3.svg";
-import number4 from "@/images/letter/4.svg";
-import number5 from "@/images/letter/5.svg";
-import number6 from "@/images/letter/6.svg";
-import number7 from "@/images/letter/7.svg";
-import number8 from "@/images/letter/8.svg";
 import type { JSXElement } from "solid-js";
-import { Show } from "solid-js";
+import { Match, Switch } from "solid-js";
 
 type MineCellProperties = {
   readonly field: number;
@@ -31,64 +25,52 @@ type MineCellProperties = {
   readonly y: number;
 };
 const MineCell = (properties: MineCellProperties): JSXElement => {
-  const isClosed = (): boolean => {
-    return properties.field === FieldBomb || properties.field === FieldFlag || properties.field === FieldNoOpen;
-  };
-
-  const imageSource = (): [source: string, style: string] | undefined => {
-    switch (properties.field) {
-      case FieldBomb:
-        return [mine.src, "stroke-slate-900 stroke-2 fill-slate-900"];
-      case FieldFlag:
-        return [flag.src, "stroke-slate-900 stroke-2 fill-red-500"];
-
-      case FieldNumber1:
-        return [number1.src, "stroke-blue-500 stroke-2 fill-none"];
-      case FieldNumber2:
-        return [number2.src, "stroke-green-500 stroke-2 fill-none"];
-      case FieldNumber3:
-        return [number3.src, "stroke-red-500 stroke-2 fill-none"];
-      case FieldNumber4:
-        return [number4.src, "stroke-fuchsia-500 stroke-2 fill-none"];
-      case FieldNumber5:
-        return [number5.src, "stroke-red-800 stroke-2 fill-none"];
-      case FieldNumber6:
-        return [number6.src, "stroke-teal-400 stroke-2 fill-none"];
-      case FieldNumber7:
-        return [number7.src, "stroke-slate-900 stroke-2 fill-none"];
-      case FieldNumber8:
-        return [number8.src, "stroke-stone-500 stroke-2 fill-none"];
-      default:
-        return;
-    }
+  const Closed = (): JSXElement => {
+    return <rect x={properties.x} y={properties.y} height={10} width={10} class="fill-slate-400" />;
   };
 
   return (
     <>
-      <Show when={isClosed()}>
-        <rect x={properties.x} y={properties.y} height={10} width={10} class="fill-slate-400" />
-      </Show>
+      <Switch>
+        <Match when={properties.field === FieldBomb}>
+          <Closed />
+          <Use href={mine.src} x={properties.x} y={properties.y} class="fill-slate-900" />
+        </Match>
+        <Match when={properties.field === FieldFlag}>
+          <Closed />
+          <Use href={flag.src} x={properties.x} y={properties.y} class="fill-red-500" />
+        </Match>
+        <Match when={properties.field === FieldNoOpen}>
+          <Closed />
+        </Match>
 
-      <Show when={imageSource()}>
-        {(source) => (
-          <use
-            href={`${source()[0]}#root`}
-            x={properties.x}
-            y={properties.y}
-            height={10}
-            width={10}
-            class={source()[1]}
-          />
-        )}
-      </Show>
+        <Match when={properties.field === FieldNumber1}>
+          <Numbers number={1} x={properties.x} y={properties.y} class="fill-blue-500" />
+        </Match>
+        <Match when={properties.field === FieldNumber2}>
+          <Numbers number={2} x={properties.x} y={properties.y} class="fill-green-500" />
+        </Match>
+        <Match when={properties.field === FieldNumber3}>
+          <Numbers number={3} x={properties.x} y={properties.y} class="fill-red-500" />
+        </Match>
+        <Match when={properties.field === FieldNumber4}>
+          <Numbers number={4} x={properties.x} y={properties.y} class="fill-fuchsia-500" />
+        </Match>
+        <Match when={properties.field === FieldNumber5}>
+          <Numbers number={5} x={properties.x} y={properties.y} class="fill-red-800" />
+        </Match>
+        <Match when={properties.field === FieldNumber6}>
+          <Numbers number={6} x={properties.x} y={properties.y} class="fill-teal-400" />
+        </Match>
+        <Match when={properties.field === FieldNumber7}>
+          <Numbers number={7} x={properties.x} y={properties.y} class="fill-slate-900" />
+        </Match>
+        <Match when={properties.field === FieldNumber8}>
+          <Numbers number={8} x={properties.x} y={properties.y} class="fill-stone-500" />
+        </Match>
+      </Switch>
 
-      <rect
-        x={properties.x}
-        y={properties.y}
-        height={10}
-        width={10}
-        class="fill-[#00000000] stroke-slate-900 stroke-[0.05]"
-      />
+      <rect x={properties.x} y={properties.y} height={10} width={10} class="fill-none stroke-slate-900 stroke-[0.05]" />
     </>
   );
 };
