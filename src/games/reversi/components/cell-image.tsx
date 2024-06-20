@@ -1,6 +1,4 @@
-import smallStone from "@/images/reversi/stone-small.svg";
-import stone from "@/images/reversi/stone.svg";
-import { Show } from "solid-js";
+import { Match, Switch } from "solid-js";
 import type { JSXElement } from "solid-js";
 import { CellBlack, CellCanMoveBlack, CellCanMoveWhite, CellWhite } from "../const";
 
@@ -10,30 +8,20 @@ type CellImageProperties = {
   readonly y: number;
 };
 export const CellImage = (properties: CellImageProperties): JSXElement => {
-  const source = (): string | undefined => {
-    return {
-      [CellBlack]: stone.src,
-      [CellWhite]: stone.src,
-      [CellCanMoveBlack]: smallStone.src,
-      [CellCanMoveWhite]: smallStone.src,
-    }[properties.square];
-  };
-
-  const style = (): string => {
-    switch (properties.square) {
-      case CellBlack:
-      case CellCanMoveBlack:
-        return "fill-stone-500 stroke-slate-900";
-      default:
-        return "fill-stone-200 stroke-slate-900";
-    }
-  };
-
   return (
-    <Show when={source()}>
-      {(source) => (
-        <use href={`${source()}#root`} x={properties.x} y={properties.y} height={10} width={10} class={style()} />
-      )}
-    </Show>
+    <Switch>
+      <Match when={properties.square === CellBlack}>
+        <circle cx={properties.x + 5} cy={properties.y + 5} r={4} class="fill-stone-800 stroke-slate-900 stroke-[0.5]" />
+      </Match>
+      <Match when={properties.square === CellWhite}>
+        <circle cx={properties.x + 5} cy={properties.y + 5} r={4} class="fill-stone-200 stroke-slate-900 stroke-[0.5]" />
+      </Match>
+      <Match when={properties.square === CellCanMoveBlack}>
+        <circle cx={properties.x + 5} cy={properties.y + 5} r={2} class="fill-stone-700" />
+      </Match>
+      <Match when={properties.square === CellCanMoveWhite}>
+        <circle cx={properties.x + 5} cy={properties.y + 5} r={2} class="fill-stone-200" />
+      </Match>
+    </Switch>
   );
 };

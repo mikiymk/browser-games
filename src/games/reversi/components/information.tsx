@@ -1,5 +1,3 @@
-import { StyledSvg } from "@/components/styled-svg";
-import stone from "@/images/reversi/stone.svg";
 import { Show } from "solid-js";
 import type { JSXElement } from "solid-js";
 import { CellBlack } from "../const";
@@ -17,9 +15,17 @@ export const StoneCount = (properties: StoneProperties): JSXElement => {
     <div class={properties.isNext ? "border-slate-800 border-2 rounded" : ""}>
       <Show
         when={properties.color === CellBlack}
-        fallback={<StyledSvg src={stone.src} alt="white" class="fill-stone-200 stroke-slate-900" />}
+        fallback={
+          <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 inline aspect-square">
+            <title>white</title>
+            <circle cx={30} cy={30} r={25} class="fill-stone-200 stroke-slate-900" />
+          </svg>
+        }
       >
-        <StyledSvg src={stone.src} alt="black" class="fill-stone-500 stroke-slate-900" />
+        <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 inline aspect-square">
+          <title>white</title>
+          <circle cx={30} cy={30} r={25} class="fill-stone-500 stroke-slate-900" />
+        </svg>
       </Show>
 
       {properties.count}
