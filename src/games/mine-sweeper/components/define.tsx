@@ -1,6 +1,7 @@
-import type { JSXElement } from "solid-js";
+import { Use } from "@/components/define/use";
 import flag from "@/images/icon/flag.svg";
 import mine from "@/images/icon/mine.svg";
+import type { JSXElement } from "solid-js";
 
 export const Define = (): JSXElement => {
   return (
@@ -72,22 +73,4 @@ const DefineNumbers = (): JSXElement => {
   );
 };
 
-type MineCountProperties = {
-  readonly count: number;
-
-  readonly x: number;
-  readonly y: number;
-};
-export const MineCount = (properties: MineCountProperties): JSXElement => {
-  return <use href={`#${properties.count}`} x={properties.x} y={properties.y} height={10} width={10} />;
-};
-
-type MineSymbolProperties = {
-  readonly symbol: "close" | "flag" | "mine" | "open";
-
-  readonly x: number;
-  readonly y: number;
-};
-export const MineSymbol = (properties: MineSymbolProperties): JSXElement => {
-  return <use href={`#${properties.symbol}`} x={properties.x} y={properties.y} height={10} width={10} />;
-};
+export const UseSymbol = Use<number | "close" | "flag" | "mine" | "open">;

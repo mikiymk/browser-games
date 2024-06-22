@@ -10,7 +10,7 @@
     "test:wasm": "zig build test",
     "lint": "run-z lint:biome lint:eslint lint:typescript lint:knip",
     "lint:biome": "biome ci .",
-    "lint:biome:fix": "biome check . --apply",
+    "lint:biome:fix": "biome check . --write",
     "lint:eslint": "eslint src --cache",
     "lint:eslint:fix": "eslint src --cache --fix",
     "lint:eslint-timing": "export TIMING=1 || set TIMING=1 && eslint src",

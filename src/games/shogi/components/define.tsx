@@ -1,3 +1,4 @@
+import { Use } from "@/components/define/use";
 import piece from "@/images/shogi/piece.svg";
 import type { JSXElement } from "solid-js";
 
@@ -33,23 +34,48 @@ type DefinePieceProperties = {
 
 const DefinePiece = (properties: DefinePieceProperties): JSXElement => {
   return (
-    <symbol id={properties.id} viewBox="0 0 60 60">
-      <use href={`${piece.src}#root`} height={60} width={60} class="fill-yellow-300 stroke-slate-900" />
-      <text
-        x="30"
-        y="28"
-        class={`font-noto-jp text-[20px] anchor-mid ${properties.promoted === true ? "fill-red-600" : "fill-slate-900"}`}
-      >
-        {properties.pieces[0]}
-      </text>
-      <text
-        x="30"
-        y="50"
-        class={`font-noto-jp text-[20px] anchor-mid ${properties.promoted === true ? "fill-red-600" : "fill-slate-900"}`}
-      >
-        {properties.pieces[1]}
-      </text>
-    </symbol>
+    <>
+      <symbol id={properties.id} viewBox="0 0 60 60">
+        <use href={`${piece.src}#root`} height={60} width={60} class="fill-yellow-300 stroke-slate-900" />
+        <text
+          x="30"
+          y="28"
+          class={`font-noto-jp text-[20px] anchor-mid ${properties.promoted === true ? "fill-red-600" : "fill-slate-900"}`}
+        >
+          {properties.pieces[0]}
+        </text>
+        <text
+          x="30"
+          y="50"
+          class={`font-noto-jp text-[20px] anchor-mid ${properties.promoted === true ? "fill-red-600" : "fill-slate-900"}`}
+        >
+          {properties.pieces[1]}
+        </text>
+      </symbol>
+
+      <symbol id={`${properties.id}-rev`} viewBox="0 0 60 60">
+        <use
+          href={`${piece.src}#root`}
+          height={60}
+          width={60}
+          class="fill-yellow-300 stroke-slate-900 rotate-180 translate-x-full translate-y-full"
+        />
+        <text
+          x="30"
+          y="28"
+          class={`font-noto-jp text-[20px] anchor-mid ${properties.promoted === true ? "fill-red-600" : "fill-slate-900"} rotate-180 translate-x-full translate-y-full`}
+        >
+          {properties.pieces[0]}
+        </text>
+        <text
+          x="30"
+          y="50"
+          class={`font-noto-jp text-[20px] anchor-mid ${properties.promoted === true ? "fill-red-600" : "fill-slate-900"} rotate-180 translate-x-full translate-y-full`}
+        >
+          {properties.pieces[1]}
+        </text>
+      </symbol>
+    </>
   );
 };
 
@@ -62,13 +88,6 @@ type UsePieceProperties = {
 };
 export const UsePiece = (properties: UsePieceProperties): JSXElement => {
   return (
-    <use
-      href={`#${properties.piece}`}
-      height={10}
-      width={10}
-      x={properties.x}
-      y={properties.y}
-      transform={properties.rotate ? "" : `rotate(180, ${properties.x + 5}, ${properties.y + 5})`}
-    />
+    <Use id={properties.rotate ? properties.piece : `${properties.piece}-rev`} x={properties.x} y={properties.y} />
   );
 };

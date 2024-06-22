@@ -1,11 +1,5 @@
-import { Show } from "solid-js";
-import type { JSXElement } from "solid-js";
-import bishop from "@/images/chess/bishop.svg";
-import king from "@/images/chess/king.svg";
-import knight from "@/images/chess/knight.svg";
-import pawn from "@/images/chess/pawn.svg";
-import queen from "@/images/chess/queen.svg";
-import rook from "@/images/chess/rook.svg";
+import { DefineUse } from "@/components/define/define-use";
+import { Use } from "@/components/define/use";
 import {
   CellBlackBishop,
   CellBlackKing,
@@ -20,6 +14,13 @@ import {
   CellWhiteQueen,
   CellWhiteRook,
 } from "@/games/chess/constants";
+import bishop from "@/images/chess/bishop.svg";
+import king from "@/images/chess/king.svg";
+import knight from "@/images/chess/knight.svg";
+import pawn from "@/images/chess/pawn.svg";
+import queen from "@/images/chess/queen.svg";
+import rook from "@/images/chess/rook.svg";
+import type { JSXElement } from "solid-js";
 
 export const DefinePieces = (): JSXElement => {
   return (
@@ -58,16 +59,15 @@ const DefinePiece = (properties: DefinePieceProperties): JSXElement => {
       rook: rook.src,
     } as const;
 
-    return `${sourceFiles[properties.name]}#root`;
+    return sourceFiles[properties.name];
   };
 
   return (
-    <symbol id={`${properties.color}-${properties.name}`} viewBox="0 0 60 60">
-      <use
-        href={pieceImage()}
-        class={properties.color === "black" ? "fill-stone-500 stroke-slate-900" : "fill-stone-200 stroke-slate-900"}
-      />
-    </symbol>
+    <DefineUse
+      id={`${properties.color}-${properties.name}`}
+      href={pieceImage()}
+      class={properties.color === "black" ? "fill-stone-500 stroke-slate-900" : "fill-stone-200 stroke-slate-900"}
+    />
   );
 };
 
@@ -96,9 +96,6 @@ export const UsePiece = (properties: PieceProperties): JSXElement => {
 
     return ids[properties.piece];
   };
-  return (
-    <Show when={id()}>
-      {(id) => <use href={`#${id()}`} x={properties.x} y={properties.y} height={10} width={10} />}
-    </Show>
-  );
+
+  return <Use id={id()} x={properties.x} y={properties.y} />;
 };

@@ -1,8 +1,7 @@
 import { Board } from "@/components/board/board";
 import { FieldBomb, FieldFlag, FieldNoOpen, FieldOpen } from "@/games/mine-sweeper/consts";
 import type { JSXElement } from "solid-js";
-import { Show } from "solid-js";
-import { MineCount, MineSymbol } from "./define";
+import { UseSymbol } from "./define";
 
 type MineCellProperties = {
   readonly field: number;
@@ -10,24 +9,20 @@ type MineCellProperties = {
   readonly y: number;
 };
 const MineCell = (properties: MineCellProperties): JSXElement => {
-  const id = (): "close" | "flag" | "mine" | "open" | undefined => {
+  const id = (): number | "close" | "flag" | "mine" | "open" => {
     return (
-      {
-        [FieldBomb]: "mine",
-        [FieldFlag]: "flag",
-        [FieldNoOpen]: "close",
-        [FieldOpen]: "open",
-      } as const
-    )[properties.field];
+      (
+        {
+          [FieldBomb]: "mine",
+          [FieldFlag]: "flag",
+          [FieldNoOpen]: "close",
+          [FieldOpen]: "open",
+        } as const
+      )[properties.field] ?? properties.field
+    );
   };
 
-  return (
-    <>
-      <Show when={id()} fallback={<MineCount count={properties.field} x={properties.x} y={properties.y} />}>
-        {(id) => <MineSymbol symbol={id()} x={properties.x} y={properties.y} />}
-      </Show>
-    </>
-  );
+  return <UseSymbol id={id()} x={properties.x} y={properties.y} />;
 };
 
 type MineFieldsProperties = {

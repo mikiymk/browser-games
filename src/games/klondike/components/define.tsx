@@ -1,3 +1,4 @@
+import { DefineUse } from "@/components/define/define-use";
 import back from "@/images/card/back.svg";
 import club from "@/images/card/club.svg";
 import diamond from "@/images/card/diamond.svg";
@@ -84,30 +85,18 @@ export const DefineCards = (): JSXElement => {
 const DefineSuits = (): JSXElement => {
   return (
     <>
-      <symbol id="spade" viewBox="0 0 60 60">
-        <use href={`${spade.src}#root`} class="fill-slate-900" />
-      </symbol>
-      <symbol id="spade-rev" viewBox="0 0 60 60">
-        <use href={`${spade.src}#root`} class="fill-slate-900 rotate-180 translate-x-full translate-y-full" />
-      </symbol>
-      <symbol id="heart" viewBox="0 0 60 60">
-        <use href={`${heart.src}#root`} class="fill-red-500" />
-      </symbol>
-      <symbol id="heart-rev" viewBox="0 0 60 60">
-        <use href={`${heart.src}#root`} class="fill-red-500 rotate-180 translate-x-full translate-y-full" />
-      </symbol>
-      <symbol id="diamond" viewBox="0 0 60 60">
-        <use href={`${diamond.src}#root`} class="fill-red-500" />
-      </symbol>
-      <symbol id="diamond-rev" viewBox="0 0 60 60">
-        <use href={`${diamond.src}#root`} class="fill-red-500 rotate-180 translate-x-full translate-y-full" />
-      </symbol>
-      <symbol id="club" viewBox="0 0 60 60">
-        <use href={`${club.src}#root`} class="fill-slate-900" />
-      </symbol>
-      <symbol id="club-rev" viewBox="0 0 60 60">
-        <use href={`${club.src}#root`} class="fill-slate-900 rotate-180 translate-x-full translate-y-full" />
-      </symbol>
+      <DefineUse id="spade" href={spade.src} class="fill-slate-900" />
+      <DefineUse id="spade-rev" href={spade.src} class="fill-slate-900 rotate-180 translate-x-full translate-y-full" />
+      <DefineUse id="heart" href={heart.src} class="fill-red-500" />
+      <DefineUse id="heart-rev" href={heart.src} class="fill-red-500 rotate-180 translate-x-full translate-y-full" />
+      <DefineUse id="diamond" href={diamond.src} class="fill-red-500" />
+      <DefineUse
+        id="diamond-rev"
+        href={diamond.src}
+        class="fill-red-500 rotate-180 translate-x-full translate-y-full"
+      />
+      <DefineUse id="club" href={club.src} class="fill-slate-900" />
+      <DefineUse id="club-rev" href={club.src} class="fill-slate-900 rotate-180 translate-x-full translate-y-full" />
     </>
   );
 };
