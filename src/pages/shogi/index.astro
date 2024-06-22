@@ -1,6 +1,7 @@
 ---
 import Head from "@/components/head.astro";
 import { App } from "@/games/shogi/components/app";
+import { Define } from "@/games/shogi/components/define";
 
 const pieceNames = [
   "歩兵",
@@ -29,5 +30,6 @@ const pieceNameKanji = [...new Set(pieceNames.flatMap((name) => [...name]))].toS
 />
 
 <div class="text-slate-800">
+    <Define />
     <App client:load />
 </div>

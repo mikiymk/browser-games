@@ -1,29 +1,7 @@
 import { Board } from "@/components/board/board";
-import {
-  FieldBomb,
-  FieldFlag,
-  FieldNoOpen,
-  FieldNumber1,
-  FieldNumber2,
-  FieldNumber3,
-  FieldNumber4,
-  FieldNumber5,
-  FieldNumber6,
-  FieldNumber7,
-  FieldNumber8,
-} from "@/games/mine-sweeper/consts";
-import flag from "@/images/icon/flag.svg";
-import mine from "@/images/icon/mine.svg";
-import number1 from "@/images/letter/1.svg";
-import number2 from "@/images/letter/2.svg";
-import number3 from "@/images/letter/3.svg";
-import number4 from "@/images/letter/4.svg";
-import number5 from "@/images/letter/5.svg";
-import number6 from "@/images/letter/6.svg";
-import number7 from "@/images/letter/7.svg";
-import number8 from "@/images/letter/8.svg";
+import { FieldBomb, FieldFlag, FieldNoOpen, FieldOpen } from "@/games/mine-sweeper/consts";
 import type { JSXElement } from "solid-js";
-import { Show } from "solid-js";
+import { UseSymbol } from "./define";
 
 type MineCellProperties = {
   readonly field: number;
@@ -31,66 +9,20 @@ type MineCellProperties = {
   readonly y: number;
 };
 const MineCell = (properties: MineCellProperties): JSXElement => {
-  const isClosed = (): boolean => {
-    return properties.field === FieldBomb || properties.field === FieldFlag || properties.field === FieldNoOpen;
+  const id = (): number | "close" | "flag" | "mine" | "open" => {
+    return (
+      (
+        {
+          [FieldBomb]: "mine",
+          [FieldFlag]: "flag",
+          [FieldNoOpen]: "close",
+          [FieldOpen]: "open",
+        } as const
+      )[properties.field] ?? properties.field
+    );
   };
 
-  const imageSource = (): [source: string, style: string] | undefined => {
-    switch (properties.field) {
-      case FieldBomb:
-        return [mine.src, "stroke-slate-900 stroke-2 fill-slate-900"];
-      case FieldFlag:
-        return [flag.src, "stroke-slate-900 stroke-2 fill-red-500"];
-
-      case FieldNumber1:
-        return [number1.src, "stroke-blue-500 stroke-2 fill-none"];
-      case FieldNumber2:
-        return [number2.src, "stroke-green-500 stroke-2 fill-none"];
-      case FieldNumber3:
-        return [number3.src, "stroke-red-500 stroke-2 fill-none"];
-      case FieldNumber4:
-        return [number4.src, "stroke-fuchsia-500 stroke-2 fill-none"];
-      case FieldNumber5:
-        return [number5.src, "stroke-red-800 stroke-2 fill-none"];
-      case FieldNumber6:
-        return [number6.src, "stroke-teal-400 stroke-2 fill-none"];
-      case FieldNumber7:
-        return [number7.src, "stroke-slate-900 stroke-2 fill-none"];
-      case FieldNumber8:
-        return [number8.src, "stroke-stone-500 stroke-2 fill-none"];
-      default:
-        return;
-    }
-  };
-
-  return (
-    <>
-      <Show when={isClosed()}>
-        <rect x={properties.x} y={properties.y} height={10} width={10} class="fill-slate-400" />
-      </Show>
-
-      <Show when={imageSource()}>
-        {(source) => (
-          <use
-            href={`${source()[0]}#root`}
-            x={properties.x}
-            y={properties.y}
-            height={10}
-            width={10}
-            class={source()[1]}
-          />
-        )}
-      </Show>
-
-      <rect
-        x={properties.x}
-        y={properties.y}
-        height={10}
-        width={10}
-        class="fill-[#00000000] stroke-slate-900 stroke-[0.05]"
-      />
-    </>
-  );
+  return <UseSymbol id={id()} x={properties.x} y={properties.y} />;
 };
 
 type MineFieldsProperties = {

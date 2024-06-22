@@ -1,10 +1,12 @@
 ---
 import Head from "@/components/head.astro";
 import { App } from "@/games/chess/components/app";
+import { DefinePieces } from "@/games/chess/components/define";
 ---
 
 <Head title="Chess" />
 
 <div class="text-slate-800">
+    <DefinePieces />
     <App client:load />
 </div>
