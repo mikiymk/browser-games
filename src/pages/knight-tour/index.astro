@@ -1,6 +1,7 @@
 ---
 import Head from "@/components/head.astro";
 import { App } from "@/games/knight-tour/components/app";
+import { Define } from "@/games/knight-tour/components/define";
 ---
 
 <Head title="Knight's Tour" />
@@ -10,5 +11,6 @@ import { App } from "@/games/knight-tour/components/app";
 />
 
 <div class="text-slate-800">
+    <Define />
     <App client:load />
 </div>

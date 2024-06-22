@@ -6,7 +6,8 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        noto: ["Noto Sans JP", "sans-serif"],
+        "noto": ["Noto Sans", "sans-serif"],
+        "noto-jp": ["Noto Sans JP", "sans-serif"],
         "noto-emoji": ["Noto Color Emoji", "sans-serif"],
       },
     },

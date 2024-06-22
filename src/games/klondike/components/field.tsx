@@ -2,7 +2,7 @@ import { For, Show } from "solid-js";
 import type { JSXElement } from "solid-js";
 import type { Card } from "../card";
 import type { Select } from "../klondike";
-import { CardFront } from "./card";
+import { UseCard } from "./define";
 
 type FieldProperties = {
   readonly stock: {
@@ -73,7 +73,7 @@ const FieldStock = (properties: FieldStockProperties): JSXElement => {
       <Show
         when={properties.closed.length}
         fallback={
-          <CardFront
+          <UseCard
             card="empty"
             x={10}
             y={10}
@@ -83,7 +83,7 @@ const FieldStock = (properties: FieldStockProperties): JSXElement => {
           />
         }
       >
-        <CardFront
+        <UseCard
           card="back"
           x={10}
           y={10}
@@ -92,9 +92,9 @@ const FieldStock = (properties: FieldStockProperties): JSXElement => {
           }}
         />
       </Show>
-      <Show when={properties.opened.at(-1)} fallback={<CardFront card="empty" x={45} y={10} />}>
+      <Show when={properties.opened.at(-1)} fallback={<UseCard card="empty" x={45} y={10} />}>
         {(card) => (
-          <CardFront
+          <UseCard
             card={card()}
             x={45}
             y={10}
@@ -127,7 +127,7 @@ const FieldTableau = (properties: FieldTableauProperties): JSXElement => {
     <Show
       when={properties.opened.length > 0 || properties.closed.length > 0}
       fallback={
-        <CardFront
+        <UseCard
           card="empty"
           x={x()}
           y={50}
@@ -137,10 +137,10 @@ const FieldTableau = (properties: FieldTableauProperties): JSXElement => {
         />
       }
     >
-      <For each={properties.closed}>{(_, index) => <CardFront card="back" x={x()} y={50 + index() * 5} />}</For>
+      <For each={properties.closed}>{(_, index) => <UseCard card="back" x={x()} y={50 + index() * 5} />}</For>
       <For each={properties.opened}>
         {(card, index) => (
-          <CardFront
+          <UseCard
             card={card}
             x={x()}
             y={50 + (properties.closed.length + index()) * 5}
@@ -177,7 +177,7 @@ const FieldFoundations = (properties: FieldFoundationsProperties): JSXElement =>
         <Show
           when={foundation.at(-1)}
           fallback={
-            <CardFront
+            <UseCard
               card="empty"
               x={115 + index() * 35}
               y={10}
@@ -188,7 +188,7 @@ const FieldFoundations = (properties: FieldFoundationsProperties): JSXElement =>
           }
         >
           {(card) => (
-            <CardFront
+            <UseCard
               card={card()}
               x={115 + index() * 35}
               y={10}

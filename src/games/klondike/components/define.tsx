@@ -13,6 +13,8 @@ export const DefineCards = (): JSXElement => {
     <svg viewBox="0 0 0 0" xmlns="http://www.w3.org/2000/svg" class="hidden">
       <title>define cards</title>
 
+      <DefineSuits />
+
       <DefineCard suit="club" rank={1} />
       <DefineCard suit="club" rank={2} />
       <DefineCard suit="club" rank={3} />
@@ -68,7 +70,45 @@ export const DefineCards = (): JSXElement => {
       <DefineCard suit="spade" rank={11} />
       <DefineCard suit="spade" rank={12} />
       <DefineCard suit="spade" rank={13} />
+
+      <symbol id="back" viewBox="0 0 100 156">
+        <use href={`${back.src}#root`} height={156} width={100} />
+      </symbol>
+      <symbol id="empty" viewBox="0 0 100 156">
+        <use href={`${empty.src}#root`} height={156} width={100} />
+      </symbol>
     </svg>
+  );
+};
+
+const DefineSuits = (): JSXElement => {
+  return (
+    <>
+      <symbol id="spade" viewBox="0 0 60 60">
+        <use href={`${spade.src}#root`} class="fill-slate-900" />
+      </symbol>
+      <symbol id="spade-rev" viewBox="0 0 60 60">
+        <use href={`${spade.src}#root`} class="fill-slate-900 rotate-180 translate-x-full translate-y-full" />
+      </symbol>
+      <symbol id="heart" viewBox="0 0 60 60">
+        <use href={`${heart.src}#root`} class="fill-red-500" />
+      </symbol>
+      <symbol id="heart-rev" viewBox="0 0 60 60">
+        <use href={`${heart.src}#root`} class="fill-red-500 rotate-180 translate-x-full translate-y-full" />
+      </symbol>
+      <symbol id="diamond" viewBox="0 0 60 60">
+        <use href={`${diamond.src}#root`} class="fill-red-500" />
+      </symbol>
+      <symbol id="diamond-rev" viewBox="0 0 60 60">
+        <use href={`${diamond.src}#root`} class="fill-red-500 rotate-180 translate-x-full translate-y-full" />
+      </symbol>
+      <symbol id="club" viewBox="0 0 60 60">
+        <use href={`${club.src}#root`} class="fill-slate-900" />
+      </symbol>
+      <symbol id="club-rev" viewBox="0 0 60 60">
+        <use href={`${club.src}#root`} class="fill-slate-900 rotate-180 translate-x-full translate-y-full" />
+      </symbol>
+    </>
   );
 };
 
@@ -77,15 +117,8 @@ type DefineCardProperties = {
   readonly rank: Rank;
 };
 const DefineCard = (properties: DefineCardProperties): JSXElement => {
-  const suitImage = (): string => {
-    const suitImages = {
-      club,
-      diamond,
-      heart,
-      spade,
-    };
-
-    return `${suitImages[properties.suit].src}#root`;
+  const suitImage = (rotate: boolean): string => {
+    return `#${properties.suit}${rotate ? "-rev" : ""}`;
   };
 
   const isRed = (): boolean => {
@@ -99,12 +132,11 @@ const DefineCard = (properties: DefineCardProperties): JSXElement => {
   };
   const UseSuit = (properties: UseSuitProperties): JSXElement => (
     <use
-      href={suitImage()}
+      href={suitImage(properties.rotate === true)}
       x={properties.x - 15}
       y={properties.y - 15}
       height={30}
       width={30}
-      transform={properties.rotate === true ? `rotate(180, ${properties.x}, ${properties.y})` : ""}
       class={isRed() ? "fill-red-500" : "fill-slate-900"}
     />
   );
@@ -118,7 +150,7 @@ const DefineCard = (properties: DefineCardProperties): JSXElement => {
         x={50}
         y={88}
         text-anchor="middle"
-        class={`font-noto font-[25px] ${isRed() ? "fill-red-500" : "fill-slate-900"}`}
+        class={`font-noto-jp font-[25px] ${isRed() ? "fill-red-500" : "fill-slate-900"}`}
       >
         {properties.children}
       </text>
@@ -129,8 +161,15 @@ const DefineCard = (properties: DefineCardProperties): JSXElement => {
     <symbol id={`${properties.suit}-${properties.rank}`} viewBox="0 0 100 156">
       <rect x={0} y={0} height={156} width={100} rx={10} ry={10} class="fill-slate-200 stroke-slate-900" />
 
-      <use href={suitImage()} x={4} y={7} height={16} width={16} class={isRed() ? "fill-red-500" : "fill-slate-900"} />
-      <text x={22} y={20} class={`font-noto font-[16px] ${isRed() ? "fill-red-500" : "fill-slate-900"}`}>
+      <use
+        href={`#${properties.suit}`}
+        x={4}
+        y={7}
+        height={16}
+        width={16}
+        class={isRed() ? "fill-red-500" : "fill-slate-900"}
+      />
+      <text x={22} y={20} class={`font-noto-jp font-[16px] ${isRed() ? "fill-red-500" : "fill-slate-900"}`}>
         {properties.rank}
       </text>
 
@@ -211,18 +250,18 @@ const DefineCard = (properties: DefineCardProperties): JSXElement => {
           <UseSuit x={70} y={123} rotate />
         </Match>
         <Match when={properties.rank === 11}>
-          <UseSuit x={50} y={33} />
           <UseSuit x={50} y={123} />
           <UseText>Jack</UseText>
         </Match>
         <Match when={properties.rank === 12}>
-          <UseSuit x={50} y={33} />
-          <UseSuit x={50} y={123} />
+          <UseSuit x={30} y={123} />
+          <UseSuit x={70} y={123} />
           <UseText>Queen</UseText>
         </Match>
         <Match when={properties.rank === 13}>
-          <UseSuit x={50} y={33} />
+          <UseSuit x={20} y={123} />
           <UseSuit x={50} y={123} />
+          <UseSuit x={80} y={123} />
           <UseText>King</UseText>
         </Match>
       </Switch>
@@ -230,7 +269,7 @@ const DefineCard = (properties: DefineCardProperties): JSXElement => {
   );
 };
 
-type CardFrontProperties = {
+type UseCardProperties = {
   readonly card: Card | "back" | "empty";
 
   readonly x: number;
@@ -241,22 +280,11 @@ type CardFrontProperties = {
 
   readonly selected?: boolean;
 };
-export const CardFront = (properties: CardFrontProperties): JSXElement => {
-  const href = (): string => {
-    const { card } = properties;
-
-    if (card === "back") {
-      return `${back.src}#root`;
-    }
-    if (card === "empty") {
-      return `${empty.src}#root`;
-    }
-    return `#${card}`;
-  };
+export const UseCard = (properties: UseCardProperties): JSXElement => {
   return (
     <>
       <use
-        href={href()}
+        href={`#${properties.card}`}
         x={properties.x}
         y={properties.y}
         height={31.2}

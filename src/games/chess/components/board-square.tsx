@@ -1,27 +1,6 @@
-import {
-  CellBlackBishop,
-  CellBlackKing,
-  CellBlackKnight,
-  CellBlackPawn,
-  CellBlackQueen,
-  CellBlackRook,
-  CellWhiteBishop,
-  CellWhiteKing,
-  CellWhiteKnight,
-  CellWhitePawn,
-  CellWhiteQueen,
-  CellWhiteRook,
-  MoveFrom,
-  MoveTarget,
-} from "@/games/chess/constants";
-import bishop from "@/images/chess/bishop.svg";
-import king from "@/images/chess/king.svg";
-import knight from "@/images/chess/knight.svg";
-import pawn from "@/images/chess/pawn.svg";
-import queen from "@/images/chess/queen.svg";
-import rook from "@/images/chess/rook.svg";
+import { MoveFrom, MoveTarget } from "@/games/chess/constants";
 import type { JSXElement } from "solid-js";
-import { Show } from "solid-js";
+import { UsePiece } from "./define";
 
 type BoardSquareProperties = {
   readonly piece: number;
@@ -31,47 +10,6 @@ type BoardSquareProperties = {
 };
 
 export const BoardSquare = (properties: BoardSquareProperties): JSXElement => {
-  const pieceStyle = (): string =>
-    properties.piece === CellBlackPawn ||
-    properties.piece === CellBlackKnight ||
-    properties.piece === CellBlackBishop ||
-    properties.piece === CellBlackRook ||
-    properties.piece === CellBlackQueen ||
-    properties.piece === CellBlackKing
-      ? "fill-stone-500 stroke-slate-900"
-      : "fill-stone-200 stroke-slate-900";
-
-  const pieceHref = (): string | undefined => {
-    switch (properties.piece) {
-      case CellBlackPawn:
-      case CellWhitePawn:
-        return `${pawn.src}#root`;
-
-      case CellBlackKnight:
-      case CellWhiteKnight:
-        return `${knight.src}#root`;
-
-      case CellBlackBishop:
-      case CellWhiteBishop:
-        return `${bishop.src}#root`;
-
-      case CellBlackRook:
-      case CellWhiteRook:
-        return `${rook.src}#root`;
-
-      case CellBlackQueen:
-      case CellWhiteQueen:
-        return `${queen.src}#root`;
-
-      case CellBlackKing:
-      case CellWhiteKing:
-        return `${king.src}#root`;
-
-      default:
-        return;
-    }
-  };
-
   const markStyle = (): string | undefined =>
     properties.mark === MoveTarget
       ? "cursor-pointer fill-orange-500"
@@ -82,9 +20,7 @@ export const BoardSquare = (properties: BoardSquareProperties): JSXElement => {
   return (
     <>
       <rect x={properties.x + 1} y={properties.y + 1} height={8} width={8} class={markStyle()} />
-      <Show when={pieceHref()}>
-        {(href) => <use href={href()} x={properties.x} y={properties.y} height={10} width={10} class={pieceStyle()} />}
-      </Show>
+      <UsePiece piece={properties.piece} x={properties.x} y={properties.y} />
     </>
   );
 };
