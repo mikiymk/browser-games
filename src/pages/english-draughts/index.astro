@@ -1,0 +1,12 @@
+---
+import Head from "@/components/head.astro";
+import { App } from "@/games/english-draughts/components/app";
+import { DefinePieces } from "@/games/english-draughts/components/define";
+---
+
+<Head title="English Draughts" />
+<DefinePieces />
+
+<div class="text-slate-800">
+    <App client:load />
+</div>
