@@ -1,25 +1,43 @@
 import { Board } from "@/components/board/board";
+import { PageBody } from "@/components/page-body/page-body";
+import { PageHeader } from "@/components/page-header/page-header";
+import { StartButton } from "@/components/page-header/start-button";
+import board from "@/images/chess/board.svg";
 import { createSignal } from "solid-js";
 import type { JSXElement } from "solid-js";
-import board from "@/images/chess/board.svg";
-import { PageHeader } from "@/components/page-header/page-header";
-import { PageBody } from "@/components/page-body/page-body";
-import { UsePiece } from "./define";
-import { StartButton } from "@/components/page-header/start-button";
 import { initialBoard } from "../constants";
+import { gameLoop } from "../game-loop";
+import { UsePiece } from "./define";
 
 export const App = (): JSXElement => {
   const [boardData, setBoard] = createSignal<number[]>(Array.from({ length: 64 }, () => 0));
 
-  const handleStart = (): void => {
-    console.log("start");
+  let terminate: (() => void) | undefined;
 
+  const handleStart = (): void => {
     setBoard(initialBoard);
+
+    terminate?.();
+
+    const wasmObject = wasm();
+    if (wasmObject === undefined) {
+      return;
+    }
+
+    terminate = gameLoop(wasmObject, {
+      setColor,
+      setPiece,
+      setEnd,
+      setMark,
+      humanInput,
+      players: {
+        white: white(),
+        black: black(),
+      },
+    });
   };
 
   const handleClick = (square: number, index: number): void => {
-    console.log("clicked", { square, index });
-
     setBoard((previous) => previous.with(index, (square + 1) % 3));
   };
 

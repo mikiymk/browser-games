@@ -69,3 +69,6 @@ export const initialBoard = [
   WhitePlayer,
   Empty,
 ];
+
+export const MoveTarget = 5;
+export const NotEnd = 0;
