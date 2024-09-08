@@ -30,7 +30,7 @@ export type WasmConnect = {
 };
 
 export const getWasm = async (): Promise<WasmConnect> => {
-  const wasm = await WebAssembly.instantiateStreaming(fetch(`${import.meta.env.BASE_URL}/wasm/chess.wasm`));
+  const wasm = await WebAssembly.instantiateStreaming(fetch(`${import.meta.env.BASE_URL}/wasm/english-draughts.wasm`));
 
   const exports = wasm.instance.exports as WasmExports;
 
