@@ -6,13 +6,11 @@ const Game = draughts.Game;
 
 // common import
 const common = @import("libs/common/main.zig");
-
-/// アロケーター
-const allocator = if (builtin.target.isWasm()) std.heap.wasm_allocator else std.heap.page_allocator;
+const a = common.allocator;
 
 /// ゲームを開始する
 export fn init() ?*Game {
-    const ptr = allocator.create(Game) catch return null;
+    const ptr = a.create(Game) catch return null;
     ptr.* = .{};
 
     return ptr;

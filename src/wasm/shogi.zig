@@ -2,14 +2,12 @@ const std = @import("std");
 const builtin = @import("builtin");
 const shogi = @import("libs/shogi/main.zig");
 const common = @import("libs/common/main.zig");
-
-/// アロケーター
-const allocator = if (builtin.target.isWasm()) std.heap.wasm_allocator else std.heap.page_allocator;
+const a = common.allocator;
 
 /// ゲームを作成する
 /// メモリが足りない場合はnullを返す
 export fn init() ?*shogi.Game {
-    const game_ptr = allocator.create(shogi.Game) catch return null;
+    const game_ptr = a.create(shogi.Game) catch return null;
     game_ptr.* = shogi.Game.init();
 
     return game_ptr;
@@ -18,12 +16,12 @@ export fn init() ?*shogi.Game {
 /// ゲームを削除する
 /// メモリを解放する
 export fn deinit(game: *shogi.Game) void {
-    allocator.destroy(game);
+    a.destroy(game);
 }
 
 /// ボードのメモリを作成する
 export fn initBoard() ?[*]u8 {
-    const board_ptr = allocator.alloc(u8, 81) catch return null;
+    const board_ptr = a.alloc(u8, 81) catch return null;
     for (board_ptr) |*square| {
         square.* = 0;
     }
@@ -33,7 +31,7 @@ export fn initBoard() ?[*]u8 {
 
 /// ボードのメモリを解放する
 export fn deinitBoard(board: [*]u8) void {
-    allocator.free(board[0..81]);
+    a.free(board[0..81]);
 }
 
 /// ボードのメモリを設定する

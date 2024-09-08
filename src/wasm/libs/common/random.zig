@@ -11,6 +11,6 @@ const S = struct {
 };
 
 pub const random = S.rand;
-pub fn getRamdom() f64 {
+pub fn getRandom() f64 {
     return S.rand.float(f64);
 }
