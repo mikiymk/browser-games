@@ -1,1 +1,1 @@
-pub const Game = struct {};
+pub const Game = @import("Game.zig");
