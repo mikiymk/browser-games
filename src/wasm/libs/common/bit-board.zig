@@ -268,6 +268,12 @@ pub fn BitBoard(comptime height: u16, comptime width: u16) type {
             };
         }
 
+        /// selfのindex番目のビットを反転する。
+        /// `self ^= 1 << index;`
+        pub fn setToggleIndex(self: *Self, index: usize) void {
+            self.board.set(index);
+        }
+
         /// すべてのビットを反転する。
         /// `self = ~self;`
         pub fn setInverse(self: *Self) void {
