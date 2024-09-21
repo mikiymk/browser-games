@@ -10,9 +10,9 @@ const BitBoard = draughts.BitBoard;
 // common import
 const common = @import("../common/main.zig");
 
-pub const Color = enum {
+pub const Color = enum(u8) {
     /// 先に動かすプレイヤー
-    white,
+    white = 1,
 
     /// 後に動かすプレイヤー
     black,
@@ -51,4 +51,13 @@ pub fn init(a: Allocator) !Game {
 pub fn deinit(self: Game, a: Allocator) void {
     _ = self;
     _ = a;
+}
+
+/// 指定した色のボード状態を取得する
+pub fn getBoard(self: Game, color: Color) BitBoard {
+    return self.board.getBoard(color);
+}
+
+pub fn getColor(self: Game) Color {
+    return self.next_color;
 }

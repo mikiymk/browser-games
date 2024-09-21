@@ -50,3 +50,8 @@ pub fn initFromString(a: Allocator, str: []const u8) @This() {
 
     return init(a, board_white, board_black);
 }
+
+/// 指定した色のボード状態を取得する
+pub fn getBoard(self: Board, color: Color) BitBoard {
+    return self.boards.get(color);
+}
