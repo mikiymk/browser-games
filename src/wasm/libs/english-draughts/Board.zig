@@ -41,6 +41,40 @@ pub fn getBoard(self: Board, color: Color) BitBoard {
     return self.boards.get(color);
 }
 
+/// 指定した場所の駒の色を取得する
+pub fn getColor(self: Board, position: BitBoard) ?Color {
+    const white_board = self.getBoard(.white);
+    const black_board = self.getBoard(.black);
+
+    if (position.isJoint(white_board)) {
+        return .white;
+    } else if (position.isJoint(black_board)) {
+        return .black;
+    } else {
+        return null;
+    }
+}
+
+test getColor {
+    const a = std.testing.allocator;
+    const board_str =
+        \\........
+        \\........
+        \\.....o..
+        \\........
+        \\........
+        \\..x.....
+        \\........
+        \\........
+    ;
+
+    const board = Board.initFromString(a, board_str);
+
+    try std.testing.expectEqual(.white, board.getColor(BitBoard.fromCoordinate(5, 5)));
+    try std.testing.expectEqual(.black, board.getColor(BitBoard.fromCoordinate(2, 2)));
+    try std.testing.expectEqual(null, board.getColor(BitBoard.fromCoordinate(4, 4)));
+}
+
 /// 指定した座標の駒が移動できる範囲を取得する。
 pub fn getMoveWark(self: Board, position: BitBoard, color: Color) BitBoard {
     const ally_board = self.getBoard(color);
