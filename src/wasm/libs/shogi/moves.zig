@@ -255,8 +255,8 @@ pub fn bishop(board: Board, from: BitBoard, color: Color) BitBoard {
     var to_nw_se = from;
 
     for (0..7) |_| {
-        to_ne_sw.setUnion(to_ne_sw.move(.nesw).masks(mask));
-        to_nw_se.setUnion(to_nw_se.move(.nwse).masks(mask));
+        to_ne_sw.setUnion(to_ne_sw.moveMultiple(&.{ .ne, .sw }).masks(mask));
+        to_nw_se.setUnion(to_nw_se.moveMultiple(&.{ .nw, .se }).masks(mask));
     }
 
     to_ne_sw.setUnion(to_ne_sw.move(.ne).masks(west_mask).unions(to_ne_sw.move(.sw).masks(east_mask)));
@@ -277,8 +277,8 @@ pub fn promotedBishop(board: Board, from: BitBoard, color: Color) BitBoard {
     var to_nw_se = from;
 
     for (0..7) |_| {
-        to_ne_sw.setUnion(to_ne_sw.move(.nesw).masks(mask));
-        to_nw_se.setUnion(to_nw_se.move(.nwse).masks(mask));
+        to_ne_sw.setUnion(to_ne_sw.moveMultiple(&.{ .ne, .sw }).masks(mask));
+        to_nw_se.setUnion(to_nw_se.moveMultiple(&.{ .nw, .se }).masks(mask));
     }
 
     to_ne_sw.setUnion(to_ne_sw.move(.ne).masks(west_mask).unions(to_ne_sw.move(.sw).masks(east_mask)));

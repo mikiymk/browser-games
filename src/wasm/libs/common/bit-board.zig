@@ -104,7 +104,7 @@ pub fn BitBoard(comptime height: u16, comptime width: u16) type {
         ///
         /// 範囲外のものが1つでもあると0を返す
         pub fn fromString(str: []const u8, piece_symbol: u8) Self {
-            assert(str.len == size + height - 1);
+            assert(str.len == string_size);
 
             var board: Board = Board.initEmpty();
             var char_count: UCharLength = 0;
@@ -296,26 +296,29 @@ pub fn BitBoard(comptime height: u16, comptime width: u16) type {
             };
         }
 
-        pub const Direction = enum { n, s, e, w, nw, ne, sw, se, ns, ew, nesw, nwse };
+        pub const Direction = enum { n, s, e, w, nw, ne, sw, se };
         pub fn move(self: Self, direction: Direction) Self {
             const length: Index = switch (direction) {
-                .n, .s, .ns => width,
-                .e, .w, .ew => 1,
-                .ne, .sw, .nesw => width - 1,
-                .nw, .se, .nwse => width + 1,
+                .n, .s => width,
+                .e, .w => 1,
+                .ne, .sw => width - 1,
+                .nw, .se => width + 1,
             };
 
             switch (direction) {
-                .n, .w, .ne, .nw => {
-                    return self.shr(length);
-                },
-                .s, .e, .se, .sw => {
-                    return self.shl(length);
-                },
-                .ns, .ew, .nesw, .nwse => {
-                    return self.shl(length).unions(self.shr(length));
-                },
+                .n, .w, .ne, .nw => return self.shr(length),
+                .s, .e, .se, .sw => return self.shl(length),
             }
+        }
+
+        pub fn moveMultiple(self: Self, directions: []const Direction) Self {
+            var result = init();
+
+            for (directions) |direction| {
+                result.setUnion(self.move(direction));
+            }
+
+            return result;
         }
 
         pub fn expect(self: Self, expected: []const u8) error{TestExpectedEqual}!void {
