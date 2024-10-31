@@ -169,10 +169,12 @@ test getMoveJump {
     );
 }
 
+/// 指定した位置の駒を反転させる
 fn togglePiece(self: *Board, position: BitBoard, color: Color) void {
     self.boards.getPtr(color).setToggle(position);
 }
 
+/// 駒を移動させる
 pub fn setMovedWalk(self: *Board, position_from: BitBoard, position_to: BitBoard, color: Color) void {
     self.togglePiece(position_from, color);
     self.togglePiece(position_to, color);
@@ -206,6 +208,7 @@ test setMovedWalk {
     );
 }
 
+/// 駒を移動させ、途中の相手の駒を取りのぞく
 pub fn setMovedJump(self: *Board, position_from: BitBoard, position_to: BitBoard, position_jumped: BitBoard, color: Color) void {
     self.togglePiece(position_from, color);
     self.togglePiece(position_jumped, color.turn());

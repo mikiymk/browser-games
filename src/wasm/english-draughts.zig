@@ -4,6 +4,7 @@ const builtin = @import("builtin");
 const draughts = @import("libs/english-draughts/main.zig");
 const Game = draughts.Game;
 const Color = Game.Color;
+const BitBoard = draughts.BitBoard;
 
 // common import
 const common = @import("libs/common/main.zig");
@@ -24,7 +25,7 @@ export fn deinit(game: *Game) void {
 }
 
 /// ボードの状態を得る
-export fn getBoard(game: *Game, color: Color) u32 {
+export fn getBoard(game: *Game, color: Color) u64 {
     return game.getBoard(color).toInteger();
 }
 
@@ -34,8 +35,11 @@ export fn getColor(game: *Game) Color {
 }
 
 /// ボードの位置を指定して可能な移動先を得る
-export fn getMove() void {
-    @panic("no");
+export fn getMove(game: *Game, position_index: usize) u64 {
+    const position = BitBoard.fromIndex(position_index);
+
+    const moves = game.getMove(position);
+    return moves.toInteger();
 }
 
 /// 移動元と移動先を指定して移動する。

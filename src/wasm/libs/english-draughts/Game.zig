@@ -15,7 +15,7 @@ pub const Color = enum(u8) {
     white = 1,
 
     /// 後に動かすプレイヤー
-    black,
+    black = 2,
 
     /// ターンを返す
     pub fn turn(self: @This()) @This() {
@@ -24,6 +24,11 @@ pub const Color = enum(u8) {
             .white => .black,
         };
     }
+};
+
+pub const Move = union(enum) {
+    walk: struct { position_from: BitBoard, position_to: BitBoard, color: Color },
+    jump: struct { position_from: BitBoard, position_to: BitBoard, position_jumped: BitBoard, color: Color },
 };
 
 board: Board,
@@ -58,6 +63,19 @@ pub fn getBoard(self: Game, color: Color) BitBoard {
     return self.board.getBoard(color);
 }
 
+/// 次に動かすプレイヤーの色を取得する
 pub fn getColor(self: Game) Color {
     return self.next_color;
+}
+
+/// 指定した駒の移動できる位置を取得する
+pub fn getMove(self: Game, position: BitBoard) BitBoard {
+    const color = self.board.getColor(position) orelse return BitBoard.init();
+    const jump_moves = self.board.getMoveJump(position, color);
+
+    if (jump_moves.isEmpty()) {
+        return self.board.getMoveWark(position, color);
+    } else {
+        return jump_moves;
+    }
 }
