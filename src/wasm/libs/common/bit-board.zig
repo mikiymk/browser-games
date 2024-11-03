@@ -14,11 +14,7 @@ test {
     _ = @import("./bit-board.test.zig");
 }
 
-pub fn BitBoard(comptime height: u16, comptime width: u16) type {
-    const size = height * width;
-    const string_size = size + height - 1;
-    const bit_length = std.math.log2_int_ceil(u16, size);
-
+pub fn BitBoard(comptime height_arg: u16, comptime width_arg: u16) type {
     return struct {
         // # 必要な関数
         //
@@ -32,6 +28,13 @@ pub fn BitBoard(comptime height: u16, comptime width: u16) type {
 
         /// ビットボードを表す型。
         const Self = @This();
+
+        pub const height = height_arg;
+        pub const width = width_arg;
+        pub const size = height * width;
+
+        const string_size = size + height - 1;
+        const bit_length = std.math.log2_int_ceil(u16, size);
 
         /// ビットボードの型。
         /// [高さ] × [幅]ビット。
@@ -170,6 +173,12 @@ pub fn BitBoard(comptime height: u16, comptime width: u16) type {
                     @compileError("board is static bitset");
                 },
             }
+        }
+
+        pub fn toIndexInteger(self: Self) Index {
+            const int = self.toInteger();
+
+            return @intCast(@ctz(int));
         }
 
         /// ビットボードを文字列に変換する。

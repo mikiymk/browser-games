@@ -44,8 +44,13 @@ export fn getMove(game: *Game, position_index: usize) u64 {
 
 /// 移動元と移動先を指定して移動する。
 /// 移動後、次のプレイヤーを切り替える。
-export fn move() void {
-    @panic("no");
+/// 移動先でさらにジャンプできる場合はtrueを返す。
+export fn move(game: *Game, position_from: usize, position_to: usize) bool {
+    const color = game.board.getColor(BitBoard.fromIndex(position_from)) orelse return false;
+    const action = Game.Move.init(position_from, position_to, color);
+    const can_jump = game.setMoved(action);
+    game.next_color = game.next_color.turn();
+    return can_jump;
 }
 
 /// 自動で移動させる。

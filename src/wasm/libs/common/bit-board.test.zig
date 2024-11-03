@@ -338,3 +338,14 @@ test "BitBoard.shr: ボードの右シフトしたボードを得る" {
         \\................
     );
 }
+
+test "BitBoard.toIndexInteger: 復元可能なインデックスを作成する" {
+    const B = BitBoard(16, 16);
+
+    const board = B.fromIndex(5);
+
+    const index_integer = board.toIndexInteger();
+
+    try std.testing.expectEqual(5, index_integer);
+    try std.testing.expect(board.eql(B.fromIndex(index_integer)));
+}
