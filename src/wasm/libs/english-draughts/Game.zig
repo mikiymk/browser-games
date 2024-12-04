@@ -63,28 +63,32 @@ pub const Move = union(enum) {
 };
 
 test Move {
-    const move_1 = Move.init(
-        BitBoard.fromCoordinate(3, 3).toIndexInteger(),
-        BitBoard.fromCoordinate(4, 4).toIndexInteger(),
-        .white,
-    );
+    {
+        const move = Move.init(
+            BitBoard.fromCoordinate(3, 3).toIndexInteger(),
+            BitBoard.fromCoordinate(4, 4).toIndexInteger(),
+            .white,
+        );
 
-    try std.testing.expect(move_1 == .walk);
-    try std.testing.expect(move_1.walk.position_from.eql(BitBoard.fromCoordinate(3, 3)));
-    try std.testing.expect(move_1.walk.position_to.eql(BitBoard.fromCoordinate(4, 4)));
-    try std.testing.expect(move_1.walk.color == .white);
+        try std.testing.expect(move == .walk);
+        try std.testing.expect(move.walk.position_from.eql(BitBoard.fromCoordinate(3, 3)));
+        try std.testing.expect(move.walk.position_to.eql(BitBoard.fromCoordinate(4, 4)));
+        try std.testing.expect(move.walk.color == .white);
+    }
 
-    const move_2 = Move.init(
-        BitBoard.fromCoordinate(5, 3).toIndexInteger(),
-        BitBoard.fromCoordinate(3, 5).toIndexInteger(),
-        .white,
-    );
+    {
+        const move = Move.init(
+            BitBoard.fromCoordinate(5, 3).toIndexInteger(),
+            BitBoard.fromCoordinate(3, 5).toIndexInteger(),
+            .white,
+        );
 
-    try std.testing.expect(move_2 == .jump);
-    try std.testing.expect(move_2.jump.position_from.eql(BitBoard.fromCoordinate(5, 3)));
-    try std.testing.expect(move_2.jump.position_to.eql(BitBoard.fromCoordinate(3, 5)));
-    try std.testing.expect(move_2.jump.position_jumped.eql(BitBoard.fromCoordinate(4, 4)));
-    try std.testing.expect(move_2.jump.color == .white);
+        try std.testing.expect(move == .jump);
+        try std.testing.expect(move.jump.position_from.eql(BitBoard.fromCoordinate(5, 3)));
+        try std.testing.expect(move.jump.position_to.eql(BitBoard.fromCoordinate(3, 5)));
+        try std.testing.expect(move.jump.position_jumped.eql(BitBoard.fromCoordinate(4, 4)));
+        try std.testing.expect(move.jump.color == .white);
+    }
 }
 
 board: Board,

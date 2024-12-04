@@ -9,6 +9,7 @@ const BitBoard = draughts.BitBoard;
 // common import
 const common = @import("libs/common/main.zig");
 const a = common.allocator;
+const getRandom = common.random.getRandom;
 
 /// ゲームを開始する
 export fn init() ?*Game {
@@ -54,6 +55,6 @@ export fn move(game: *Game, position_from: usize, position_to: usize) bool {
 }
 
 /// 自動で移動させる。
-export fn ai() void {
-    @panic("no");
+export fn ai(game: *Game) void {
+    draughts.ai.ai(a, game) catch {};
 }
