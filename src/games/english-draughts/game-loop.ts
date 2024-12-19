@@ -5,13 +5,13 @@ import { MoveTarget, NotEnd } from "./constants";
 
 export type GameObject = 0 | (number & { readonly __unique: "Wasm pointer of Board struct" });
 
-type PlayerColor = "black" | "white";
+export type PlayerColor = "black" | "white";
 type Players = {
   readonly black: PlayerType;
   readonly white: PlayerType;
 };
 
-type GameController = {
+export type GameController = {
   readonly init: () => GameObject;
   readonly deinit: (gameObject: GameObject) => void;
 

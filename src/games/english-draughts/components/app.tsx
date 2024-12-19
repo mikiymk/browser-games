@@ -8,9 +8,19 @@ import type { JSXElement } from "solid-js";
 import { initialBoard } from "../constants";
 import { gameLoop } from "../game-loop";
 import { UsePiece } from "./define";
+import { getWasm } from "../wasm";
+import { usePromise } from "@/scripts/use-promise";
+import { MultiPromise } from "@/scripts/multi-promise";
+import { createUrlQuerySignal } from "@/scripts/use-url-query";
+import { PlayerType, PlayerTypeAi, PlayerTypeHuman } from "@/scripts/player";
 
 export const App = (): JSXElement => {
+  const [white, setWhite] = createUrlQuerySignal<PlayerType>("white", PlayerTypeHuman);
+  const [black, setBlack] = createUrlQuerySignal<PlayerType>("black", PlayerTypeAi);
+
   const [boardData, setBoard] = createSignal<number[]>(Array.from({ length: 64 }, () => 0));
+  const wasm = usePromise(getWasm);
+  const { promise, resolve } = MultiPromise.withResolvers<number>();
 
   let terminate: (() => void) | undefined;
 
@@ -25,11 +35,12 @@ export const App = (): JSXElement => {
     }
 
     terminate = gameLoop(wasmObject, {
-      setColor,
-      setPiece,
-      setEnd,
-      setMark,
-      humanInput,
+      setBoard: () => {},
+      setMove: () => {},
+      setColor: () => {},
+      setEnd: () => {},
+
+      requestInput: () => promise.request(),
       players: {
         white: white(),
         black: black(),
@@ -37,8 +48,8 @@ export const App = (): JSXElement => {
     });
   };
 
-  const handleClick = (square: number, index: number): void => {
-    setBoard((previous) => previous.with(index, (square + 1) % 3));
+  const handleClick = (_: number, index: number): void => {
+    resolve(index);
   };
 
   return (

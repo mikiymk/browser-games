@@ -1,35 +1,17 @@
-import type { GameObject } from "./game-loop";
+import { COLOR_BLACK, COLOR_NONE, COLOR_WHITE } from "./constants";
+import type { GameController, GameObject, PlayerColor } from "./game-loop";
 
 type WasmExports = {
   init: () => GameObject;
   deinit: (g: GameObject) => void;
-  setPiece: (g: GameObject, kind: number, index: number) => void;
-  getPiece: (g: GameObject, kind: number) => bigint;
-  isBlack: (g: GameObject) => boolean;
-  isEnd: (g: GameObject) => boolean;
-  winner: (g: GameObject) => number;
-  getMove: (g: GameObject, from: number) => bigint;
+  getBoard: (g: GameObject, color: number) => bigint;
+  getColor: (g: GameObject) => number;
+  getMove: (g: GameObject, index: number) => bigint;
   move: (g: GameObject, from: number, to: number) => boolean;
-  promote: (g: GameObject, from: number, kind: number) => void;
-  moveAi: (g: GameObject) => void;
+  ai: (g: GameObject) => void;
 };
 
-export type WasmConnect = {
-  readonly init: () => GameObject;
-  readonly deinit: (g: GameObject) => void;
-
-  readonly getColor: (g: GameObject) => number;
-  readonly getBoard: (g: GameObject) => readonly number[];
-  readonly getEnd: (g: GameObject) => number;
-  readonly getMove: (g: GameObject, from: number) => readonly number[];
-
-  readonly move: (g: GameObject, from: number, to: number) => boolean;
-  readonly promote: (g: GameObject, from: number, kind: number) => void;
-
-  readonly ai: (g: GameObject) => void;
-};
-
-export const getWasm = async (): Promise<WasmConnect> => {
+export const getWasm = async (): Promise<GameController> => {
   const wasm = await WebAssembly.instantiateStreaming(fetch(`${import.meta.env.BASE_URL}/wasm/english-draughts.wasm`));
 
   const exports = wasm.instance.exports as WasmExports;
@@ -37,5 +19,24 @@ export const getWasm = async (): Promise<WasmConnect> => {
   return {
     init: exports.init,
     deinit: exports.deinit,
+    getColor: (game): PlayerColor => (exports.getColor(game) === COLOR_WHITE ? "white" : "black"),
+
+    getBoard: (game): readonly number[] => {
+      const white = exports.getBoard(game, COLOR_WHITE);
+      const black = exports.getBoard(game, COLOR_BLACK);
+
+      const board = Array.from({ length: 64 }, (_, index) => {
+        if (white & (1n << BigInt(index))) {
+          return COLOR_WHITE;
+        }
+        if (black & (1n << BigInt(index))) {
+          return COLOR_BLACK;
+        }
+
+        return COLOR_NONE;
+      });
+
+      return board;
+    },
   };
 };
