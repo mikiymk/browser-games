@@ -1,7 +1,7 @@
 import { PlayerTypeHuman } from "@/scripts/player";
 import type { PlayerType } from "@/scripts/player";
 import { sleep } from "@/scripts/sleep";
-import { MoveTarget, NotEnd } from "./constants";
+import { MOVE_TARGET, NotEnd } from "./constants";
 
 export type GameObject = 0 | (number & { readonly __unique: "Wasm pointer of Board struct" });
 
@@ -20,7 +20,7 @@ export type GameController = {
   readonly getMove: (gameObject: GameObject, position: number) => readonly number[];
   readonly getEnd: (gameObject: GameObject) => number;
 
-  readonly move: (gameObject: GameObject, from: number, to: number) => void;
+  readonly move: (gameObject: GameObject, from: number, to: number) => boolean;
   readonly ai: (gameObject: GameObject) => void;
 };
 
@@ -64,7 +64,7 @@ export const gameLoop = (game: GameController, view: ViewController): (() => voi
 
         const moves = game.getMove(gameObject, from);
 
-        if (!moves.includes(MoveTarget)) {
+        if (!moves.includes(MOVE_TARGET)) {
           continue;
         }
 
@@ -72,7 +72,7 @@ export const gameLoop = (game: GameController, view: ViewController): (() => voi
 
         to = await view.requestInput();
 
-        if (moves[to] === MoveTarget) {
+        if (moves[to] === MOVE_TARGET) {
           break;
         }
       }

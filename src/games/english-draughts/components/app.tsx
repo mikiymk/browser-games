@@ -3,30 +3,46 @@ import { PageBody } from "@/components/page-body/page-body";
 import { PageHeader } from "@/components/page-header/page-header";
 import { StartButton } from "@/components/page-header/start-button";
 import board from "@/images/chess/board.svg";
-import { createSignal } from "solid-js";
+import { createSignal, mapArray } from "solid-js";
 import type { JSXElement } from "solid-js";
-import { initialBoard } from "../constants";
+import { COLOR_BLACK, COLOR_WHITE, MOVE_TARGET } from "../constants";
 import { gameLoop } from "../game-loop";
 import { UsePiece } from "./define";
 import { getWasm } from "../wasm";
 import { usePromise } from "@/scripts/use-promise";
 import { MultiPromise } from "@/scripts/multi-promise";
 import { createUrlQuerySignal } from "@/scripts/use-url-query";
-import { PlayerType, PlayerTypeAi, PlayerTypeHuman } from "@/scripts/player";
+import { PlayerTypeAi, PlayerTypeHuman } from "@/scripts/player";
+import type { PlayerType } from "@/scripts/player";
+import { createBoard } from "../boards";
 
 export const App = (): JSXElement => {
   const [white, setWhite] = createUrlQuerySignal<PlayerType>("white", PlayerTypeHuman);
   const [black, setBlack] = createUrlQuerySignal<PlayerType>("black", PlayerTypeAi);
 
-  const [boardData, setBoard] = createSignal<number[]>(Array.from({ length: 64 }, () => 0));
+  const [boardData, setBoardData] = createSignal<{ stone: number; move: number }[]>(
+    createBoard(8, 8, { stone: 0, move: 0 }),
+  );
+  const boardNumber = mapArray(boardData, (value) => {
+    const { stone, move } = value;
+    if (stone === COLOR_WHITE) {
+      return COLOR_WHITE;
+    }
+    if (stone === COLOR_BLACK) {
+      return COLOR_BLACK;
+    }
+    if (move === MOVE_TARGET) {
+      return MOVE_TARGET;
+    }
+    return 0;
+  });
+
   const wasm = usePromise(getWasm);
   const { promise, resolve } = MultiPromise.withResolvers<number>();
 
   let terminate: (() => void) | undefined;
 
   const handleStart = (): void => {
-    setBoard(initialBoard);
-
     terminate?.();
 
     const wasmObject = wasm();
@@ -35,8 +51,16 @@ export const App = (): JSXElement => {
     }
 
     terminate = gameLoop(wasmObject, {
-      setBoard: () => {},
-      setMove: () => {},
+      setBoard: (newBoard) => {
+        setBoardData((previousBoard) => {
+          return previousBoard.map((value, index) => ({ ...value, stone: newBoard[index] ?? 0 }));
+        });
+      },
+      setMove: (newBoard) => {
+        setBoardData((previousBoard) => {
+          return previousBoard.map((value, index) => ({ ...value, move: newBoard[index] ?? 0 }));
+        });
+      },
       setColor: () => {},
       setEnd: () => {},
 
@@ -62,7 +86,7 @@ export const App = (): JSXElement => {
         }
       />
       <PageBody>
-        <Board height={8} width={8} data={boardData()} background={board.src} click={handleClick}>
+        <Board height={8} width={8} data={boardNumber()} background={board.src} click={handleClick}>
           {(square, _, x, y) => <UsePiece piece={square} x={x} y={y} />}
         </Board>
       </PageBody>

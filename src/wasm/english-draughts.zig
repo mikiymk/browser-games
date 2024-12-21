@@ -57,4 +57,5 @@ export fn move(game: *Game, position_from: usize, position_to: usize) bool {
 /// 自動で移動させる。
 export fn ai(game: *Game) void {
     draughts.ai.ai(a, game) catch {};
+    game.next_color = game.next_color.turn();
 }

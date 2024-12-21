@@ -1,4 +1,5 @@
-import { COLOR_BLACK, COLOR_NONE, COLOR_WHITE } from "./constants";
+import { mergeBoards, transBoard } from "./boards";
+import { COLOR_BLACK, COLOR_WHITE, MOVE_TARGET } from "./constants";
 import type { GameController, GameObject, PlayerColor } from "./game-loop";
 
 type WasmExports = {
@@ -19,24 +20,32 @@ export const getWasm = async (): Promise<GameController> => {
   return {
     init: exports.init,
     deinit: exports.deinit,
-    getColor: (game): PlayerColor => (exports.getColor(game) === COLOR_WHITE ? "white" : "black"),
 
-    getBoard: (game): readonly number[] => {
-      const white = exports.getBoard(game, COLOR_WHITE);
-      const black = exports.getBoard(game, COLOR_BLACK);
+    getColor(game): PlayerColor {
+      return exports.getColor(game) === COLOR_WHITE ? "white" : "black";
+    },
 
-      const board = Array.from({ length: 64 }, (_, index) => {
-        if (white & (1n << BigInt(index))) {
-          return COLOR_WHITE;
-        }
-        if (black & (1n << BigInt(index))) {
-          return COLOR_BLACK;
-        }
+    getEnd(_game): number {
+      return 0;
+    },
 
-        return COLOR_NONE;
-      });
+    getBoard(game): readonly number[] {
+      const white = transBoard(8, 8, exports.getBoard(game, COLOR_WHITE), COLOR_WHITE);
+      const black = transBoard(8, 8, exports.getBoard(game, COLOR_BLACK), COLOR_BLACK);
 
-      return board;
+      return mergeBoards(white, black);
+    },
+
+    getMove(game, position): readonly number[] {
+      return transBoard(8, 8, exports.getMove(game, position), MOVE_TARGET);
+    },
+
+    move(game, from, to): boolean {
+      return exports.move(game, from, to);
+    },
+
+    ai(game): void {
+      exports.ai(game);
     },
   };
 };

@@ -1,6 +1,6 @@
 import { Use } from "@/components/define/use";
 import type { JSXElement } from "solid-js";
-import { COLOR_WHITE, COLOR_BLACK } from "../constants";
+import { COLOR_WHITE, COLOR_BLACK, MOVE_TARGET } from "../constants";
 
 export const DefinePieces = (): JSXElement => {
   return (
@@ -8,11 +8,15 @@ export const DefinePieces = (): JSXElement => {
       <title>define stones</title>
 
       <symbol id="black" viewBox="0 0 60 60">
-        <circle cx={30} cy={30} r={25} class="fill-stone-500 stroke-slate-900" />{" "}
+        <circle cx={30} cy={30} r={25} class="fill-stone-500 stroke-slate-900 stroke-2" />
       </symbol>
 
       <symbol id="white" viewBox="0 0 60 60">
-        <circle cx={30} cy={30} r={25} class="fill-stone-200 stroke-slate-900" />
+        <circle cx={30} cy={30} r={25} class="fill-stone-200 stroke-slate-900 stroke-2" />
+      </symbol>
+
+      <symbol id="move" viewBox="0 0 60 60">
+        <circle cx={30} cy={30} r={15} class="fill-none stroke-slate-900 stroke-2" />
       </symbol>
     </svg>
   );
@@ -29,6 +33,7 @@ export const UsePiece = (properties: UsePieceProperties): JSXElement => {
     const ids: Record<number, string> = {
       [COLOR_WHITE]: "black",
       [COLOR_BLACK]: "white",
+      [MOVE_TARGET]: "move",
     };
 
     return ids[properties.piece];
