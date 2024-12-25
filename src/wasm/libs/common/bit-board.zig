@@ -181,6 +181,15 @@ pub fn BitBoard(comptime height_arg: u16, comptime width_arg: u16) type {
             return @intCast(@ctz(int));
         }
 
+        pub fn toCoordinate(self: Self) struct { Width, Height } {
+            const int = self.toIndexInteger();
+
+            const x: Width = @intCast(int % @as(Index, width));
+            const y: Height = @intCast(@as(Index, height) - @divTrunc(int, @as(Index, width)) - 1);
+
+            return .{ x, y };
+        }
+
         /// ビットボードを文字列に変換する。
         pub fn toString(self: Self, piece_symbol: u8, empty_symbol: u8) [string_size]u8 {
             var str: [string_size]u8 = .{empty_symbol} ** string_size;

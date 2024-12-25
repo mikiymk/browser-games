@@ -10,12 +10,28 @@ type WasmExports = {
   getMove: (g: GameObject, index: number) => bigint;
   move: (g: GameObject, from: number, to: number) => boolean;
   ai: (g: GameObject) => void;
+} & {
+  memory: WebAssembly.Memory;
 };
 
 export const getWasm = async (): Promise<GameController> => {
-  const wasm = await WebAssembly.instantiateStreaming(fetch(`${import.meta.env.BASE_URL}/wasm/english-draughts.wasm`));
+  let textBuffer = "";
+  const wasm = await WebAssembly.instantiateStreaming(fetch(`${import.meta.env.BASE_URL}/wasm/english-draughts.wasm`), {
+    env: {
+      consoleLog: (offset: number, length: number) => {
+        textBuffer += new TextDecoder().decode(new Uint8Array(memory.buffer, offset, length));
+      },
+
+      flush: () => {
+        console.log(textBuffer);
+
+        textBuffer = "";
+      },
+    },
+  });
 
   const exports = wasm.instance.exports as WasmExports;
+  const { memory } = exports;
 
   return {
     init: exports.init,

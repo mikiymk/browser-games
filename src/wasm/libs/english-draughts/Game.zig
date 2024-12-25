@@ -9,6 +9,7 @@ const BitBoard = draughts.BitBoard;
 
 // common import
 const common = @import("../common/main.zig");
+const log = common.console.log;
 
 pub const Color = enum(u8) {
     /// 先に動かすプレイヤー
@@ -59,6 +60,34 @@ pub const Move = union(enum) {
                 .color = color,
             },
         };
+    }
+
+    pub fn format(value: @This(), comptime fmt: []const u8, options: std.fmt.FormatOptions, writer: anytype) !void {
+        _ = fmt;
+        _ = options;
+
+        switch (value) {
+            .jump => |j| {
+                try writer.print(".jump ({d}, {d}) ({d}, {d}) ({d}, {d}) {s}", .{
+                    j.position_from.toCoordinate()[0],
+                    j.position_from.toCoordinate()[1],
+                    j.position_to.toCoordinate()[0],
+                    j.position_to.toCoordinate()[1],
+                    j.position_jumped.toCoordinate()[0],
+                    j.position_jumped.toCoordinate()[1],
+                    if (j.color == .white) "white" else "black",
+                });
+            },
+            .walk => |w| {
+                try writer.print(".walk ({d}, {d}) ({d}, {d}) {s}", .{
+                    w.position_from.toCoordinate()[0],
+                    w.position_from.toCoordinate()[1],
+                    w.position_to.toCoordinate()[0],
+                    w.position_to.toCoordinate()[1],
+                    if (w.color == .white) "white" else "black",
+                });
+            },
+        }
     }
 };
 
@@ -143,6 +172,8 @@ pub fn getMove(self: Game, position: BitBoard) BitBoard {
 /// 指定された移動を実行し、ゲーム状態を更新する。
 /// 移動先でさらにジャンプできる場合はtrueを返す。
 pub fn setMoved(self: *Game, move_action: Move) bool {
+    log("moved {}", .{move_action});
+
     switch (move_action) {
         .walk => |w| {
             self.board.setMovedWalk(

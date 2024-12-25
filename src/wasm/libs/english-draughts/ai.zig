@@ -10,6 +10,7 @@ const BitBoard = draughts.BitBoard;
 // common import
 const common = @import("../common/main.zig");
 const random = common.random.getRandomIntRange;
+const log = common.console.log;
 
 const ai_depth = 5;
 
@@ -34,11 +35,12 @@ const DraughtsContext = struct {
 };
 
 pub fn ai(a: Allocator, game: *Game) !void {
-    var ai_move = try getAiMove(a, game.*, DraughtsContext);
+    const ai_move = try getAiMove(a, game.*, DraughtsContext);
 
-    while (game.setMoved(ai_move)) {
-        ai_move = try getAiMove(a, game.*, DraughtsContext);
-    }
+    _ = game.setMoved(ai_move);
+    // while (game.setMoved(ai_move)) {
+    //     ai_move = try getAiMove(a, game.*, DraughtsContext);
+    // }
 }
 
 /// AIが考えた打つ場所を返します。
@@ -50,6 +52,10 @@ pub fn ai(a: Allocator, game: *Game) !void {
 /// ```
 pub fn getAiMove(a: Allocator, game: Game, Context: type) !Move {
     const moves = try Context.get_valid_moves(a, game);
+
+    for (moves) |move| {
+        log("{}", .{move});
+    }
 
     const i = random(0, moves.len);
 
