@@ -30,8 +30,8 @@ pub fn initFromString(a: Allocator, str: []const u8) @This() {
     const mark_white = 'o';
     const mark_black = 'x';
 
-    const board_white = BitBoard.fromString(str, mark_white);
-    const board_black = BitBoard.fromString(str, mark_black);
+    const board_white = BitBoard.initWithString(str, mark_white);
+    const board_black = BitBoard.initWithString(str, mark_black);
 
     return init(a, board_white, board_black);
 }
@@ -70,9 +70,9 @@ test getColor {
 
     const board = Board.initFromString(a, board_str);
 
-    try std.testing.expectEqual(.white, board.getColor(BitBoard.fromCoordinate(5, 5)));
-    try std.testing.expectEqual(.black, board.getColor(BitBoard.fromCoordinate(2, 2)));
-    try std.testing.expectEqual(null, board.getColor(BitBoard.fromCoordinate(4, 4)));
+    try std.testing.expectEqual(.white, board.getColor(BitBoard.initWithCoordinate(5, 5)));
+    try std.testing.expectEqual(.black, board.getColor(BitBoard.initWithCoordinate(2, 2)));
+    try std.testing.expectEqual(null, board.getColor(BitBoard.initWithCoordinate(4, 4)));
 }
 
 /// 指定した座標の駒が移動できる範囲を取得する。
@@ -81,7 +81,7 @@ pub fn getMoveWark(self: Board, position: BitBoard, color: Color) BitBoard {
     const opponent_board = self.getBoard(color.turn());
     const occupied_positions = ally_board.unions(opponent_board);
 
-    const move_to = position.moveMultiple(&.{ .ne, .se, .nw, .sw });
+    const move_to = position.moveMaskedMultiple(&.{ .ne, .se, .nw, .sw });
 
     return move_to.excludes(occupied_positions);
 }
@@ -101,7 +101,7 @@ test getMoveWark {
 
     const board = Board.initFromString(a, board_str);
 
-    try board.getMoveWark(BitBoard.fromCoordinate(1, 1), .white).expect(
+    try board.getMoveWark(BitBoard.initWithCoordinate(1, 1), .white).expect(
         \\........
         \\........
         \\........
@@ -112,7 +112,7 @@ test getMoveWark {
         \\o.o.....
     );
 
-    try board.getMoveWark(BitBoard.fromCoordinate(6, 6), .white).expect(
+    try board.getMoveWark(BitBoard.initWithCoordinate(6, 6), .white).expect(
         \\.....o.o
         \\........
         \\.......o
@@ -134,9 +134,9 @@ pub fn getMoveJump(self: Board, position: BitBoard, color: Color) BitBoard {
 
     const directions = [_]BitBoard.Direction{ .ne, .se, .nw, .sw };
     for (directions) |direction| {
-        const intermediate_position = position.move(direction).masks(opponent_board);
+        const intermediate_position = position.moveMasked(direction).masks(opponent_board);
 
-        move_jump.setUnion(intermediate_position.move(direction));
+        move_jump.setUnion(intermediate_position.moveMasked(direction));
     }
 
     return move_jump.excludes(occupied_positions);
@@ -157,7 +157,7 @@ test getMoveJump {
 
     const board = Board.initFromString(a, board_str);
 
-    try board.getMoveJump(BitBoard.fromCoordinate(3, 3), .white).expect(
+    try board.getMoveJump(BitBoard.initWithCoordinate(3, 3), .white).expect(
         \\........
         \\........
         \\........
@@ -194,7 +194,7 @@ test setMovedWalk {
     ;
 
     var board = Board.initFromString(a, board_str);
-    board.setMovedWalk(BitBoard.fromCoordinate(3, 3), BitBoard.fromCoordinate(4, 4), .white);
+    board.setMovedWalk(BitBoard.initWithCoordinate(3, 3), BitBoard.initWithCoordinate(4, 4), .white);
 
     try board.getBoard(.white).expect(
         \\........
@@ -230,9 +230,9 @@ test setMovedJump {
 
     var board = Board.initFromString(a, board_str);
     board.setMovedJump(
-        BitBoard.fromCoordinate(3, 3),
-        BitBoard.fromCoordinate(1, 1),
-        BitBoard.fromCoordinate(2, 2),
+        BitBoard.initWithCoordinate(3, 3),
+        BitBoard.initWithCoordinate(1, 1),
+        BitBoard.initWithCoordinate(2, 2),
         .white,
     );
 

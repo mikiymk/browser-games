@@ -34,14 +34,14 @@ pub const Move = union(enum) {
     /// 移動元と移動先から移動アクションを作成する
     /// 1マス空きの場合は間のマスを計算する
     pub fn init(position_from: usize, position_to: usize, color: Color) Move {
-        const position_from_board = BitBoard.fromIndex(position_from);
-        const position_to_board = BitBoard.fromIndex(position_to);
+        const position_from_board = BitBoard.initWithIndex(position_from);
+        const position_to_board = BitBoard.initWithIndex(position_to);
 
         const diff = if (position_from > position_to) position_from - position_to else position_to - position_from;
 
         // もし縦の差+1(斜め移動)より大きい場合、2マスジャンプとして扱う。
         if (diff > BitBoard.height + 1) {
-            const position_jumped = BitBoard.fromIndex((position_from + position_to) / 2);
+            const position_jumped = BitBoard.initWithIndex((position_from + position_to) / 2);
 
             return .{
                 .jump = .{
@@ -94,28 +94,28 @@ pub const Move = union(enum) {
 test Move {
     {
         const move = Move.init(
-            BitBoard.fromCoordinate(3, 3).toIndexInteger(),
-            BitBoard.fromCoordinate(4, 4).toIndexInteger(),
+            BitBoard.initWithCoordinate(3, 3).toIndexInteger(),
+            BitBoard.initWithCoordinate(4, 4).toIndexInteger(),
             .white,
         );
 
         try std.testing.expect(move == .walk);
-        try std.testing.expect(move.walk.position_from.eql(BitBoard.fromCoordinate(3, 3)));
-        try std.testing.expect(move.walk.position_to.eql(BitBoard.fromCoordinate(4, 4)));
+        try std.testing.expect(move.walk.position_from.eql(BitBoard.initWithCoordinate(3, 3)));
+        try std.testing.expect(move.walk.position_to.eql(BitBoard.initWithCoordinate(4, 4)));
         try std.testing.expect(move.walk.color == .white);
     }
 
     {
         const move = Move.init(
-            BitBoard.fromCoordinate(5, 3).toIndexInteger(),
-            BitBoard.fromCoordinate(3, 5).toIndexInteger(),
+            BitBoard.initWithCoordinate(5, 3).toIndexInteger(),
+            BitBoard.initWithCoordinate(3, 5).toIndexInteger(),
             .white,
         );
 
         try std.testing.expect(move == .jump);
-        try std.testing.expect(move.jump.position_from.eql(BitBoard.fromCoordinate(5, 3)));
-        try std.testing.expect(move.jump.position_to.eql(BitBoard.fromCoordinate(3, 5)));
-        try std.testing.expect(move.jump.position_jumped.eql(BitBoard.fromCoordinate(4, 4)));
+        try std.testing.expect(move.jump.position_from.eql(BitBoard.initWithCoordinate(5, 3)));
+        try std.testing.expect(move.jump.position_to.eql(BitBoard.initWithCoordinate(3, 5)));
+        try std.testing.expect(move.jump.position_jumped.eql(BitBoard.initWithCoordinate(4, 4)));
         try std.testing.expect(move.jump.color == .white);
     }
 }

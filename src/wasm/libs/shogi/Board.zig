@@ -158,36 +158,36 @@ pub fn init() Board {
 pub fn fromString(str: []const u8) Board {
     return .{ .boards = ColorPieceBoards.init(.{
         .black = PieceBoards.init(.{
-            .king = BitBoard.fromString(str, 'k'),
-            .rook = BitBoard.fromString(str, 'r'),
-            .bishop = BitBoard.fromString(str, 'b'),
-            .gold = BitBoard.fromString(str, 'g'),
-            .silver = BitBoard.fromString(str, 's'),
-            .knight = BitBoard.fromString(str, 'n'),
-            .lance = BitBoard.fromString(str, 'l'),
-            .pawn = BitBoard.fromString(str, 'p'),
-            .rook_promoted = BitBoard.fromString(str, 'd'),
-            .bishop_promoted = BitBoard.fromString(str, 'h'),
-            .silver_promoted = BitBoard.fromString(str, 't'),
-            .knight_promoted = BitBoard.fromString(str, 'o'),
-            .lance_promoted = BitBoard.fromString(str, 'm'),
-            .pawn_promoted = BitBoard.fromString(str, 'q'),
+            .king = BitBoard.initWithString(str, 'k'),
+            .rook = BitBoard.initWithString(str, 'r'),
+            .bishop = BitBoard.initWithString(str, 'b'),
+            .gold = BitBoard.initWithString(str, 'g'),
+            .silver = BitBoard.initWithString(str, 's'),
+            .knight = BitBoard.initWithString(str, 'n'),
+            .lance = BitBoard.initWithString(str, 'l'),
+            .pawn = BitBoard.initWithString(str, 'p'),
+            .rook_promoted = BitBoard.initWithString(str, 'd'),
+            .bishop_promoted = BitBoard.initWithString(str, 'h'),
+            .silver_promoted = BitBoard.initWithString(str, 't'),
+            .knight_promoted = BitBoard.initWithString(str, 'o'),
+            .lance_promoted = BitBoard.initWithString(str, 'm'),
+            .pawn_promoted = BitBoard.initWithString(str, 'q'),
         }),
         .white = PieceBoards.init(.{
-            .king = BitBoard.fromString(str, 'K'),
-            .rook = BitBoard.fromString(str, 'R'),
-            .bishop = BitBoard.fromString(str, 'B'),
-            .gold = BitBoard.fromString(str, 'G'),
-            .silver = BitBoard.fromString(str, 'S'),
-            .knight = BitBoard.fromString(str, 'N'),
-            .lance = BitBoard.fromString(str, 'L'),
-            .pawn = BitBoard.fromString(str, 'P'),
-            .rook_promoted = BitBoard.fromString(str, 'D'),
-            .bishop_promoted = BitBoard.fromString(str, 'H'),
-            .silver_promoted = BitBoard.fromString(str, 'T'),
-            .knight_promoted = BitBoard.fromString(str, 'O'),
-            .lance_promoted = BitBoard.fromString(str, 'M'),
-            .pawn_promoted = BitBoard.fromString(str, 'Q'),
+            .king = BitBoard.initWithString(str, 'K'),
+            .rook = BitBoard.initWithString(str, 'R'),
+            .bishop = BitBoard.initWithString(str, 'B'),
+            .gold = BitBoard.initWithString(str, 'G'),
+            .silver = BitBoard.initWithString(str, 'S'),
+            .knight = BitBoard.initWithString(str, 'N'),
+            .lance = BitBoard.initWithString(str, 'L'),
+            .pawn = BitBoard.initWithString(str, 'P'),
+            .rook_promoted = BitBoard.initWithString(str, 'D'),
+            .bishop_promoted = BitBoard.initWithString(str, 'H'),
+            .silver_promoted = BitBoard.initWithString(str, 'T'),
+            .knight_promoted = BitBoard.initWithString(str, 'O'),
+            .lance_promoted = BitBoard.initWithString(str, 'M'),
+            .pawn_promoted = BitBoard.initWithString(str, 'Q'),
         }),
     }) };
 }
@@ -327,7 +327,7 @@ pub fn filterMove(board: Board, color: Color, from: BitBoard, to: BitBoard) BitB
     var to_iter = to.iterator();
 
     while (to_iter.next()) |t| {
-        const to_item = BitBoard.fromIndex(t);
+        const to_item = BitBoard.initWithIndex(t);
         const new_board = board.movedBoard(from, to_item);
 
         if (!new_board.isChecked(color)) {
@@ -362,7 +362,7 @@ pub fn isCheckmated(board: Board, color: Color) bool {
         var piece_iter = piece.iterator();
 
         while (piece_iter.next()) |p| {
-            const piece_board = BitBoard.fromIndex(p);
+            const piece_board = BitBoard.initWithIndex(p);
             const move_to = moves.move(board, piece_board);
             const filtered_moves = board.filterMove(color, piece_board, move_to);
 
@@ -375,7 +375,7 @@ pub fn isCheckmated(board: Board, color: Color) bool {
     return true;
 }
 
-pub const black_farest = BitBoard.fromString(
+pub const black_farest = BitBoard.initWithString(
     \\.........
     \\.........
     \\.........
@@ -386,7 +386,7 @@ pub const black_farest = BitBoard.fromString(
     \\.........
     \\ooooooooo
 , 'o');
-pub const black_farest2 = BitBoard.fromString(
+pub const black_farest2 = BitBoard.initWithString(
     \\.........
     \\.........
     \\.........
@@ -397,7 +397,7 @@ pub const black_farest2 = BitBoard.fromString(
     \\ooooooooo
     \\ooooooooo
 , 'o');
-const black_farest3 = BitBoard.fromString(
+const black_farest3 = BitBoard.initWithString(
     \\.........
     \\.........
     \\.........
@@ -408,7 +408,7 @@ const black_farest3 = BitBoard.fromString(
     \\ooooooooo
     \\ooooooooo
 , 'o');
-pub const white_farest = BitBoard.fromString(
+pub const white_farest = BitBoard.initWithString(
     \\ooooooooo
     \\.........
     \\.........
@@ -419,7 +419,7 @@ pub const white_farest = BitBoard.fromString(
     \\.........
     \\.........
 , 'o');
-pub const white_farest2 = BitBoard.fromString(
+pub const white_farest2 = BitBoard.initWithString(
     \\ooooooooo
     \\ooooooooo
     \\.........
@@ -430,7 +430,7 @@ pub const white_farest2 = BitBoard.fromString(
     \\.........
     \\.........
 , 'o');
-const white_farest3 = BitBoard.fromString(
+const white_farest3 = BitBoard.initWithString(
     \\ooooooooo
     \\ooooooooo
     \\ooooooooo

@@ -22,7 +22,7 @@ const DraughtsContext = struct {
         const moves_from = game.getBoard(color);
         var moves_from_iter = moves_from.iterator();
         while (moves_from_iter.next()) |pos_from| {
-            const moves_to = game.getMove(BitBoard.fromInteger(pos_from));
+            const moves_to = game.getMove(BitBoard.initWithInteger(pos_from));
             var moves_to_iter = moves_to.iterator();
 
             while (moves_to_iter.next()) |pos_to| {

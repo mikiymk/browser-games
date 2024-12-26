@@ -69,7 +69,7 @@ fn getFlipSquares(board: Board, place: BitBoard) BitBoard {
     const player_board = board.getPlayer();
     const opponent_board = board.getOpponent();
 
-    const mask = opponent_board.masks(BitBoard.fromString(
+    const mask = opponent_board.masks(BitBoard.initWithString(
         \\.oooooo.
         \\.oooooo.
         \\.oooooo.
@@ -142,7 +142,7 @@ pub fn getValidMoves(board: Board) BitBoard {
     const opponent_board = board.getOpponent();
     const empty = player_board.unions(opponent_board).inversed();
 
-    const mask = opponent_board.masks(BitBoard.fromString(
+    const mask = opponent_board.masks(BitBoard.initWithString(
         \\.oooooo.
         \\.oooooo.
         \\.oooooo.
@@ -194,8 +194,8 @@ pub fn isEnd(board: Board) bool {
 pub fn fromString(comptime str: []const u8) Board {
     return .{
         .boards = ColorBoards.init(.{
-            .black = BitBoard.fromString(str, 'o'),
-            .white = BitBoard.fromString(str, 'x'),
+            .black = BitBoard.initWithString(str, 'o'),
+            .white = BitBoard.initWithString(str, 'x'),
         }),
     };
 }

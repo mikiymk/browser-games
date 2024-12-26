@@ -37,7 +37,7 @@ export fn getColor(game: *Game) Color {
 
 /// ボードの位置を指定して可能な移動先を得る
 export fn getMove(game: *Game, position_index: usize) u64 {
-    const position = BitBoard.fromIndex(position_index);
+    const position = BitBoard.initWithIndex(position_index);
 
     const moves = game.getMove(position);
     return moves.toInteger();
@@ -47,7 +47,7 @@ export fn getMove(game: *Game, position_index: usize) u64 {
 /// 移動後、次のプレイヤーを切り替える。
 /// 移動先でさらにジャンプできる場合はtrueを返す。
 export fn move(game: *Game, position_from: usize, position_to: usize) bool {
-    const color = game.board.getColor(BitBoard.fromIndex(position_from)) orelse return false;
+    const color = game.board.getColor(BitBoard.initWithIndex(position_from)) orelse return false;
     const action = Game.Move.init(position_from, position_to, color);
     const can_jump = game.setMoved(action);
     game.next_color = game.next_color.turn();

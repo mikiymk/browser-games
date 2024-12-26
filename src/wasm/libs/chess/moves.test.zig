@@ -987,7 +987,7 @@ fn testCases(cases: []const TestCase, char: u8, moves_fn: fn (board: Board, pawn
 
     for (cases) |case| {
         const board = Board.fromString(case.board);
-        const pos = BitBoard.fromString(case.board, char);
+        const pos = BitBoard.initWithString(case.board, char);
 
         const pawnmove = moves_fn(board, pos, .black);
 
@@ -1012,7 +1012,7 @@ test "white pawn" {
 
     inline for (white_pawn_cases) |case| {
         const board = Board.fromString(case.board);
-        const pos = BitBoard.fromString(case.board, 'p');
+        const pos = BitBoard.initWithString(case.board, 'p');
 
         const pawnmove = moves.pawn(board, pos, .white);
 
