@@ -17,12 +17,15 @@ const ai_depth = 5;
 const DraughtsContext = struct {
     pub fn get_valid_moves(a: Allocator, game: Game) ![]Game.Move {
         var moves = std.ArrayList(Game.Move).init(a);
+        errdefer moves.deinit();
 
         const color = game.getColor();
         const moves_from = game.getBoard(color);
+        log("最初のボード状態\n{s}", .{moves_from.toString('o', '.')});
         var moves_from_iter = moves_from.iterator();
         while (moves_from_iter.next()) |pos_from| {
-            const moves_to = game.getMove(BitBoard.initWithInteger(pos_from));
+            log("次に探索する座標 {d}", .{pos_from});
+            const moves_to = game.getMove(BitBoard.initWithIndex(pos_from));
             var moves_to_iter = moves_to.iterator();
 
             while (moves_to_iter.next()) |pos_to| {
@@ -52,12 +55,18 @@ pub fn ai(a: Allocator, game: *Game) !void {
 /// ```
 pub fn getAiMove(a: Allocator, game: Game, Context: type) !Move {
     const moves = try Context.get_valid_moves(a, game);
+    defer a.free(moves);
 
     for (moves) |move| {
         log("{}", .{move});
     }
 
+    if (moves.len == 0) {
+        return error.CanNotMove;
+    }
     const i = random(0, moves.len);
+
+    log("{d} <= {d} < {d}", .{ 0, i, moves.len });
 
     return moves[i];
 }

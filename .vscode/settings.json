@@ -1,5 +1,4 @@
 {
-  "svg.preview.background": "dark-transparent",
   "cSpell.words": [
     "astro",
     "astrojs",
@@ -9,13 +8,16 @@
     "destyle",
     "Doptimize",
     "Dtarget",
+    "errdefer",
     "knip",
     "Reversi",
     "Shogi",
     "wasm_bindgen",
     "wasms"
   ],
-  "rust-analyzer.check.command": "clippy",
+
+  "svg.preview.background": "dark-transparent",
+  "eslint.useFlatConfig": true,
 
   "editor.defaultFormatter": "biomejs.biome",
   "[typescriptreact]": {
@@ -24,18 +26,16 @@
   "[typescript]": {
     "editor.defaultFormatter": "biomejs.biome"
   },
-
-  "eslint.experimental.useFlatConfig": true,
   "[javascript]": {
     "editor.defaultFormatter": "biomejs.biome"
   },
   "[astro]": {
     "editor.defaultFormatter": "biomejs.biome"
   },
-  "[toml]": {
-    "editor.defaultFormatter": "tamasfe.even-better-toml"
-  },
   "[json]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "[jsonc]": {
     "editor.defaultFormatter": "biomejs.biome"
   },
   "[css]": {
@@ -50,14 +50,7 @@
   "[yaml]": {
     "editor.defaultFormatter": "redhat.vscode-yaml"
   },
-  "[rust]": {
-    "editor.defaultFormatter": "rust-lang.rust-analyzer"
-  },
-  "zig.initialSetupDone": true,
   "[markdown]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "[jsonc]": {
-    "editor.defaultFormatter": "biomejs.biome"
   }
 }

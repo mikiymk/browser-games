@@ -22,7 +22,7 @@ const writer: Writer = .{ .context = void{} };
 
 pub fn log(comptime fmt: []const u8, args: anytype) void {
     if (builtin.target.isWasm()) {
-        writer.print("zig output: " ++ fmt, args) catch {};
+        writer.print("zig: " ++ fmt, args) catch {};
         flush();
     }
 }
