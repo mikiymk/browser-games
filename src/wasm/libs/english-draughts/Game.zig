@@ -69,21 +69,21 @@ pub const Move = union(enum) {
         switch (value) {
             .jump => |j| {
                 try writer.print(".jump ({d}, {d}) ({d}, {d}) ({d}, {d}) {s}", .{
-                    j.position_from.toCoordinate()[0],
-                    j.position_from.toCoordinate()[1],
-                    j.position_to.toCoordinate()[0],
-                    j.position_to.toCoordinate()[1],
-                    j.position_jumped.toCoordinate()[0],
-                    j.position_jumped.toCoordinate()[1],
+                    j.position_from.toCoordinate().x,
+                    j.position_from.toCoordinate().y,
+                    j.position_to.toCoordinate().x,
+                    j.position_to.toCoordinate().y,
+                    j.position_jumped.toCoordinate().x,
+                    j.position_jumped.toCoordinate().y,
                     if (j.color == .white) "white" else "black",
                 });
             },
             .walk => |w| {
                 try writer.print(".walk ({d}, {d}) ({d}, {d}) {s}", .{
-                    w.position_from.toCoordinate()[0],
-                    w.position_from.toCoordinate()[1],
-                    w.position_to.toCoordinate()[0],
-                    w.position_to.toCoordinate()[1],
+                    w.position_from.toCoordinate().x,
+                    w.position_from.toCoordinate().y,
+                    w.position_to.toCoordinate().x,
+                    w.position_to.toCoordinate().y,
                     if (w.color == .white) "white" else "black",
                 });
             },

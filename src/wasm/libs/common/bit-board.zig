@@ -223,6 +223,16 @@ pub fn BitBoard(comptime height_arg: u16, comptime width_arg: u16) type {
             break :blk board.inversed();
         };
 
+        test "📖BitBoard.west_mask: 左端のみ0のボード" {
+            const B = BitBoard(3, 3);
+
+            try B.west_mask.expect(
+                \\.oo
+                \\.oo
+                \\.oo
+            );
+        }
+
         const east_mask = blk: {
             var board = init();
 
@@ -232,6 +242,16 @@ pub fn BitBoard(comptime height_arg: u16, comptime width_arg: u16) type {
 
             break :blk board.inversed();
         };
+
+        test "📖BitBoard.east_mask: 右端のみ0のボード" {
+            const B = BitBoard(3, 3);
+
+            try B.east_mask.expect(
+                \\oo.
+                \\oo.
+                \\oo.
+            );
+        }
 
         pub fn eql(self: Self, other: Self) bool {
             return self.board.eql(other.board);
@@ -558,9 +578,11 @@ pub fn BitBoard(comptime height_arg: u16, comptime width_arg: u16) type {
 
             switch (direction) {
                 .n => return self.shr(length),
-                .w, .ne, .nw => return self.masks(east_mask).shr(length),
+                .w, .nw => return self.masks(west_mask).shr(length),
+                .ne => return self.masks(east_mask).shr(length),
                 .s => return self.shl(length),
-                .e, .se, .sw => return self.masks(west_mask).shl(length),
+                .e, .se => return self.masks(east_mask).shl(length),
+                .sw => return self.masks(west_mask).shl(length),
             }
         }
 
@@ -571,19 +593,39 @@ pub fn BitBoard(comptime height_arg: u16, comptime width_arg: u16) type {
                 const board = B.initWithString(
                     \\..o
                     \\...
-                    \\...
+                    \\o..
                 , 'o');
 
                 try board.move(.e).expect(
                     \\...
                     \\o..
-                    \\...
+                    \\.o.
                 );
 
                 try board.moveMasked(.e).expect(
                     \\...
-                    \\o..
                     \\...
+                    \\.o.
+                );
+            }
+
+            {
+                const board = B.initWithString(
+                    \\...
+                    \\oo.
+                    \\...
+                , 'o');
+
+                try board.move(.sw).expect(
+                    \\...
+                    \\..o
+                    \\o..
+                );
+
+                try board.moveMasked(.sw).expect(
+                    \\...
+                    \\...
+                    \\o..
                 );
             }
         }
@@ -689,13 +731,25 @@ pub fn BitBoard(comptime height_arg: u16, comptime width_arg: u16) type {
             try std.testing.expect(board.eql(B.initWithIndex(index_integer)));
         }
 
-        pub fn toCoordinate(self: Self) struct { Width, Height } {
+        pub fn toCoordinate(self: Self) struct { x: Width, y: Height } {
             const int = self.toIndexInteger();
 
             const x: Width = @intCast(int % @as(Index, width));
             const y: Height = @intCast(@as(Index, height) - @divTrunc(int, @as(Index, width)) - 1);
 
-            return .{ x, y };
+            return .{ .x = x, .y = y };
+        }
+
+        test "📖BitBoard.toCoordinate: 復元可能な座標の組を作成する" {
+            const B = BitBoard(16, 16);
+
+            const board = B.initWithCoordinate(3, 5);
+
+            const coord = board.toCoordinate();
+
+            try std.testing.expectEqual(3, coord.x);
+            try std.testing.expectEqual(5, coord.y);
+            try std.testing.expect(board.eql(B.initWithCoordinate(coord.x, coord.y)));
         }
 
         /// ビットボードを文字列に変換する。
