@@ -5,7 +5,7 @@ import { StartButton } from "@/components/page-header/start-button";
 import board from "@/images/chess/board.svg";
 import { createSignal, mapArray } from "solid-js";
 import type { JSXElement } from "solid-js";
-import { COLOR_BLACK, COLOR_WHITE, MOVE_TARGET } from "../constants";
+import { COLOR_PAWN_BLACK, COLOR_PAWN_WHITE, MOVE_TARGET } from "../constants";
 import { gameLoop } from "../game-loop";
 import { UsePiece } from "./define";
 import { getWasm } from "../wasm";
@@ -25,11 +25,11 @@ export const App = (): JSXElement => {
   );
   const boardNumber = mapArray(boardData, (value) => {
     const { stone, move } = value;
-    if (stone === COLOR_WHITE) {
-      return COLOR_WHITE;
+    if (stone === COLOR_PAWN_WHITE) {
+      return COLOR_PAWN_WHITE;
     }
-    if (stone === COLOR_BLACK) {
-      return COLOR_BLACK;
+    if (stone === COLOR_PAWN_BLACK) {
+      return COLOR_PAWN_BLACK;
     }
     if (move === MOVE_TARGET) {
       return MOVE_TARGET;

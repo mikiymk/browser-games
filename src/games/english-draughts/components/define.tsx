@@ -1,6 +1,6 @@
 import { Use } from "@/components/define/use";
 import type { JSXElement } from "solid-js";
-import { COLOR_WHITE, COLOR_BLACK, MOVE_TARGET } from "../constants";
+import { COLOR_PAWN_WHITE, COLOR_PAWN_BLACK, MOVE_TARGET } from "../constants";
 
 export const DefinePieces = (): JSXElement => {
   return (
@@ -31,8 +31,8 @@ type UsePieceProperties = {
 export const UsePiece = (properties: UsePieceProperties): JSXElement => {
   const id = (): string | undefined => {
     const ids: Record<number, string> = {
-      [COLOR_WHITE]: "black",
-      [COLOR_BLACK]: "white",
+      [COLOR_PAWN_WHITE]: "black",
+      [COLOR_PAWN_BLACK]: "white",
       [MOVE_TARGET]: "move",
     };
 

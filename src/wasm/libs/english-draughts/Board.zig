@@ -1,24 +1,28 @@
 const std = @import("std");
 const builtin = @import("builtin");
 const Allocator = std.mem.Allocator;
-const EnumArray = std.enums.EnumArray(Color, BitBoard);
+const EnumArray = std.enums.EnumArray;
 
 const draughts = @import("../english-draughts/main.zig");
 const Game = draughts.Game;
 const Board = draughts.Board;
 const BitBoard = draughts.BitBoard;
 const Color = Game.Color;
+const Piece = Game.Piece;
 
 // common import
 const common = @import("../common/main.zig");
 
-boards: EnumArray,
+const ColorBoard = EnumArray(Color, BitBoard);
+const PieceColorBoard = EnumArray(Piece, ColorBoard);
+
+boards: ColorBoard,
 
 /// ボードを作成する。
 pub fn init(a: Allocator, board_white: BitBoard, board_black: BitBoard) @This() {
     _ = a;
 
-    return .{ .boards = EnumArray.init(.{
+    return .{ .boards = ColorBoard.init(.{
         .white = board_white,
         .black = board_black,
     }) };
@@ -55,7 +59,7 @@ pub fn getColor(self: Board, position: BitBoard) ?Color {
     }
 }
 
-test getColor {
+test "📖Board.getColor" {
     const a = std.testing.allocator;
     const board_str =
         \\........
@@ -76,7 +80,7 @@ test getColor {
 }
 
 /// 指定した座標の駒が移動できる範囲を取得する。
-pub fn getMoveWark(self: Board, position: BitBoard, color: Color) BitBoard {
+pub fn movedKingWalk(self: Board, position: BitBoard, color: Color) BitBoard {
     const ally_board = self.getBoard(color);
     const opponent_board = self.getBoard(color.turn());
     const occupied_positions = ally_board.unions(opponent_board);
@@ -86,7 +90,7 @@ pub fn getMoveWark(self: Board, position: BitBoard, color: Color) BitBoard {
     return move_to.excludes(occupied_positions);
 }
 
-test getMoveWark {
+test "📖Board.movedKingWalk" {
     const a = std.testing.allocator;
     const board_str =
         \\........
@@ -101,7 +105,7 @@ test getMoveWark {
 
     const board = Board.initFromString(a, board_str);
 
-    try board.getMoveWark(BitBoard.initWithCoordinate(1, 1), .white).expect(
+    try board.movedKingWalk(BitBoard.initWithCoordinate(1, 1), .white).expect(
         \\........
         \\........
         \\........
@@ -112,7 +116,7 @@ test getMoveWark {
         \\o.o.....
     );
 
-    try board.getMoveWark(BitBoard.initWithCoordinate(6, 6), .white).expect(
+    try board.movedKingWalk(BitBoard.initWithCoordinate(6, 6), .white).expect(
         \\.....o.o
         \\........
         \\.......o
@@ -125,7 +129,7 @@ test getMoveWark {
 }
 
 /// 指定した座標の駒が相手の駒を飛び越えて移動できる範囲を取得する。
-pub fn getMoveJump(self: Board, position: BitBoard, color: Color) BitBoard {
+pub fn movedKingJump(self: Board, position: BitBoard, color: Color) BitBoard {
     const ally_board = self.getBoard(color);
     const opponent_board = self.getBoard(color.turn());
     const occupied_positions = ally_board.unions(opponent_board);
@@ -142,7 +146,7 @@ pub fn getMoveJump(self: Board, position: BitBoard, color: Color) BitBoard {
     return move_jump.excludes(occupied_positions);
 }
 
-test getMoveJump {
+test "📖Board.getMoveJump" {
     const a = std.testing.allocator;
     const board_str =
         \\........
@@ -157,7 +161,7 @@ test getMoveJump {
 
     const board = Board.initFromString(a, board_str);
 
-    try board.getMoveJump(BitBoard.initWithCoordinate(3, 3), .white).expect(
+    try board.movedKingJump(BitBoard.initWithCoordinate(3, 3), .white).expect(
         \\........
         \\........
         \\........
@@ -180,7 +184,7 @@ pub fn setMovedWalk(self: *Board, position_from: BitBoard, position_to: BitBoard
     self.togglePiece(position_to, color);
 }
 
-test setMovedWalk {
+test "📖Board.setMovedWalk" {
     const a = std.testing.allocator;
     const board_str =
         \\........
@@ -215,7 +219,7 @@ pub fn setMovedJump(self: *Board, position_from: BitBoard, position_to: BitBoard
     self.togglePiece(position_to, color);
 }
 
-test setMovedJump {
+test "📖Board.setMovedJump" {
     const a = std.testing.allocator;
     const board_str =
         \\........

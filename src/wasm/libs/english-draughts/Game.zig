@@ -11,12 +11,39 @@ const BitBoard = draughts.BitBoard;
 const common = @import("../common/main.zig");
 const log = common.console.log;
 
+// # 最初のボード状態
+
+// .x.x.x.x
+// x.x.x.x.
+// .x.x.x.x
+// ........
+// ........
+// o.o.o.o.
+// .o.o.o.o
+// o.o.o.o.
+
+// # 動き方
+// - 単純な移動: 斜め前方に1マス移動する
+// - ジャンプ: 斜め前方に相手の駒を飛び越える。 ジャンプされた駒は捕獲される。
+
+// ジャンプが可能な場合は強制される。
+// ジャンプの後にジャンプできる場合はマルチジャンプが可能。
+// 複数のマルチジャンプが利用可能な場合、プレーヤーはどのジャンプを行うかを選択できる。
+
+// # キング
+// 駒がボードの相手側のキング列に移動すると、キングとして後ろに移動する能力を獲得する。
+// 昇格した場合はマルチジャンプができない。
+
+// # 勝ち条件
+// - 対戦相手のすべての駒を捕獲する
+// - 対戦相手が有効な動きを持たない
+
 pub const Color = enum(u8) {
     /// 先に動かすプレイヤー
-    white = 1,
+    white = 0b0001,
 
     /// 後に動かすプレイヤー
-    black = 2,
+    black = 0b0011,
 
     /// ターンを返す
     pub fn turn(self: @This()) @This() {
@@ -24,6 +51,19 @@ pub const Color = enum(u8) {
             .black => .white,
             .white => .black,
         };
+    }
+
+    pub fn parse(number: u8) Piece {
+        return @enumFromInt(number & 0b0011);
+    }
+};
+
+pub const Piece = enum(u8) {
+    pawn = 0b0001,
+    king = 0b0101,
+
+    pub fn parse(number: u8) Piece {
+        return @enumFromInt(number & 0b0101);
     }
 };
 
@@ -160,10 +200,10 @@ pub fn getColor(self: Game) Color {
 /// 指定した駒の移動できる位置を取得する
 pub fn getMove(self: Game, position: BitBoard) BitBoard {
     const color = self.board.getColor(position) orelse return BitBoard.init();
-    const jump_moves = self.board.getMoveJump(position, color);
+    const jump_moves = self.board.movedKingJump(position, color);
 
     if (jump_moves.isEmpty()) {
-        return self.board.getMoveWark(position, color);
+        return self.board.movedKingWalk(position, color);
     } else {
         return jump_moves;
     }
@@ -182,7 +222,7 @@ pub fn setMoved(self: *Game, move_action: Move) bool {
                 w.color,
             );
 
-            return !self.board.getMoveJump(w.position_to, w.color).isEmpty();
+            return !self.board.movedKingJump(w.position_to, w.color).isEmpty();
         },
         .jump => |j| {
             self.board.setMovedJump(
@@ -192,7 +232,7 @@ pub fn setMoved(self: *Game, move_action: Move) bool {
                 j.color,
             );
 
-            return !self.board.getMoveJump(j.position_to, j.color).isEmpty();
+            return !self.board.movedKingJump(j.position_to, j.color).isEmpty();
         },
     }
 }
