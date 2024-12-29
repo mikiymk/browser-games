@@ -68,12 +68,12 @@ pub const Piece = enum(u8) {
 };
 
 pub const Move = union(enum) {
-    walk: struct { position_from: BitBoard, position_to: BitBoard, color: Color },
-    jump: struct { position_from: BitBoard, position_to: BitBoard, position_jumped: BitBoard, color: Color },
+    walk: struct { position_from: BitBoard, position_to: BitBoard },
+    jump: struct { position_from: BitBoard, position_to: BitBoard, position_jumped: BitBoard },
 
     /// 移動元と移動先から移動アクションを作成する
     /// 1マス空きの場合は間のマスを計算する
-    pub fn init(position_from: usize, position_to: usize, color: Color) Move {
+    pub fn init(position_from: usize, position_to: usize) Move {
         const position_from_board = BitBoard.initWithIndex(position_from);
         const position_to_board = BitBoard.initWithIndex(position_to);
 
@@ -88,7 +88,6 @@ pub const Move = union(enum) {
                     .position_from = position_from_board,
                     .position_to = position_to_board,
                     .position_jumped = position_jumped,
-                    .color = color,
                 },
             };
         }
@@ -97,7 +96,6 @@ pub const Move = union(enum) {
             .walk = .{
                 .position_from = position_from_board,
                 .position_to = position_to_board,
-                .color = color,
             },
         };
     }
@@ -108,23 +106,21 @@ pub const Move = union(enum) {
 
         switch (value) {
             .jump => |j| {
-                try writer.print(".jump ({d}, {d}) ({d}, {d}) ({d}, {d}) {s}", .{
+                try writer.print(".jump ({d}, {d}) ({d}, {d}) ({d}, {d})", .{
                     j.position_from.toCoordinate().x,
                     j.position_from.toCoordinate().y,
                     j.position_to.toCoordinate().x,
                     j.position_to.toCoordinate().y,
                     j.position_jumped.toCoordinate().x,
                     j.position_jumped.toCoordinate().y,
-                    if (j.color == .white) "white" else "black",
                 });
             },
             .walk => |w| {
-                try writer.print(".walk ({d}, {d}) ({d}, {d}) {s}", .{
+                try writer.print(".walk ({d}, {d}) ({d}, {d})", .{
                     w.position_from.toCoordinate().x,
                     w.position_from.toCoordinate().y,
                     w.position_to.toCoordinate().x,
                     w.position_to.toCoordinate().y,
-                    if (w.color == .white) "white" else "black",
                 });
             },
         }
@@ -136,27 +132,23 @@ test Move {
         const move = Move.init(
             BitBoard.initWithCoordinate(3, 3).toIndexInteger(),
             BitBoard.initWithCoordinate(4, 4).toIndexInteger(),
-            .white,
         );
 
         try std.testing.expect(move == .walk);
         try std.testing.expect(move.walk.position_from.eql(BitBoard.initWithCoordinate(3, 3)));
         try std.testing.expect(move.walk.position_to.eql(BitBoard.initWithCoordinate(4, 4)));
-        try std.testing.expect(move.walk.color == .white);
     }
 
     {
         const move = Move.init(
             BitBoard.initWithCoordinate(5, 3).toIndexInteger(),
             BitBoard.initWithCoordinate(3, 5).toIndexInteger(),
-            .white,
         );
 
         try std.testing.expect(move == .jump);
         try std.testing.expect(move.jump.position_from.eql(BitBoard.initWithCoordinate(5, 3)));
         try std.testing.expect(move.jump.position_to.eql(BitBoard.initWithCoordinate(3, 5)));
         try std.testing.expect(move.jump.position_jumped.eql(BitBoard.initWithCoordinate(4, 4)));
-        try std.testing.expect(move.jump.color == .white);
     }
 }
 
@@ -199,11 +191,10 @@ pub fn getColor(self: Game) Color {
 
 /// 指定した駒の移動できる位置を取得する
 pub fn getMove(self: Game, position: BitBoard) BitBoard {
-    const color = self.board.getColor(position) orelse return BitBoard.init();
-    const jump_moves = self.board.movedKingJump(position, color);
+    const jump_moves = self.board.movedKingJump(position);
 
     if (jump_moves.isEmpty()) {
-        return self.board.movedKingWalk(position, color);
+        return self.board.movedKingWalk(position);
     } else {
         return jump_moves;
     }
@@ -219,20 +210,18 @@ pub fn setMoved(self: *Game, move_action: Move) bool {
             self.board.setMovedWalk(
                 w.position_from,
                 w.position_to,
-                w.color,
             );
 
-            return !self.board.movedKingJump(w.position_to, w.color).isEmpty();
+            return !self.board.movedKingJump(w.position_to).isEmpty();
         },
         .jump => |j| {
             self.board.setMovedJump(
                 j.position_from,
                 j.position_to,
                 j.position_jumped,
-                j.color,
             );
 
-            return !self.board.movedKingJump(j.position_to, j.color).isEmpty();
+            return !self.board.movedKingJump(j.position_to).isEmpty();
         },
     }
 }

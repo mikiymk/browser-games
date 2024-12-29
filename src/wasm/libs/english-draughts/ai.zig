@@ -29,7 +29,7 @@ const DraughtsContext = struct {
             var moves_to_iter = moves_to.iterator();
 
             while (moves_to_iter.next()) |pos_to| {
-                try moves.append(Game.Move.init(pos_from, pos_to, color));
+                try moves.append(Game.Move.init(pos_from, pos_to));
             }
         }
 
