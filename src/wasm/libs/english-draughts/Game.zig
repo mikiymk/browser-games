@@ -159,7 +159,7 @@ next_color: Color,
 /// ゲームを作成する
 pub fn init(a: Allocator) !Game {
     return .{
-        .board = Board.initFromString(a,
+        .board = Board.initWithString(a,
             \\.x.x.x.x
             \\x.x.x.x.
             \\.x.x.x.x
@@ -180,8 +180,8 @@ pub fn deinit(self: Game, a: Allocator) void {
 }
 
 /// 指定した色のボード状態を取得する
-pub fn getBoard(self: Game, color: Color) BitBoard {
-    return self.board.getBoard(color);
+pub fn getBoard(self: Game, color: Color, piece: Piece) BitBoard {
+    return self.board.getBoard(color, piece);
 }
 
 /// 次に動かすプレイヤーの色を取得する

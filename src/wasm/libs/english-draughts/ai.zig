@@ -20,7 +20,7 @@ const DraughtsContext = struct {
         errdefer moves.deinit();
 
         const color = game.getColor();
-        const moves_from = game.getBoard(color);
+        const moves_from = game.getBoard(color, .king);
         log("最初のボード状態\n{s}", .{moves_from.toString('o', '.')});
         var moves_from_iter = moves_from.iterator();
         while (moves_from_iter.next()) |pos_from| {

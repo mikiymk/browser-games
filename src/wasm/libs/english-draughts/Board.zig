@@ -16,21 +16,24 @@ const common = @import("../common/main.zig");
 const ColorBoard = EnumArray(Color, BitBoard);
 const PieceColorBoard = EnumArray(Piece, ColorBoard);
 
-boards: ColorBoard,
+boards: PieceColorBoard,
 
 /// ボードを作成する。
 pub fn init(a: Allocator, board_white: BitBoard, board_black: BitBoard) @This() {
     _ = a;
 
-    return .{ .boards = ColorBoard.init(.{
-        .white = board_white,
-        .black = board_black,
+    return .{ .boards = PieceColorBoard.init(.{
+        .pawn = ColorBoard.init(.{
+            .white = board_white,
+            .black = board_black,
+        }),
+        .king = ColorBoard.initFill(BitBoard.init()),
     }) };
 }
 
 /// 文字列からボードを作成する。
 /// 白はo、黒はxで指定する。
-pub fn initFromString(a: Allocator, str: []const u8) @This() {
+pub fn initWithString(a: Allocator, str: []const u8) @This() {
     const mark_white = 'o';
     const mark_black = 'x';
 
@@ -41,22 +44,43 @@ pub fn initFromString(a: Allocator, str: []const u8) @This() {
 }
 
 /// 指定した色のボード状態を取得する
-pub fn getBoard(self: Board, color: Color) BitBoard {
-    return self.boards.get(color);
+pub fn getBoard(self: Board, color: Color, piece: Piece) BitBoard {
+    return self.boards.get(piece).get(color);
+}
+
+/// 指定した色のボード状態を取得する
+pub fn getBoardPtr(self: *Board, color: Color, piece: Piece) *BitBoard {
+    return self.boards.getPtr(piece).getPtr(color);
+}
+
+/// 指定した場所の駒の色と種類を取得する
+pub fn getColorPiece(self: Board, position: BitBoard) ?struct { Color, Piece } {
+    const white_pawn = self.getBoard(.white, .pawn);
+    const white_king = self.getBoard(.white, .king);
+    const black_pawn = self.getBoard(.black, .pawn);
+    const black_king = self.getBoard(.black, .king);
+
+    if (position.isJoint(white_pawn)) {
+        return .{ .white, .pawn };
+    } else if (position.isJoint(white_king)) {
+        return .{ .white, .king };
+    } else if (position.isJoint(black_pawn)) {
+        return .{ .black, .pawn };
+    } else if (position.isJoint(black_king)) {
+        return .{ .black, .king };
+    } else {
+        return null;
+    }
 }
 
 /// 指定した場所の駒の色を取得する
 pub fn getColor(self: Board, position: BitBoard) ?Color {
-    const white_board = self.getBoard(.white);
-    const black_board = self.getBoard(.black);
+    return (self.getColorPiece(position) orelse return null)[0];
+}
 
-    if (position.isJoint(white_board)) {
-        return .white;
-    } else if (position.isJoint(black_board)) {
-        return .black;
-    } else {
-        return null;
-    }
+/// 指定した場所の駒の種類を取得する
+pub fn getPiece(self: Board, position: BitBoard) ?Piece {
+    return (self.getColorPiece(position) orelse return null)[1];
 }
 
 test "📖Board.getColor" {
@@ -72,7 +96,7 @@ test "📖Board.getColor" {
         \\........
     ;
 
-    const board = Board.initFromString(a, board_str);
+    const board = Board.initWithString(a, board_str);
 
     try std.testing.expectEqual(.white, board.getColor(BitBoard.initWithCoordinate(5, 5)));
     try std.testing.expectEqual(.black, board.getColor(BitBoard.initWithCoordinate(2, 2)));
@@ -83,8 +107,13 @@ test "📖Board.getColor" {
 pub fn movedKingWalk(self: Board, position: BitBoard) BitBoard {
     const color = self.getColor(position) orelse return BitBoard.init();
 
-    const ally_board = self.getBoard(color);
-    const opponent_board = self.getBoard(color.turn());
+    const ally_pawn = self.getBoard(color, .pawn);
+    const ally_king = self.getBoard(color, .king);
+    const opponent_pawn = self.getBoard(color.turn(), .pawn);
+    const opponent_king = self.getBoard(color.turn(), .king);
+
+    const ally_board = ally_pawn.unions(ally_king);
+    const opponent_board = opponent_pawn.unions(opponent_king);
     const occupied_positions = ally_board.unions(opponent_board);
 
     const move_to = position.moveMaskedMultiple(&.{ .ne, .se, .nw, .sw });
@@ -105,7 +134,7 @@ test "📖Board.movedKingWalk" {
         \\........
     ;
 
-    const board = Board.initFromString(a, board_str);
+    const board = Board.initWithString(a, board_str);
 
     try board.movedKingWalk(BitBoard.initWithCoordinate(1, 1)).expect(
         \\........
@@ -134,8 +163,13 @@ test "📖Board.movedKingWalk" {
 pub fn movedKingJump(self: Board, position: BitBoard) BitBoard {
     const color = self.getColor(position) orelse return BitBoard.init();
 
-    const ally_board = self.getBoard(color);
-    const opponent_board = self.getBoard(color.turn());
+    const ally_pawn = self.getBoard(color, .pawn);
+    const ally_king = self.getBoard(color, .king);
+    const opponent_pawn = self.getBoard(color.turn(), .pawn);
+    const opponent_king = self.getBoard(color.turn(), .king);
+
+    const ally_board = ally_pawn.unions(ally_king);
+    const opponent_board = opponent_pawn.unions(opponent_king);
     const occupied_positions = ally_board.unions(opponent_board);
 
     var move_jump = BitBoard.init();
@@ -163,7 +197,7 @@ test "📖Board.getMoveJump" {
         \\........
     ;
 
-    const board = Board.initFromString(a, board_str);
+    const board = Board.initWithString(a, board_str);
 
     try board.movedKingJump(BitBoard.initWithCoordinate(3, 3)).expect(
         \\........
@@ -178,16 +212,16 @@ test "📖Board.getMoveJump" {
 }
 
 /// 指定した位置の駒を反転させる
-fn togglePiece(self: *Board, position: BitBoard, color: Color) void {
-    self.boards.getPtr(color).setToggle(position);
+fn togglePiece(self: *Board, position: BitBoard, color: Color, piece: Piece) void {
+    self.getBoardPtr(color, piece).setToggle(position);
 }
 
 /// 駒を移動させる
 pub fn setMovedWalk(self: *Board, position_from: BitBoard, position_to: BitBoard) void {
-    const color = self.getColor(position_from) orelse return;
+    const color, const piece = self.getColorPiece(position_from) orelse return;
 
-    self.togglePiece(position_from, color);
-    self.togglePiece(position_to, color);
+    self.togglePiece(position_from, color, piece);
+    self.togglePiece(position_to, color, piece);
 }
 
 test "📖Board.setMovedWalk" {
@@ -203,13 +237,13 @@ test "📖Board.setMovedWalk" {
         \\........
     ;
 
-    var board = Board.initFromString(a, board_str);
+    var board = Board.initWithString(a, board_str);
     board.setMovedWalk(
         BitBoard.initWithCoordinate(3, 3),
         BitBoard.initWithCoordinate(4, 4),
     );
 
-    try board.getBoard(.white).expect(
+    try board.getBoard(.white, .pawn).expect(
         \\........
         \\........
         \\........
@@ -223,11 +257,13 @@ test "📖Board.setMovedWalk" {
 
 /// 駒を移動させ、途中の相手の駒を取りのぞく
 pub fn setMovedJump(self: *Board, position_from: BitBoard, position_to: BitBoard, position_jumped: BitBoard) void {
-    const color = self.getColor(position_from) orelse return;
+    const color, const piece = self.getColorPiece(position_from) orelse return;
 
-    self.togglePiece(position_from, color);
-    self.togglePiece(position_jumped, color.turn());
-    self.togglePiece(position_to, color);
+    self.togglePiece(position_from, color, piece);
+    self.togglePiece(position_to, color, piece);
+
+    const color_jumped, const piece_jumped = self.getColorPiece(position_jumped) orelse return;
+    self.togglePiece(position_jumped, color_jumped, piece_jumped);
 }
 
 test "📖Board.setMovedJump" {
@@ -243,14 +279,14 @@ test "📖Board.setMovedJump" {
         \\........
     ;
 
-    var board = Board.initFromString(a, board_str);
+    var board = Board.initWithString(a, board_str);
     board.setMovedJump(
         BitBoard.initWithCoordinate(3, 3),
         BitBoard.initWithCoordinate(1, 1),
         BitBoard.initWithCoordinate(2, 2),
     );
 
-    try board.getBoard(.white).expect(
+    try board.getBoard(.white, .pawn).expect(
         \\........
         \\........
         \\........
@@ -260,7 +296,7 @@ test "📖Board.setMovedJump" {
         \\.o......
         \\........
     );
-    try board.getBoard(.black).expect(
+    try board.getBoard(.black, .pawn).expect(
         \\........
         \\........
         \\........

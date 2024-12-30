@@ -10,6 +10,7 @@
     "Dtarget",
     "errdefer",
     "knip",
+    "orelse",
     "Reversi",
     "Shogi",
     "wasm_bindgen",

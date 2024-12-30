@@ -4,6 +4,7 @@ const builtin = @import("builtin");
 const draughts = @import("libs/english-draughts/main.zig");
 const Game = draughts.Game;
 const Color = Game.Color;
+const Piece = Game.Piece;
 const BitBoard = draughts.BitBoard;
 
 // common import
@@ -27,8 +28,8 @@ export fn deinit(game: *Game) void {
 }
 
 /// ボードの状態を得る
-export fn getBoard(game: *Game, color: Color) u64 {
-    return game.getBoard(color).toInteger();
+export fn getBoard(game: *Game, color: Color, piece: Piece) u64 {
+    return game.getBoard(color, piece).toInteger();
 }
 
 /// 現在のプレイヤーの色を得る
