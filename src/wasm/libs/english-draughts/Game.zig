@@ -40,9 +40,13 @@ const log = common.console.log;
 
 pub const Color = enum(u8) {
     /// 先に動かすプレイヤー
+    /// ボードの下側
+    /// テキスト表示はo
     white = 0b0001,
 
     /// 後に動かすプレイヤー
+    /// ボードの上側
+    /// テキスト表示はx
     black = 0b0011,
 
     /// ターンを返す
@@ -191,10 +195,17 @@ pub fn getColor(self: Game) Color {
 
 /// 指定した駒の移動できる位置を取得する
 pub fn getMove(self: Game, position: BitBoard) BitBoard {
-    const jump_moves = self.board.movedKingJump(position);
+    const piece = self.board.getPiece(position) orelse return BitBoard.init();
+    const jump_moves = switch (piece) {
+        .pawn => self.board.movedPawnJump(position),
+        .king => self.board.movedKingJump(position),
+    };
 
     if (jump_moves.isEmpty()) {
-        return self.board.movedKingWalk(position);
+        return switch (piece) {
+            .pawn => self.board.movedPawnWalk(position),
+            .king => self.board.movedKingWalk(position),
+        };
     } else {
         return jump_moves;
     }
