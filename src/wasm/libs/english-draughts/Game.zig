@@ -218,12 +218,14 @@ pub fn setMoved(self: *Game, move_action: Move) bool {
 
     switch (move_action) {
         .walk => |w| {
-            self.board.setMovedWalk(
+            // ポーンが昇格したら追加ジャンプできない
+            const is_promote = self.board.setMovedWalk(
                 w.position_from,
                 w.position_to,
             );
+            const can_jump = !self.board.movedKingJump(w.position_to).isEmpty();
 
-            return !self.board.movedKingJump(w.position_to).isEmpty();
+            return !is_promote and can_jump;
         },
         .jump => |j| {
             self.board.setMovedJump(

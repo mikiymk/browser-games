@@ -355,19 +355,29 @@ fn togglePiece(self: *Board, position: BitBoard, color: Color, piece: Piece) voi
     self.getBoardPtr(color, piece).setToggle(position);
 }
 
-/// 駒を移動させる
-pub fn setMovedWalk(self: *Board, position_from: BitBoard, position_to: BitBoard) void {
-    const color, const piece = self.getColorPiece(position_from) orelse return;
+/// 駒を移動させる。
+/// 最も上に到達した場合はキングに昇格し、trueを返す。
+pub fn setMovedWalk(self: *Board, position_from: BitBoard, position_to: BitBoard) bool {
+    const color, const piece = self.getColorPiece(position_from) orelse return false;
 
     self.togglePiece(position_from, color, piece);
-    self.togglePiece(position_to, color, piece);
+
+    if ((color == .white and position_to.isJoint(BitBoard.north_mask.getInverted())) or
+        (color == .black and position_to.isJoint(BitBoard.south_mask.getInverted())))
+    {
+        self.togglePiece(position_to, color, .king);
+        return true;
+    } else {
+        self.togglePiece(position_to, color, piece);
+        return false;
+    }
 }
 
 test "📖Board.setMovedWalk" {
     const a = std.testing.allocator;
     const board_str =
         \\........
-        \\........
+        \\......o.
         \\........
         \\........
         \\...o....
@@ -377,21 +387,43 @@ test "📖Board.setMovedWalk" {
     ;
 
     var board = Board.initWithString(a, board_str);
-    board.setMovedWalk(
-        BitBoard.initWithCoordinate(3, 3),
-        BitBoard.initWithCoordinate(4, 4),
-    );
+    {
+        const result = board.setMovedWalk(
+            BitBoard.initWithCoordinate(3, 3),
+            BitBoard.initWithCoordinate(4, 4),
+        );
 
-    try board.getBoard(.white, .pawn).expect(
-        \\........
-        \\........
-        \\........
-        \\....o...
-        \\........
-        \\........
-        \\........
-        \\........
-    );
+        try std.testing.expect(result == false);
+        try board.getBoard(.white, .pawn).expect(
+            \\........
+            \\......o.
+            \\........
+            \\....o...
+            \\........
+            \\........
+            \\........
+            \\........
+        );
+    }
+
+    {
+        const result = board.setMovedWalk(
+            BitBoard.initWithCoordinate(6, 6),
+            BitBoard.initWithCoordinate(5, 7),
+        );
+
+        try std.testing.expect(result == true);
+        try board.getBoard(.white, .king).expect(
+            \\.....o..
+            \\........
+            \\........
+            \\........
+            \\........
+            \\........
+            \\........
+            \\........
+        );
+    }
 }
 
 /// 駒を移動させ、途中の相手の駒を取りのぞく
