@@ -140,7 +140,7 @@ fn moveDir(player_board: BitBoard, place: BitBoard, mask: BitBoard, dir: Directi
 pub fn getValidMoves(board: Board) BitBoard {
     const player_board = board.getPlayer();
     const opponent_board = board.getOpponent();
-    const empty = player_board.unions(opponent_board).inversed();
+    const empty = player_board.unions(opponent_board).getInverted();
 
     const mask = opponent_board.masks(BitBoard.initWithString(
         \\.oooooo.

@@ -604,7 +604,7 @@ fn getMovedBoardNormalMove(board: Board, from: BitBoard, to: BitBoard) Board {
         const to_color = to_color_piece.color;
         const to_piece = to_color_piece.piece;
 
-        const to_inv = to.inversed();
+        const to_inv = to.getInverted();
         new_board.boards.getPtr(to_color).getPtr(to_piece).setMask(to_inv);
     }
 
@@ -678,7 +678,7 @@ fn getMovedBoardEnpassant(board: Board, from: BitBoard, to: BitBoard) Board {
     const capture_piece_type = new_board.getColorType(capture_target);
 
     if (capture_piece_type) |cpt| {
-        const capture_inv = capture_target.inversed();
+        const capture_inv = capture_target.getInverted();
 
         const capture_color_piece = cpt.toColorPiece();
         const capture_color = capture_color_piece.color;
@@ -726,7 +726,7 @@ pub fn getPromotionBoard(board: Board, from: BitBoard, piece_type: PieceType) Bo
     const color_piece_type = board.getColorType(from) orelse return new_board;
     const color = color_piece_type.toColorPiece().color;
 
-    new_board.getBoardPtr(color, .pawn).setMask(from.inversed());
+    new_board.getBoardPtr(color, .pawn).setMask(from.getInverted());
     new_board.getBoardPtr(color, piece_type).setUnion(from);
 
     return new_board;

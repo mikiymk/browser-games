@@ -1,9 +1,11 @@
 {
   "cSpell.words": [
+    "anytype",
     "astro",
     "astrojs",
     "biomejs",
     "clippy",
+    "comptime",
     "deinit",
     "destyle",
     "Doptimize",
@@ -13,6 +15,8 @@
     "orelse",
     "Reversi",
     "Shogi",
+    "Trunc",
+    "usize",
     "wasm_bindgen",
     "wasms"
   ],

@@ -213,14 +213,14 @@ pub fn BitBoard(comptime height_arg: u16, comptime width_arg: u16) type {
             try testing.expectEqual(board, B.initWithInteger(0b0000_0000_0000_1010));
         }
 
-        const west_mask = blk: {
+        pub const west_mask = blk: {
             var board = init();
 
             for (0..height) |y| {
-                board.setToggleIndex(coordinateToIndex(0, y));
+                board.setToggleCoordinate(0, y);
             }
 
-            break :blk board.inversed();
+            break :blk board.getInverted();
         };
 
         test "📖BitBoard.west_mask: 左端のみ0のボード" {
@@ -233,14 +233,14 @@ pub fn BitBoard(comptime height_arg: u16, comptime width_arg: u16) type {
             );
         }
 
-        const east_mask = blk: {
+        pub const east_mask = blk: {
             var board = init();
 
             for (0..height) |y| {
-                board.setToggleIndex(coordinateToIndex(width - 1, y));
+                board.setToggleCoordinate(width - 1, y);
             }
 
-            break :blk board.inversed();
+            break :blk board.getInverted();
         };
 
         test "📖BitBoard.east_mask: 右端のみ0のボード" {
@@ -250,6 +250,46 @@ pub fn BitBoard(comptime height_arg: u16, comptime width_arg: u16) type {
                 \\oo.
                 \\oo.
                 \\oo.
+            );
+        }
+
+        pub const north_mask = blk: {
+            var board = init();
+
+            for (0..width) |x| {
+                board.setToggleCoordinate(x, height - 1);
+            }
+
+            break :blk board.getInverted();
+        };
+
+        test "📖BitBoard.north_mask: 上端のみ0のボード" {
+            const B = BitBoard(3, 3);
+
+            try B.north_mask.expect(
+                \\...
+                \\ooo
+                \\ooo
+            );
+        }
+
+        pub const south_mask = blk: {
+            var board = init();
+
+            for (0..width) |x| {
+                board.setToggleCoordinate(x, 0);
+            }
+
+            break :blk board.getInverted();
+        };
+
+        test "📖BitBoard.south_mask: 下端のみ0のボード" {
+            const B = BitBoard(3, 3);
+
+            try B.south_mask.expect(
+                \\ooo
+                \\ooo
+                \\...
             );
         }
 
@@ -428,7 +468,7 @@ pub fn BitBoard(comptime height_arg: u16, comptime width_arg: u16) type {
 
         /// selfにotherのビットを足し合わせたビットボードを返す。
         /// `self | other;`
-        pub fn unions(self: Self, other: Self) Self {
+        pub fn unions(self: Self, other: Self) Self { // unionは予約語
             return .{
                 .board = self.board.unionWith(other.board),
             };
@@ -468,15 +508,20 @@ pub fn BitBoard(comptime height_arg: u16, comptime width_arg: u16) type {
             self.board.set(index);
         }
 
+        /// selfの(x,y)のビットを反転する。
+        pub fn setToggleCoordinate(self: *Self, x: Width, y: Height) void {
+            self.setToggleIndex(coordinateToIndex(x, y));
+        }
+
         /// すべてのビットを反転する。
         /// `self = ~self;`
-        pub fn setInverse(self: *Self) void {
+        pub fn invert(self: *Self) void {
             self.board.toggleAll();
         }
 
         /// すべてのビットをマスクしたビットボードを返す。
         /// `~self;`
-        pub fn inversed(self: Self) Self {
+        pub fn getInverted(self: Self) Self {
             return .{
                 .board = self.board.complement(),
             };

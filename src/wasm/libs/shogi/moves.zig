@@ -84,7 +84,7 @@ pub fn whitePawn(board: Board, from: BitBoard) BitBoard {
     const to = from.move(.n);
     const ally_pieces = board.getColorPieces(.white);
 
-    return to.masks(ally_pieces.inversed());
+    return to.masks(ally_pieces.getInverted());
 }
 
 /// 後手の歩兵の移動できる範囲
@@ -107,7 +107,7 @@ pub fn lance(board: Board, from: BitBoard, color: Color) BitBoard {
 pub fn whiteLance(board: Board, from: BitBoard) BitBoard {
     const ally_pieces = board.getColorPieces(.white);
     const enemy_pieces = board.getColorPieces(.black);
-    const empty_squares = ally_pieces.unions(enemy_pieces).inversed();
+    const empty_squares = ally_pieces.unions(enemy_pieces).getInverted();
 
     var to = from;
 
@@ -122,7 +122,7 @@ pub fn whiteLance(board: Board, from: BitBoard) BitBoard {
 pub fn blackLance(board: Board, from: BitBoard) BitBoard {
     const ally_pieces = board.getColorPieces(.black);
     const enemy_pieces = board.getColorPieces(.white);
-    const empty_squares = ally_pieces.unions(enemy_pieces).inversed();
+    const empty_squares = ally_pieces.unions(enemy_pieces).getInverted();
 
     var to = from;
 
@@ -247,7 +247,7 @@ pub fn blackGold(board: Board, from: BitBoard) BitBoard {
 pub fn bishop(board: Board, from: BitBoard, color: Color) BitBoard {
     const ally_pieces = board.getColorPieces(color);
     const enemy_pieces = board.getColorPieces(color.turn());
-    const empty_squares = ally_pieces.unions(enemy_pieces).inversed();
+    const empty_squares = ally_pieces.unions(enemy_pieces).getInverted();
 
     const mask = empty_squares.masks(east_mask).masks(west_mask);
 
@@ -269,7 +269,7 @@ pub fn bishop(board: Board, from: BitBoard, color: Color) BitBoard {
 pub fn promotedBishop(board: Board, from: BitBoard, color: Color) BitBoard {
     const ally_pieces = board.getColorPieces(color);
     const enemy_pieces = board.getColorPieces(color.turn());
-    const empty_squares = ally_pieces.unions(enemy_pieces).inversed();
+    const empty_squares = ally_pieces.unions(enemy_pieces).getInverted();
 
     const mask = empty_squares.masks(east_mask).masks(west_mask);
 
@@ -299,7 +299,7 @@ pub fn promotedBishop(board: Board, from: BitBoard, color: Color) BitBoard {
 pub fn rook(board: Board, from: BitBoard, color: Color) BitBoard {
     const ally_pieces = board.getColorPieces(color);
     const enemy_pieces = board.getColorPieces(color.turn());
-    const empty_squares = ally_pieces.unions(enemy_pieces).inversed();
+    const empty_squares = ally_pieces.unions(enemy_pieces).getInverted();
 
     const mask = empty_squares.masks(east_mask).masks(west_mask);
 
@@ -321,7 +321,7 @@ pub fn rook(board: Board, from: BitBoard, color: Color) BitBoard {
 pub fn promotedRook(board: Board, from: BitBoard, color: Color) BitBoard {
     const ally_pieces = board.getColorPieces(color);
     const enemy_pieces = board.getColorPieces(color.turn());
-    const empty_squares = ally_pieces.unions(enemy_pieces).inversed();
+    const empty_squares = ally_pieces.unions(enemy_pieces).getInverted();
 
     const mask = empty_squares.masks(east_mask).masks(west_mask);
 
