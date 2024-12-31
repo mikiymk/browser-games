@@ -41,7 +41,7 @@ export fn getColor(game: *Game) Color {
 export fn getMove(game: *Game, position_index: usize) u64 {
     const position = BitBoard.initWithIndex(position_index);
 
-    const moves = game.getMove(position);
+    const moves = game.getMove(a, position);
     return moves.toInteger();
 }
 

@@ -75,8 +75,9 @@ pub const Move = union(enum) {
     walk: struct { position_from: BitBoard, position_to: BitBoard },
     jump: struct { position_from: BitBoard, position_to: BitBoard, position_jumped: BitBoard },
 
-    /// 移動元と移動先から移動アクションを作成する
-    /// 1マス空きの場合は間のマスを計算する
+    /// 移動元と移動先から移動アクションを作成する。
+    /// 1マス空きの場合は間のマスを計算する。
+    /// position_fromとposition_toはインデックスで指定する。
     pub fn init(position_from: usize, position_to: usize) Move {
         const position_from_board = BitBoard.initWithIndex(position_from);
         const position_to_board = BitBoard.initWithIndex(position_to);
@@ -194,21 +195,28 @@ pub fn getColor(self: Game) Color {
 }
 
 /// 指定した駒の移動できる位置を取得する
-pub fn getMove(self: Game, position: BitBoard) BitBoard {
-    const piece = self.board.getPiece(position) orelse return BitBoard.init();
+pub fn getMove(self: Game, a: Allocator, position: BitBoard) BitBoard {
+    const color, const piece = self.board.getColorPiece(position) orelse return BitBoard.init();
     const jump_moves = switch (piece) {
         .pawn => self.board.movedPawnJump(position),
         .king => self.board.movedKingJump(position),
     };
 
-    if (jump_moves.isEmpty()) {
-        return switch (piece) {
-            .pawn => self.board.movedPawnWalk(position),
-            .king => self.board.movedKingWalk(position),
-        };
-    } else {
+    // ジャンプ可能ならジャンプを返す
+    if (!jump_moves.isEmpty()) {
         return jump_moves;
     }
+
+    // 盤上にジャンプできる駒がある場合、通常移動はできない
+    const all_jump_moves = self.board.getAllJumpMoves(a, color) catch return BitBoard.init();
+    if (all_jump_moves.len != 0) {
+        return BitBoard.init();
+    }
+
+    return switch (piece) {
+        .pawn => self.board.movedPawnWalk(position),
+        .king => self.board.movedKingWalk(position),
+    };
 }
 
 /// 指定された移動を実行し、ゲーム状態を更新する。

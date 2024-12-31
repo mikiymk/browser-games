@@ -78,11 +78,6 @@ pub fn getColor(self: Board, position: BitBoard) ?Color {
     return (self.getColorPiece(position) orelse return null)[0];
 }
 
-/// 指定した場所の駒の種類を取得する
-pub fn getPiece(self: Board, position: BitBoard) ?Piece {
-    return (self.getColorPiece(position) orelse return null)[1];
-}
-
 test "📖Board.getColor" {
     const a = std.testing.allocator;
     const board_str =
@@ -101,6 +96,46 @@ test "📖Board.getColor" {
     try std.testing.expectEqual(.white, board.getColor(BitBoard.initWithCoordinate(5, 5)));
     try std.testing.expectEqual(.black, board.getColor(BitBoard.initWithCoordinate(2, 2)));
     try std.testing.expectEqual(null, board.getColor(BitBoard.initWithCoordinate(4, 4)));
+}
+
+/// 指定した場所の駒の種類を取得する
+pub fn getPiece(self: Board, position: BitBoard) ?Piece {
+    return (self.getColorPiece(position) orelse return null)[1];
+}
+
+pub fn getAllJumpMoves(self: Board, a: Allocator, color: Color) ![]Game.Move {
+    var jump_moves = std.ArrayList(Game.Move).init(a);
+    errdefer jump_moves.deinit();
+
+    // ポーンの移動を取得
+    const pawn_board = self.getBoard(color, .pawn);
+    var pawn_iterator = pawn_board.iterator();
+    while (pawn_iterator.next()) |pawn_position_index| {
+        const pawn_position = BitBoard.initWithIndex(pawn_position_index);
+        const jump_to = self.movedPawnJump(pawn_position);
+
+        var jump_to_iterator = jump_to.iterator();
+        while (jump_to_iterator.next()) |jump_to_position_index| {
+            const move = Game.Move.init(pawn_position_index, jump_to_position_index);
+            try jump_moves.append(move);
+        }
+    }
+
+    // キングの移動を取得
+    const king_board = self.getBoard(color, .king);
+    var king_iterator = king_board.iterator();
+    while (king_iterator.next()) |king_position_index| {
+        const king_position = BitBoard.initWithIndex(king_position_index);
+        const jump_to = self.movedKingJump(king_position);
+
+        var jump_to_iterator = jump_to.iterator();
+        while (jump_to_iterator.next()) |jump_to_position_index| {
+            const move = Game.Move.init(king_position_index, jump_to_position_index);
+            try jump_moves.append(move);
+        }
+    }
+
+    return jump_moves.toOwnedSlice();
 }
 
 fn pawnDirections(color: Color) [2]BitBoard.Direction {

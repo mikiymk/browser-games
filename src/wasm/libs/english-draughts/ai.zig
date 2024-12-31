@@ -25,7 +25,7 @@ const DraughtsContext = struct {
         var moves_from_iter = moves_from.iterator();
         while (moves_from_iter.next()) |pos_from| {
             log("次に探索する座標 {d}", .{pos_from});
-            const moves_to = game.getMove(BitBoard.initWithIndex(pos_from));
+            const moves_to = game.getMove(a, BitBoard.initWithIndex(pos_from));
             var moves_to_iter = moves_to.iterator();
 
             while (moves_to_iter.next()) |pos_to| {

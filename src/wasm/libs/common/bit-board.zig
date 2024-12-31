@@ -698,6 +698,8 @@ pub fn BitBoard(comptime height_arg: u16, comptime width_arg: u16) type {
             return result;
         }
 
+        /// next()の返り値はビットのインデックス。
+        /// `BitBoard.initWithIndex`で復元できる。
         pub inline fn iterator(self: Self) Board.Iterator(.{}) {
             return self.board.iterator(.{});
         }
