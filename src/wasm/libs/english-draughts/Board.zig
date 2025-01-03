@@ -103,6 +103,78 @@ pub fn getPiece(self: Board, position: BitBoard) ?Piece {
     return (self.getColorPiece(position) orelse return null)[1];
 }
 
+/// 盤上の通常移動を全て取得する。
+pub fn getAllWalkMoves(self: Board, a: Allocator, color: Color) ![]Game.Move {
+    var walk_moves = std.ArrayList(Game.Move).init(a);
+    errdefer walk_moves.deinit();
+
+    // ポーンの移動を取得
+    const pawn_board = self.getBoard(color, .pawn);
+    var pawn_iterator = pawn_board.iterator();
+    while (pawn_iterator.next()) |pawn_position_index| {
+        const pawn_position = BitBoard.initWithIndex(pawn_position_index);
+        const walk_to = self.movedPawnWalk(pawn_position);
+
+        var walk_to_iterator = walk_to.iterator();
+        while (walk_to_iterator.next()) |walk_to_position_index| {
+            const move = Game.Move.init(pawn_position_index, walk_to_position_index);
+            try walk_moves.append(move);
+        }
+    }
+
+    // キングの移動を取得
+    const king_board = self.getBoard(color, .king);
+    var king_iterator = king_board.iterator();
+    while (king_iterator.next()) |king_position_index| {
+        const king_position = BitBoard.initWithIndex(king_position_index);
+        const walk_to = self.movedKingWalk(king_position);
+
+        var walk_to_iterator = walk_to.iterator();
+        while (walk_to_iterator.next()) |walk_to_position_index| {
+            const move = Game.Move.init(king_position_index, walk_to_position_index);
+            try walk_moves.append(move);
+        }
+    }
+
+    return walk_moves.toOwnedSlice();
+}
+
+test "📖Board.getAllWalkMoves" {
+    const a = std.testing.allocator;
+    const board_str =
+        \\........
+        \\......o.
+        \\........
+        \\........
+        \\...x....
+        \\..o.....
+        \\........
+        \\........
+    ;
+
+    const board = Board.initWithString(a, board_str);
+    const moves = try board.getAllWalkMoves(a, .white);
+    defer a.free(moves);
+
+    const expected = [_]Game.Move{
+        Game.Move.init(BitBoard.indexFromCoordinate(6, 6), BitBoard.indexFromCoordinate(5, 7)),
+        Game.Move.init(BitBoard.indexFromCoordinate(6, 6), BitBoard.indexFromCoordinate(7, 7)),
+        Game.Move.init(BitBoard.indexFromCoordinate(2, 2), BitBoard.indexFromCoordinate(1, 3)),
+    };
+
+    try std.testing.expectEqual(expected.len, moves.len);
+    for (expected) |expected_move| {
+        for (moves) |move| {
+            if (expected_move.eql(move)) {
+                break;
+            }
+        } else {
+            return error.NotContain;
+        }
+    }
+}
+
+/// 盤上のジャンプを全て取得する。
 pub fn getAllJumpMoves(self: Board, a: Allocator, color: Color) ![]Game.Move {
     var jump_moves = std.ArrayList(Game.Move).init(a);
     errdefer jump_moves.deinit();
@@ -136,6 +208,39 @@ pub fn getAllJumpMoves(self: Board, a: Allocator, color: Color) ![]Game.Move {
     }
 
     return jump_moves.toOwnedSlice();
+}
+
+test "📖Board.getAllJumpMoves" {
+    const a = std.testing.allocator;
+    const board_str =
+        \\........
+        \\......o.
+        \\........
+        \\........
+        \\...x....
+        \\..o.....
+        \\........
+        \\........
+    ;
+
+    const board = Board.initWithString(a, board_str);
+    const moves = try board.getAllJumpMoves(a, .white);
+    defer a.free(moves);
+
+    const expected = [_]Game.Move{
+        Game.Move.init(BitBoard.indexFromCoordinate(2, 2), BitBoard.indexFromCoordinate(4, 4)),
+    };
+
+    try std.testing.expectEqual(expected.len, moves.len);
+    for (expected) |expected_move| {
+        for (moves) |move| {
+            if (expected_move.eql(move)) {
+                break;
+            }
+        } else {
+            return error.NotContain;
+        }
+    }
 }
 
 fn pawnDirections(color: Color) [2]BitBoard.Direction {

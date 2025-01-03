@@ -105,6 +105,13 @@ pub const Move = union(enum) {
         };
     }
 
+    pub fn eql(a: Move, b: Move) bool {
+        return switch (a) {
+            .walk => |aw| b == .walk and aw.position_from.eql(b.walk.position_from) and aw.position_to.eql(b.walk.position_to),
+            .jump => |aj| b == .jump and aj.position_from.eql(b.jump.position_from) and aj.position_to.eql(b.jump.position_to) and aj.position_jumped.eql(b.jump.position_jumped),
+        };
+    }
+
     pub fn format(value: @This(), comptime fmt: []const u8, options: std.fmt.FormatOptions, writer: anytype) !void {
         _ = fmt;
         _ = options;
