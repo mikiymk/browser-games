@@ -229,8 +229,6 @@ pub fn getMove(self: Game, a: Allocator, position: BitBoard) BitBoard {
 /// 指定された移動を実行し、ゲーム状態を更新する。
 /// 移動先でさらにジャンプできる場合はtrueを返す。
 pub fn setMoved(self: *Game, move_action: Move) bool {
-    log("moved {}", .{move_action});
-
     switch (move_action) {
         .walk => |w| {
             // ポーンが昇格したら追加ジャンプできない
