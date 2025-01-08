@@ -232,22 +232,24 @@ pub fn setMoved(self: *Game, move_action: Move) bool {
     switch (move_action) {
         .walk => |w| {
             // ポーンが昇格したら追加ジャンプできない
-            const is_promote = self.board.setMovedWalk(
+            const is_promoted = self.board.setMovedWalk(
                 w.position_from,
                 w.position_to,
             );
             const can_jump = !self.board.movedKingJump(w.position_to).isEmpty();
 
-            return !is_promote and can_jump;
+            return !is_promoted and can_jump;
         },
         .jump => |j| {
-            self.board.setMovedJump(
+            const is_promoted = self.board.setMovedJump(
                 j.position_from,
                 j.position_to,
                 j.position_jumped,
             );
 
-            return !self.board.movedKingJump(j.position_to).isEmpty();
+            const can_jump = !self.board.movedKingJump(j.position_to).isEmpty();
+
+            return !is_promoted and can_jump;
         },
     }
 }

@@ -567,14 +567,25 @@ test "📖Board.setMovedWalk" {
 }
 
 /// 駒を移動させ、途中の相手の駒を取りのぞく
-pub fn setMovedJump(self: *Board, position_from: BitBoard, position_to: BitBoard, position_jumped: BitBoard) void {
-    const color, const piece = self.getColorPiece(position_from) orelse return;
+/// 最も上に到達した場合はキングに昇格し、trueを返す。
+pub fn setMovedJump(self: *Board, position_from: BitBoard, position_to: BitBoard, position_jumped: BitBoard) bool {
+    const color, const piece = self.getColorPiece(position_from) orelse return false;
 
+    var is_promoted = false;
     self.togglePiece(position_from, color, piece);
-    self.togglePiece(position_to, color, piece);
+    if ((color == .white and position_to.isJoint(BitBoard.north_mask.getInverted())) or
+        (color == .black and position_to.isJoint(BitBoard.south_mask.getInverted())))
+    {
+        self.togglePiece(position_to, color, .king);
+        is_promoted = true;
+    } else {
+        self.togglePiece(position_to, color, piece);
+    }
 
-    const color_jumped, const piece_jumped = self.getColorPiece(position_jumped) orelse return;
+    const color_jumped, const piece_jumped = self.getColorPiece(position_jumped) orelse return is_promoted;
     self.togglePiece(position_jumped, color_jumped, piece_jumped);
+
+    return is_promoted;
 }
 
 test "📖Board.setMovedJump" {
@@ -591,12 +602,13 @@ test "📖Board.setMovedJump" {
     ;
 
     var board = Board.initWithString(a, board_str);
-    board.setMovedJump(
+    const result = board.setMovedJump(
         BitBoard.initWithCoordinate(3, 3),
         BitBoard.initWithCoordinate(1, 1),
         BitBoard.initWithCoordinate(2, 2),
     );
 
+    try std.testing.expectEqual(result, false);
     try board.getBoard(.white, .pawn).expect(
         \\........
         \\........
