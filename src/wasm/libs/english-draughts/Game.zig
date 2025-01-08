@@ -57,8 +57,8 @@ pub const Color = enum(u8) {
         };
     }
 
-    pub fn parse(number: u8) Piece {
-        return @enumFromInt(number & 0b0011);
+    pub fn parse(number: usize) Color {
+        return @enumFromInt(@as(u8, @truncate(number)) & 0b0011);
     }
 };
 
@@ -66,8 +66,8 @@ pub const Piece = enum(u8) {
     pawn = 0b0001,
     king = 0b0101,
 
-    pub fn parse(number: u8) Piece {
-        return @enumFromInt(number & 0b0101);
+    pub fn parse(number: usize) Piece {
+        return @enumFromInt(@as(u8, @truncate(number)) & 0b0101);
     }
 };
 

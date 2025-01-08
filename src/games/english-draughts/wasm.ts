@@ -1,5 +1,5 @@
 import { mergeBoards, transBoard } from "./boards";
-import { COLOR_PAWN_BLACK, COLOR_PAWN_WHITE, MOVE_TARGET } from "./constants";
+import { COLOR_KING_BLACK, COLOR_KING_WHITE, COLOR_PAWN_BLACK, COLOR_PAWN_WHITE, MOVE_TARGET } from "./constants";
 import type { GameController, GameObject, PlayerColor } from "./game-loop";
 
 type WasmExports = {
@@ -46,10 +46,16 @@ export const getWasm = async (): Promise<GameController> => {
     },
 
     getBoard(game): readonly number[] {
-      const white = transBoard(8, 8, exports.getBoard(game, COLOR_PAWN_WHITE), COLOR_PAWN_WHITE);
-      const black = transBoard(8, 8, exports.getBoard(game, COLOR_PAWN_BLACK), COLOR_PAWN_BLACK);
+      const whitePawn = transBoard(8, 8, exports.getBoard(game, COLOR_PAWN_WHITE), COLOR_PAWN_WHITE);
+      const whiteKing = transBoard(8, 8, exports.getBoard(game, COLOR_KING_WHITE), COLOR_KING_WHITE);
+      const blackPawn = transBoard(8, 8, exports.getBoard(game, COLOR_PAWN_BLACK), COLOR_PAWN_BLACK);
+      const blackKing = transBoard(8, 8, exports.getBoard(game, COLOR_KING_BLACK), COLOR_KING_BLACK);
 
-      return mergeBoards(white, black);
+      // return mergeBoards(whitePawn, whiteKing, blackPawn, blackKing);
+      const board = mergeBoards(whitePawn, whiteKing, blackPawn, blackKing);
+      console.log(board);
+
+      return board;
     },
 
     getMove(game, position): readonly number[] {

@@ -28,7 +28,10 @@ export fn deinit(game: *Game) void {
 }
 
 /// ボードの状態を得る
-export fn getBoard(game: *Game, color: Color, piece: Piece) u64 {
+export fn getBoard(game: *Game, color_piece: usize) u64 {
+    const color = Color.parse(color_piece);
+    const piece = Piece.parse(color_piece);
+
     return game.getBoard(color, piece).toInteger();
 }
 
