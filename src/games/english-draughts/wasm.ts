@@ -15,23 +15,9 @@ type WasmExports = {
 };
 
 export const getWasm = async (): Promise<GameController> => {
-  let textBuffer = "";
-  const wasm = await WebAssembly.instantiateStreaming(fetch(`${import.meta.env.BASE_URL}/wasm/english-draughts.wasm`), {
-    env: {
-      consoleLog: (offset: number, length: number) => {
-        textBuffer += new TextDecoder().decode(new Uint8Array(memory.buffer, offset, length));
-      },
-
-      flush: () => {
-        console.log(textBuffer);
-
-        textBuffer = "";
-      },
-    },
-  });
+  const wasm = await WebAssembly.instantiateStreaming(fetch(`${import.meta.env.BASE_URL}/wasm/english-draughts.wasm`));
 
   const exports = wasm.instance.exports as WasmExports;
-  const { memory } = exports;
 
   return {
     init: exports.init,
@@ -51,11 +37,7 @@ export const getWasm = async (): Promise<GameController> => {
       const blackPawn = transBoard(8, 8, exports.getBoard(game, COLOR_PAWN_BLACK), COLOR_PAWN_BLACK);
       const blackKing = transBoard(8, 8, exports.getBoard(game, COLOR_KING_BLACK), COLOR_KING_BLACK);
 
-      // return mergeBoards(whitePawn, whiteKing, blackPawn, blackKing);
-      const board = mergeBoards(whitePawn, whiteKing, blackPawn, blackKing);
-      console.log(board);
-
-      return board;
+      return mergeBoards(whitePawn, whiteKing, blackPawn, blackKing);
     },
 
     getMove(game, position): readonly number[] {

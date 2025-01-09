@@ -3,19 +3,19 @@ import { PageBody } from "@/components/page-body/page-body";
 import { PageHeader } from "@/components/page-header/page-header";
 import { StartButton } from "@/components/page-header/start-button";
 import board from "@/images/chess/board.svg";
+import { MultiPromise } from "@/scripts/multi-promise";
+import { PlayerTypeAi, PlayerTypeHuman } from "@/scripts/player";
+import type { PlayerType } from "@/scripts/player";
+import { usePromise } from "@/scripts/use-promise";
+import { createUrlQuerySignal } from "@/scripts/use-url-query";
 import { createSignal, mapArray } from "solid-js";
 import type { JSXElement } from "solid-js";
+import { createBoard } from "../boards";
 import { COLOR_KING_BLACK, COLOR_KING_WHITE, COLOR_PAWN_BLACK, COLOR_PAWN_WHITE, MOVE_TARGET } from "../constants";
 import { gameLoop } from "../game-loop";
 import type { PlayerColor } from "../game-loop";
-import { UsePiece } from "./define";
 import { getWasm } from "../wasm";
-import { usePromise } from "@/scripts/use-promise";
-import { MultiPromise } from "@/scripts/multi-promise";
-import { createUrlQuerySignal } from "@/scripts/use-url-query";
-import { PlayerTypeAi, PlayerTypeHuman } from "@/scripts/player";
-import type { PlayerType } from "@/scripts/player";
-import { createBoard } from "../boards";
+import { UsePiece } from "./define";
 import { Settings } from "./settings";
 
 export const App = (): JSXElement => {
