@@ -31,6 +31,6 @@ export const transBoard = (height: number, width: number, bitBoard: bigint | num
  */
 export const mergeBoards = (firstBoard: readonly number[], ...boards: readonly (readonly number[])[]): number[] => {
   return Array.from(firstBoard, (value, index) => {
-    return value || (boards.find((board) => board[index])?.[index] ?? 0);
+    return value || (boards.find((board) => Boolean(board[index]))?.[index] ?? 0);
   });
 };
