@@ -195,6 +195,17 @@ pub const position = struct {
     , 'o');
 };
 
+const initial_pieces =
+    \\RNBQKBNR
+    \\PPPPPPPP
+    \\........
+    \\........
+    \\........
+    \\........
+    \\pppppppp
+    \\rnbqkbnr
+;
+
 boards: ColorPieceBoards,
 
 /// アンパサンが可能ならその位置、それ以外では0
@@ -208,19 +219,10 @@ castling_available: Castling = .{
 },
 
 pub fn init() Board {
-    return fromString(
-        \\RNBQKBNR
-        \\PPPPPPPP
-        \\........
-        \\........
-        \\........
-        \\........
-        \\pppppppp
-        \\rnbqkbnr
-    );
+    return initWithString(initial_pieces);
 }
 
-pub fn fromString(str: []const u8) Board {
+pub fn initWithString(str: []const u8) Board {
     return .{ .boards = ColorPieceBoards.init(.{
         .black = PieceBoards.init(.{
             .pawn = BitBoard.initWithString(str, 'P'),

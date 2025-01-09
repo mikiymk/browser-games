@@ -11,8 +11,8 @@ const main = @import("./main.zig");
 const Board = main.Board;
 const moves = main.moves;
 
-test "chess board from string" {
-    const board = Board.fromString(
+test "📖Board.initWithString: 文字列からボードを初期化する" {
+    const board = Board.initWithString(
         \\RNBQKBNR
         \\PPPPPPPP
         \\........
@@ -46,7 +46,7 @@ test "chess board from string" {
     );
 }
 
-test "filter check move" {
+test "📖Board.filterValidMove: 有効な動きだけをフィルターする" {
     const board_str =
         \\........
         \\...R....
@@ -57,7 +57,7 @@ test "filter check move" {
         \\...r....
         \\...k....
     ;
-    const board = Board.fromString(board_str);
+    const board = Board.initWithString(board_str);
     const from = BitBoard.initWithString(board_str, 'r');
     const to = moves.rook(board, from, .white);
 
@@ -76,7 +76,7 @@ test "filter check move" {
 }
 
 test "castling black kingside" {
-    const board = Board.fromString(
+    const board = Board.initWithString(
         \\....K..R
         \\........
         \\........
@@ -91,7 +91,7 @@ test "castling black kingside" {
 }
 
 test "castling black queenside" {
-    const board = Board.fromString(
+    const board = Board.initWithString(
         \\R...K...
         \\........
         \\........
@@ -106,7 +106,7 @@ test "castling black queenside" {
 }
 
 test "castling white kingside" {
-    const board = Board.fromString(
+    const board = Board.initWithString(
         \\........
         \\........
         \\........
@@ -121,7 +121,7 @@ test "castling white kingside" {
 }
 
 test "castling white queenside" {
-    const board = Board.fromString(
+    const board = Board.initWithString(
         \\........
         \\........
         \\........
@@ -136,7 +136,7 @@ test "castling white queenside" {
 }
 
 test "castling attacked king" {
-    const board = Board.fromString(
+    const board = Board.initWithString(
         \\....K..R
         \\........
         \\........
@@ -151,7 +151,7 @@ test "castling attacked king" {
 }
 
 test "castling moved king" {
-    const board = Board.fromString(
+    const board = Board.initWithString(
         \\R.......
         \\....K...
         \\........
@@ -166,7 +166,7 @@ test "castling moved king" {
 }
 
 test "castling moved rook" {
-    const board = Board.fromString(
+    const board = Board.initWithString(
         \\........
         \\........
         \\........
@@ -181,7 +181,7 @@ test "castling moved rook" {
 }
 
 test "castling piece between king and rook" {
-    const board = Board.fromString(
+    const board = Board.initWithString(
         \\........
         \\........
         \\........
@@ -196,7 +196,7 @@ test "castling piece between king and rook" {
 }
 
 test "black king is checked" {
-    const board = Board.fromString(
+    const board = Board.initWithString(
         \\........
         \\........
         \\........
@@ -214,7 +214,7 @@ test "black king is checked" {
 }
 
 test "black king is not checked" {
-    const board = Board.fromString(
+    const board = Board.initWithString(
         \\........
         \\........
         \\........
@@ -232,7 +232,7 @@ test "black king is not checked" {
 }
 
 test "white king is checked" {
-    const board = Board.fromString(
+    const board = Board.initWithString(
         \\........
         \\...R....
         \\........
@@ -250,7 +250,7 @@ test "white king is checked" {
 }
 
 test "white king is not checked" {
-    const board = Board.fromString(
+    const board = Board.initWithString(
         \\........
         \\..R.....
         \\........
@@ -268,7 +268,7 @@ test "white king is not checked" {
 }
 
 test "black is checked and cannot move" {
-    const board = Board.fromString(
+    const board = Board.initWithString(
         \\....K...
         \\........
         \\..b..q..
@@ -284,7 +284,7 @@ test "black is checked and cannot move" {
 }
 
 test "black is checked and can move" {
-    const board = Board.fromString(
+    const board = Board.initWithString(
         \\....K...
         \\.r......
         \\.....n..
@@ -300,7 +300,7 @@ test "black is checked and can move" {
 }
 
 test "black is not checked and can move" {
-    const board = Board.fromString(
+    const board = Board.initWithString(
         \\....K...
         \\.r......
         \\.....p..
@@ -316,7 +316,7 @@ test "black is not checked and can move" {
 }
 
 test "black is not checked and cannot move" {
-    const board = Board.fromString(
+    const board = Board.initWithString(
         \\....K...
         \\.r......
         \\.....q..
@@ -332,7 +332,7 @@ test "black is not checked and cannot move" {
 }
 
 test "white is checked and cannot move" {
-    const board = Board.fromString(
+    const board = Board.initWithString(
         \\........
         \\...R.Q..
         \\....k...
@@ -348,7 +348,7 @@ test "white is checked and cannot move" {
 }
 
 test "white is checked and can move" {
-    const board = Board.fromString(
+    const board = Board.initWithString(
         \\........
         \\........
         \\........
@@ -364,7 +364,7 @@ test "white is checked and can move" {
 }
 
 test "white is not checked and can move" {
-    const board = Board.fromString(
+    const board = Board.initWithString(
         \\..n.k.r.
         \\...b.q..
         \\........
@@ -380,7 +380,7 @@ test "white is not checked and can move" {
 }
 
 test "get moves: normal moves" {
-    const board = Board.fromString(
+    const board = Board.initWithString(
         \\........
         \\........
         \\........
@@ -406,7 +406,7 @@ test "get moves: normal moves" {
 }
 
 test "get moves: castling" {
-    const board = Board.fromString(
+    const board = Board.initWithString(
         \\R...K..R
         \\........
         \\........
@@ -432,7 +432,7 @@ test "get moves: castling" {
 }
 
 test "get moves: en passant" {
-    var board = Board.fromString(
+    var board = Board.initWithString(
         \\........
         \\........
         \\........
@@ -459,7 +459,7 @@ test "get moves: en passant" {
 }
 
 test "detect promotion move" {
-    const board = Board.fromString(
+    const board = Board.initWithString(
         \\........
         \\....P...
         \\........
@@ -474,7 +474,7 @@ test "detect promotion move" {
 }
 
 test "moved board 1: single pawn" {
-    const board = Board.fromString(
+    const board = Board.initWithString(
         \\........
         \\........
         \\........
@@ -503,7 +503,7 @@ test "moved board 1: single pawn" {
 }
 
 test "moved board 2: multiple pawns" {
-    const board = Board.fromString(
+    const board = Board.initWithString(
         \\........
         \\........
         \\........
@@ -532,7 +532,7 @@ test "moved board 2: multiple pawns" {
 }
 
 test "moved board 3: pawns and other pieces" {
-    const board = Board.fromString(
+    const board = Board.initWithString(
         \\........
         \\........
         \\........
@@ -572,7 +572,7 @@ test "moved board 3: pawns and other pieces" {
 }
 
 test "moved board 4: capture" {
-    const board = Board.fromString(
+    const board = Board.initWithString(
         \\........
         \\..PP....
         \\....p...
@@ -612,7 +612,7 @@ test "moved board 4: capture" {
 }
 
 test "moved board 5: rook" {
-    const board = Board.fromString(
+    const board = Board.initWithString(
         \\........
         \\........
         \\........
@@ -652,7 +652,7 @@ test "moved board 5: rook" {
 }
 
 test "moved board 6: castling" {
-    const board = Board.fromString(
+    const board = Board.initWithString(
         \\........
         \\........
         \\........
@@ -692,7 +692,7 @@ test "moved board 6: castling" {
 }
 
 test "moved board 7: en passant" {
-    const board = Board.fromString(
+    const board = Board.initWithString(
         \\........
         \\........
         \\........
@@ -732,7 +732,7 @@ test "moved board 7: en passant" {
 }
 
 test "moved board 8: castling rook-moved" {
-    const board = Board.fromString(
+    const board = Board.initWithString(
         \\........
         \\........
         \\........
@@ -755,7 +755,7 @@ test "moved board 8: castling rook-moved" {
 }
 
 test "moved board 9: castling king-moved" {
-    const board = Board.fromString(
+    const board = Board.initWithString(
         \\........
         \\........
         \\........
@@ -778,7 +778,7 @@ test "moved board 9: castling king-moved" {
 }
 
 test "moved board 10: castling castled" {
-    const board = Board.fromString(
+    const board = Board.initWithString(
         \\........
         \\........
         \\........
@@ -801,7 +801,7 @@ test "moved board 10: castling castled" {
 }
 
 test "moved board 11: enpassant white" {
-    const board = Board.fromString(
+    const board = Board.initWithString(
         \\........
         \\........
         \\........
@@ -821,7 +821,7 @@ test "moved board 11: enpassant white" {
 }
 
 test "moved board 11: enpassant black" {
-    const board = Board.fromString(
+    const board = Board.initWithString(
         \\....K...
         \\....P...
         \\........
@@ -841,7 +841,7 @@ test "moved board 11: enpassant black" {
 }
 
 test "promotion board 1: white pawn to knight" {
-    const board = Board.fromString(
+    const board = Board.initWithString(
         \\....p...
         \\........
         \\........
@@ -877,7 +877,7 @@ test "promotion board 1: white pawn to knight" {
 }
 
 test "promotion board 2: black pawn to queen" {
-    const board = Board.fromString(
+    const board = Board.initWithString(
         \\........
         \\........
         \\........
