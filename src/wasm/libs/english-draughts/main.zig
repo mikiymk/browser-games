@@ -11,5 +11,7 @@ pub const ai = @import("ai.zig");
 pub const BitBoard = common.bit_board.BitBoard(8, 8);
 
 test {
-    std.testing.refAllDeclsRecursive(@This());
+    _ = Game;
+    _ = Board;
+    _ = ai;
 }
