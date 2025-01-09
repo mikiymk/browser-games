@@ -604,7 +604,7 @@ test "📖Board.setMovedJump" {
         BitBoard.initWithCoordinate(2, 2),
     );
 
-    try std.testing.expectEqual(result, false);
+    try std.testing.expect(!result);
     try board.getBoard(.white, .pawn).expect(
         \\........
         \\........

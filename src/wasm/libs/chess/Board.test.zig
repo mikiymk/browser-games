@@ -87,10 +87,10 @@ test "📖Board.canCastling: キャスリングができるか判定する" {
         \\r...k..r
     );
 
-    try std.testing.expectEqual(board.canCastling(.black_king), true);
-    try std.testing.expectEqual(board.canCastling(.black_queen), true);
-    try std.testing.expectEqual(board.canCastling(.white_king), true);
-    try std.testing.expectEqual(board.canCastling(.white_queen), true);
+    try std.testing.expect(board.canCastling(.black_king));
+    try std.testing.expect(board.canCastling(.black_queen));
+    try std.testing.expect(board.canCastling(.white_king));
+    try std.testing.expect(board.canCastling(.white_queen));
 }
 
 test "📖Board.canCastling: キングが攻撃されている" {
@@ -105,7 +105,7 @@ test "📖Board.canCastling: キングが攻撃されている" {
         \\........
     );
 
-    try std.testing.expectEqual(board.canCastling(.black_king), false);
+    try std.testing.expect(!board.canCastling(.black_king));
 }
 
 test "📖Board.canCastling: 駒が動いた" {
@@ -123,8 +123,8 @@ test "📖Board.canCastling: 駒が動いた" {
     board = board.getMovedBoard(BitBoard.initWithCoordinate(4, 7), BitBoard.initWithCoordinate(4, 6));
     board = board.getMovedBoard(BitBoard.initWithCoordinate(7, 0), BitBoard.initWithCoordinate(7, 2));
 
-    try std.testing.expectEqual(board.canCastling(.black_queen), false);
-    try std.testing.expectEqual(board.canCastling(.white_king), false);
+    try std.testing.expect(!board.canCastling(.black_queen));
+    try std.testing.expect(!board.canCastling(.white_king));
 }
 
 test "📖Board.canCastling: 他の駒が間にある" {
@@ -139,7 +139,7 @@ test "📖Board.canCastling: 他の駒が間にある" {
         \\rn..k...
     );
 
-    try std.testing.expectEqual(board.canCastling(.white_queen), false);
+    try std.testing.expect(!board.canCastling(.white_queen));
 }
 
 test "📖Board.isChecked: チェックされている" {
@@ -187,7 +187,7 @@ test "📖Board.canMove: 動けるかどうか" {
             \\........
         );
 
-        try std.testing.expectEqual(false, board.canMove(.black));
+        try std.testing.expect(!board.canMove(.black));
     }
 
     {
@@ -202,7 +202,7 @@ test "📖Board.canMove: 動けるかどうか" {
             \\........
         );
 
-        try std.testing.expectEqual(true, board.canMove(.black));
+        try std.testing.expect(board.canMove(.black));
     }
 }
 
@@ -458,26 +458,26 @@ test "📖Board.getMovedBoard: 駒が動くとキャスリングができなく�
         \\r...k..r
     );
 
-    try std.testing.expectEqual(board.castling_available.white_queenside, true);
-    try std.testing.expectEqual(board.castling_available.white_kingside, true);
+    try std.testing.expect(board.castling_available.white_queenside);
+    try std.testing.expect(board.castling_available.white_kingside);
 
     board = board.getMovedBoard(BitBoard.initWithCoordinate(0, 0), BitBoard.initWithCoordinate(0, 3));
 
-    try std.testing.expectEqual(board.castling_available.white_queenside, false);
-    try std.testing.expectEqual(board.castling_available.white_kingside, true);
+    try std.testing.expect(!board.castling_available.white_queenside);
+    try std.testing.expect(board.castling_available.white_kingside);
 
     board = board.getMovedBoard(BitBoard.initWithCoordinate(4, 0), BitBoard.initWithCoordinate(4, 3));
 
-    try std.testing.expectEqual(board.castling_available.white_queenside, false);
-    try std.testing.expectEqual(board.castling_available.white_kingside, false);
+    try std.testing.expect(!board.castling_available.white_queenside);
+    try std.testing.expect(!board.castling_available.white_kingside);
 
-    try std.testing.expectEqual(board.castling_available.black_queenside, true);
-    try std.testing.expectEqual(board.castling_available.black_kingside, true);
+    try std.testing.expect(board.castling_available.black_queenside);
+    try std.testing.expect(board.castling_available.black_kingside);
 
     board = board.getMovedBoard(BitBoard.initWithCoordinate(4, 7), BitBoard.initWithCoordinate(7, 7));
 
-    try std.testing.expectEqual(board.castling_available.black_queenside, false);
-    try std.testing.expectEqual(board.castling_available.black_kingside, false);
+    try std.testing.expect(!board.castling_available.black_queenside);
+    try std.testing.expect(!board.castling_available.black_kingside);
 }
 
 test "📖Board.getMovedBoard: ポーンが2個進むとアンパッサン対象になる" {
