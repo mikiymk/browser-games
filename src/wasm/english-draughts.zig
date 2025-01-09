@@ -54,7 +54,9 @@ export fn getMove(game: *Game, position_index: usize) u64 {
 export fn move(game: *Game, position_from: usize, position_to: usize) bool {
     const action = Game.Move.init(position_from, position_to);
     const can_jump = game.setMoved(action);
-    game.next_color = game.next_color.turn();
+    if (!can_jump) {
+        game.next_color = game.next_color.turn();
+    }
     return can_jump;
 }
 

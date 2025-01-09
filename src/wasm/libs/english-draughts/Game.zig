@@ -168,6 +168,8 @@ board: Board,
 
 next_color: Color,
 
+next_jump: ?BitBoard = null,
+
 /// ゲームを作成する
 pub fn init(a: Allocator) !Game {
     return .{
@@ -203,6 +205,15 @@ pub fn getColor(self: Game) Color {
 
 /// 指定した駒の移動できる位置を取得する
 pub fn getMove(self: Game, a: Allocator, position: BitBoard) BitBoard {
+    if (self.next_jump) |next_jump| {
+        // 前回のジャンプを続ける場合
+        if (next_jump.eql(position)) {
+            return self.board.movedKingJump(position);
+        } else {
+            return BitBoard.init();
+        }
+    }
+
     const color, const piece = self.board.getColorPiece(position) orelse return BitBoard.init();
     const jump_moves = switch (piece) {
         .pawn => self.board.movedPawnJump(position),
@@ -231,14 +242,14 @@ pub fn getMove(self: Game, a: Allocator, position: BitBoard) BitBoard {
 pub fn setMoved(self: *Game, move_action: Move) bool {
     switch (move_action) {
         .walk => |w| {
-            // ポーンが昇格したら追加ジャンプできない
-            const is_promoted = self.board.setMovedWalk(
+            _ = self.board.setMovedWalk(
                 w.position_from,
                 w.position_to,
             );
-            const can_jump = !self.board.movedKingJump(w.position_to).isEmpty();
 
-            return !is_promoted and can_jump;
+            // 通常移動の後はジャンプできない
+            self.next_jump = null;
+            return false;
         },
         .jump => |j| {
             const is_promoted = self.board.setMovedJump(
@@ -249,7 +260,15 @@ pub fn setMoved(self: *Game, move_action: Move) bool {
 
             const can_jump = !self.board.movedKingJump(j.position_to).isEmpty();
 
-            return !is_promoted and can_jump;
+            const need_jump = !is_promoted and can_jump;
+
+            if (need_jump) {
+                self.next_jump = j.position_to;
+            } else {
+                self.next_jump = null;
+            }
+
+            return need_jump;
         },
     }
 }

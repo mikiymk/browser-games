@@ -497,8 +497,8 @@ fn togglePiece(self: *Board, position: BitBoard, color: Color, piece: Piece) voi
 
 /// 駒を移動させる。
 /// 最も上に到達した場合はキングに昇格し、trueを返す。
-pub fn setMovedWalk(self: *Board, position_from: BitBoard, position_to: BitBoard) bool {
-    const color, const piece = self.getColorPiece(position_from) orelse return false;
+pub fn setMovedWalk(self: *Board, position_from: BitBoard, position_to: BitBoard) void {
+    const color, const piece = self.getColorPiece(position_from) orelse return;
 
     self.togglePiece(position_from, color, piece);
 
@@ -506,10 +506,8 @@ pub fn setMovedWalk(self: *Board, position_from: BitBoard, position_to: BitBoard
         (color == .black and position_to.isJoint(BitBoard.south_mask.getInverted())))
     {
         self.togglePiece(position_to, color, .king);
-        return true;
     } else {
         self.togglePiece(position_to, color, piece);
-        return false;
     }
 }
 
@@ -528,12 +526,11 @@ test "📖Board.setMovedWalk" {
 
     var board = Board.initWithString(a, board_str);
     {
-        const result = board.setMovedWalk(
+        board.setMovedWalk(
             BitBoard.initWithCoordinate(3, 3),
             BitBoard.initWithCoordinate(4, 4),
         );
 
-        try std.testing.expect(result == false);
         try board.getBoard(.white, .pawn).expect(
             \\........
             \\......o.
@@ -547,12 +544,11 @@ test "📖Board.setMovedWalk" {
     }
 
     {
-        const result = board.setMovedWalk(
+        board.setMovedWalk(
             BitBoard.initWithCoordinate(6, 6),
             BitBoard.initWithCoordinate(5, 7),
         );
 
-        try std.testing.expect(result == true);
         try board.getBoard(.white, .king).expect(
             \\.....o..
             \\........

@@ -16,6 +16,18 @@ const ai_depth = 5;
 
 const DraughtsContext = struct {
     pub fn get_valid_moves(a: Allocator, game: Game) ![]Game.Move {
+        if (game.next_jump) |jump| {
+            var jump_moves = std.ArrayList(Game.Move).init(a);
+            errdefer jump_moves.deinit();
+            const jump_to = game.board.movedKingJump(jump);
+            var iterator = jump_to.iterator();
+            while (iterator.next()) |position_to| {
+                const move = Game.Move.init(jump.toIndexInteger(), position_to);
+                try jump_moves.append(move);
+            }
+            return jump_moves.toOwnedSlice();
+        }
+
         const jumps = try game.board.getAllJumpMoves(a, game.next_color);
         if (jumps.len > 0) {
             return jumps;
