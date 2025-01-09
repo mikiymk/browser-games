@@ -10,23 +10,13 @@ const ColorPieceType = Board.ColorPieceType;
 // common import
 const common = @import("libs/common/main.zig");
 const BitBoard = common.bit_board.BitBoard(8, 8);
-
-/// アロケーター
-const allocator = if (builtin.target.isWasm()) std.heap.wasm_allocator else std.heap.page_allocator;
-
-fn getRamdom() f64 {
-    const S = struct {
-        var rand_gen = std.rand.DefaultPrng.init(0xfe_dc_ba_98_76_54_32_10);
-        var rand = rand_gen.random();
-    };
-
-    return S.rand.float(f64);
-}
+const a = common.allocator;
+const getRandom = common.random.getRandom;
 
 /// ゲームを作成する
 export fn init() ?*Game {
-    const game_ptr = allocator.create(Game) catch return null;
-    game_ptr.* = Game.init(allocator);
+    const game_ptr = a.create(Game) catch return null;
+    game_ptr.* = Game.init(a);
 
     return game_ptr;
 }
@@ -34,13 +24,13 @@ export fn init() ?*Game {
 /// ゲームを削除する
 export fn deinit(g: ?*Game) void {
     if (g) |game_ptr| {
-        allocator.destroy(game_ptr);
+        a.destroy(game_ptr);
     }
 }
 
 /// ボードに駒を配置する
 export fn setPiece(g: *Game, kind: ColorPieceType, index: u8) void {
-    g.board.setPiece(kind, BitBoard.fromIndex(index));
+    g.board.setPiece(kind, BitBoard.initWithIndex(index));
 }
 
 /// ボードの駒を取得する
@@ -65,7 +55,7 @@ export fn winner(g: *Game) u8 {
 
 /// 駒を選択し、その駒の移動先を取得する
 export fn getMove(g: *Game, from_index: u8) u64 {
-    const from_place = BitBoard.fromIndex(from_index);
+    const from_place = BitBoard.initWithIndex(from_index);
 
     return g.getMove(from_place).toInteger();
 }
@@ -74,21 +64,21 @@ export fn getMove(g: *Game, from_index: u8) u64 {
 /// アンパサン、キャスリングを判別する
 /// 戻り値はプロモーションが可能かどうか
 export fn move(g: *Game, from_index: u8, to_index: u8) bool {
-    const from = BitBoard.fromIndex(from_index);
-    const to = BitBoard.fromIndex(to_index);
+    const from = BitBoard.initWithIndex(from_index);
+    const to = BitBoard.initWithIndex(to_index);
 
     return g.applyMove(from, to);
 }
 
 /// 駒のプロモーション
 export fn promote(g: *Game, index: u8, piece_kind: ColorPieceType) void {
-    const place = BitBoard.fromIndex(index);
+    const place = BitBoard.initWithIndex(index);
     g.applyPromote(place, piece_kind.pieceType());
 }
 
 /// AIで駒を移動する
 export fn moveAi(g: *Game) void {
-    const ai_move = ai.getAiMove(g.board, allocator, g.next_color, 3, getRamdom) catch return;
+    const ai_move = ai.getAiMove(g.board, a, g.next_color, 3, getRandom) catch return;
 
     if (g.applyMove(ai_move.from, ai_move.to)) {
         g.applyPromote(ai_move.to, .queen);

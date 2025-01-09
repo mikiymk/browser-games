@@ -2,14 +2,12 @@ const std = @import("std");
 const builtin = @import("builtin");
 const shogi = @import("libs/shogi/main.zig");
 const common = @import("libs/common/main.zig");
-
-/// アロケーター
-const allocator = if (builtin.target.isWasm()) std.heap.wasm_allocator else std.heap.page_allocator;
+const a = common.allocator;
 
 /// ゲームを作成する
 /// メモリが足りない場合はnullを返す
 export fn init() ?*shogi.Game {
-    const game_ptr = allocator.create(shogi.Game) catch return null;
+    const game_ptr = a.create(shogi.Game) catch return null;
     game_ptr.* = shogi.Game.init();
 
     return game_ptr;
@@ -18,12 +16,12 @@ export fn init() ?*shogi.Game {
 /// ゲームを削除する
 /// メモリを解放する
 export fn deinit(game: *shogi.Game) void {
-    allocator.destroy(game);
+    a.destroy(game);
 }
 
 /// ボードのメモリを作成する
 export fn initBoard() ?[*]u8 {
-    const board_ptr = allocator.alloc(u8, 81) catch return null;
+    const board_ptr = a.alloc(u8, 81) catch return null;
     for (board_ptr) |*square| {
         square.* = 0;
     }
@@ -33,7 +31,7 @@ export fn initBoard() ?[*]u8 {
 
 /// ボードのメモリを解放する
 export fn deinitBoard(board: [*]u8) void {
-    allocator.free(board[0..81]);
+    a.free(board[0..81]);
 }
 
 /// ボードのメモリを設定する
@@ -78,7 +76,7 @@ export fn hands(game: *shogi.Game, hands_ptr: [*]u8) void {
 
 /// 選択したマスの駒の動ける範囲を得る
 export fn movePos(game: *shogi.Game, board: [*]u8, from: u8) void {
-    const positions = game.movePositions(shogi.Board.BitBoard.fromIndex(from));
+    const positions = game.movePositions(shogi.Board.BitBoard.initWithIndex(from));
     var board_slice: []u8 = board[0..81];
 
     @memset(board_slice, 0);
@@ -99,16 +97,16 @@ export fn hitPos(game: *shogi.Game, board: [*]u8, piece: u8) void {
 /// 移動元と移動先を指定して駒を動かす
 /// 成りを選択できる場合はtrueを返す
 export fn move(game: *shogi.Game, from: u8, to: u8) bool {
-    return game.move(shogi.Board.BitBoard.fromIndex(from), shogi.Board.BitBoard.fromIndex(to));
+    return game.move(shogi.Board.BitBoard.initWithIndex(from), shogi.Board.BitBoard.initWithIndex(to));
 }
 
 export fn hit(game: *shogi.Game, piece: u8, to: u8) void {
-    game.hit(@enumFromInt(piece), shogi.Board.BitBoard.fromIndex(to));
+    game.hit(@enumFromInt(piece), shogi.Board.BitBoard.initWithIndex(to));
 }
 
 /// 移動元と変化先の駒を指定して駒を動かす
 export fn promote(game: *shogi.Game, position: u8) void {
-    game.promote(shogi.Board.BitBoard.fromIndex(position));
+    game.promote(shogi.Board.BitBoard.initWithIndex(position));
 }
 
 /// AIで自動で駒を動かす

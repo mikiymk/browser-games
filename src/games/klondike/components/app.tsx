@@ -49,13 +49,7 @@ export const App = (): JSXElement => {
 
   return (
     <>
-      <PageHeader
-        buttons={
-          <>
-            <StartButton start={start} />
-          </>
-        }
-      />
+      <PageHeader buttons={<StartButton start={start} />} />
 
       <PageBody>
         <Field

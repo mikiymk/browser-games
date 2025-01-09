@@ -23,7 +23,7 @@ test "move black" {
         \\...o...o
     );
 
-    const place = BitBoard.fromString(
+    const place = BitBoard.initWithString(
         \\........
         \\........
         \\........
@@ -67,7 +67,7 @@ test "get valid move" {
 
     // マスク
     // 相手の石があるところだけ + 端をループしないように止める
-    const mask = board.boards.get(.white).masks(BitBoard.fromString(
+    const mask = board.boards.get(.white).masks(BitBoard.initWithString(
         \\.oooooo.
         \\.oooooo.
         \\.oooooo.
@@ -355,8 +355,8 @@ test "board from string" {
 
     const expected = Board{
         .boards = Board.ColorBoards.init(.{
-            .black = BitBoard.fromInteger(0x00_00_00_00_00_aa_55_aa),
-            .white = BitBoard.fromInteger(0x55_aa_55_00_00_00_00_00),
+            .black = BitBoard.initWithInteger(0x00_00_00_00_00_aa_55_aa),
+            .white = BitBoard.initWithInteger(0x55_aa_55_00_00_00_00_00),
         }),
     };
     const actual = Board.fromString(

@@ -17,10 +17,12 @@ pub fn build(b: *Build) void {
     const build_reversi = buildLib(b, "reversi", public_dir, target, optimize);
     const build_chess = buildLib(b, "chess", public_dir, target, optimize);
     const build_shogi = buildLib(b, "shogi", public_dir, target, optimize);
+    const build_draughts = buildLib(b, "english-draughts", public_dir, target, optimize);
 
     build_all.dependOn(build_reversi);
     build_all.dependOn(build_chess);
     build_all.dependOn(build_shogi);
+    build_all.dependOn(build_draughts);
 
     // test
     buildTest(b);

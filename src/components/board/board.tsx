@@ -15,7 +15,6 @@ type BoardProperties<T> = {
 };
 
 export const Board = <T,>(properties: BoardProperties<T>): JSXElement => {
-  // eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types -- 謎のエラー
   const handleClick = (event: MouseEvent & { readonly currentTarget: Element }): [square: T, index: number] => {
     const rect = event.currentTarget.getBoundingClientRect();
     const x = Math.floor(((event.clientX - rect.left) / rect.width) * properties.width);

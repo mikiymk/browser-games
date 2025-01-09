@@ -6,25 +6,13 @@ const ai = reversi.ai;
 
 const common = @import("libs/common/main.zig");
 const BitBoard = common.bit_board.BitBoard(8, 8);
-
-/// アロケーター
-const allocator = if (builtin.target.isWasm()) std.heap.wasm_allocator else std.heap.page_allocator;
-
-/// Wasmではインポートしたランダム関数を使う
-/// それ以外ではZigのライブラリの
-pub fn getRandom() f64 {
-    const S = struct {
-        var rand_gen = std.rand.DefaultPrng.init(0xfe_dc_ba_98_76_54_32_10);
-        var rand = rand_gen.random();
-    };
-
-    return S.rand.float(f64);
-}
+const a = common.allocator;
+const getRandom = common.random.getRandom;
 
 /// 新しいボードをアロケートしてポインタを返す。
 /// メモリの開放に`deinit`を呼び出してください。
 export fn init() ?*Board {
-    const board = allocator.create(Board) catch return null;
+    const board = a.create(Board) catch return null;
     board.* = Board.init();
 
     return board;
@@ -32,7 +20,7 @@ export fn init() ?*Board {
 
 /// ボードのメモリを破棄する。
 export fn deinit(board: *Board) void {
-    allocator.destroy(board);
+    a.destroy(board);
 }
 
 /// ボードの現在状態から黒石の配置を取得する。
@@ -65,7 +53,7 @@ export fn isGameEnd(board: *Board) bool {
 ///
 /// ゲームボードの現在状態が更新される。
 export fn move(board: *Board, place: u8) void {
-    board.moveMutate(BitBoard.fromIndex(place));
+    board.moveMutate(BitBoard.initWithIndex(place));
 }
 
 /// 現在プレイヤーの有効手を取得する。

@@ -104,7 +104,7 @@ fn selectPlace(r: Random, place: BitBoard) BitBoard {
 
     while (iter.next()) |p| {
         if (index == 0) {
-            return BitBoard.fromIndex(p);
+            return BitBoard.initWithIndex(p);
         }
 
         index -= 1;

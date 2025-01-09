@@ -7,6 +7,7 @@ pub const ColorBoards = std.enums.EnumArray(Color, BitBoard);
 // common import
 const common = @import("../common/main.zig");
 pub const BitBoard = common.bit_board.BitBoard(8, 8);
+pub const Direction = BitBoard.Direction;
 
 // internal import
 
@@ -68,7 +69,7 @@ fn getFlipSquares(board: Board, place: BitBoard) BitBoard {
     const player_board = board.getPlayer();
     const opponent_board = board.getOpponent();
 
-    const mask = opponent_board.masks(BitBoard.fromString(
+    const mask = opponent_board.masks(BitBoard.initWithString(
         \\.oooooo.
         \\.oooooo.
         \\.oooooo.
@@ -119,7 +120,7 @@ pub fn move(board: Board, place: BitBoard) Board {
 }
 
 /// Dirで示された方向にひっくり返す石を探す。
-fn moveDir(player_board: BitBoard, place: BitBoard, mask: BitBoard, dir: BitBoard.Direction) BitBoard {
+fn moveDir(player_board: BitBoard, place: BitBoard, mask: BitBoard, dir: Direction) BitBoard {
     var flip = place.move(dir).masks(mask);
     flip.setUnion(flip.move(dir).masks(mask));
     flip.setUnion(flip.move(dir).masks(mask));
@@ -139,9 +140,9 @@ fn moveDir(player_board: BitBoard, place: BitBoard, mask: BitBoard, dir: BitBoar
 pub fn getValidMoves(board: Board) BitBoard {
     const player_board = board.getPlayer();
     const opponent_board = board.getOpponent();
-    const empty = player_board.unions(opponent_board).inversed();
+    const empty = player_board.unions(opponent_board).getInverted();
 
-    const mask = opponent_board.masks(BitBoard.fromString(
+    const mask = opponent_board.masks(BitBoard.initWithString(
         \\.oooooo.
         \\.oooooo.
         \\.oooooo.
@@ -152,25 +153,25 @@ pub fn getValidMoves(board: Board) BitBoard {
         \\.oooooo.
     , 'o'));
 
-    return getDirMoves(player_board, mask, .ew)
-        .unions(getDirMoves(player_board, opponent_board, .ns))
-        .unions(getDirMoves(player_board, mask, .nesw))
-        .unions(getDirMoves(player_board, mask, .nwse))
+    return getDirMoves(player_board, mask, &.{ .e, .w })
+        .unions(getDirMoves(player_board, opponent_board, &.{ .n, .s }))
+        .unions(getDirMoves(player_board, mask, &.{ .ne, .sw }))
+        .unions(getDirMoves(player_board, mask, &.{ .nw, .se }))
         .masks(empty);
 }
 
 /// Dirで示された方向に挟める場所を探す
-fn getDirMoves(board: BitBoard, mask: BitBoard, dir: BitBoard.Direction) BitBoard {
+fn getDirMoves(board: BitBoard, mask: BitBoard, dirs: []const Direction) BitBoard {
     var flip = board;
-    flip = flip.move(dir).masks(mask);
+    flip = flip.moveMultiple(dirs).masks(mask);
 
-    flip.setUnion(flip.move(dir).masks(mask));
-    flip.setUnion(flip.move(dir).masks(mask));
-    flip.setUnion(flip.move(dir).masks(mask));
-    flip.setUnion(flip.move(dir).masks(mask));
-    flip.setUnion(flip.move(dir).masks(mask));
+    flip.setUnion(flip.moveMultiple(dirs).masks(mask));
+    flip.setUnion(flip.moveMultiple(dirs).masks(mask));
+    flip.setUnion(flip.moveMultiple(dirs).masks(mask));
+    flip.setUnion(flip.moveMultiple(dirs).masks(mask));
+    flip.setUnion(flip.moveMultiple(dirs).masks(mask));
 
-    return flip.move(dir);
+    return flip.moveMultiple(dirs);
 }
 
 /// ゲームが終了しているか判定する。
@@ -193,8 +194,8 @@ pub fn isEnd(board: Board) bool {
 pub fn fromString(comptime str: []const u8) Board {
     return .{
         .boards = ColorBoards.init(.{
-            .black = BitBoard.fromString(str, 'o'),
-            .white = BitBoard.fromString(str, 'x'),
+            .black = BitBoard.initWithString(str, 'o'),
+            .white = BitBoard.initWithString(str, 'x'),
         }),
     };
 }

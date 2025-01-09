@@ -129,40 +129,40 @@ const Castling = struct {
 
 pub const position = struct {
     /// a8
-    const black_rook_queenside = BitBoard.fromCoordinate(0, 7);
+    const black_rook_queenside = BitBoard.initWithCoordinate(0, 7);
     /// b8
-    const black_knight_queenside = BitBoard.fromCoordinate(1, 7);
+    const black_knight_queenside = BitBoard.initWithCoordinate(1, 7);
     /// c8
-    const black_bishop_queenside = BitBoard.fromCoordinate(2, 7);
+    const black_bishop_queenside = BitBoard.initWithCoordinate(2, 7);
     /// d8
-    const black_queen = BitBoard.fromCoordinate(3, 7);
+    const black_queen = BitBoard.initWithCoordinate(3, 7);
     /// e8
-    const black_king = BitBoard.fromCoordinate(4, 7);
+    const black_king = BitBoard.initWithCoordinate(4, 7);
     /// f8
-    const black_bishop_kingside = BitBoard.fromCoordinate(5, 7);
+    const black_bishop_kingside = BitBoard.initWithCoordinate(5, 7);
     /// g8
-    const black_knight_kingside = BitBoard.fromCoordinate(6, 7);
+    const black_knight_kingside = BitBoard.initWithCoordinate(6, 7);
     /// h8
-    const black_rook_kingside = BitBoard.fromCoordinate(7, 7);
+    const black_rook_kingside = BitBoard.initWithCoordinate(7, 7);
 
     /// a1
-    const white_rook_queenside = BitBoard.fromCoordinate(0, 0);
+    const white_rook_queenside = BitBoard.initWithCoordinate(0, 0);
     /// b1
-    const white_knight_queenside = BitBoard.fromCoordinate(1, 0);
+    const white_knight_queenside = BitBoard.initWithCoordinate(1, 0);
     /// c1
-    const white_bishop_queenside = BitBoard.fromCoordinate(2, 0);
+    const white_bishop_queenside = BitBoard.initWithCoordinate(2, 0);
     /// d1
-    const white_queen = BitBoard.fromCoordinate(3, 0);
+    const white_queen = BitBoard.initWithCoordinate(3, 0);
     /// e1
-    const white_king = BitBoard.fromCoordinate(4, 0);
+    const white_king = BitBoard.initWithCoordinate(4, 0);
     /// f1
-    const white_bishop_kingside = BitBoard.fromCoordinate(5, 0);
+    const white_bishop_kingside = BitBoard.initWithCoordinate(5, 0);
     /// g1
-    const white_knight_kingside = BitBoard.fromCoordinate(6, 0);
+    const white_knight_kingside = BitBoard.initWithCoordinate(6, 0);
     /// h1
-    const white_rook_kingside = BitBoard.fromCoordinate(7, 0);
+    const white_rook_kingside = BitBoard.initWithCoordinate(7, 0);
 
-    const black_square_mask = BitBoard.fromString(
+    const black_square_mask = BitBoard.initWithString(
         \\.o.o.o.o
         \\o.o.o.o.
         \\.o.o.o.o
@@ -172,7 +172,7 @@ pub const position = struct {
         \\.o.o.o.o
         \\o.o.o.o.
     , 'o');
-    const white_square_mask = BitBoard.fromString(
+    const white_square_mask = BitBoard.initWithString(
         \\o.o.o.o.
         \\.o.o.o.o
         \\o.o.o.o.
@@ -183,7 +183,7 @@ pub const position = struct {
         \\.o.o.o.o
     , 'o');
 
-    const final_ranks = BitBoard.fromString(
+    const final_ranks = BitBoard.initWithString(
         \\oooooooo
         \\........
         \\........
@@ -223,21 +223,21 @@ pub fn init() Board {
 pub fn fromString(str: []const u8) Board {
     return .{ .boards = ColorPieceBoards.init(.{
         .black = PieceBoards.init(.{
-            .pawn = BitBoard.fromString(str, 'P'),
-            .knight = BitBoard.fromString(str, 'N'),
-            .bishop = BitBoard.fromString(str, 'B'),
-            .rook = BitBoard.fromString(str, 'R'),
-            .queen = BitBoard.fromString(str, 'Q'),
-            .king = BitBoard.fromString(str, 'K'),
+            .pawn = BitBoard.initWithString(str, 'P'),
+            .knight = BitBoard.initWithString(str, 'N'),
+            .bishop = BitBoard.initWithString(str, 'B'),
+            .rook = BitBoard.initWithString(str, 'R'),
+            .queen = BitBoard.initWithString(str, 'Q'),
+            .king = BitBoard.initWithString(str, 'K'),
         }),
 
         .white = PieceBoards.init(.{
-            .pawn = BitBoard.fromString(str, 'p'),
-            .knight = BitBoard.fromString(str, 'n'),
-            .bishop = BitBoard.fromString(str, 'b'),
-            .rook = BitBoard.fromString(str, 'r'),
-            .queen = BitBoard.fromString(str, 'q'),
-            .king = BitBoard.fromString(str, 'k'),
+            .pawn = BitBoard.initWithString(str, 'p'),
+            .knight = BitBoard.initWithString(str, 'n'),
+            .bishop = BitBoard.initWithString(str, 'b'),
+            .rook = BitBoard.initWithString(str, 'r'),
+            .queen = BitBoard.initWithString(str, 'q'),
+            .king = BitBoard.initWithString(str, 'k'),
         }),
     }) };
 }
@@ -428,9 +428,9 @@ pub fn filterValidMove(board: Board, from: BitBoard, to_list: BitBoard) BitBoard
     var valid_board = BitBoard.init();
     while (iter.next()) |current| {
         // 動かしたボードがチェック状態の移動先を取り除く
-        const moved_board = board.getMovedBoard(from, BitBoard.fromIndex(current));
+        const moved_board = board.getMovedBoard(from, BitBoard.initWithIndex(current));
         if (!moved_board.isChecked(from_color)) {
-            valid_board.setUnion(BitBoard.fromIndex(current));
+            valid_board.setUnion(BitBoard.initWithIndex(current));
         }
     }
 
@@ -489,7 +489,7 @@ pub fn canMove(board: Board, color: Color) bool {
     var iter = board.getColorPieces(color).iterator();
     while (iter.next()) |current| {
         // 動ける場所が1つでもあれば真を返して終了
-        if (!board.getMove(BitBoard.fromIndex(current)).isEmpty()) {
+        if (!board.getMove(BitBoard.initWithIndex(current)).isEmpty()) {
             return true;
         }
     }
@@ -604,7 +604,7 @@ fn getMovedBoardNormalMove(board: Board, from: BitBoard, to: BitBoard) Board {
         const to_color = to_color_piece.color;
         const to_piece = to_color_piece.piece;
 
-        const to_inv = to.inversed();
+        const to_inv = to.getInverted();
         new_board.boards.getPtr(to_color).getPtr(to_piece).setMask(to_inv);
     }
 
@@ -678,7 +678,7 @@ fn getMovedBoardEnpassant(board: Board, from: BitBoard, to: BitBoard) Board {
     const capture_piece_type = new_board.getColorType(capture_target);
 
     if (capture_piece_type) |cpt| {
-        const capture_inv = capture_target.inversed();
+        const capture_inv = capture_target.getInverted();
 
         const capture_color_piece = cpt.toColorPiece();
         const capture_color = capture_color_piece.color;
@@ -726,7 +726,7 @@ pub fn getPromotionBoard(board: Board, from: BitBoard, piece_type: PieceType) Bo
     const color_piece_type = board.getColorType(from) orelse return new_board;
     const color = color_piece_type.toColorPiece().color;
 
-    new_board.getBoardPtr(color, .pawn).setMask(from.inversed());
+    new_board.getBoardPtr(color, .pawn).setMask(from.getInverted());
     new_board.getBoardPtr(color, piece_type).setUnion(from);
 
     return new_board;
