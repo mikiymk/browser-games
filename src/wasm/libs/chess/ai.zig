@@ -7,6 +7,7 @@ const AllocError = Allocator.Error;
 // common import
 const common = @import("../common/main.zig");
 const BitBoard = common.bit_board.BitBoard(8, 8);
+const getRandom = common.random.getRandom;
 
 // internal import
 const main = @import("./main.zig");
@@ -22,7 +23,7 @@ const Move = struct { from: BitBoard, to: BitBoard };
 const MoveList = std.ArrayList(Move);
 
 /// AIが考えた打つ場所を返します。
-pub fn getAiMove(board: Board, allocator: Allocator, color: Color, depth: u8, comptime random: *const fn () f64) AllocError!Move {
+pub fn getAiMove(board: Board, allocator: Allocator, color: Color, depth: u8) AllocError!Move {
     // 次の手のリスト
     const moves = try getValidMoves(board, allocator, color);
     defer allocator.free(moves);
@@ -61,7 +62,7 @@ pub fn getAiMove(board: Board, allocator: Allocator, color: Color, depth: u8, co
         }
     }
 
-    const select_index: u6 = @intFromFloat(random() * @as(f64, @floatFromInt(best_places.items.len)));
+    const select_index: u6 = @intFromFloat(getRandom() * @as(f64, @floatFromInt(best_places.items.len)));
     return best_places.items[select_index];
 }
 

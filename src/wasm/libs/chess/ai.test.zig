@@ -7,6 +7,7 @@ const AllocError = Allocator.Error;
 // common import
 const common = @import("../common/main.zig");
 const BitBoard = common.bit_board.BitBoard(8, 8);
+const getRandom = common.random.getRandom;
 
 // internal import
 const main = @import("./main.zig");
@@ -14,24 +15,12 @@ const Board = main.Board;
 const Color = Board.Color;
 const ai = main.ai;
 
-test "get random move with AI" {
+test "📖ai.getAiMove: AIの考えた動き" {
     const allocator = std.testing.allocator;
     const board = Board.init();
 
-    const S = struct {
-        var rand_gen: std.rand.DefaultPrng = undefined;
-        var rand: std.rand.Random = undefined;
-
-        fn random() f64 {
-            return rand.float(f64);
-        }
-    };
-
     for (0..11) |_| {
-        S.rand_gen = std.rand.DefaultPrng.init(0);
-        S.rand = S.rand_gen.random();
-
-        const move = try ai.getAiMove(board, allocator, .white, 1, S.random);
+        const move = try ai.getAiMove(board, allocator, .white, 1, getRandom);
 
         try move.from.expectJoint(
             \\........

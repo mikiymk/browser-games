@@ -11,7 +11,6 @@ const ColorPieceType = Board.ColorPieceType;
 const common = @import("libs/common/main.zig");
 const BitBoard = common.bit_board.BitBoard(8, 8);
 const a = common.allocator;
-const getRandom = common.random.getRandom;
 
 /// ゲームを作成する
 export fn init() ?*Game {
@@ -78,7 +77,7 @@ export fn promote(g: *Game, index: u8, piece_kind: ColorPieceType) void {
 
 /// AIで駒を移動する
 export fn moveAi(g: *Game) void {
-    const ai_move = ai.getAiMove(g.board, a, g.next_color, 3, getRandom) catch return;
+    const ai_move = ai.getAiMove(g.board, a, g.next_color, 3) catch return;
 
     if (g.applyMove(ai_move.from, ai_move.to)) {
         g.applyPromote(ai_move.to, .queen);
