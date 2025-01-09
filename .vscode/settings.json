@@ -10,6 +10,7 @@
     "destyle",
     "Doptimize",
     "Dtarget",
+    "enpassant",
     "errdefer",
     "knip",
     "orelse",

@@ -7,7 +7,6 @@ const AllocError = Allocator.Error;
 // common import
 const common = @import("../common/main.zig");
 const BitBoard = common.bit_board.BitBoard(8, 8);
-const getRandom = common.random.getRandom;
 
 // internal import
 const main = @import("./main.zig");
@@ -20,7 +19,7 @@ test "📖ai.getAiMove: AIの考えた動き" {
     const board = Board.init();
 
     for (0..11) |_| {
-        const move = try ai.getAiMove(board, allocator, .white, 1, getRandom);
+        const move = try ai.getAiMove(board, allocator, .white, 1);
 
         try move.from.expectJoint(
             \\........
