@@ -5,8 +5,9 @@ import { StartButton } from "@/components/page-header/start-button";
 import board from "@/images/chess/board.svg";
 import { createSignal, mapArray } from "solid-js";
 import type { JSXElement } from "solid-js";
-import { MOVE_TARGET } from "../constants";
+import { COLOR_KING_BLACK, COLOR_KING_WHITE, COLOR_PAWN_BLACK, COLOR_PAWN_WHITE, MOVE_TARGET } from "../constants";
 import { gameLoop } from "../game-loop";
+import type { PlayerColor } from "../game-loop";
 import { UsePiece } from "./define";
 import { getWasm } from "../wasm";
 import { usePromise } from "@/scripts/use-promise";
@@ -15,6 +16,7 @@ import { createUrlQuerySignal } from "@/scripts/use-url-query";
 import { PlayerTypeAi, PlayerTypeHuman } from "@/scripts/player";
 import type { PlayerType } from "@/scripts/player";
 import { createBoard } from "../boards";
+import { Settings } from "./settings";
 
 export const App = (): JSXElement => {
   const [white, setWhite] = createUrlQuerySignal<PlayerType>("white", PlayerTypeHuman);
@@ -23,6 +25,7 @@ export const App = (): JSXElement => {
   const [boardData, setBoardData] = createSignal<{ stone: number; move: number }[]>(
     createBoard(8, 8, { stone: 0, move: 0 }),
   );
+  const [color, setColor] = createSignal<PlayerColor>("white");
   const boardNumber = mapArray(boardData, (value) => {
     if (value.move === MOVE_TARGET) {
       return MOVE_TARGET;
@@ -55,8 +58,12 @@ export const App = (): JSXElement => {
           return previousBoard.map((value, index) => ({ ...value, move: newBoard[index] ?? 0 }));
         });
       },
-      setColor: () => {},
-      setEnd: () => {},
+      setColor: (color) => {
+        setColor(color);
+      },
+      setEnd: () => {
+        // do nothing
+      },
 
       requestInput: () => promise.request(),
       players: {
@@ -66,8 +73,13 @@ export const App = (): JSXElement => {
     });
   };
 
-  const handleClick = (_: number, index: number): void => {
-    resolve(index);
+  const handleClick = (square: number, index: number): void => {
+    if (
+      ((square === COLOR_PAWN_WHITE || square === COLOR_KING_WHITE) && color() === "white") ||
+      ((square === COLOR_PAWN_BLACK || square === COLOR_KING_BLACK) && color() === "black")
+    ) {
+      resolve(index);
+    }
   };
 
   return (
@@ -76,6 +88,7 @@ export const App = (): JSXElement => {
         buttons={
           <>
             <StartButton start={handleStart} />
+            <Settings white={white()} black={black()} setWhite={setWhite} setBlack={setBlack} />
           </>
         }
       />
