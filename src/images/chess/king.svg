@@ -1,25 +1,28 @@
 <svg viewBox="0 0 60 60" version="1.1" xmlns="http://www.w3.org/2000/svg">
     <symbol id="root" viewBox="0 0 60 60">
         <path d="
-            M 15,55
-            L 20,25
-            L 40,25
-            L 45,55
+            M 15, 55
+            L 20, 25
+            L 40, 25
+            L 45, 55
             Z
         " />
         <path d="
-            M 27,10
-            L 27,5
-            A 3,3 0 0 1 33,5
-            L 33,10
+            M 24, 10
+            L 24, 6
+            L 27, 6
+            L 27, 3
+            L 33, 3
+            L 33, 6
+            L 36, 6
+            L 36, 10
             Z
         " />
         <path d="
-            M 20,25
-            L 15,10
-            L 30,7
-            L 45,10
-            L 40,25
+            M 20, 25
+            L 15, 10
+            L 45, 10
+            L 40, 25
             Z
         " />
         <rect x="18" y="23" width="24" height="5" />
