@@ -20,7 +20,6 @@ test {
 }
 
 const Move = struct { from: BitBoard, to: BitBoard };
-const MoveList = std.ArrayList(Move);
 
 /// AIが考えた打つ場所を返します。
 pub fn getAiMove(board: Board, allocator: Allocator, color: Color, depth: u8) AllocError!Move {
@@ -29,7 +28,7 @@ pub fn getAiMove(board: Board, allocator: Allocator, color: Color, depth: u8) Al
     defer allocator.free(moves);
 
     // ここまでの最も良い手
-    var best_places = MoveList.init(allocator);
+    var best_places = std.ArrayList(Move).init(allocator);
     defer best_places.deinit();
     // ここまでの最も良い手の評価点
     var best_evaluation: isize = std.math.minInt(isize);
@@ -68,7 +67,8 @@ pub fn getAiMove(board: Board, allocator: Allocator, color: Color, depth: u8) Al
 
 /// 合法手をすべてリストする
 fn getValidMoves(board: Board, allocator: Allocator, color: Color) AllocError![]Move {
-    var moves = MoveList.init(allocator);
+    var moves = std.ArrayList(Move).init(allocator);
+    errdefer moves.deinit();
 
     const boards = board.boards.get(color);
 

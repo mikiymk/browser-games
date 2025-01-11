@@ -39,8 +39,8 @@ test "Board.init: 初期状態のボードを作成する" {
     );
 }
 
-test "Board.fromString: 初期状態のボードを作成する" {
-    const board = Board.fromString(
+test "Board.initWithString: 初期状態のボードを作成する" {
+    const board = Board.initWithString(
         \\lnsgkgtom
         \\.r.h.d.b.
         \\ppppqqqqq
@@ -397,7 +397,7 @@ test "Board.hitPositions: 指定した駒の打てる場所を取得する" {
 }
 
 test "Board.filterMove: 自分が王手になる移動を除外する" {
-    const board = Board.fromString(
+    const board = Board.initWithString(
         \\....k....
         \\.........
         \\....r....
@@ -426,7 +426,7 @@ test "Board.filterMove: 自分が王手になる移動を除外する" {
 }
 
 test "Board.isAttacked: そのマスが攻撃されているか判定する" {
-    const board = Board.fromString(
+    const board = Board.initWithString(
         \\.........
         \\.........
         \\.........
@@ -443,7 +443,7 @@ test "Board.isAttacked: そのマスが攻撃されているか判定する" {
 }
 
 test "Board.isChecked: 王将・玉将が攻撃されているか判定する" {
-    const board = Board.fromString(
+    const board = Board.initWithString(
         \\.........
         \\....K....
         \\.........
@@ -460,7 +460,7 @@ test "Board.isChecked: 王将・玉将が攻撃されているか判定する" {
 }
 
 test "Board.isCheckmated: 王手にされているか判定する" {
-    const board = Board.fromString(
+    const board = Board.initWithString(
         \\.........
         \\....k....
         \\....G....

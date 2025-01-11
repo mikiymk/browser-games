@@ -142,7 +142,7 @@ pub const PromotionPiece = enum {
 boards: ColorPieceBoards,
 
 pub fn init() Board {
-    return fromString(
+    return initWithString(
         \\lnsgkgsnl
         \\.r.....b.
         \\ppppppppp
@@ -155,7 +155,7 @@ pub fn init() Board {
     );
 }
 
-pub fn fromString(str: []const u8) Board {
+pub fn initWithString(str: []const u8) Board {
     return .{ .boards = ColorPieceBoards.init(.{
         .black = PieceBoards.init(.{
             .king = BitBoard.initWithString(str, 'k'),

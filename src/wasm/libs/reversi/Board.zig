@@ -42,7 +42,7 @@ pub const Color = enum(u1) {
 
 /// ボードの初期状態を作る
 pub fn init() Board {
-    return fromString(
+    return initWithString(
         \\........
         \\........
         \\........
@@ -52,6 +52,17 @@ pub fn init() Board {
         \\........
         \\........
     );
+}
+
+/// ボードの文字列からボード構造体を作る
+/// oが黒石、xが白石、それ以外で空白を表す。
+pub fn initWithString(comptime str: []const u8) Board {
+    return .{
+        .boards = ColorBoards.init(.{
+            .black = BitBoard.initWithString(str, 'o'),
+            .white = BitBoard.initWithString(str, 'x'),
+        }),
+    };
 }
 
 /// 現在のプレイヤー側のビットボードを取得する
@@ -187,15 +198,4 @@ pub fn isEnd(board: Board) bool {
     };
 
     return pass_board.getValidMoves().isEmpty();
-}
-
-/// ボードの文字列からボード構造体を作る
-/// oが黒石、xが白石、それ以外で空白を表す。
-pub fn fromString(comptime str: []const u8) Board {
-    return .{
-        .boards = ColorBoards.init(.{
-            .black = BitBoard.initWithString(str, 'o'),
-            .white = BitBoard.initWithString(str, 'x'),
-        }),
-    };
 }

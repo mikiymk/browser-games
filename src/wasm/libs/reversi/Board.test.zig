@@ -12,7 +12,7 @@ const Board = @import("./Board.zig");
 test "move black" {
     const testing = std.testing;
 
-    var board = Board.fromString(
+    var board = Board.initWithString(
         \\o..o..o.
         \\.x.x.x..
         \\..xxx...
@@ -34,7 +34,7 @@ test "move black" {
         \\........
     , 'o');
 
-    const expected = Board.fromString(
+    const expected = Board.initWithString(
         \\o..o..o.
         \\.o.o.o..
         \\..ooo...
@@ -54,7 +54,7 @@ test "get valid move" {
     const testing = std.testing;
 
     // 現在のボード状態
-    const board = Board.fromString(
+    const board = Board.initWithString(
         \\...x..x.
         \\.x.x.x..
         \\..xxx...
@@ -197,7 +197,7 @@ test "get valid move" {
 test "get valid move 1" {
     const testing = std.testing;
 
-    const board = Board.fromString(
+    const board = Board.initWithString(
         \\.ox.....
         \\........
         \\........
@@ -226,7 +226,7 @@ test "get valid move 1" {
 test "get valid move 2" {
     const testing = std.testing;
 
-    const board = Board.fromString(
+    const board = Board.initWithString(
         \\.o...x..
         \\.x.o.o.x
         \\...x...x
@@ -255,7 +255,7 @@ test "get valid move 2" {
 test "get valid move 3" {
     const testing = std.testing;
 
-    const board = Board.fromString(
+    const board = Board.initWithString(
         \\o.......
         \\.x...o..
         \\..x...x.
@@ -284,7 +284,7 @@ test "get valid move 3" {
 test "get valid move 4" {
     const testing = std.testing;
 
-    const board = Board.fromString(
+    const board = Board.initWithString(
         \\..x.....
         \\.x....x.
         \\o....x..
@@ -313,7 +313,7 @@ test "get valid move 4" {
 test "game is end" {
     const testing = std.testing;
 
-    const board = Board.fromString(
+    const board = Board.initWithString(
         \\oooooooo
         \\xxxxxxxx
         \\oooooooo
@@ -333,7 +333,7 @@ test "game is end" {
 test "game is not end" {
     const testing = std.testing;
 
-    const board = Board.fromString(
+    const board = Board.initWithString(
         \\oooooooo
         \\xxxxxxxx
         \\oooooooo
@@ -359,7 +359,7 @@ test "board from string" {
             .white = BitBoard.initWithInteger(0x55_aa_55_00_00_00_00_00),
         }),
     };
-    const actual = Board.fromString(
+    const actual = Board.initWithString(
         \\.o.o.o.o
         \\o.o.o.o.
         \\.o.o.o.o
