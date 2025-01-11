@@ -39,8 +39,8 @@ test "Board.init: 初期状態のボードを作成する" {
     );
 }
 
-test "Board.initWithString: 初期状態のボードを作成する" {
-    const board = Board.initWithString(
+test "Board.fromString: 初期状態のボードを作成する" {
+    const board = Board.fromString(
         \\lnsgkgtom
         \\.r.h.d.b.
         \\ppppqqqqq
@@ -224,7 +224,7 @@ test "Board.initWithString: 初期状態のボードを作成する" {
 test "Board.getPieceAt: 駒の種類を取得する" {
     const board = Board.init();
 
-    try std.testing.expectEqual(Game.Square.white_silver, board.getPieceAt(BitBoard.initWithString(
+    try std.testing.expectEqual(Game.Square.white_silver, board.getPieceAt(BitBoard.fromString(
         \\.........
         \\.........
         \\.........
@@ -241,8 +241,8 @@ test "Board.movedBoard: 駒を動かした後のボードを取得する" {
     const board = Board.init();
 
     const moved_board = board.movedBoard(
-        BitBoard.initWithCoordinate(2, 2),
-        BitBoard.initWithCoordinate(2, 3),
+        BitBoard.fromCoordinate(2, 2),
+        BitBoard.fromCoordinate(2, 3),
     );
 
     try moved_board.getBoard(.white, .pawn).expect(
@@ -262,7 +262,7 @@ test "Board.promotedBoard: 駒が成った後のボードを取得する" {
     const board = Board.init();
 
     const moved_board = board.promotedBoard(
-        BitBoard.initWithCoordinate(2, 2),
+        BitBoard.fromCoordinate(2, 2),
     );
 
     try moved_board.getBoard(.white, .pawn).expect(
@@ -296,7 +296,7 @@ test "Board.hitBoard: 駒を打った後のボードを取得する" {
     const moved_board = board.hitBoard(
         .white,
         .knight,
-        BitBoard.initWithCoordinate(4, 4),
+        BitBoard.fromCoordinate(4, 4),
     );
 
     try moved_board.getBoard(.white, .knight).expect(
@@ -343,7 +343,7 @@ test "Board.getColorPieces: プレイヤーの駒のすべての位置を取得�
 test "Board.movePositions: 指定した位置の駒の行ける場所を取得する" {
     const board = Board.init();
 
-    try board.movePositions(BitBoard.initWithCoordinate(2, 2)).expect(
+    try board.movePositions(BitBoard.fromCoordinate(2, 2)).expect(
         \\.........
         \\.........
         \\.........
@@ -355,7 +355,7 @@ test "Board.movePositions: 指定した位置の駒の行ける場所を取得�
         \\.........
     );
 
-    try board.movePositions(BitBoard.initWithCoordinate(1, 7)).expect(
+    try board.movePositions(BitBoard.fromCoordinate(1, 7)).expect(
         \\.........
         \\o.ooooo..
         \\.........
@@ -397,7 +397,7 @@ test "Board.hitPositions: 指定した駒の打てる場所を取得する" {
 }
 
 test "Board.filterMove: 自分が王手になる移動を除外する" {
-    const board = Board.initWithString(
+    const board = Board.fromString(
         \\....k....
         \\.........
         \\....r....
@@ -409,7 +409,7 @@ test "Board.filterMove: 自分が王手になる移動を除外する" {
         \\....L....
     );
 
-    const from = BitBoard.initWithCoordinate(4, 6);
+    const from = BitBoard.fromCoordinate(4, 6);
     const to = board.movePositions(from);
 
     try board.filterMove(.black, from, to).expect(
@@ -426,7 +426,7 @@ test "Board.filterMove: 自分が王手になる移動を除外する" {
 }
 
 test "Board.isAttacked: そのマスが攻撃されているか判定する" {
-    const board = Board.initWithString(
+    const board = Board.fromString(
         \\.........
         \\.........
         \\.........
@@ -438,12 +438,12 @@ test "Board.isAttacked: そのマスが攻撃されているか判定する" {
         \\.........
     );
 
-    try std.testing.expect(board.isAttacked(BitBoard.initWithCoordinate(4, 2), .white));
-    try std.testing.expect(!board.isAttacked(BitBoard.initWithCoordinate(5, 2), .white));
+    try std.testing.expect(board.isAttacked(BitBoard.fromCoordinate(4, 2), .white));
+    try std.testing.expect(!board.isAttacked(BitBoard.fromCoordinate(5, 2), .white));
 }
 
 test "Board.isChecked: 王将・玉将が攻撃されているか判定する" {
-    const board = Board.initWithString(
+    const board = Board.fromString(
         \\.........
         \\....K....
         \\.........
@@ -460,7 +460,7 @@ test "Board.isChecked: 王将・玉将が攻撃されているか判定する" {
 }
 
 test "Board.isCheckmated: 王手にされているか判定する" {
-    const board = Board.initWithString(
+    const board = Board.fromString(
         \\.........
         \\....k....
         \\....G....

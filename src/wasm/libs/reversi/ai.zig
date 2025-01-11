@@ -29,7 +29,7 @@ pub fn getAiMove(board: Board, comptime random: *const fn () f64) u6 {
 
     var move_board = moves.iterator();
     while (move_board.next()) |place| {
-        const child = board.move(BitBoard.initWithIndex(place));
+        const child = board.move(BitBoard.fromIndex(place));
         const evaluation = alphaBeta(child, board.nextColor, ai_depth, std.math.minInt(i32), std.math.maxInt(i32));
 
         if (best_place_count == 0 or evaluation > best_evaluation) {
@@ -65,7 +65,7 @@ fn alphaBeta(board: Board, player: Board.Color, depth: u8, alpha: isize, beta: i
         var new_alpha = alpha;
 
         while (moves.next()) |cell| {
-            const child = board.move(BitBoard.initWithIndex(cell));
+            const child = board.move(BitBoard.fromIndex(cell));
 
             new_alpha = @max(new_alpha, alphaBeta(child, player, depth - 1, new_alpha, beta));
             if (new_alpha >= beta) {
@@ -80,7 +80,7 @@ fn alphaBeta(board: Board, player: Board.Color, depth: u8, alpha: isize, beta: i
         var new_beta = beta;
 
         while (moves.next()) |cell| {
-            const child = board.move(BitBoard.initWithIndex(cell));
+            const child = board.move(BitBoard.fromIndex(cell));
 
             new_beta = @min(new_beta, alphaBeta(child, player, depth - 1, alpha, new_beta));
             if (alpha >= new_beta) {

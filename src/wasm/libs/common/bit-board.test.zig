@@ -30,7 +30,7 @@ test "📖BitBoard: 縦と横のサイズからビットサイズを計算して
     }
 }
 
-test "📖BitBoard.initWithCoordinate: 座標からそこだけビットの立ったボードを作成する" {
+test "📖BitBoard.fromCoordinate: 座標からそこだけビットの立ったボードを作成する" {
     // + 0 1 2 3
     // 3 0 1 2 3
     // 2 4 5 6 7
@@ -40,8 +40,8 @@ test "📖BitBoard.initWithCoordinate: 座標からそこだけビットの立�
     const B = BitBoard(4, 4);
 
     {
-        const board1 = B.initWithCoordinate(0, 0);
-        const board2 = B.initWithString(
+        const board1 = B.fromCoordinate(0, 0);
+        const board2 = B.fromString(
             \\....
             \\....
             \\....
@@ -52,8 +52,8 @@ test "📖BitBoard.initWithCoordinate: 座標からそこだけビットの立�
     }
 
     {
-        const board1 = B.initWithCoordinate(1, 0);
-        const board2 = B.initWithString(
+        const board1 = B.fromCoordinate(1, 0);
+        const board2 = B.fromString(
             \\....
             \\....
             \\....
@@ -64,8 +64,8 @@ test "📖BitBoard.initWithCoordinate: 座標からそこだけビットの立�
     }
 
     {
-        const board1 = B.initWithCoordinate(0, 2);
-        const board2 = B.initWithString(
+        const board1 = B.fromCoordinate(0, 2);
+        const board2 = B.fromString(
             \\....
             \\o...
             \\....
@@ -76,8 +76,8 @@ test "📖BitBoard.initWithCoordinate: 座標からそこだけビットの立�
     }
 
     {
-        const board1 = B.initWithCoordinate(3, 3);
-        const board2 = B.initWithString(
+        const board1 = B.fromCoordinate(3, 3);
+        const board2 = B.fromString(
             \\...o
             \\....
             \\....
@@ -88,17 +88,17 @@ test "📖BitBoard.initWithCoordinate: 座標からそこだけビットの立�
     }
 }
 
-test "📖BitBoard.initWithString: 文字列からボードを作成する" {
+test "📖BitBoard.fromString: 文字列からボードを作成する" {
     const B = BitBoard(4, 4);
 
-    const board = B.initWithString(
+    const board = B.fromString(
         \\.o.o
         \\....
         \\....
         \\....
     , 'o');
 
-    try testing.expectEqual(board, B.initWithInteger(0b0000_0000_0000_1010));
+    try testing.expectEqual(board, B.fromInteger(0b0000_0000_0000_1010));
 }
 
 test "📖BitBoard.west_mask: 左端のみ0のボード" {
@@ -144,7 +144,7 @@ test "📖BitBoard.south_mask: 下端のみ0のボード" {
 test "📖BitBoard.shl: ボードの左シフトしたボードを得る" {
     const B = BitBoard(16, 16);
 
-    const board = B.initWithString(
+    const board = B.fromString(
         \\o...............
         \\.o............o.
         \\................
@@ -205,7 +205,7 @@ test "📖BitBoard.shl: ボードの左シフトしたボードを得る" {
 test "📖BitBoard.shr: ボードの右シフトしたボードを得る" {
     const B = BitBoard(16, 16);
 
-    const board = B.initWithString(
+    const board = B.fromString(
         \\o...............
         \\.o............o.
         \\................
@@ -266,7 +266,7 @@ test "📖BitBoard.shr: ボードの右シフトしたボードを得る" {
 test "📖BitBoard.move: ボードの駒を1つ動かしたボードを得る" {
     const B = BitBoard(3, 3);
 
-    const board = B.initWithString(
+    const board = B.fromString(
         \\...
         \\.o.
         \\...
@@ -325,7 +325,7 @@ test "📖BitBoard.moveMasked: 端から端への移動ができない" {
     const B = BitBoard(3, 3);
 
     {
-        const board = B.initWithString(
+        const board = B.fromString(
             \\..o
             \\...
             \\o..
@@ -345,7 +345,7 @@ test "📖BitBoard.moveMasked: 端から端への移動ができない" {
     }
 
     {
-        const board = B.initWithString(
+        const board = B.fromString(
             \\...
             \\oo.
             \\...
@@ -368,7 +368,7 @@ test "📖BitBoard.moveMasked: 端から端への移動ができない" {
 test "📖BitBoard.Iterator: ボードのONの各ビットを繰り返す" {
     const B = BitBoard(4, 4);
 
-    const board: B = B.initWithString(
+    const board: B = B.fromString(
         \\.o..
         \\..o.
         \\o...
@@ -377,25 +377,25 @@ test "📖BitBoard.Iterator: ボードのONの各ビットを繰り返す" {
 
     var it = B.iterator(board);
 
-    try B.initWithIndex(it.next().?).expect(
+    try B.fromIndex(it.next().?).expect(
         \\.o..
         \\....
         \\....
         \\....
     );
-    try B.initWithIndex(it.next().?).expect(
+    try B.fromIndex(it.next().?).expect(
         \\....
         \\..o.
         \\....
         \\....
     );
-    try B.initWithIndex(it.next().?).expect(
+    try B.fromIndex(it.next().?).expect(
         \\....
         \\....
         \\o...
         \\....
     );
-    try B.initWithIndex(it.next().?).expect(
+    try B.fromIndex(it.next().?).expect(
         \\....
         \\....
         \\....
@@ -408,30 +408,30 @@ test "📖BitBoard.Iterator: ボードのONの各ビットを繰り返す" {
 test "📖BitBoard.toIndexInteger: 復元可能なインデックスを作成する" {
     const B = BitBoard(16, 16);
 
-    const board = B.initWithIndex(5);
+    const board = B.fromIndex(5);
 
     const index_integer = board.toIndexInteger();
 
     try std.testing.expectEqual(5, index_integer);
-    try std.testing.expect(board.eql(B.initWithIndex(index_integer)));
+    try std.testing.expect(board.eql(B.fromIndex(index_integer)));
 }
 
 test "📖BitBoard.toCoordinate: 復元可能な座標の組を作成する" {
     const B = BitBoard(16, 16);
 
-    const board = B.initWithCoordinate(3, 5);
+    const board = B.fromCoordinate(3, 5);
 
     const coord = board.toCoordinate();
 
     try std.testing.expectEqual(3, coord.x);
     try std.testing.expectEqual(5, coord.y);
-    try std.testing.expect(board.eql(B.initWithCoordinate(coord.x, coord.y)));
+    try std.testing.expect(board.eql(B.fromCoordinate(coord.x, coord.y)));
 }
 
 test "📖BitBoard.toString: ボードから文字列に変換する" {
     const B = BitBoard(4, 4);
 
-    const board = B.initWithString(
+    const board = B.fromString(
         \\o.oo
         \\oo.o
         \\ooo.

@@ -12,7 +12,7 @@ const Board = @import("./Board.zig");
 test "move black" {
     const testing = std.testing;
 
-    var board = Board.initWithString(
+    var board = Board.fromString(
         \\o..o..o.
         \\.x.x.x..
         \\..xxx...
@@ -23,7 +23,7 @@ test "move black" {
         \\...o...o
     );
 
-    const place = BitBoard.initWithString(
+    const place = BitBoard.fromString(
         \\........
         \\........
         \\........
@@ -34,7 +34,7 @@ test "move black" {
         \\........
     , 'o');
 
-    const expected = Board.initWithString(
+    const expected = Board.fromString(
         \\o..o..o.
         \\.o.o.o..
         \\..ooo...
@@ -54,7 +54,7 @@ test "get valid move" {
     const testing = std.testing;
 
     // 現在のボード状態
-    const board = Board.initWithString(
+    const board = Board.fromString(
         \\...x..x.
         \\.x.x.x..
         \\..xxx...
@@ -67,7 +67,7 @@ test "get valid move" {
 
     // マスク
     // 相手の石があるところだけ + 端をループしないように止める
-    const mask = board.boards.get(.white).masks(BitBoard.initWithString(
+    const mask = board.boards.get(.white).masks(BitBoard.fromString(
         \\.oooooo.
         \\.oooooo.
         \\.oooooo.
@@ -197,7 +197,7 @@ test "get valid move" {
 test "get valid move 1" {
     const testing = std.testing;
 
-    const board = Board.initWithString(
+    const board = Board.fromString(
         \\.ox.....
         \\........
         \\........
@@ -226,7 +226,7 @@ test "get valid move 1" {
 test "get valid move 2" {
     const testing = std.testing;
 
-    const board = Board.initWithString(
+    const board = Board.fromString(
         \\.o...x..
         \\.x.o.o.x
         \\...x...x
@@ -255,7 +255,7 @@ test "get valid move 2" {
 test "get valid move 3" {
     const testing = std.testing;
 
-    const board = Board.initWithString(
+    const board = Board.fromString(
         \\o.......
         \\.x...o..
         \\..x...x.
@@ -284,7 +284,7 @@ test "get valid move 3" {
 test "get valid move 4" {
     const testing = std.testing;
 
-    const board = Board.initWithString(
+    const board = Board.fromString(
         \\..x.....
         \\.x....x.
         \\o....x..
@@ -313,7 +313,7 @@ test "get valid move 4" {
 test "game is end" {
     const testing = std.testing;
 
-    const board = Board.initWithString(
+    const board = Board.fromString(
         \\oooooooo
         \\xxxxxxxx
         \\oooooooo
@@ -333,7 +333,7 @@ test "game is end" {
 test "game is not end" {
     const testing = std.testing;
 
-    const board = Board.initWithString(
+    const board = Board.fromString(
         \\oooooooo
         \\xxxxxxxx
         \\oooooooo
@@ -355,11 +355,11 @@ test "board from string" {
 
     const expected = Board{
         .boards = Board.ColorBoards.init(.{
-            .black = BitBoard.initWithInteger(0x00_00_00_00_00_aa_55_aa),
-            .white = BitBoard.initWithInteger(0x55_aa_55_00_00_00_00_00),
+            .black = BitBoard.fromInteger(0x00_00_00_00_00_aa_55_aa),
+            .white = BitBoard.fromInteger(0x55_aa_55_00_00_00_00_00),
         }),
     };
-    const actual = Board.initWithString(
+    const actual = Board.fromString(
         \\.o.o.o.o
         \\o.o.o.o.
         \\.o.o.o.o

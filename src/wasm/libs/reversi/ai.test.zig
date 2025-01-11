@@ -11,7 +11,7 @@ const Board = @import("./Board.zig");
 const ai = @import("./ai.zig");
 
 test "get random move with AI" {
-    const board = Board.initWithString(
+    const board = Board.fromString(
         \\........
         \\........
         \\........
@@ -35,7 +35,7 @@ test "get random move with AI" {
         S.rand_gen = std.rand.DefaultPrng.init(i);
         S.rand = S.rand_gen.random();
 
-        const actual = BitBoard.initWithIndex(ai.getAiMove(board, S.random));
+        const actual = BitBoard.fromIndex(ai.getAiMove(board, S.random));
 
         try actual.expectJoint(
             \\........

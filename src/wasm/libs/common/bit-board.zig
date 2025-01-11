@@ -79,21 +79,21 @@ pub fn BitBoard(comptime height_arg: u16, comptime width_arg: u16) type {
         }
 
         /// 指定した座標のビット1つのみがオンのビットボードを作成する。
-        pub fn initWithCoordinate(x: Width, y: Height) Self {
-            return initWithIndex(Coordinate.toIndex(x, y));
+        pub fn fromCoordinate(x: Width, y: Height) Self {
+            return fromIndex(Coordinate.toIndex(x, y));
         }
 
         // 文字列を使う関数。
 
         /// 番号からボードを作成する。
-        pub fn initWithIndex(index: usize) Self {
+        pub fn fromIndex(index: usize) Self {
             var board = Board.initEmpty();
             board.set(index);
             return .{ .board = board };
         }
 
         /// ビットの整数表現から変換する。
-        pub fn initWithInteger(int: std.meta.Int(.unsigned, size)) Self {
+        pub fn fromInteger(int: std.meta.Int(.unsigned, size)) Self {
             if (Board == std.bit_set.IntegerBitSet(size)) {
                 return .{ .board = .{ .mask = int } };
             } else if (Board == std.bit_set.ArrayBitSet(usize, size)) {
@@ -113,7 +113,7 @@ pub fn BitBoard(comptime height_arg: u16, comptime width_arg: u16) type {
         /// 第二引数で石を示す文字を指定する。
         ///
         /// 範囲外のものが1つでもあると0を返す
-        pub fn initWithString(str: []const u8, piece_symbol: u8) Self {
+        pub fn fromString(str: []const u8, piece_symbol: u8) Self {
             assert(str.len == string_size);
 
             var board: Board = Board.initEmpty();
@@ -216,7 +216,7 @@ pub fn BitBoard(comptime height_arg: u16, comptime width_arg: u16) type {
 
             const mask_int = self.toInteger();
             const shifted_mask = mask_int << @intCast(length);
-            return initWithInteger(shifted_mask);
+            return fromInteger(shifted_mask);
         }
 
         /// board >> length
@@ -225,7 +225,7 @@ pub fn BitBoard(comptime height_arg: u16, comptime width_arg: u16) type {
 
             const mask_int = self.toInteger();
             const shifted_mask = mask_int >> @intCast(length);
-            return initWithInteger(shifted_mask);
+            return fromInteger(shifted_mask);
         }
 
         /// selfにotherのビットを足し合わせる。
@@ -365,7 +365,7 @@ pub fn BitBoard(comptime height_arg: u16, comptime width_arg: u16) type {
         }
 
         /// next()の返り値はビットのインデックス。
-        /// `BitBoard.initWithIndex`で復元できる。
+        /// `BitBoard.fromIndex`で復元できる。
         pub inline fn iterator(self: Self) Board.Iterator(.{}) {
             return self.board.iterator(.{});
         }
@@ -432,7 +432,7 @@ pub fn BitBoard(comptime height_arg: u16, comptime width_arg: u16) type {
         }
 
         pub fn expect(self: Self, expected: []const u8) error{TestExpectedEqual}!void {
-            const expected_board = initWithString(expected, 'o');
+            const expected_board = fromString(expected, 'o');
 
             if (self.eql(expected_board)) {
                 return;
@@ -455,7 +455,7 @@ pub fn BitBoard(comptime height_arg: u16, comptime width_arg: u16) type {
         }
 
         pub fn expectJoint(self: Self, expected: []const u8) error{TestExpectedEqual}!void {
-            const expected_board = initWithString(expected, 'o');
+            const expected_board = fromString(expected, 'o');
 
             if (self.isJoint(expected_board)) {
                 return;

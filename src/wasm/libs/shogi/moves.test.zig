@@ -24,9 +24,9 @@ test "moves.getWhitePawnMovable: 先手の歩兵が動ける範囲" {
         \\.........
         \\.........
     ;
-    const board = Board.initWithString(board_str);
+    const board = Board.fromString(board_str);
 
-    const moved_board = moves.move(board, BitBoard.initWithString(board_str, 'P'));
+    const moved_board = moves.move(board, BitBoard.fromString(board_str, 'P'));
 
     try moved_board.expect(
         \\.........
@@ -53,9 +53,9 @@ test "moves.getBlackPawnMovable: 後手の歩兵が動ける範囲" {
         \\..p......
         \\.........
     ;
-    const board = Board.initWithString(board_str);
+    const board = Board.fromString(board_str);
 
-    const moved_board = moves.move(board, BitBoard.initWithString(board_str, 'p'));
+    const moved_board = moves.move(board, BitBoard.fromString(board_str, 'p'));
 
     try moved_board.expect(
         \\.........
@@ -82,9 +82,9 @@ test "moves.getWhiteLanceMovable: 先手の香車が動ける範囲" {
         \\....L.L..
         \\L........
     ;
-    const board = Board.initWithString(board_str);
+    const board = Board.fromString(board_str);
 
-    const moved_board = moves.move(board, BitBoard.initWithString(board_str, 'L'));
+    const moved_board = moves.move(board, BitBoard.fromString(board_str, 'L'));
 
     try moved_board.expect(
         \\o.o......
@@ -111,9 +111,9 @@ test "moves.getBlackLanceMovable: 後手の香車が動ける範囲" {
         \\..l......
         \\.........
     ;
-    const board = Board.initWithString(board_str);
+    const board = Board.fromString(board_str);
 
-    const moved_board = moves.move(board, BitBoard.initWithString(board_str, 'l'));
+    const moved_board = moves.move(board, BitBoard.fromString(board_str, 'l'));
 
     try moved_board.expect(
         \\.........
@@ -140,9 +140,9 @@ test "moves.getWhiteKnightMovable: 先手の桂馬が動ける範囲" {
         \\.pNp..N..
         \\.ppp.....
     ;
-    const board = Board.initWithString(board_str);
+    const board = Board.fromString(board_str);
 
-    const moved_board = moves.move(board, BitBoard.initWithString(board_str, 'N'));
+    const moved_board = moves.move(board, BitBoard.fromString(board_str, 'N'));
 
     try moved_board.expect(
         \\.......o.
@@ -169,9 +169,9 @@ test "moves.getBlackKnightMovable: 後手の桂馬が動ける範囲" {
         \\.........
         \\.........
     ;
-    const board = Board.initWithString(board_str);
+    const board = Board.fromString(board_str);
 
-    const moved_board = moves.move(board, BitBoard.initWithString(board_str, 'n'));
+    const moved_board = moves.move(board, BitBoard.fromString(board_str, 'n'));
 
     try moved_board.expect(
         \\.........
@@ -198,9 +198,9 @@ test "moves.silver: 銀将が動ける範囲" {
         \\.S.......
         \\......S..
     ;
-    const board = Board.initWithString(board_str);
+    const board = Board.fromString(board_str);
 
-    const moved_board = moves.move(board, BitBoard.initWithString(board_str, 'S'));
+    const moved_board = moves.move(board, BitBoard.fromString(board_str, 'S'));
 
     try moved_board.expect(
         \\.........
@@ -227,9 +227,9 @@ test "moves.gold: 金将が動ける範囲" {
         \\.G.......
         \\......G..
     ;
-    const board = Board.initWithString(board_str);
+    const board = Board.fromString(board_str);
 
-    const moved_board = moves.move(board, BitBoard.initWithString(board_str, 'G'));
+    const moved_board = moves.move(board, BitBoard.fromString(board_str, 'G'));
 
     try moved_board.expect(
         \\.....o.o.
@@ -256,9 +256,9 @@ test "moves.bishop: 角行が動ける範囲" {
         \\.B.......
         \\......B..
     ;
-    const board = Board.initWithString(board_str);
+    const board = Board.fromString(board_str);
 
-    const moved_board = moves.move(board, BitBoard.initWithString(board_str, 'B'));
+    const moved_board = moves.move(board, BitBoard.fromString(board_str, 'B'));
 
     const expected =
         \\........o
@@ -286,9 +286,9 @@ test "moves.rook: 飛車が動ける範囲" {
         \\.R.......
         \\......R..
     ;
-    const board = Board.initWithString(board_str);
+    const board = Board.fromString(board_str);
 
-    const moved_board = moves.move(board, BitBoard.initWithString(board_str, 'R'));
+    const moved_board = moves.move(board, BitBoard.fromString(board_str, 'R'));
 
     const expected =
         \\oooooo.oo
@@ -316,9 +316,9 @@ test "moves.king: 王将が動ける範囲" {
         \\.K.......
         \\......K..
     ;
-    const board = Board.initWithString(board_str);
+    const board = Board.fromString(board_str);
 
-    const moved_board = moves.move(board, BitBoard.initWithString(board_str, 'K'));
+    const moved_board = moves.move(board, BitBoard.fromString(board_str, 'K'));
 
     const expected =
         \\.....o.o.

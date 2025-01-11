@@ -29,7 +29,7 @@ export fn deinit(g: ?*Game) void {
 
 /// ボードに駒を配置する
 export fn setPiece(g: *Game, kind: ColorPieceType, index: u8) void {
-    g.board.setPiece(kind, BitBoard.initWithIndex(index));
+    g.board.setPiece(kind, BitBoard.fromIndex(index));
 }
 
 /// ボードの駒を取得する
@@ -54,7 +54,7 @@ export fn winner(g: *Game) u8 {
 
 /// 駒を選択し、その駒の移動先を取得する
 export fn getMove(g: *Game, from_index: u8) u64 {
-    const from_place = BitBoard.initWithIndex(from_index);
+    const from_place = BitBoard.fromIndex(from_index);
 
     return g.getMove(from_place).toInteger();
 }
@@ -63,15 +63,15 @@ export fn getMove(g: *Game, from_index: u8) u64 {
 /// アンパサン、キャスリングを判別する
 /// 戻り値はプロモーションが可能かどうか
 export fn move(g: *Game, from_index: u8, to_index: u8) bool {
-    const from = BitBoard.initWithIndex(from_index);
-    const to = BitBoard.initWithIndex(to_index);
+    const from = BitBoard.fromIndex(from_index);
+    const to = BitBoard.fromIndex(to_index);
 
     return g.applyMove(from, to);
 }
 
 /// 駒のプロモーション
 export fn promote(g: *Game, index: u8, piece_kind: ColorPieceType) void {
-    const place = BitBoard.initWithIndex(index);
+    const place = BitBoard.fromIndex(index);
     g.applyPromote(place, piece_kind.pieceType());
 }
 

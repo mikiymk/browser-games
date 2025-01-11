@@ -11,8 +11,8 @@ const main = @import("./main.zig");
 const Board = main.Board;
 const moves = main.moves;
 
-test "📖Board.initWithString: 文字列からボードを初期化する" {
-    const board = Board.initWithString(
+test "📖Board.fromString: 文字列からボードを初期化する" {
+    const board = Board.fromString(
         \\RNBQKBNR
         \\PPPPPPPP
         \\........
@@ -57,8 +57,8 @@ test "📖Board.filterValidMove: 有効な動きだけをフィルターする" 
         \\...r....
         \\...k....
     ;
-    const board = Board.initWithString(board_str);
-    const from = BitBoard.initWithString(board_str, 'r');
+    const board = Board.fromString(board_str);
+    const from = BitBoard.fromString(board_str, 'r');
     const to = moves.rook(board, from, .white);
 
     const actual = board.filterValidMove(from, to);
@@ -76,7 +76,7 @@ test "📖Board.filterValidMove: 有効な動きだけをフィルターする" 
 }
 
 test "📖Board.canCastling: キャスリングができるか判定する" {
-    const board = Board.initWithString(
+    const board = Board.fromString(
         \\R...K..R
         \\........
         \\........
@@ -94,7 +94,7 @@ test "📖Board.canCastling: キャスリングができるか判定する" {
 }
 
 test "📖Board.canCastling: キングが攻撃されている" {
-    const board = Board.initWithString(
+    const board = Board.fromString(
         \\....K..R
         \\........
         \\........
@@ -109,7 +109,7 @@ test "📖Board.canCastling: キングが攻撃されている" {
 }
 
 test "📖Board.canCastling: 駒が動いた" {
-    var board = Board.initWithString(
+    var board = Board.fromString(
         \\R...K...
         \\........
         \\........
@@ -120,15 +120,15 @@ test "📖Board.canCastling: 駒が動いた" {
         \\....k..r
     );
 
-    board = board.getMovedBoard(BitBoard.initWithCoordinate(4, 7), BitBoard.initWithCoordinate(4, 6));
-    board = board.getMovedBoard(BitBoard.initWithCoordinate(7, 0), BitBoard.initWithCoordinate(7, 2));
+    board = board.getMovedBoard(BitBoard.fromCoordinate(4, 7), BitBoard.fromCoordinate(4, 6));
+    board = board.getMovedBoard(BitBoard.fromCoordinate(7, 0), BitBoard.fromCoordinate(7, 2));
 
     try std.testing.expect(!board.canCastling(.black_queen));
     try std.testing.expect(!board.canCastling(.white_king));
 }
 
 test "📖Board.canCastling: 他の駒が間にある" {
-    const board = Board.initWithString(
+    const board = Board.fromString(
         \\........
         \\........
         \\........
@@ -143,7 +143,7 @@ test "📖Board.canCastling: 他の駒が間にある" {
 }
 
 test "📖Board.isChecked: チェックされている" {
-    const board = Board.initWithString(
+    const board = Board.fromString(
         \\........
         \\.....R..
         \\........
@@ -159,7 +159,7 @@ test "📖Board.isChecked: チェックされている" {
 }
 
 test "📖Board.isChecked: チェックされていない" {
-    const board = Board.initWithString(
+    const board = Board.fromString(
         \\........
         \\......B.
         \\........
@@ -176,7 +176,7 @@ test "📖Board.isChecked: チェックされていない" {
 
 test "📖Board.canMove: 動けるかどうか" {
     {
-        const board = Board.initWithString(
+        const board = Board.fromString(
             \\....K...
             \\........
             \\..b..q..
@@ -191,7 +191,7 @@ test "📖Board.canMove: 動けるかどうか" {
     }
 
     {
-        const board = Board.initWithString(
+        const board = Board.fromString(
             \\....K...
             \\.r......
             \\.....n..
@@ -207,7 +207,7 @@ test "📖Board.canMove: 動けるかどうか" {
 }
 
 test "📖Board.getMove: 動ける場所を計算する" {
-    const board = Board.initWithString(
+    const board = Board.fromString(
         \\........
         \\........
         \\........
@@ -218,7 +218,7 @@ test "📖Board.getMove: 動ける場所を計算する" {
         \\........
     );
 
-    try board.getMove(BitBoard.initWithCoordinate(3, 3)).expect(
+    try board.getMove(BitBoard.fromCoordinate(3, 3)).expect(
         \\...o....
         \\...o....
         \\...o....
@@ -231,7 +231,7 @@ test "📖Board.getMove: 動ける場所を計算する" {
 }
 
 test "📖Board.getMove: キャスリング" {
-    const board = Board.initWithString(
+    const board = Board.fromString(
         \\R...K..R
         \\........
         \\........
@@ -242,7 +242,7 @@ test "📖Board.getMove: キャスリング" {
         \\........
     );
 
-    try board.getMove(BitBoard.initWithCoordinate(4, 7)).expect(
+    try board.getMove(BitBoard.fromCoordinate(4, 7)).expect(
         \\o..o.o.o
         \\...ooo..
         \\........
@@ -255,7 +255,7 @@ test "📖Board.getMove: キャスリング" {
 }
 
 test "📖Board.getMove: アンパッサン" {
-    var board = Board.initWithString(
+    var board = Board.fromString(
         \\........
         \\........
         \\........
@@ -265,9 +265,9 @@ test "📖Board.getMove: アンパッサン" {
         \\........
         \\........
     );
-    board.enpassant_target = BitBoard.initWithCoordinate(5, 2);
+    board.enpassant_target = BitBoard.fromCoordinate(5, 2);
 
-    try board.getMove(BitBoard.initWithCoordinate(4, 3)).expect(
+    try board.getMove(BitBoard.fromCoordinate(4, 3)).expect(
         \\........
         \\........
         \\........
@@ -280,7 +280,7 @@ test "📖Board.getMove: アンパッサン" {
 }
 
 test "📖Board.isPromotion: プロモーションする動きか判定する" {
-    const board = Board.initWithString(
+    const board = Board.fromString(
         \\........
         \\.r..P...
         \\........
@@ -291,16 +291,16 @@ test "📖Board.isPromotion: プロモーションする動きか判定する" {
         \\........
     );
 
-    try std.testing.expect(board.isPromotion(BitBoard.initWithCoordinate(4, 6), BitBoard.initWithCoordinate(4, 7)));
-    try std.testing.expect(!board.isPromotion(BitBoard.initWithCoordinate(1, 6), BitBoard.initWithCoordinate(1, 7)));
+    try std.testing.expect(board.isPromotion(BitBoard.fromCoordinate(4, 6), BitBoard.fromCoordinate(4, 7)));
+    try std.testing.expect(!board.isPromotion(BitBoard.fromCoordinate(1, 6), BitBoard.fromCoordinate(1, 7)));
 }
 
 test "📖Board.getMovedBoard: 動く" {
     const board = Board.init();
 
     const actual = board.getMovedBoard(
-        BitBoard.initWithCoordinate(4, 1),
-        BitBoard.initWithCoordinate(4, 3),
+        BitBoard.fromCoordinate(4, 1),
+        BitBoard.fromCoordinate(4, 3),
     );
 
     try actual.getBoard(.white, .pawn).expect(
@@ -327,7 +327,7 @@ test "📖Board.getMovedBoard: 動く" {
 }
 
 test "📖Board.getMovedBoard: キャプチャ" {
-    const board = Board.initWithString(
+    const board = Board.fromString(
         \\........
         \\..PP....
         \\....p...
@@ -339,8 +339,8 @@ test "📖Board.getMovedBoard: キャプチャ" {
     );
 
     const actual = board.getMovedBoard(
-        BitBoard.initWithCoordinate(4, 5),
-        BitBoard.initWithCoordinate(3, 6),
+        BitBoard.fromCoordinate(4, 5),
+        BitBoard.fromCoordinate(3, 6),
     );
 
     try actual.getBoard(.white, .pawn).expect(
@@ -367,7 +367,7 @@ test "📖Board.getMovedBoard: キャプチャ" {
 }
 
 test "📖Board.getMovedBoard: キャスリング" {
-    const board = Board.initWithString(
+    const board = Board.fromString(
         \\........
         \\........
         \\........
@@ -379,8 +379,8 @@ test "📖Board.getMovedBoard: キャスリング" {
     );
 
     const actual = board.getMovedBoard(
-        BitBoard.initWithCoordinate(4, 0),
-        BitBoard.initWithCoordinate(0, 0),
+        BitBoard.fromCoordinate(4, 0),
+        BitBoard.fromCoordinate(0, 0),
     );
 
     try actual.getBoard(.white, .rook).expect(
@@ -407,7 +407,7 @@ test "📖Board.getMovedBoard: キャスリング" {
 }
 
 test "📖Board.getMovedBoard: アンパッサン" {
-    const board = Board.initWithString(
+    const board = Board.fromString(
         \\........
         \\........
         \\........
@@ -419,8 +419,8 @@ test "📖Board.getMovedBoard: アンパッサン" {
     );
 
     const actual = board.getMovedBoard(
-        BitBoard.initWithCoordinate(4, 4),
-        BitBoard.initWithCoordinate(5, 5),
+        BitBoard.fromCoordinate(4, 4),
+        BitBoard.fromCoordinate(5, 5),
     );
 
     try actual.getBoard(.white, .pawn).expect(
@@ -447,7 +447,7 @@ test "📖Board.getMovedBoard: アンパッサン" {
 }
 
 test "📖Board.getMovedBoard: 駒が動くとキャスリングができなくなる" {
-    var board = Board.initWithString(
+    var board = Board.fromString(
         \\R...K..R
         \\........
         \\........
@@ -461,12 +461,12 @@ test "📖Board.getMovedBoard: 駒が動くとキャスリングができなく�
     try std.testing.expect(board.castling_available.white_queen);
     try std.testing.expect(board.castling_available.white_king);
 
-    board = board.getMovedBoard(BitBoard.initWithCoordinate(0, 0), BitBoard.initWithCoordinate(0, 3));
+    board = board.getMovedBoard(BitBoard.fromCoordinate(0, 0), BitBoard.fromCoordinate(0, 3));
 
     try std.testing.expect(!board.castling_available.white_queen);
     try std.testing.expect(board.castling_available.white_king);
 
-    board = board.getMovedBoard(BitBoard.initWithCoordinate(4, 0), BitBoard.initWithCoordinate(4, 3));
+    board = board.getMovedBoard(BitBoard.fromCoordinate(4, 0), BitBoard.fromCoordinate(4, 3));
 
     try std.testing.expect(!board.castling_available.white_queen);
     try std.testing.expect(!board.castling_available.white_king);
@@ -474,14 +474,14 @@ test "📖Board.getMovedBoard: 駒が動くとキャスリングができなく�
     try std.testing.expect(board.castling_available.black_queen);
     try std.testing.expect(board.castling_available.black_king);
 
-    board = board.getMovedBoard(BitBoard.initWithCoordinate(4, 7), BitBoard.initWithCoordinate(7, 7));
+    board = board.getMovedBoard(BitBoard.fromCoordinate(4, 7), BitBoard.fromCoordinate(7, 7));
 
     try std.testing.expect(!board.castling_available.black_queen);
     try std.testing.expect(!board.castling_available.black_king);
 }
 
 test "📖Board.getMovedBoard: ポーンが2個進むとアンパッサン対象になる" {
-    var board = Board.initWithString(
+    var board = Board.fromString(
         \\........
         \\...P....
         \\........
@@ -492,17 +492,17 @@ test "📖Board.getMovedBoard: ポーンが2個進むとアンパッサン対象
         \\........
     );
 
-    board = board.getMovedBoard(BitBoard.initWithCoordinate(4, 1), BitBoard.initWithCoordinate(4, 3));
+    board = board.getMovedBoard(BitBoard.fromCoordinate(4, 1), BitBoard.fromCoordinate(4, 3));
 
-    try std.testing.expectEqual(board.enpassant_target, BitBoard.initWithCoordinate(4, 2));
+    try std.testing.expectEqual(board.enpassant_target, BitBoard.fromCoordinate(4, 2));
 
-    board = board.getMovedBoard(BitBoard.initWithCoordinate(3, 6), BitBoard.initWithCoordinate(3, 4));
+    board = board.getMovedBoard(BitBoard.fromCoordinate(3, 6), BitBoard.fromCoordinate(3, 4));
 
-    try std.testing.expectEqual(board.enpassant_target, BitBoard.initWithCoordinate(3, 5));
+    try std.testing.expectEqual(board.enpassant_target, BitBoard.fromCoordinate(3, 5));
 }
 
 test "📖Board.getPromotionBoard: ポーンがプロモーションする" {
-    var board = Board.initWithString(
+    var board = Board.fromString(
         \\....p...
         \\........
         \\........
@@ -513,8 +513,8 @@ test "📖Board.getPromotionBoard: ポーンがプロモーションする" {
         \\....P...
     );
 
-    board = board.getPromotionBoard(BitBoard.initWithCoordinate(4, 7), .knight);
-    board = board.getPromotionBoard(BitBoard.initWithCoordinate(4, 0), .queen);
+    board = board.getPromotionBoard(BitBoard.fromCoordinate(4, 7), .knight);
+    board = board.getPromotionBoard(BitBoard.fromCoordinate(4, 0), .queen);
 
     try board.getBoard(.white, .pawn).expect(
         \\........

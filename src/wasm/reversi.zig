@@ -53,7 +53,7 @@ export fn isGameEnd(board: *Board) bool {
 ///
 /// ゲームボードの現在状態が更新される。
 export fn move(board: *Board, place: u8) void {
-    board.moveMutate(BitBoard.initWithIndex(place));
+    board.moveMutate(BitBoard.fromIndex(place));
 }
 
 /// 現在プレイヤーの有効手を取得する。

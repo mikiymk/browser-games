@@ -20,7 +20,7 @@ test {
     _ = @import("./moves.test.zig");
 }
 
-const east_mask = BitBoard.initWithString(
+const east_mask = BitBoard.fromString(
     \\oooooooo.
     \\oooooooo.
     \\oooooooo.
@@ -32,7 +32,7 @@ const east_mask = BitBoard.initWithString(
     \\oooooooo.
 , 'o');
 
-const west_mask = BitBoard.initWithString(
+const west_mask = BitBoard.fromString(
     \\.oooooooo
     \\.oooooooo
     \\.oooooooo

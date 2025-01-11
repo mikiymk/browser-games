@@ -33,12 +33,12 @@ pub fn init(a: Allocator, board_white: BitBoard, board_black: BitBoard) @This() 
 
 /// 文字列からボードを作成する。
 /// 白はo、黒はxで指定する。
-pub fn initWithString(a: Allocator, str: []const u8) @This() {
+pub fn fromString(a: Allocator, str: []const u8) @This() {
     const mark_white = 'o';
     const mark_black = 'x';
 
-    const board_white = BitBoard.initWithString(str, mark_white);
-    const board_black = BitBoard.initWithString(str, mark_black);
+    const board_white = BitBoard.fromString(str, mark_white);
+    const board_black = BitBoard.fromString(str, mark_black);
 
     return init(a, board_white, board_black);
 }
@@ -91,11 +91,11 @@ test "📖Board.getColor" {
         \\........
     ;
 
-    const board = Board.initWithString(a, board_str);
+    const board = Board.fromString(a, board_str);
 
-    try std.testing.expectEqual(.white, board.getColor(BitBoard.initWithCoordinate(5, 5)));
-    try std.testing.expectEqual(.black, board.getColor(BitBoard.initWithCoordinate(2, 2)));
-    try std.testing.expectEqual(null, board.getColor(BitBoard.initWithCoordinate(4, 4)));
+    try std.testing.expectEqual(.white, board.getColor(BitBoard.fromCoordinate(5, 5)));
+    try std.testing.expectEqual(.black, board.getColor(BitBoard.fromCoordinate(2, 2)));
+    try std.testing.expectEqual(null, board.getColor(BitBoard.fromCoordinate(4, 4)));
 }
 
 /// 指定した場所の駒の種類を取得する
@@ -112,7 +112,7 @@ pub fn getAllWalkMoves(self: Board, a: Allocator, color: Color) ![]Game.Move {
     const pawn_board = self.getBoard(color, .pawn);
     var pawn_iterator = pawn_board.iterator();
     while (pawn_iterator.next()) |pawn_position_index| {
-        const pawn_position = BitBoard.initWithIndex(pawn_position_index);
+        const pawn_position = BitBoard.fromIndex(pawn_position_index);
         const walk_to = self.movedPawnWalk(pawn_position);
 
         var walk_to_iterator = walk_to.iterator();
@@ -126,7 +126,7 @@ pub fn getAllWalkMoves(self: Board, a: Allocator, color: Color) ![]Game.Move {
     const king_board = self.getBoard(color, .king);
     var king_iterator = king_board.iterator();
     while (king_iterator.next()) |king_position_index| {
-        const king_position = BitBoard.initWithIndex(king_position_index);
+        const king_position = BitBoard.fromIndex(king_position_index);
         const walk_to = self.movedKingWalk(king_position);
 
         var walk_to_iterator = walk_to.iterator();
@@ -152,7 +152,7 @@ test "📖Board.getAllWalkMoves" {
         \\........
     ;
 
-    const board = Board.initWithString(a, board_str);
+    const board = Board.fromString(a, board_str);
     const moves = try board.getAllWalkMoves(a, .white);
     defer a.free(moves);
 
@@ -183,7 +183,7 @@ pub fn getAllJumpMoves(self: Board, a: Allocator, color: Color) ![]Game.Move {
     const pawn_board = self.getBoard(color, .pawn);
     var pawn_iterator = pawn_board.iterator();
     while (pawn_iterator.next()) |pawn_position_index| {
-        const pawn_position = BitBoard.initWithIndex(pawn_position_index);
+        const pawn_position = BitBoard.fromIndex(pawn_position_index);
         const jump_to = self.movedPawnJump(pawn_position);
 
         var jump_to_iterator = jump_to.iterator();
@@ -197,7 +197,7 @@ pub fn getAllJumpMoves(self: Board, a: Allocator, color: Color) ![]Game.Move {
     const king_board = self.getBoard(color, .king);
     var king_iterator = king_board.iterator();
     while (king_iterator.next()) |king_position_index| {
-        const king_position = BitBoard.initWithIndex(king_position_index);
+        const king_position = BitBoard.fromIndex(king_position_index);
         const jump_to = self.movedKingJump(king_position);
 
         var jump_to_iterator = jump_to.iterator();
@@ -223,7 +223,7 @@ test "📖Board.getAllJumpMoves" {
         \\........
     ;
 
-    const board = Board.initWithString(a, board_str);
+    const board = Board.fromString(a, board_str);
     const moves = try board.getAllJumpMoves(a, .white);
     defer a.free(moves);
 
@@ -281,10 +281,10 @@ test "📖Board.movedPawnWalk" {
         \\........
     ;
 
-    const board = Board.initWithString(a, board_str);
+    const board = Board.fromString(a, board_str);
 
     // ポーンは前方にのみ移動できる
-    try board.movedPawnWalk(BitBoard.initWithCoordinate(1, 1)).expect(
+    try board.movedPawnWalk(BitBoard.fromCoordinate(1, 1)).expect(
         \\........
         \\........
         \\........
@@ -295,7 +295,7 @@ test "📖Board.movedPawnWalk" {
         \\........
     );
 
-    try board.movedPawnWalk(BitBoard.initWithCoordinate(1, 5)).expect(
+    try board.movedPawnWalk(BitBoard.fromCoordinate(1, 5)).expect(
         \\........
         \\........
         \\........
@@ -307,7 +307,7 @@ test "📖Board.movedPawnWalk" {
     );
 
     // 移動先に駒がある場合は移動できない
-    try board.movedPawnWalk(BitBoard.initWithCoordinate(6, 6)).expect(
+    try board.movedPawnWalk(BitBoard.fromCoordinate(6, 6)).expect(
         \\........
         \\........
         \\........
@@ -318,7 +318,7 @@ test "📖Board.movedPawnWalk" {
         \\........
     );
 
-    try board.movedPawnWalk(BitBoard.initWithCoordinate(6, 2)).expect(
+    try board.movedPawnWalk(BitBoard.fromCoordinate(6, 2)).expect(
         \\........
         \\........
         \\........
@@ -361,9 +361,9 @@ test "📖Board.movedKingWalk" {
         \\........
     ;
 
-    const board = Board.initWithString(a, board_str);
+    const board = Board.fromString(a, board_str);
 
-    try board.movedKingWalk(BitBoard.initWithCoordinate(1, 1)).expect(
+    try board.movedKingWalk(BitBoard.fromCoordinate(1, 1)).expect(
         \\........
         \\........
         \\........
@@ -374,7 +374,7 @@ test "📖Board.movedKingWalk" {
         \\o.o.....
     );
 
-    try board.movedKingWalk(BitBoard.initWithCoordinate(6, 6)).expect(
+    try board.movedKingWalk(BitBoard.fromCoordinate(6, 6)).expect(
         \\.....o.o
         \\........
         \\.......o
@@ -424,9 +424,9 @@ test "📖Board.movedPawnJump" {
         \\........
     ;
 
-    const board = Board.initWithString(a, board_str);
+    const board = Board.fromString(a, board_str);
 
-    try board.movedPawnJump(BitBoard.initWithCoordinate(3, 1)).expect(
+    try board.movedPawnJump(BitBoard.fromCoordinate(3, 1)).expect(
         \\........
         \\........
         \\........
@@ -476,9 +476,9 @@ test "📖Board.getMoveJump" {
         \\........
     ;
 
-    const board = Board.initWithString(a, board_str);
+    const board = Board.fromString(a, board_str);
 
-    try board.movedKingJump(BitBoard.initWithCoordinate(3, 3)).expect(
+    try board.movedKingJump(BitBoard.fromCoordinate(3, 3)).expect(
         \\........
         \\........
         \\........
@@ -524,11 +524,11 @@ test "📖Board.setMovedWalk" {
         \\........
     ;
 
-    var board = Board.initWithString(a, board_str);
+    var board = Board.fromString(a, board_str);
     {
         board.setMovedWalk(
-            BitBoard.initWithCoordinate(3, 3),
-            BitBoard.initWithCoordinate(4, 4),
+            BitBoard.fromCoordinate(3, 3),
+            BitBoard.fromCoordinate(4, 4),
         );
 
         try board.getBoard(.white, .pawn).expect(
@@ -545,8 +545,8 @@ test "📖Board.setMovedWalk" {
 
     {
         board.setMovedWalk(
-            BitBoard.initWithCoordinate(6, 6),
-            BitBoard.initWithCoordinate(5, 7),
+            BitBoard.fromCoordinate(6, 6),
+            BitBoard.fromCoordinate(5, 7),
         );
 
         try board.getBoard(.white, .king).expect(
@@ -597,11 +597,11 @@ test "📖Board.setMovedJump" {
         \\........
     ;
 
-    var board = Board.initWithString(a, board_str);
+    var board = Board.fromString(a, board_str);
     const result = board.setMovedJump(
-        BitBoard.initWithCoordinate(3, 3),
-        BitBoard.initWithCoordinate(1, 1),
-        BitBoard.initWithCoordinate(2, 2),
+        BitBoard.fromCoordinate(3, 3),
+        BitBoard.fromCoordinate(1, 1),
+        BitBoard.fromCoordinate(2, 2),
     );
 
     try std.testing.expect(!result);

@@ -38,7 +38,7 @@ pub fn getAiMove(board: Board, allocator: Allocator, color: Color, depth: u8) Al
 
         var to_iter = from_moves.to.iterator();
         while (to_iter.next()) |to| {
-            const to_board = BitBoard.initWithIndex(to);
+            const to_board = BitBoard.fromIndex(to);
             const moved = board.getMovedBoard(from, to_board);
 
             const evaluation = try alphaBeta(
@@ -76,11 +76,11 @@ fn getValidMoves(board: Board, allocator: Allocator, color: Color) AllocError![]
         var iter = b.iterator();
 
         while (iter.next()) |current| {
-            const to = board.getMove(BitBoard.initWithIndex(current));
+            const to = board.getMove(BitBoard.fromIndex(current));
 
             if (!to.isEmpty()) {
                 try moves.append(.{
-                    .from = BitBoard.initWithIndex(current),
+                    .from = BitBoard.fromIndex(current),
                     .to = to,
                 });
             }
@@ -114,7 +114,7 @@ fn alphaBeta(board: Board, allocator: Allocator, player_color: Color, current_co
 
             var to_iter = from_moves.to.iterator();
             while (to_iter.next()) |to| {
-                const moved = board.getMovedBoard(from, BitBoard.initWithIndex(to));
+                const moved = board.getMovedBoard(from, BitBoard.fromIndex(to));
 
                 value = @max(value, try alphaBeta(
                     moved,
@@ -156,7 +156,7 @@ fn alphaBeta(board: Board, allocator: Allocator, player_color: Color, current_co
 
             var to_iter = from_moves.to.iterator();
             while (to_iter.next()) |to| {
-                const moved = board.getMovedBoard(from, BitBoard.initWithIndex(to));
+                const moved = board.getMovedBoard(from, BitBoard.fromIndex(to));
 
                 value = @min(value, try alphaBeta(
                     moved,
@@ -232,7 +232,7 @@ fn evaluate(board: Board) isize {
         var iter = board.getColorPieces(.black).iterator();
 
         while (iter.next()) |from| {
-            const move_targets = board.getMove(BitBoard.initWithIndex(from));
+            const move_targets = board.getMove(BitBoard.fromIndex(from));
 
             movable_count += @intCast(move_targets.count());
         }
@@ -245,7 +245,7 @@ fn evaluate(board: Board) isize {
         var iter = board.getColorPieces(.white).iterator();
 
         while (iter.next()) |from| {
-            const move_targets = board.getMove(BitBoard.initWithIndex(from));
+            const move_targets = board.getMove(BitBoard.fromIndex(from));
 
             movable_count += @intCast(move_targets.count());
         }

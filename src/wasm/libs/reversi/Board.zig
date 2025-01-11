@@ -42,7 +42,7 @@ pub const Color = enum(u1) {
 
 /// ボードの初期状態を作る
 pub fn init() Board {
-    return initWithString(
+    return fromString(
         \\........
         \\........
         \\........
@@ -56,11 +56,11 @@ pub fn init() Board {
 
 /// ボードの文字列からボード構造体を作る
 /// oが黒石、xが白石、それ以外で空白を表す。
-pub fn initWithString(comptime str: []const u8) Board {
+pub fn fromString(comptime str: []const u8) Board {
     return .{
         .boards = ColorBoards.init(.{
-            .black = BitBoard.initWithString(str, 'o'),
-            .white = BitBoard.initWithString(str, 'x'),
+            .black = BitBoard.fromString(str, 'o'),
+            .white = BitBoard.fromString(str, 'x'),
         }),
     };
 }
@@ -80,7 +80,7 @@ fn getFlipSquares(board: Board, place: BitBoard) BitBoard {
     const player_board = board.getPlayer();
     const opponent_board = board.getOpponent();
 
-    const mask = opponent_board.masks(BitBoard.initWithString(
+    const mask = opponent_board.masks(BitBoard.fromString(
         \\.oooooo.
         \\.oooooo.
         \\.oooooo.
@@ -153,7 +153,7 @@ pub fn getValidMoves(board: Board) BitBoard {
     const opponent_board = board.getOpponent();
     const empty = player_board.unions(opponent_board).getInverted();
 
-    const mask = opponent_board.masks(BitBoard.initWithString(
+    const mask = opponent_board.masks(BitBoard.fromString(
         \\.oooooo.
         \\.oooooo.
         \\.oooooo.
