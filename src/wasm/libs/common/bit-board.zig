@@ -228,6 +228,16 @@ pub fn BitBoard(comptime height_arg: u16, comptime width_arg: u16) type {
             return fromInteger(shifted_mask);
         }
 
+        /// ビットを1にする。
+        pub fn set(self: *Self, index: Index) void {
+            self.board.set(index);
+        }
+
+        /// ビットを0にする。
+        pub fn unset(self: *Self, index: Index) void {
+            self.board.unset(index);
+        }
+
         /// selfにotherのビットを足し合わせる。
         /// `self |= other;`
         pub fn setUnion(self: *Self, other: Self) void {

@@ -22,11 +22,6 @@ test {
     _ = @import("./Board.test.zig");
 }
 
-pub const ColorPieceStruct = struct {
-    color: Color,
-    piece: PieceType,
-};
-
 pub const ColorPieceType = enum(u8) {
     black_pawn = 1,
     black_knight = 2,
@@ -63,20 +58,21 @@ pub const ColorPieceType = enum(u8) {
         };
     }
 
-    pub fn toColorPiece(self: ColorPieceType) ColorPieceStruct {
+    pub fn toColorPiece(self: ColorPieceType) struct { Color, PieceType } {
         return switch (self) {
-            .black_pawn => .{ .color = .black, .piece = .pawn },
-            .black_knight => .{ .color = .black, .piece = .knight },
-            .black_bishop => .{ .color = .black, .piece = .bishop },
-            .black_rook => .{ .color = .black, .piece = .rook },
-            .black_queen => .{ .color = .black, .piece = .queen },
-            .black_king => .{ .color = .black, .piece = .king },
-            .white_pawn => .{ .color = .white, .piece = .pawn },
-            .white_knight => .{ .color = .white, .piece = .knight },
-            .white_bishop => .{ .color = .white, .piece = .bishop },
-            .white_rook => .{ .color = .white, .piece = .rook },
-            .white_queen => .{ .color = .white, .piece = .queen },
-            .white_king => .{ .color = .white, .piece = .king },
+            .black_pawn => .{ .black, .pawn },
+            .black_knight => .{ .black, .knight },
+            .black_bishop => .{ .black, .bishop },
+            .black_rook => .{ .black, .rook },
+            .black_queen => .{ .black, .queen },
+            .black_king => .{ .black, .king },
+
+            .white_pawn => .{ .white, .pawn },
+            .white_knight => .{ .white, .knight },
+            .white_bishop => .{ .white, .bishop },
+            .white_rook => .{ .white, .rook },
+            .white_queen => .{ .white, .queen },
+            .white_king => .{ .white, .king },
         };
     }
 
@@ -273,10 +269,7 @@ pub fn getBoardPtr(board: *Board, color: Color, piece: PieceType) *BitBoard {
 
 // 引数の色と種類からその色と種類のすべての駒の位置を返します。
 pub fn getPieces(board: Board, color_piece: ColorPieceType) BitBoard {
-    const color_piece_struct = color_piece.toColorPiece();
-    const color = color_piece_struct.color;
-    const piece = color_piece_struct.piece;
-
+    const color, const piece = color_piece.toColorPiece();
     return board.getBoard(color, piece);
 }
 
@@ -602,9 +595,7 @@ fn getMovedBoardNormalMove(board: Board, from: BitBoard, to: BitBoard) Board {
     if (to_piece_type) |tpt| {
         // 行き先に駒があるなら取り除く
 
-        const to_color_piece = tpt.toColorPiece();
-        const to_color = to_color_piece.color;
-        const to_piece = to_color_piece.piece;
+        const to_color, const to_piece = tpt.toColorPiece();
 
         const to_inv = to.getInverted();
         new_board.boards.getPtr(to_color).getPtr(to_piece).setMask(to_inv);
@@ -613,9 +604,7 @@ fn getMovedBoardNormalMove(board: Board, from: BitBoard, to: BitBoard) Board {
     // 動かす駒について元と先のビットを反転させる
     const from_to = from.unions(to);
 
-    const from_color_piece = from_piece_type.toColorPiece();
-    const from_color = from_color_piece.color;
-    const from_piece = from_color_piece.piece;
+    const from_color, const from_piece = from_piece_type.toColorPiece();
 
     new_board.boards.getPtr(from_color).getPtr(from_piece).setToggle(from_to);
 
@@ -682,9 +671,7 @@ fn getMovedBoardEnpassant(board: Board, from: BitBoard, to: BitBoard) Board {
     if (capture_piece_type) |cpt| {
         const capture_inv = capture_target.getInverted();
 
-        const capture_color_piece = cpt.toColorPiece();
-        const capture_color = capture_color_piece.color;
-        const capture_piece = capture_color_piece.piece;
+        const capture_color, const capture_piece = cpt.toColorPiece();
 
         new_board.getBoardPtr(capture_color, capture_piece).setMask(capture_inv);
     }
@@ -726,7 +713,8 @@ pub fn getPromotionBoard(board: Board, from: BitBoard, piece_type: PieceType) Bo
     var new_board = board;
 
     const color_piece_type = board.getColorType(from) orelse return new_board;
-    const color = color_piece_type.toColorPiece().color;
+    const color, const piece = color_piece_type.toColorPiece();
+    _ = piece;
 
     new_board.getBoardPtr(color, .pawn).setMask(from.getInverted());
     new_board.getBoardPtr(color, piece_type).setUnion(from);
