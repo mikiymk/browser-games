@@ -157,9 +157,9 @@ test "📖Board.getAllWalkMoves" {
     defer a.free(moves);
 
     const expected = [_]Game.Move{
-        Game.Move.init(BitBoard.indexFromCoordinate(6, 6), BitBoard.indexFromCoordinate(5, 7)),
-        Game.Move.init(BitBoard.indexFromCoordinate(6, 6), BitBoard.indexFromCoordinate(7, 7)),
-        Game.Move.init(BitBoard.indexFromCoordinate(2, 2), BitBoard.indexFromCoordinate(1, 3)),
+        Game.Move.init(BitBoard.Coordinate.toIndex(6, 6), BitBoard.Coordinate.toIndex(5, 7)),
+        Game.Move.init(BitBoard.Coordinate.toIndex(6, 6), BitBoard.Coordinate.toIndex(7, 7)),
+        Game.Move.init(BitBoard.Coordinate.toIndex(2, 2), BitBoard.Coordinate.toIndex(1, 3)),
     };
 
     try std.testing.expectEqual(expected.len, moves.len);
@@ -228,7 +228,7 @@ test "📖Board.getAllJumpMoves" {
     defer a.free(moves);
 
     const expected = [_]Game.Move{
-        Game.Move.init(BitBoard.indexFromCoordinate(2, 2), BitBoard.indexFromCoordinate(4, 4)),
+        Game.Move.init(BitBoard.Coordinate.toIndex(2, 2), BitBoard.Coordinate.toIndex(4, 4)),
     };
 
     try std.testing.expectEqual(expected.len, moves.len);

@@ -46,29 +46,32 @@ pub fn BitBoard(comptime height_arg: u16, comptime width_arg: u16) type {
 
         /// ビットボードの座標を表す型。
         /// x: 幅、y: 高さ。
-        pub const Coordinate = struct { x: Width, y: Height };
+        pub const Coordinate = struct {
+            x: Width,
+            y: Height,
+
+            /// 座標をインデックスに変換する関数
+            /// 座標は(x, y)の組。
+            /// 左下が(0, 0)、右にいくとx、上にいくとyが大きくなる。
+            pub fn toIndex(x: Width, y: Height) Index {
+                return x + (@as(Index, height) - y - 1) * @as(Index, width);
+            }
+
+            /// 座標をインデックスに変換する関数
+            /// 座標は(x, y)の組。
+            /// 左下が(0, 0)、右にいくとx、上にいくとyが大きくなる。
+            pub fn fromIndex(index: Index) Coordinate {
+                const x: Width = @intCast(index % @as(Index, width));
+                const y: Height = @intCast(@as(Index, height) - @divTrunc(index, @as(Index, width)) - 1);
+
+                return .{ .x = x, .y = y };
+            }
+        };
 
         const UCharLength: type = std.meta.Int(.unsigned, std.math.log2_int_ceil(u16, string_size + 1));
 
         /// ビットボードの値
         board: Board,
-
-        /// 座標をインデックスに変換する関数
-        /// 座標は(x, y)の組。
-        /// 左下が(0, 0)、右にいくとx、上にいくとyが大きくなる。
-        pub fn indexFromCoordinate(x: Width, y: Height) Index {
-            return x + (@as(Index, height) - y - 1) * @as(Index, width);
-        }
-
-        /// 座標をインデックスに変換する関数
-        /// 座標は(x, y)の組。
-        /// 左下が(0, 0)、右にいくとx、上にいくとyが大きくなる。
-        pub fn coordinateFromIndex(index: Index) Coordinate {
-            const x: Width = @intCast(index % @as(Index, width));
-            const y: Height = @intCast(@as(Index, height) - @divTrunc(index, @as(Index, width)) - 1);
-
-            return .{ .x = x, .y = y };
-        }
 
         /// 空のボードを作成する。
         pub fn init() Self {
@@ -77,7 +80,7 @@ pub fn BitBoard(comptime height_arg: u16, comptime width_arg: u16) type {
 
         /// 指定した座標のビット1つのみがオンのビットボードを作成する。
         pub fn initWithCoordinate(x: Width, y: Height) Self {
-            return initWithIndex(indexFromCoordinate(x, y));
+            return initWithIndex(Coordinate.toIndex(x, y));
         }
 
         // 文字列を使う関数。
@@ -275,7 +278,7 @@ pub fn BitBoard(comptime height_arg: u16, comptime width_arg: u16) type {
 
         /// selfの(x,y)のビットを反転する。
         pub fn setToggleCoordinate(self: *Self, x: Width, y: Height) void {
-            self.setToggleIndex(indexFromCoordinate(x, y));
+            self.setToggleIndex(Coordinate.toIndex(x, y));
         }
 
         /// すべてのビットを反転する。
@@ -391,7 +394,7 @@ pub fn BitBoard(comptime height_arg: u16, comptime width_arg: u16) type {
 
         pub fn toCoordinate(self: Self) Coordinate {
             const index = self.toIndexInteger();
-            return coordinateFromIndex(index);
+            return Coordinate.fromIndex(index);
         }
 
         /// ビットボードを文字列に変換する。
