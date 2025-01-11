@@ -458,26 +458,26 @@ test "📖Board.getMovedBoard: 駒が動くとキャスリングができなく�
         \\r...k..r
     );
 
-    try std.testing.expect(board.castling_available.white_queenside);
-    try std.testing.expect(board.castling_available.white_kingside);
+    try std.testing.expect(board.castling_available.white_queen);
+    try std.testing.expect(board.castling_available.white_king);
 
     board = board.getMovedBoard(BitBoard.initWithCoordinate(0, 0), BitBoard.initWithCoordinate(0, 3));
 
-    try std.testing.expect(!board.castling_available.white_queenside);
-    try std.testing.expect(board.castling_available.white_kingside);
+    try std.testing.expect(!board.castling_available.white_queen);
+    try std.testing.expect(board.castling_available.white_king);
 
     board = board.getMovedBoard(BitBoard.initWithCoordinate(4, 0), BitBoard.initWithCoordinate(4, 3));
 
-    try std.testing.expect(!board.castling_available.white_queenside);
-    try std.testing.expect(!board.castling_available.white_kingside);
+    try std.testing.expect(!board.castling_available.white_queen);
+    try std.testing.expect(!board.castling_available.white_king);
 
-    try std.testing.expect(board.castling_available.black_queenside);
-    try std.testing.expect(board.castling_available.black_kingside);
+    try std.testing.expect(board.castling_available.black_queen);
+    try std.testing.expect(board.castling_available.black_king);
 
     board = board.getMovedBoard(BitBoard.initWithCoordinate(4, 7), BitBoard.initWithCoordinate(7, 7));
 
-    try std.testing.expect(!board.castling_available.black_queenside);
-    try std.testing.expect(!board.castling_available.black_kingside);
+    try std.testing.expect(!board.castling_available.black_queen);
+    try std.testing.expect(!board.castling_available.black_king);
 }
 
 test "📖Board.getMovedBoard: ポーンが2個進むとアンパッサン対象になる" {
