@@ -143,16 +143,26 @@ pub fn BitBoard(comptime height_arg: u16, comptime width_arg: u16) type {
             return .{ .board = board };
         }
 
+        /// 西(左側)だけが0のビットボード
+        ///
+        ///     011
+        ///     011
+        ///     011
         pub const west_mask = blk: {
             var board = init();
 
             for (0..height) |y| {
-                board.setToggleCoordinate(0, y);
+                board.set(Coordinate.toIndex(0, y));
             }
 
             break :blk board.getInverted();
         };
 
+        /// 東(右側)だけが0のビットボード
+        ///
+        ///     110
+        ///     110
+        ///     110
         pub const east_mask = blk: {
             var board = init();
 
@@ -163,6 +173,11 @@ pub fn BitBoard(comptime height_arg: u16, comptime width_arg: u16) type {
             break :blk board.getInverted();
         };
 
+        /// 北(上側)だけが0のビットボード
+        ///
+        ///     000
+        ///     111
+        ///     111
         pub const north_mask = blk: {
             var board = init();
 
@@ -173,6 +188,11 @@ pub fn BitBoard(comptime height_arg: u16, comptime width_arg: u16) type {
             break :blk board.getInverted();
         };
 
+        /// 南(下側)だけが0のビットボード
+        ///
+        ///     111
+        ///     111
+        ///     000
         pub const south_mask = blk: {
             var board = init();
 
