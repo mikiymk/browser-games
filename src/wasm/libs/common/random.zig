@@ -11,10 +11,23 @@ const S = struct {
 };
 
 pub const random = S.rand;
+
+/// ランダムのシードを設定します。
+export fn setSeed(seed: usize) void {
+    S.rand_gen.seed(seed);
+}
+
+/// ランダムな浮動小数点数を取得します。
 pub fn getRandom() f64 {
     return S.rand.float(f64);
 }
 
+/// 指定した範囲の整数をランダムに取得します。
 pub fn getRandomIntRange(at_least: usize, less_than: usize) usize {
     return S.rand.intRangeLessThan(usize, at_least, less_than);
+}
+
+/// スライスからランダムな要素を取得します。
+pub fn getRandomItem(slice: anytype) usize {
+    return slice[getRandomIntRange(0, slice.len)];
 }

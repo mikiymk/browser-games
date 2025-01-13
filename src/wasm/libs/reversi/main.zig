@@ -5,5 +5,6 @@ pub const ai = @import("./ai.zig");
 pub const Board = @import("./Board.zig");
 
 test {
-    std.testing.refAllDeclsRecursive(@This());
+    _ = ai;
+    _ = Board;
 }

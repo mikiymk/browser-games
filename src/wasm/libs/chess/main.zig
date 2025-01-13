@@ -7,5 +7,8 @@ pub const moves = @import("./moves.zig");
 pub const ai = @import("./ai.zig");
 
 test {
-    std.testing.refAllDeclsRecursive(@This());
+    _ = Game;
+    _ = Board;
+    _ = moves;
+    _ = ai;
 }

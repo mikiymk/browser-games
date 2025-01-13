@@ -16,7 +16,7 @@ test {
     _ = @import("./moves.test.zig");
 }
 
-const east_west_mask = BitBoard.initWithString(
+const east_west_mask = BitBoard.fromString(
     \\.oooooo.
     \\.oooooo.
     \\.oooooo.
@@ -27,7 +27,7 @@ const east_west_mask = BitBoard.initWithString(
     \\.oooooo.
 , 'o');
 
-const east_mask = BitBoard.initWithString(
+const east_mask = BitBoard.fromString(
     \\ooooooo.
     \\ooooooo.
     \\ooooooo.
@@ -38,7 +38,7 @@ const east_mask = BitBoard.initWithString(
     \\ooooooo.
 , 'o');
 
-const east_mask_double = BitBoard.initWithString(
+const east_mask_double = BitBoard.fromString(
     \\oooooo..
     \\oooooo..
     \\oooooo..
@@ -49,7 +49,7 @@ const east_mask_double = BitBoard.initWithString(
     \\oooooo..
 , 'o');
 
-const west_mask = BitBoard.initWithString(
+const west_mask = BitBoard.fromString(
     \\.ooooooo
     \\.ooooooo
     \\.ooooooo
@@ -60,7 +60,7 @@ const west_mask = BitBoard.initWithString(
     \\.ooooooo
 , 'o');
 
-const west_mask_double = BitBoard.initWithString(
+const west_mask_double = BitBoard.fromString(
     \\..oooooo
     \\..oooooo
     \\..oooooo
@@ -71,7 +71,7 @@ const west_mask_double = BitBoard.initWithString(
     \\..oooooo
 , 'o');
 
-const white_pawn_double_step_target = BitBoard.initWithString(
+const white_pawn_double_step_target = BitBoard.fromString(
     \\........
     \\........
     \\........
@@ -82,7 +82,7 @@ const white_pawn_double_step_target = BitBoard.initWithString(
     \\........
 , 'o');
 
-const black_pawn_double_step_target = BitBoard.initWithString(
+const black_pawn_double_step_target = BitBoard.fromString(
     \\........
     \\........
     \\........

@@ -8,5 +8,8 @@ pub const console = @import("./console.zig");
 pub const allocator = if (builtin.target.isWasm()) std.heap.wasm_allocator else std.heap.page_allocator;
 
 test {
-    std.testing.refAllDeclsRecursive(@This());
+    _ = types;
+    _ = bit_board;
+    _ = random;
+    _ = console;
 }

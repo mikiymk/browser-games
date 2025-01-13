@@ -9,9 +9,7 @@ const BitBoard = common.bit_board.BitBoard(8, 8);
 // internal import
 const Board = @import("./Board.zig");
 
-test "move black" {
-    const testing = std.testing;
-
+test "📖Board.moveMutate: 黒を動かす" {
     var board = Board.fromString(
         \\o..o..o.
         \\.x.x.x..
@@ -23,7 +21,7 @@ test "move black" {
         \\...o...o
     );
 
-    const place = BitBoard.initWithString(
+    const place = BitBoard.fromString(
         \\........
         \\........
         \\........
@@ -47,12 +45,10 @@ test "move black" {
 
     board.moveMutate(place);
 
-    try testing.expectEqualDeep(expected, board);
+    try std.testing.expectEqualDeep(expected, board);
 }
 
 test "get valid move" {
-    const testing = std.testing;
-
     // 現在のボード状態
     const board = Board.fromString(
         \\...x..x.
@@ -67,32 +63,23 @@ test "get valid move" {
 
     // マスク
     // 相手の石があるところだけ + 端をループしないように止める
-    const mask = board.boards.get(.white).masks(BitBoard.initWithString(
-        \\.oooooo.
-        \\.oooooo.
-        \\.oooooo.
-        \\.oooooo.
-        \\.oooooo.
-        \\.oooooo.
-        \\.oooooo.
-        \\.oooooo.
-    , 'o'));
+    const mask = board.boards.get(.white).masks(BitBoard.west_mask.masks(BitBoard.east_mask));
 
-    try testing.expectEqualStrings(
-        \\...x..x.
-        \\.x.x.x..
-        \\..xxx...
-        \\.xx.xxx.
-        \\...x....
-        \\.x.x.x..
-        \\.xxxxxx.
+    try mask.expect(
+        \\...o..o.
+        \\.o.o.o..
+        \\..ooo...
+        \\.oo.ooo.
+        \\...o....
+        \\.o.o.o..
+        \\.oooooo.
         \\........
-    , &mask.toString('x', '.'));
+    );
 
     var flip = board.boards.get(.black);
     const dir = 1;
 
-    try testing.expectEqualStrings(
+    try flip.expect(
         \\........
         \\........
         \\........
@@ -101,13 +88,13 @@ test "get valid move" {
         \\........
         \\.......o
         \\........
-    , &flip.toString('o', '.'));
+    );
 
     // dirで決められた方向に向けて石を置く
     // 正の方向と負の方向の2方向を同時に進める
     flip = flip.shl(dir).unions(flip.shr(dir)).masks(mask);
 
-    try testing.expectEqualStrings(
+    try flip.expect(
         \\........
         \\........
         \\........
@@ -116,12 +103,12 @@ test "get valid move" {
         \\........
         \\......o.
         \\........
-    , &flip.toString('o', '.'));
+    );
 
     // さらに進めたものを前回のものとORで重ねる
     flip.setUnion(flip.shl(dir).unions(flip.shr(dir)).masks(mask));
 
-    try testing.expectEqualStrings(
+    try flip.expect(
         \\........
         \\........
         \\........
@@ -130,7 +117,7 @@ test "get valid move" {
         \\........
         \\.....oo.
         \\........
-    , &flip.toString('o', '.'));
+    );
 
     // 合計で6回進める
     flip.setUnion(flip.shl(dir).unions(flip.shr(dir)).masks(mask));
@@ -138,7 +125,7 @@ test "get valid move" {
     flip.setUnion(flip.shl(dir).unions(flip.shr(dir)).masks(mask));
     flip.setUnion(flip.shl(dir).unions(flip.shr(dir)).masks(mask));
 
-    try testing.expectEqualStrings(
+    try flip.expect(
         \\........
         \\........
         \\........
@@ -147,14 +134,14 @@ test "get valid move" {
         \\........
         \\.oooooo.
         \\........
-    , &flip.toString('o', '.'));
+    );
 
     // 最後にマスクなしで進める
     // 自分の石の隣に相手の石が繋がっているものの一番先頭
 
     flip = flip.shl(dir).unions(flip.shr(dir));
 
-    try testing.expectEqualStrings(
+    try flip.expect(
         \\........
         \\........
         \\........
@@ -163,12 +150,12 @@ test "get valid move" {
         \\........
         \\oooooooo
         \\........
-    , &flip.toString('o', '.'));
+    );
 
     // これを「石が置かれていない場所」でマスク
     flip = flip.excludes(board.boards.get(.black).unions(board.boards.get(.white)));
 
-    try testing.expectEqualStrings(
+    try flip.expect(
         \\........
         \\........
         \\........
@@ -177,12 +164,10 @@ test "get valid move" {
         \\........
         \\o.......
         \\........
-    , &flip.toString('o', '.'));
+    );
 
     // これを縦横斜めの4方向に向ける
-    const moves = board.getValidMoves();
-
-    try testing.expectEqualStrings(
+    try board.getValidMoves().expect(
         \\o.......
         \\........
         \\........
@@ -191,12 +176,10 @@ test "get valid move" {
         \\........
         \\o.......
         \\...o....
-    , &moves.toString('o', '.'));
+    );
 }
 
 test "get valid move 1" {
-    const testing = std.testing;
-
     const board = Board.fromString(
         \\.ox.....
         \\........
@@ -207,9 +190,8 @@ test "get valid move 1" {
         \\........
         \\oxxxxxx.
     );
-    const actual = board.getValidMoves().toString('o', '.');
 
-    const expected =
+    try board.getValidMoves().expect(
         \\...o....
         \\........
         \\........
@@ -218,14 +200,10 @@ test "get valid move 1" {
         \\........
         \\........
         \\.......o
-    ;
-
-    try testing.expectEqualStrings(expected, &actual);
+    );
 }
 
 test "get valid move 2" {
-    const testing = std.testing;
-
     const board = Board.fromString(
         \\.o...x..
         \\.x.o.o.x
@@ -236,9 +214,8 @@ test "get valid move 2" {
         \\.......x
         \\.......o
     );
-    const actual = board.getValidMoves().toString('o', '.');
 
-    const expected =
+    try board.getValidMoves().expect(
         \\.......o
         \\........
         \\.o......
@@ -247,14 +224,10 @@ test "get valid move 2" {
         \\...o....
         \\........
         \\........
-    ;
-
-    try testing.expectEqualStrings(expected, &actual);
+    );
 }
 
 test "get valid move 3" {
-    const testing = std.testing;
-
     const board = Board.fromString(
         \\o.......
         \\.x...o..
@@ -265,9 +238,8 @@ test "get valid move 3" {
         \\..x...x.
         \\o..o....
     );
-    const actual = board.getValidMoves().toString('o', '.');
 
-    const expected =
+    try board.getValidMoves().expect(
         \\........
         \\........
         \\........
@@ -276,14 +248,10 @@ test "get valid move 3" {
         \\........
         \\........
         \\.......o
-    ;
-
-    try testing.expectEqualStrings(expected, &actual);
+    );
 }
 
 test "get valid move 4" {
-    const testing = std.testing;
-
     const board = Board.fromString(
         \\..x.....
         \\.x....x.
@@ -294,9 +262,8 @@ test "get valid move 4" {
         \\.x..x...
         \\o.......
     );
-    const actual = board.getValidMoves().toString('o', '.');
 
-    const expected =
+    try board.getValidMoves().expect(
         \\.......o
         \\........
         \\........
@@ -305,14 +272,10 @@ test "get valid move 4" {
         \\........
         \\........
         \\...o....
-    ;
-
-    try testing.expectEqualStrings(expected, &actual);
+    );
 }
 
 test "game is end" {
-    const testing = std.testing;
-
     const board = Board.fromString(
         \\oooooooo
         \\xxxxxxxx
@@ -324,15 +287,10 @@ test "game is end" {
         \\xxxxxxxx
     );
 
-    const actual = board.isEnd();
-    const expected = true;
-
-    try testing.expectEqual(expected, actual);
+    try std.testing.expect(board.isEnd());
 }
 
 test "game is not end" {
-    const testing = std.testing;
-
     const board = Board.fromString(
         \\oooooooo
         \\xxxxxxxx
@@ -344,21 +302,17 @@ test "game is not end" {
         \\xxxxxxxx
     );
 
-    const actual = board.isEnd();
-    const expected = false;
-
-    try testing.expectEqual(expected, actual);
+    try std.testing.expect(!board.isEnd());
 }
 
 test "board from string" {
-    const testing = std.testing;
-
     const expected = Board{
         .boards = Board.ColorBoards.init(.{
-            .black = BitBoard.initWithInteger(0x00_00_00_00_00_aa_55_aa),
-            .white = BitBoard.initWithInteger(0x55_aa_55_00_00_00_00_00),
+            .black = BitBoard.fromInteger(0x00_00_00_00_00_aa_55_aa),
+            .white = BitBoard.fromInteger(0x55_aa_55_00_00_00_00_00),
         }),
     };
+
     const actual = Board.fromString(
         \\.o.o.o.o
         \\o.o.o.o.
@@ -370,5 +324,5 @@ test "board from string" {
         \\x.x.x.x.
     );
 
-    try testing.expectEqualDeep(expected, actual);
+    try std.testing.expectEqualDeep(expected, actual);
 }

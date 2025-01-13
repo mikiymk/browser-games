@@ -42,7 +42,7 @@ export fn getColor(game: *Game) Color {
 
 /// ボードの位置を指定して可能な移動先を得る
 export fn getMove(game: *Game, position_index: usize) u64 {
-    const position = BitBoard.initWithIndex(position_index);
+    const position = BitBoard.fromIndex(position_index);
 
     const moves = game.getMove(a, position);
     return moves.toInteger();

@@ -10,6 +10,10 @@ const assert = std.debug.assert;
 const common = @import("./main.zig");
 const types = common.types;
 
+test {
+    _ = @import("./bit-board.test.zig");
+}
+
 pub fn BitBoard(comptime height_arg: u16, comptime width_arg: u16) type {
     return struct {
         /// ビットボードを表す型。
@@ -42,49 +46,32 @@ pub fn BitBoard(comptime height_arg: u16, comptime width_arg: u16) type {
 
         /// ビットボードの座標を表す型。
         /// x: 幅、y: 高さ。
-        pub const Coordinate = struct { x: Width, y: Height };
+        pub const Coordinate = struct {
+            x: Width,
+            y: Height,
+
+            /// 座標をインデックスに変換する関数
+            /// 座標は(x, y)の組。
+            /// 左下が(0, 0)、右にいくとx、上にいくとyが大きくなる。
+            pub fn toIndex(x: Width, y: Height) Index {
+                return x + (@as(Index, height) - y - 1) * @as(Index, width);
+            }
+
+            /// 座標をインデックスに変換する関数
+            /// 座標は(x, y)の組。
+            /// 左下が(0, 0)、右にいくとx、上にいくとyが大きくなる。
+            pub fn fromIndex(index: Index) Coordinate {
+                const x: Width = @intCast(index % @as(Index, width));
+                const y: Height = @intCast(@as(Index, height) - @divTrunc(index, @as(Index, width)) - 1);
+
+                return .{ .x = x, .y = y };
+            }
+        };
 
         const UCharLength: type = std.meta.Int(.unsigned, std.math.log2_int_ceil(u16, string_size + 1));
 
-        test "📖BitBoard: 縦と横のサイズからビットサイズを計算して型を作成する" {
-            {
-                const B = BitBoard(8, 8);
-
-                try testing.expectEqual(B.Board, std.bit_set.StaticBitSet(64));
-                try testing.expectEqual(B.Height, u3);
-                try testing.expectEqual(B.Width, u3);
-                try testing.expectEqual(B.Index, u6);
-            }
-
-            {
-                const B = BitBoard(9, 7);
-
-                try testing.expectEqual(B.Board, std.bit_set.StaticBitSet(63));
-                try testing.expectEqual(B.Height, u4);
-                try testing.expectEqual(B.Width, u3);
-                try testing.expectEqual(B.Index, u6);
-            }
-        }
-
         /// ビットボードの値
         board: Board,
-
-        /// 座標をインデックスに変換する関数
-        /// 座標は(x, y)の組。
-        /// 左下が(0, 0)、右にいくとx、上にいくとyが大きくなる。
-        pub fn indexFromCoordinate(x: Width, y: Height) Index {
-            return x + (@as(Index, height) - y - 1) * @as(Index, width);
-        }
-
-        /// 座標をインデックスに変換する関数
-        /// 座標は(x, y)の組。
-        /// 左下が(0, 0)、右にいくとx、上にいくとyが大きくなる。
-        pub fn coordinateFromIndex(index: Index) Coordinate {
-            const x: Width = @intCast(index % @as(Index, width));
-            const y: Height = @intCast(@as(Index, height) - @divTrunc(index, @as(Index, width)) - 1);
-
-            return .{ .x = x, .y = y };
-        }
 
         /// 空のボードを作成する。
         pub fn init() Self {
@@ -92,79 +79,21 @@ pub fn BitBoard(comptime height_arg: u16, comptime width_arg: u16) type {
         }
 
         /// 指定した座標のビット1つのみがオンのビットボードを作成する。
-        pub fn initWithCoordinate(x: Width, y: Height) Self {
-            return initWithIndex(indexFromCoordinate(x, y));
-        }
-
-        test "📖BitBoard.initWithCoordinate: 座標からそこだけビットの立ったボードを作成する" {
-            // + 0 1 2 3
-            // 3 0 1 2 3
-            // 2 4 5 6 7
-            // 1 8 9 a b
-            // 0 c d e f
-
-            const B = BitBoard(4, 4);
-
-            {
-                const board1 = B.initWithCoordinate(0, 0);
-                const board2 = B.initWithString(
-                    \\....
-                    \\....
-                    \\....
-                    \\o...
-                , 'o');
-
-                try testing.expectEqual(board1, board2);
-            }
-
-            {
-                const board1 = B.initWithCoordinate(1, 0);
-                const board2 = B.initWithString(
-                    \\....
-                    \\....
-                    \\....
-                    \\.o..
-                , 'o');
-
-                try testing.expectEqual(board1, board2);
-            }
-
-            {
-                const board1 = B.initWithCoordinate(0, 2);
-                const board2 = B.initWithString(
-                    \\....
-                    \\o...
-                    \\....
-                    \\....
-                , 'o');
-
-                try testing.expectEqual(board1, board2);
-            }
-
-            {
-                const board1 = B.initWithCoordinate(3, 3);
-                const board2 = B.initWithString(
-                    \\...o
-                    \\....
-                    \\....
-                    \\....
-                , 'o');
-
-                try testing.expectEqual(board1, board2);
-            }
+        pub fn fromCoordinate(x: Width, y: Height) Self {
+            return fromIndex(Coordinate.toIndex(x, y));
         }
 
         // 文字列を使う関数。
 
         /// 番号からボードを作成する。
-        pub fn initWithIndex(index: usize) Self {
+        pub fn fromIndex(index: usize) Self {
             var board = Board.initEmpty();
             board.set(index);
             return .{ .board = board };
         }
 
         /// ビットの整数表現から変換する。
-        pub fn initWithInteger(int: std.meta.Int(.unsigned, size)) Self {
+        pub fn fromInteger(int: std.meta.Int(.unsigned, size)) Self {
             if (Board == std.bit_set.IntegerBitSet(size)) {
                 return .{ .board = .{ .mask = int } };
             } else if (Board == std.bit_set.ArrayBitSet(usize, size)) {
@@ -184,7 +113,7 @@ pub fn BitBoard(comptime height_arg: u16, comptime width_arg: u16) type {
         /// 第二引数で石を示す文字を指定する。
         ///
         /// 範囲外のものが1つでもあると0を返す
-        pub fn initWithString(str: []const u8, piece_symbol: u8) Self {
+        pub fn fromString(str: []const u8, piece_symbol: u8) Self {
             assert(str.len == string_size);
 
             var board: Board = Board.initEmpty();
@@ -214,39 +143,26 @@ pub fn BitBoard(comptime height_arg: u16, comptime width_arg: u16) type {
             return .{ .board = board };
         }
 
-        test "📖BitBoard.initWithString: 文字列からボードを作成する" {
-            const B = BitBoard(4, 4);
-
-            const board = B.initWithString(
-                \\.o.o
-                \\....
-                \\....
-                \\....
-            , 'o');
-
-            try testing.expectEqual(board, B.initWithInteger(0b0000_0000_0000_1010));
-        }
-
+        /// 西(左側)だけが0のビットボード
+        ///
+        ///     011
+        ///     011
+        ///     011
         pub const west_mask = blk: {
             var board = init();
 
             for (0..height) |y| {
-                board.setToggleCoordinate(0, y);
+                board.set(Coordinate.toIndex(0, y));
             }
 
             break :blk board.getInverted();
         };
 
-        test "📖BitBoard.west_mask: 左端のみ0のボード" {
-            const B = BitBoard(3, 3);
-
-            try B.west_mask.expect(
-                \\.oo
-                \\.oo
-                \\.oo
-            );
-        }
-
+        /// 東(右側)だけが0のビットボード
+        ///
+        ///     110
+        ///     110
+        ///     110
         pub const east_mask = blk: {
             var board = init();
 
@@ -257,16 +173,11 @@ pub fn BitBoard(comptime height_arg: u16, comptime width_arg: u16) type {
             break :blk board.getInverted();
         };
 
-        test "📖BitBoard.east_mask: 右端のみ0のボード" {
-            const B = BitBoard(3, 3);
-
-            try B.east_mask.expect(
-                \\oo.
-                \\oo.
-                \\oo.
-            );
-        }
-
+        /// 北(上側)だけが0のビットボード
+        ///
+        ///     000
+        ///     111
+        ///     111
         pub const north_mask = blk: {
             var board = init();
 
@@ -277,16 +188,11 @@ pub fn BitBoard(comptime height_arg: u16, comptime width_arg: u16) type {
             break :blk board.getInverted();
         };
 
-        test "📖BitBoard.north_mask: 上端のみ0のボード" {
-            const B = BitBoard(3, 3);
-
-            try B.north_mask.expect(
-                \\...
-                \\ooo
-                \\ooo
-            );
-        }
-
+        /// 南(下側)だけが0のビットボード
+        ///
+        ///     111
+        ///     111
+        ///     000
         pub const south_mask = blk: {
             var board = init();
 
@@ -296,16 +202,6 @@ pub fn BitBoard(comptime height_arg: u16, comptime width_arg: u16) type {
 
             break :blk board.getInverted();
         };
-
-        test "📖BitBoard.south_mask: 下端のみ0のボード" {
-            const B = BitBoard(3, 3);
-
-            try B.south_mask.expect(
-                \\ooo
-                \\ooo
-                \\...
-            );
-        }
 
         pub fn eql(self: Self, other: Self) bool {
             return self.board.eql(other.board);
@@ -340,68 +236,7 @@ pub fn BitBoard(comptime height_arg: u16, comptime width_arg: u16) type {
 
             const mask_int = self.toInteger();
             const shifted_mask = mask_int << @intCast(length);
-            return initWithInteger(shifted_mask);
-        }
-
-        test "📖BitBoard.shl: ボードの左シフトしたボードを得る" {
-            const B = BitBoard(16, 16);
-
-            const board = B.initWithString(
-                \\o...............
-                \\.o............o.
-                \\................
-                \\...............o
-                \\o...............
-                \\.o..............
-                \\..............o.
-                \\...............o
-                \\o...............
-                \\..............o.
-                \\.o..............
-                \\...............o
-                \\o...............
-                \\................
-                \\.o............o.
-                \\...............o
-            , 'o');
-
-            try board.shl(1).expect(
-                \\.o..............
-                \\..o............o
-                \\................
-                \\................
-                \\oo..............
-                \\..o.............
-                \\...............o
-                \\................
-                \\oo..............
-                \\...............o
-                \\..o.............
-                \\................
-                \\oo..............
-                \\................
-                \\..o............o
-                \\................
-            );
-
-            try board.shl(64).expect(
-                \\................
-                \\................
-                \\................
-                \\................
-                \\o...............
-                \\.o............o.
-                \\................
-                \\...............o
-                \\o...............
-                \\.o..............
-                \\..............o.
-                \\...............o
-                \\o...............
-                \\..............o.
-                \\.o..............
-                \\...............o
-            );
+            return fromInteger(shifted_mask);
         }
 
         /// board >> length
@@ -410,68 +245,17 @@ pub fn BitBoard(comptime height_arg: u16, comptime width_arg: u16) type {
 
             const mask_int = self.toInteger();
             const shifted_mask = mask_int >> @intCast(length);
-            return initWithInteger(shifted_mask);
+            return fromInteger(shifted_mask);
         }
 
-        test "📖BitBoard.shr: ボードの右シフトしたボードを得る" {
-            const B = BitBoard(16, 16);
+        /// ビットを1にする。
+        pub fn set(self: *Self, index: Index) void {
+            self.board.set(index);
+        }
 
-            const board = B.initWithString(
-                \\o...............
-                \\.o............o.
-                \\................
-                \\...............o
-                \\o...............
-                \\.o..............
-                \\..............o.
-                \\...............o
-                \\o...............
-                \\..............o.
-                \\.o..............
-                \\...............o
-                \\o...............
-                \\................
-                \\.o............o.
-                \\...............o
-            , 'o');
-
-            try board.shr(1).expect(
-                \\................
-                \\o............o..
-                \\................
-                \\..............oo
-                \\................
-                \\o...............
-                \\.............o..
-                \\..............oo
-                \\................
-                \\.............o..
-                \\o...............
-                \\..............oo
-                \\................
-                \\................
-                \\o............o..
-                \\..............o.
-            );
-
-            try board.shr(64).expect(
-                \\o...............
-                \\.o..............
-                \\..............o.
-                \\...............o
-                \\o...............
-                \\..............o.
-                \\.o..............
-                \\...............o
-                \\o...............
-                \\................
-                \\.o............o.
-                \\...............o
-                \\................
-                \\................
-                \\................
-                \\................
-            );
+        /// ビットを0にする。
+        pub fn unset(self: *Self, index: Index) void {
+            self.board.unset(index);
         }
 
         /// selfにotherのビットを足し合わせる。
@@ -524,7 +308,7 @@ pub fn BitBoard(comptime height_arg: u16, comptime width_arg: u16) type {
 
         /// selfの(x,y)のビットを反転する。
         pub fn setToggleCoordinate(self: *Self, x: Width, y: Height) void {
-            self.setToggleIndex(indexFromCoordinate(x, y));
+            self.setToggleIndex(Coordinate.toIndex(x, y));
         }
 
         /// すべてのビットを反転する。
@@ -572,64 +356,6 @@ pub fn BitBoard(comptime height_arg: u16, comptime width_arg: u16) type {
             }
         }
 
-        test "📖BitBoard.move: ボードの駒を1つ動かしたボードを得る" {
-            const B = BitBoard(3, 3);
-
-            const board = B.initWithString(
-                \\...
-                \\.o.
-                \\...
-            , 'o');
-
-            try board.move(.n).expect(
-                \\.o.
-                \\...
-                \\...
-            );
-
-            try board.move(.s).expect(
-                \\...
-                \\...
-                \\.o.
-            );
-
-            try board.move(.e).expect(
-                \\...
-                \\..o
-                \\...
-            );
-
-            try board.move(.w).expect(
-                \\...
-                \\o..
-                \\...
-            );
-
-            try board.move(.ne).expect(
-                \\..o
-                \\...
-                \\...
-            );
-
-            try board.move(.nw).expect(
-                \\o..
-                \\...
-                \\...
-            );
-
-            try board.move(.se).expect(
-                \\...
-                \\...
-                \\..o
-            );
-
-            try board.move(.sw).expect(
-                \\...
-                \\...
-                \\o..
-            );
-        }
-
         /// ボードの全てのビットを移動する。
         /// 右端→左端、左端→右端の移動を制御する。
         pub fn moveMasked(self: Self, direction: Direction) Self {
@@ -642,50 +368,6 @@ pub fn BitBoard(comptime height_arg: u16, comptime width_arg: u16) type {
                 .s => return self.shl(length),
                 .e, .se => return self.masks(east_mask).shl(length),
                 .sw => return self.masks(west_mask).shl(length),
-            }
-        }
-
-        test "📖BitBoard.moveMasked: 端から端への移動ができない" {
-            const B = BitBoard(3, 3);
-
-            {
-                const board = B.initWithString(
-                    \\..o
-                    \\...
-                    \\o..
-                , 'o');
-
-                try board.move(.e).expect(
-                    \\...
-                    \\o..
-                    \\.o.
-                );
-
-                try board.moveMasked(.e).expect(
-                    \\...
-                    \\...
-                    \\.o.
-                );
-            }
-
-            {
-                const board = B.initWithString(
-                    \\...
-                    \\oo.
-                    \\...
-                , 'o');
-
-                try board.move(.sw).expect(
-                    \\...
-                    \\..o
-                    \\o..
-                );
-
-                try board.moveMasked(.sw).expect(
-                    \\...
-                    \\...
-                    \\o..
-                );
             }
         }
 
@@ -713,49 +395,9 @@ pub fn BitBoard(comptime height_arg: u16, comptime width_arg: u16) type {
         }
 
         /// next()の返り値はビットのインデックス。
-        /// `BitBoard.initWithIndex`で復元できる。
+        /// `BitBoard.fromIndex`で復元できる。
         pub inline fn iterator(self: Self) Board.Iterator(.{}) {
             return self.board.iterator(.{});
-        }
-
-        test "📖BitBoard.Iterator: ボードのONの各ビットを繰り返す" {
-            const B = BitBoard(4, 4);
-
-            const board: B = B.initWithString(
-                \\.o..
-                \\..o.
-                \\o...
-                \\...o
-            , 'o');
-
-            var it = B.iterator(board);
-
-            try B.expect(B.initWithIndex(it.next().?),
-                \\.o..
-                \\....
-                \\....
-                \\....
-            );
-            try B.expect(B.initWithIndex(it.next().?),
-                \\....
-                \\..o.
-                \\....
-                \\....
-            );
-            try B.expect(B.initWithIndex(it.next().?),
-                \\....
-                \\....
-                \\o...
-                \\....
-            );
-            try B.expect(B.initWithIndex(it.next().?),
-                \\....
-                \\....
-                \\....
-                \\...o
-            );
-
-            try testing.expectEqual(it.next(), null);
         }
 
         /// ボードを整数に変換する
@@ -780,32 +422,9 @@ pub fn BitBoard(comptime height_arg: u16, comptime width_arg: u16) type {
             return @intCast(@ctz(int));
         }
 
-        test "📖BitBoard.toIndexInteger: 復元可能なインデックスを作成する" {
-            const B = BitBoard(16, 16);
-
-            const board = B.initWithIndex(5);
-
-            const index_integer = board.toIndexInteger();
-
-            try std.testing.expectEqual(5, index_integer);
-            try std.testing.expect(board.eql(B.initWithIndex(index_integer)));
-        }
-
         pub fn toCoordinate(self: Self) Coordinate {
             const index = self.toIndexInteger();
-            return coordinateFromIndex(index);
-        }
-
-        test "📖BitBoard.toCoordinate: 復元可能な座標の組を作成する" {
-            const B = BitBoard(16, 16);
-
-            const board = B.initWithCoordinate(3, 5);
-
-            const coord = board.toCoordinate();
-
-            try std.testing.expectEqual(3, coord.x);
-            try std.testing.expectEqual(5, coord.y);
-            try std.testing.expect(board.eql(B.initWithCoordinate(coord.x, coord.y)));
+            return Coordinate.fromIndex(index);
         }
 
         /// ビットボードを文字列に変換する。
@@ -835,26 +454,6 @@ pub fn BitBoard(comptime height_arg: u16, comptime width_arg: u16) type {
             return str;
         }
 
-        test "📖BitBoard.toString: ボードから文字列に変換する" {
-            const B = BitBoard(4, 4);
-
-            const board = B.initWithString(
-                \\o.oo
-                \\oo.o
-                \\ooo.
-                \\oooo
-            , 'o');
-
-            try testing.expectEqualStrings(
-                &B.toString(board, 'o', '.'),
-                \\o.oo
-                \\oo.o
-                \\ooo.
-                \\oooo
-                ,
-            );
-        }
-
         pub fn format(value: @This(), comptime fmt: []const u8, options: std.fmt.FormatOptions, writer: anytype) !void {
             _ = fmt;
             _ = options;
@@ -863,7 +462,7 @@ pub fn BitBoard(comptime height_arg: u16, comptime width_arg: u16) type {
         }
 
         pub fn expect(self: Self, expected: []const u8) error{TestExpectedEqual}!void {
-            const expected_board = initWithString(expected, 'o');
+            const expected_board = fromString(expected, 'o');
 
             if (self.eql(expected_board)) {
                 return;
@@ -886,7 +485,7 @@ pub fn BitBoard(comptime height_arg: u16, comptime width_arg: u16) type {
         }
 
         pub fn expectJoint(self: Self, expected: []const u8) error{TestExpectedEqual}!void {
-            const expected_board = initWithString(expected, 'o');
+            const expected_board = fromString(expected, 'o');
 
             if (self.isJoint(expected_board)) {
                 return;

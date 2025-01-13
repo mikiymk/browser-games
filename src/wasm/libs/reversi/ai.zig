@@ -29,7 +29,7 @@ pub fn getAiMove(board: Board, comptime random: *const fn () f64) u6 {
 
     var move_board = moves.iterator();
     while (move_board.next()) |place| {
-        const child = board.move(BitBoard.initWithIndex(place));
+        const child = board.move(BitBoard.fromIndex(place));
         const evaluation = alphaBeta(child, board.nextColor, ai_depth, std.math.minInt(i32), std.math.maxInt(i32));
 
         if (best_place_count == 0 or evaluation > best_evaluation) {
@@ -65,7 +65,7 @@ fn alphaBeta(board: Board, player: Board.Color, depth: u8, alpha: isize, beta: i
         var new_alpha = alpha;
 
         while (moves.next()) |cell| {
-            const child = board.move(BitBoard.initWithIndex(cell));
+            const child = board.move(BitBoard.fromIndex(cell));
 
             new_alpha = @max(new_alpha, alphaBeta(child, player, depth - 1, new_alpha, beta));
             if (new_alpha >= beta) {
@@ -80,7 +80,7 @@ fn alphaBeta(board: Board, player: Board.Color, depth: u8, alpha: isize, beta: i
         var new_beta = beta;
 
         while (moves.next()) |cell| {
-            const child = board.move(BitBoard.initWithIndex(cell));
+            const child = board.move(BitBoard.fromIndex(cell));
 
             new_beta = @min(new_beta, alphaBeta(child, player, depth - 1, alpha, new_beta));
             if (alpha >= new_beta) {
@@ -102,7 +102,7 @@ fn evaluate(board: Board) isize {
     const player_valid_count = board.getValidMoves().count();
     const opponent_board = Board{
         .boards = board.boards,
-        .nextColor = board.nextColor,
+        .nextColor = board.nextColor.turn(),
     };
     const opponent_valid_count = opponent_board.getValidMoves().count();
 
@@ -118,8 +118,10 @@ fn evaluate(board: Board) isize {
 
     // 確定石の数
 
-    return @bitCast(black_stone_count * 200 -% white_stone_count * 20 +%
-        black_valid_count * 700 -% white_valid_count * 700);
+    return @bitCast(black_stone_count * 200 -%
+        white_stone_count * 20 +%
+        black_valid_count * 700 -%
+        white_valid_count * 700);
 }
 
 fn randomAi(board: Board, comptime random: *const fn () f64) u6 {
