@@ -2,6 +2,7 @@ import { HeaderPopup } from "@/components/page-header/header-popup";
 import { StyledSvg } from "@/components/styled-svg";
 import cross from "@/images/icon/cross.svg";
 import nought from "@/images/icon/nought.svg";
+import { TEXT_HISTORY } from "@/scripts/constants";
 import type { JSXElement } from "solid-js";
 import { For, Show } from "solid-js";
 
@@ -18,8 +19,8 @@ export const History = (properties: HistoryProperties): JSXElement => {
   const paddedHistory = (): number[] => [...properties.history, ...historyFillArray].slice(0, 9);
 
   return (
-    <HeaderPopup icon="history" label="History">
-      <h2>History</h2>
+    <HeaderPopup icon="history" label={TEXT_HISTORY}>
+      <h2>{TEXT_HISTORY}</h2>
       <ol class="list-inside list-decimal">
         <For each={paddedHistory()}>
           {(history, index) => (
