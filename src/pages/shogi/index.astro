@@ -2,6 +2,7 @@
 import Head from "@/components/head.astro";
 import { App } from "@/games/shogi/components/app";
 import { Define } from "@/games/shogi/components/define";
+import { TEXT_GAME_SHOGI } from "@/scripts/constants";
 
 const pieceNames = [
   "歩兵",
@@ -23,7 +24,7 @@ const pieceNames = [
 const pieceNameKanji = [...new Set(pieceNames.flatMap((name) => [...name]))].toSorted().join("");
 ---
 
-<Head title="Shogi" />
+<Head title={TEXT_GAME_SHOGI} />
 <link
     rel="stylesheet"
     href=`https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap&text=${pieceNameKanji}`
