@@ -1,28 +1,28 @@
 import { HeaderPopup } from "@/components/page-header/header-popup";
+import { TEXT_HOW_TO_PLAY } from "@/scripts/constants";
 import type { JSXElement } from "solid-js";
 
 export const HowToPlay = (): JSXElement => {
   return (
-    <HeaderPopup icon="help" label="How to Play">
-      <h2>How to Play</h2>
+    <HeaderPopup icon="help" label={TEXT_HOW_TO_PLAY}>
+      <h2>{TEXT_HOW_TO_PLAY}</h2>
 
       <ul>
-        <li>8x8 board.</li>
-        <li>64 stones. One side is painted dark, the other light.</li>
+        <li>8×8ボード。</li>
+        <li>石は64個。片面は暗く塗装され、もう片面は明るく塗装されます。</li>
       </ul>
 
-      <p>Two players, dark and light, play against each other.</p>
-      <p>Dark and light take turns placing one stone each, aiming to have more stones at the end.</p>
+      <p>闇と光の 2 人のプレイヤーが対戦します。</p>
+      <p>闇と光が交互に石を 1 つずつ配置し、最後により多くの石を獲得することを目指します。</p>
       <p>
-        Place one of your stones in a square on the board. Turn over the opponent's stones that are sandwiched
-        vertically, horizontally, or diagonally between your stones already on the board and the stones you have just
-        placed, and make them your stones.
+        自分の石を1つボード上の正方形に置きます。
+        すでに盤上にある自分の石と、今置いた石の間に縦・横・斜めに挟まれた相手の石を裏返し、自分の石とします。
       </p>
-      <p>You cannot place a stone in a place where it cannot be sandwiched.</p>
-      <p>If there is no place where it can be placed, it is the opponent's turn without placing a stone. (Pass)</p>
+      <p>挟めない場所に石を置くことはできません。</p>
+      <p>置ける場所がない場合は石を置かずに相手のターンになります。 (パス)</p>
       <p>
-        If neither player can place a stone, the game ends. The number of stones on the board is counted, and the player
-        with the most stones wins.
+        どちらのプレイヤーも石を置けない場合、ゲームは終了します。
+        盤上の石の数を数え、最も多くの石を持っていたプレイヤーが勝ちとなります。
       </p>
     </HeaderPopup>
   );
