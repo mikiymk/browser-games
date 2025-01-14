@@ -1,6 +1,6 @@
 import { PageBody } from "@/components/page-body/page-body";
 import { PageHeader } from "@/components/page-header/page-header";
-import { StartButton } from "@/components/header-buttons/start";
+import { Start } from "@/components/header-buttons/start";
 import { doNothingFunction } from "@/scripts/do-nothing";
 import { MultiPromise } from "@/scripts/multi-promise";
 import { PlayerTypeAi, PlayerTypeHuman } from "@/scripts/player";
@@ -83,7 +83,7 @@ export const App = (): JSXElement => {
           <>
             <StoneCount count={countBlack()} color={CellBlack} isNext={gamePlaying() && getColor?.() === CellBlack} />
             <StoneCount count={countWhite()} color={CellWhite} isNext={gamePlaying() && getColor?.() === CellWhite} />
-            <StartButton start={handleStart} />
+            <Start start={handleStart} />
             <Settings white={white()} black={black()} setWhite={setWhite} setBlack={setBlack} />
             <HowToPlay />
           </>

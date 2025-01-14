@@ -5,7 +5,7 @@ import { TEXT_START } from "@/scripts/constants";
 type StartButtonProperties = {
   readonly start: () => void;
 };
-export const StartButton = (properties: StartButtonProperties): JSXElement => {
+export const Start = (properties: StartButtonProperties): JSXElement => {
   return (
     <button
       type="button"

@@ -1,4 +1,4 @@
-import { SelectRadio } from "@/components/input/select-radio";
+import { Radio } from "@/components/input/radio";
 import { HeaderPopup } from "@/components/page-header/header-popup";
 import { StyledSvg } from "@/components/styled-svg";
 import cross from "@/images/icon/cross.svg";
@@ -25,14 +25,14 @@ export const Settings = (properties: SettingsProperties): JSXElement => {
           <StyledSvg src={nought.src} alt="nought" />
         </dt>
         <dd>
-          <SelectRadio name="o" values={playerValues} value={properties.o} setValue={properties.setO} />
+          <Radio name="o" values={playerValues} value={properties.o} setValue={properties.setO} />
         </dd>
 
         <dt>
           <StyledSvg src={cross.src} alt="cross" />
         </dt>
         <dd>
-          <SelectRadio name="x" values={playerValues} value={properties.x} setValue={properties.setX} />
+          <Radio name="x" values={playerValues} value={properties.x} setValue={properties.setX} />
         </dd>
       </dl>
     </HeaderPopup>

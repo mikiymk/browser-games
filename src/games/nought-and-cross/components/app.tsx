@@ -1,6 +1,6 @@
 import { PageBody } from "@/components/page-body/page-body";
 import { PageHeader } from "@/components/page-header/page-header";
-import { StartButton } from "@/components/header-buttons/start";
+import { Start } from "@/components/header-buttons/start";
 import { filledBoard, gameLoop, isWin } from "@/games/nought-and-cross/game-model";
 import {
   Empty,
@@ -89,7 +89,7 @@ export const App = (): JSXElement => {
         buttons={
           <>
             <StatusButton status={status()} />
-            <StartButton start={reset} />
+            <Start start={reset} />
             <History history={history()} />
             <Settings o={playerO()} x={playerX()} setO={setPlayerO} setX={setPlayerX} />
           </>

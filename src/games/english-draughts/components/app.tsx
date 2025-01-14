@@ -1,7 +1,7 @@
 import { Board } from "@/components/board/board";
 import { PageBody } from "@/components/page-body/page-body";
 import { PageHeader } from "@/components/page-header/page-header";
-import { StartButton } from "@/components/header-buttons/start";
+import { Start } from "@/components/header-buttons/start";
 import board from "@/images/chess/board.svg";
 import { MultiPromise } from "@/scripts/multi-promise";
 import { PlayerTypeAi, PlayerTypeHuman } from "@/scripts/player";
@@ -87,7 +87,7 @@ export const App = (): JSXElement => {
       <PageHeader
         buttons={
           <>
-            <StartButton start={handleStart} />
+            <Start start={handleStart} />
             <Settings white={white()} black={black()} setWhite={setWhite} setBlack={setBlack} />
           </>
         }

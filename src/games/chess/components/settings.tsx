@@ -1,4 +1,4 @@
-import { SelectRadio } from "@/components/input/select-radio";
+import { Radio } from "@/components/input/radio";
 import { HeaderPopup } from "@/components/page-header/header-popup";
 import { TEXT_BLACK_PLAYER, TEXT_SETTINGS, TEXT_WHITE_PLAYER } from "@/scripts/constants";
 import { playerValues } from "@/scripts/player";
@@ -20,12 +20,12 @@ export const Settings = (properties: SettingsProperties): JSXElement => {
       <dl class="grid grid-cols-2">
         <dt>{TEXT_WHITE_PLAYER}</dt>
         <dd>
-          <SelectRadio name="white" values={playerValues} value={properties.white} setValue={properties.setWhite} />
+          <Radio name="white" values={playerValues} value={properties.white} setValue={properties.setWhite} />
         </dd>
 
         <dt>{TEXT_BLACK_PLAYER}</dt>
         <dd>
-          <SelectRadio name="black" values={playerValues} value={properties.black} setValue={properties.setBlack} />
+          <Radio name="black" values={playerValues} value={properties.black} setValue={properties.setBlack} />
         </dd>
       </dl>
     </HeaderPopup>

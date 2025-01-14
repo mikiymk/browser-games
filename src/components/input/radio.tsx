@@ -1,7 +1,7 @@
 import type { JSXElement } from "solid-js";
 import { For } from "solid-js";
 
-type SelectRadioProperties<T> = {
+type RadioProperties<T> = {
   readonly name: string;
   readonly values: readonly {
     readonly value: T;
@@ -11,7 +11,7 @@ type SelectRadioProperties<T> = {
   readonly value: T;
   readonly setValue: (value: T) => void;
 };
-export const SelectRadio = <T,>(properties: SelectRadioProperties<T>): JSXElement => {
+export const Radio = <T,>(properties: RadioProperties<T>): JSXElement => {
   return (
     <For each={properties.values}>
       {(value) => {

@@ -15,11 +15,11 @@ export const Settings = (properties: SettingsProperties): JSXElement => {
   );
 };
 
-type SettingItemProperties = {
+type SettingProperties = {
   readonly label: string;
   readonly input: JSXElement;
 };
-export const SettingItem = (properties: SettingItemProperties): JSXElement => {
+export const Setting = (properties: SettingProperties): JSXElement => {
   return (
     <>
       <dt>{properties.label}</dt>

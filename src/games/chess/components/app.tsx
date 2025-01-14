@@ -1,6 +1,6 @@
 import { PageBody } from "@/components/page-body/page-body";
 import { PageHeader } from "@/components/page-header/page-header";
-import { StartButton } from "@/components/header-buttons/start";
+import { Start } from "@/components/header-buttons/start";
 import { createBoard } from "@/games/chess/board";
 import type { BoardCell } from "@/games/chess/board";
 import { EndNotYet, White } from "@/games/chess/constants";
@@ -56,7 +56,7 @@ export const App = (): JSXElement => {
         buttons={
           <>
             <Status color={color()} end={end()} />
-            <StartButton start={start} />
+            <Start start={start} />
             <Settings white={white()} black={black()} setWhite={setWhite} setBlack={setBlack} />
           </>
         }

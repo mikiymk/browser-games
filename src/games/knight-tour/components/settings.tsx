@@ -1,4 +1,4 @@
-import { SelectRadio } from "@/components/input/select-radio";
+import { Radio } from "@/components/input/radio";
 import { HeaderPopup } from "@/components/page-header/header-popup";
 import { TEXT_HINT, TEXT_HINT_NONE, TEXT_HINT_NUMBER, TEXT_SETTINGS } from "@/scripts/constants";
 import type { JSXElement, Setter } from "solid-js";
@@ -15,7 +15,7 @@ export const Settings = (properties: SettingsProperties): JSXElement => {
       <dl class="grid grid-cols-2">
         <dt>{TEXT_HINT}</dt>
         <dd>
-          <SelectRadio
+          <Radio
             name="o"
             values={[
               { value: "hide", label: TEXT_HINT_NONE },
