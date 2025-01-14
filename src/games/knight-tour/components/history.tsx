@@ -1,4 +1,5 @@
 import { HeaderPopup } from "@/components/page-header/header-popup";
+import { TEXT_HISTORY } from "@/scripts/constants";
 import type { JSXElement } from "solid-js";
 import { For } from "solid-js";
 
@@ -8,9 +9,9 @@ type HistoryProperties = {
 };
 export const History = (properties: HistoryProperties): JSXElement => {
   return (
-    <HeaderPopup icon="history" label="History">
+    <HeaderPopup icon="history" label={TEXT_HISTORY}>
       <ul class="space-x-2 text-start">
-        <li>History</li>
+        <li>{TEXT_HISTORY}</li>
         <For each={properties.history}>
           {(fill, index) => (
             <li class="inline">

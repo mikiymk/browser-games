@@ -2,9 +2,10 @@
 import Head from "@/components/head.astro";
 import { App } from "@/games/knight-tour/components/app";
 import { Define } from "@/games/knight-tour/components/define";
+import { TEXT_GAME_KNIGHT_TOUR } from "@/scripts/constants";
 ---
 
-<Head title="Knight's Tour" />
+<Head title={TEXT_GAME_KNIGHT_TOUR} />
 <link
     rel="stylesheet"
     href=`https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap&text=01234567`
