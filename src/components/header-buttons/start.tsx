@@ -1,5 +1,5 @@
 import type { JSXElement } from "solid-js";
-import { HeaderButton } from "./header-button";
+import { HeaderButton } from "../page-header/header-button";
 import { TEXT_START } from "@/scripts/constants";
 
 type StartButtonProperties = {
