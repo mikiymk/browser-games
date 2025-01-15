@@ -1,0 +1,16 @@
+.anchor {
+    text-decoration-line: underline;
+
+    &:hover {
+        color: #64748b;
+    }
+}
+
+.list {
+    list-style-type: disc;
+    list-style-position: inside;
+}
+
+.list-item {
+    padding: 0.3rem 0;
+}
