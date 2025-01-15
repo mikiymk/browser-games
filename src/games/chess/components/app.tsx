@@ -14,8 +14,8 @@ import { createUrlQuerySignal } from "@/scripts/use-url-query";
 import type { JSXElement } from "solid-js";
 import { createSignal } from "solid-js";
 import { ChessBoard } from "./board";
-import { Settings } from "./settings";
 import { Status } from "./status";
+import { PlayerSetting, Settings } from "@/components/header-buttons/settings";
 
 export const App = (): JSXElement => {
   const [white, setWhite] = createUrlQuerySignal<PlayerType>("white", PlayerTypeHuman);
@@ -57,7 +57,9 @@ export const App = (): JSXElement => {
           <>
             <Status color={color()} end={end()} />
             <Start start={start} />
-            <Settings white={white()} black={black()} setWhite={setWhite} setBlack={setBlack} />
+            <Settings>
+              <PlayerSetting white={white()} black={black()} setWhite={setWhite} setBlack={setBlack} />
+            </Settings>
           </>
         }
       />

@@ -9,7 +9,7 @@ import { onMount } from "solid-js";
 import { KnightBoard } from "./board";
 import { History } from "./history";
 import { HowToPlay } from "./how-to-play";
-import { Settings } from "./settings";
+import { KnightTourSettings } from "./settings";
 
 export const App = (): JSXElement => {
   const [hint, setHint] = createUrlQuerySignal("board", "hide");
@@ -37,7 +37,7 @@ export const App = (): JSXElement => {
         buttons={
           <>
             <History history={history()} back={backHistory} />
-            <Settings hint={hint()} setHint={setHint} />
+            <KnightTourSettings hint={hint()} setHint={setHint} />
             <HowToPlay />
           </>
         }

@@ -15,7 +15,7 @@ import { getReversiWasm } from "../get-wasm";
 import { ReversiBoard } from "./board";
 import { HowToPlay } from "./how-to-play";
 import { StoneCount } from "./information";
-import { Settings } from "./settings";
+import { PlayerSetting, Settings } from "@/components/header-buttons/settings";
 
 const emptyBoard: number[] = Array.from({ length: 64 }, () => CellEmpty);
 
@@ -84,7 +84,9 @@ export const App = (): JSXElement => {
             <StoneCount count={countBlack()} color={CellBlack} isNext={gamePlaying() && getColor?.() === CellBlack} />
             <StoneCount count={countWhite()} color={CellWhite} isNext={gamePlaying() && getColor?.() === CellWhite} />
             <Start start={handleStart} />
-            <Settings white={white()} black={black()} setWhite={setWhite} setBlack={setBlack} />
+            <Settings>
+              <PlayerSetting white={white()} black={black()} setWhite={setWhite} setBlack={setBlack} />
+            </Settings>
             <HowToPlay />
           </>
         }

@@ -8,7 +8,7 @@ import type { JSXElement } from "solid-js";
 import { batch, createEffect, createSignal } from "solid-js";
 import { Status } from "./controller";
 import { MineFields } from "./field";
-import { Settings } from "./settings";
+import { MineSweeperSettings } from "./settings";
 
 export const App = (): JSXElement => {
   const [heightString, setHeight] = createUrlQuerySignal("height", "10");
@@ -109,7 +109,7 @@ export const App = (): JSXElement => {
           <>
             <Status state={gameState()} fields={fields()} mines={mineCount()} />
             <Start start={reset} />
-            <Settings
+            <MineSweeperSettings
               height={height()}
               width={width()}
               mineCount={mineCount()}

@@ -23,7 +23,7 @@ import type { JSXElement } from "solid-js";
 import { createSignal, onMount } from "solid-js";
 import { NncBoard } from "./board";
 import { History } from "./history";
-import { Settings } from "./settings";
+import { NoughtAndCrossSettings } from "./settings";
 import { StatusButton } from "./status";
 
 export const App = (): JSXElement => {
@@ -91,7 +91,7 @@ export const App = (): JSXElement => {
             <StatusButton status={status()} />
             <Start start={reset} />
             <History history={history()} />
-            <Settings o={playerO()} x={playerX()} setO={setPlayerO} setX={setPlayerX} />
+            <NoughtAndCrossSettings o={playerO()} x={playerX()} setO={setPlayerO} setX={setPlayerX} />
           </>
         }
       />

@@ -16,7 +16,7 @@ import { gameLoop } from "../game-loop";
 import type { PlayerColor } from "../game-loop";
 import { getWasm } from "../wasm";
 import { UsePiece } from "./define";
-import { Settings } from "./settings";
+import { PlayerSetting, Settings } from "@/components/header-buttons/settings";
 
 export const App = (): JSXElement => {
   const [white, setWhite] = createUrlQuerySignal<PlayerType>("white", PlayerTypeHuman);
@@ -88,7 +88,9 @@ export const App = (): JSXElement => {
         buttons={
           <>
             <Start start={handleStart} />
-            <Settings white={white()} black={black()} setWhite={setWhite} setBlack={setBlack} />
+            <Settings>
+              <PlayerSetting white={white()} black={black()} setWhite={setWhite} setBlack={setBlack} />
+            </Settings>
           </>
         }
       />
