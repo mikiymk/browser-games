@@ -13,7 +13,7 @@ import { CellBlack, CellCanMoveBlack, CellCanMoveWhite, CellEmpty, CellWhite } f
 import { gameLoop } from "../game-loop";
 import { getReversiWasm } from "../get-wasm";
 import { ReversiBoard } from "./board";
-import { HowToPlay } from "./how-to-play";
+import { HowToPlayReversi } from "./how-to-play";
 import { StoneCount } from "./information";
 import { PlayerSetting, Settings } from "@/components/header-buttons/settings";
 
@@ -87,7 +87,7 @@ export const App = (): JSXElement => {
             <Settings>
               <PlayerSetting white={white()} black={black()} setWhite={setWhite} setBlack={setBlack} />
             </Settings>
-            <HowToPlay />
+            <HowToPlayReversi />
           </>
         }
       />

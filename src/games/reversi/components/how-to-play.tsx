@@ -1,12 +1,9 @@
-import { HeaderPopup } from "@/components/page-header/header-popup";
-import { TEXT_HOW_TO_PLAY } from "@/scripts/constants";
+import { HowToPlay } from "@/components/header-buttons/how-to-play";
 import type { JSXElement } from "solid-js";
 
-export const HowToPlay = (): JSXElement => {
+export const HowToPlayReversi = (): JSXElement => {
   return (
-    <HeaderPopup icon="help" label={TEXT_HOW_TO_PLAY}>
-      <h2>{TEXT_HOW_TO_PLAY}</h2>
-
+    <HowToPlay>
       <ul>
         <li>8×8ボード。</li>
         <li>石は64個。片面は暗く塗装され、もう片面は明るく塗装されます。</li>
@@ -24,6 +21,6 @@ export const HowToPlay = (): JSXElement => {
         どちらのプレイヤーも石を置けない場合、ゲームは終了します。
         盤上の石の数を数え、最も多くの石を持っていたプレイヤーが勝ちとなります。
       </p>
-    </HeaderPopup>
+    </HowToPlay>
   );
 };

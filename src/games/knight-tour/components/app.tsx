@@ -8,7 +8,7 @@ import type { JSXElement } from "solid-js";
 import { onMount } from "solid-js";
 import { KnightBoard } from "./board";
 import { History } from "./history";
-import { HowToPlay } from "./how-to-play";
+import { HowToPlayKnightTour } from "./how-to-play";
 import { KnightTourSettings } from "./settings";
 
 export const App = (): JSXElement => {
@@ -38,7 +38,7 @@ export const App = (): JSXElement => {
           <>
             <History history={history()} back={backHistory} />
             <KnightTourSettings hint={hint()} setHint={setHint} />
-            <HowToPlay />
+            <HowToPlayKnightTour />
           </>
         }
       />
