@@ -1,8 +1,11 @@
+import { TEXT_NON_PLAYER, TEXT_PLAYER } from "./constants";
+
 export const PlayerTypeHuman = "player";
 export const PlayerTypeAi = "non-player";
 
-export type PlayerType = typeof PlayerTypeAi | typeof PlayerTypeHuman;
+export const playerValues: readonly { readonly value: PlayerType; readonly label: string }[] = [
+  { value: PlayerTypeHuman, label: TEXT_PLAYER },
+  { value: PlayerTypeAi, label: TEXT_NON_PLAYER },
+];
 
-export const playerType = (query: string | null | undefined, defaultType: PlayerType): PlayerType => {
-  return query === PlayerTypeHuman || query === PlayerTypeAi ? query : defaultType;
-};
+export type PlayerType = typeof PlayerTypeAi | typeof PlayerTypeHuman;

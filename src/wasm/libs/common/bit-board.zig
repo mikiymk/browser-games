@@ -3,35 +3,28 @@
 // std import
 const std = @import("std");
 const builtin = @import("builtin");
+const testing = std.testing;
 const assert = std.debug.assert;
 
 // common import
 const common = @import("./main.zig");
 const types = common.types;
 
-// test import
 test {
     _ = @import("./bit-board.test.zig");
 }
 
-pub fn BitBoard(comptime height: u16, comptime width: u16) type {
-    const size = height * width;
-    const string_size = size + height - 1;
-    const bit_length = std.math.log2_int_ceil(u16, size);
-
+pub fn BitBoard(comptime height_arg: u16, comptime width_arg: u16) type {
     return struct {
-        // # 必要な関数
-        //
-        // - [ ] union, intersection, xor
-        // - [ ] setUnion, setIntersection, setXor,
-        // - [ ] inverse,
-        // - [ ] fromInteger, toInteger,
-        // - [ ] fromString, toString,
-        // - [ ] shiftLeft, shiftRight,
-        // - [ ] iterator
-
         /// ビットボードを表す型。
         const Self = @This();
+
+        pub const height = height_arg;
+        pub const width = width_arg;
+        pub const size = height * width;
+
+        const string_size = size + height - 1;
+        const bit_length = std.math.log2_int_ceil(u16, size);
 
         /// ビットボードの型。
         /// [高さ] × [幅]ビット。
@@ -51,6 +44,30 @@ pub fn BitBoard(comptime height: u16, comptime width: u16) type {
         /// 0から[高さ] × [幅] - 1が全て表現できる最小の整数型。
         pub const Index: type = std.meta.Int(.unsigned, bit_length);
 
+        /// ビットボードの座標を表す型。
+        /// x: 幅、y: 高さ。
+        pub const Coordinate = struct {
+            x: Width,
+            y: Height,
+
+            /// 座標をインデックスに変換する関数
+            /// 座標は(x, y)の組。
+            /// 左下が(0, 0)、右にいくとx、上にいくとyが大きくなる。
+            pub fn toIndex(x: Width, y: Height) Index {
+                return x + (@as(Index, height) - y - 1) * @as(Index, width);
+            }
+
+            /// 座標をインデックスに変換する関数
+            /// 座標は(x, y)の組。
+            /// 左下が(0, 0)、右にいくとx、上にいくとyが大きくなる。
+            pub fn fromIndex(index: Index) Coordinate {
+                const x: Width = @intCast(index % @as(Index, width));
+                const y: Height = @intCast(@as(Index, height) - @divTrunc(index, @as(Index, width)) - 1);
+
+                return .{ .x = x, .y = y };
+            }
+        };
+
         const UCharLength: type = std.meta.Int(.unsigned, std.math.log2_int_ceil(u16, string_size + 1));
 
         /// ビットボードの値
@@ -61,16 +78,9 @@ pub fn BitBoard(comptime height: u16, comptime width: u16) type {
             return .{ .board = Board.initEmpty() };
         }
 
-        /// 座標をインデックスに変換する関数
-        /// 座標は(x, y)の組。
-        /// 左下が(0, 0)、右にいくとx、上にいくとyが大きくなる。
-        fn coordinateToIndex(x: Width, y: Height) Index {
-            return x + (@as(Index, height) - y - 1) * @as(Index, width);
-        }
-
         /// 指定した座標のビット1つのみがオンのビットボードを作成する。
         pub fn fromCoordinate(x: Width, y: Height) Self {
-            return fromIndex(coordinateToIndex(x, y));
+            return fromIndex(Coordinate.toIndex(x, y));
         }
 
         // 文字列を使う関数。
@@ -104,7 +114,7 @@ pub fn BitBoard(comptime height: u16, comptime width: u16) type {
         ///
         /// 範囲外のものが1つでもあると0を返す
         pub fn fromString(str: []const u8, piece_symbol: u8) Self {
-            assert(str.len == size + height - 1);
+            assert(str.len == string_size);
 
             var board: Board = Board.initEmpty();
             var char_count: UCharLength = 0;
@@ -133,6 +143,66 @@ pub fn BitBoard(comptime height: u16, comptime width: u16) type {
             return .{ .board = board };
         }
 
+        /// 西(左側)だけが0のビットボード
+        ///
+        ///     011
+        ///     011
+        ///     011
+        pub const west_mask = blk: {
+            var board = init();
+
+            for (0..height) |y| {
+                board.set(Coordinate.toIndex(0, y));
+            }
+
+            break :blk board.getInverted();
+        };
+
+        /// 東(右側)だけが0のビットボード
+        ///
+        ///     110
+        ///     110
+        ///     110
+        pub const east_mask = blk: {
+            var board = init();
+
+            for (0..height) |y| {
+                board.setToggleCoordinate(width - 1, y);
+            }
+
+            break :blk board.getInverted();
+        };
+
+        /// 北(上側)だけが0のビットボード
+        ///
+        ///     000
+        ///     111
+        ///     111
+        pub const north_mask = blk: {
+            var board = init();
+
+            for (0..width) |x| {
+                board.setToggleCoordinate(x, height - 1);
+            }
+
+            break :blk board.getInverted();
+        };
+
+        /// 南(下側)だけが0のビットボード
+        ///
+        ///     111
+        ///     111
+        ///     000
+        pub const south_mask = blk: {
+            var board = init();
+
+            for (0..width) |x| {
+                board.setToggleCoordinate(x, 0);
+            }
+
+            break :blk board.getInverted();
+        };
+
         pub fn eql(self: Self, other: Self) bool {
             return self.board.eql(other.board);
         }
@@ -155,57 +225,9 @@ pub fn BitBoard(comptime height: u16, comptime width: u16) type {
             return self.masks(mask).isEmpty();
         }
 
-        /// ボードを整数に変換する
-        pub fn toInteger(self: Self) std.meta.Int(.unsigned, size) {
-            switch (Board) {
-                std.bit_set.IntegerBitSet(size) => {
-                    return self.board.mask;
-                },
-                std.bit_set.ArrayBitSet(usize, size) => {
-                    const mask = self.board.masks;
-                    const masks_int: std.meta.Int(.unsigned, @bitSizeOf(@TypeOf(mask))) = @bitCast(mask);
-                    return @intCast(masks_int);
-                },
-                else => {
-                    @compileError("board is static bitset");
-                },
-            }
-        }
-
-        /// ビットボードを文字列に変換する。
-        pub fn toString(self: Self, piece_symbol: u8, empty_symbol: u8) [string_size]u8 {
-            var str: [string_size]u8 = .{empty_symbol} ** string_size;
-
-            var char_count: UCharLength = 0;
-            var bit_count: Index = 0;
-            for (0..height) |l| {
-                for (0..width) |_| {
-                    if (self.board.isSet(bit_count)) {
-                        str[char_count] = piece_symbol;
-                    }
-
-                    char_count += 1;
-                    bit_count +|= 1;
-                }
-
-                if (l == height - 1) {
-                    break;
-                }
-
-                str[char_count] = '\n';
-                char_count += 1;
-            }
-
-            return str;
-        }
-
         ///  ビットのあるマスを数える。
         pub fn count(self: Self) usize {
             return self.board.count();
-        }
-
-        pub inline fn iterator(self: Self) Board.Iterator(.{}) {
-            return self.board.iterator(.{});
         }
 
         /// board << length
@@ -226,6 +248,16 @@ pub fn BitBoard(comptime height: u16, comptime width: u16) type {
             return fromInteger(shifted_mask);
         }
 
+        /// ビットを1にする。
+        pub fn set(self: *Self, index: Index) void {
+            self.board.set(index);
+        }
+
+        /// ビットを0にする。
+        pub fn unset(self: *Self, index: Index) void {
+            self.board.unset(index);
+        }
+
         /// selfにotherのビットを足し合わせる。
         /// `self |= other;`
         pub fn setUnion(self: *Self, other: Self) void {
@@ -234,7 +266,7 @@ pub fn BitBoard(comptime height: u16, comptime width: u16) type {
 
         /// selfにotherのビットを足し合わせたビットボードを返す。
         /// `self | other;`
-        pub fn unions(self: Self, other: Self) Self {
+        pub fn unions(self: Self, other: Self) Self { // unionは予約語
             return .{
                 .board = self.board.unionWith(other.board),
             };
@@ -268,15 +300,26 @@ pub fn BitBoard(comptime height: u16, comptime width: u16) type {
             };
         }
 
+        /// selfのindex番目のビットを反転する。
+        /// `self ^= 1 << index;`
+        pub fn setToggleIndex(self: *Self, index: usize) void {
+            self.board.set(index);
+        }
+
+        /// selfの(x,y)のビットを反転する。
+        pub fn setToggleCoordinate(self: *Self, x: Width, y: Height) void {
+            self.setToggleIndex(Coordinate.toIndex(x, y));
+        }
+
         /// すべてのビットを反転する。
         /// `self = ~self;`
-        pub fn setInverse(self: *Self) void {
+        pub fn invert(self: *Self) void {
             self.board.toggleAll();
         }
 
         /// すべてのビットをマスクしたビットボードを返す。
         /// `~self;`
-        pub fn inversed(self: Self) Self {
+        pub fn getInverted(self: Self) Self {
             return .{
                 .board = self.board.complement(),
             };
@@ -290,26 +333,132 @@ pub fn BitBoard(comptime height: u16, comptime width: u16) type {
             };
         }
 
-        pub const Direction = enum { n, s, e, w, nw, ne, sw, se, ns, ew, nesw, nwse };
-        pub fn move(self: Self, direction: Direction) Self {
-            const length: Index = switch (direction) {
-                .n, .s, .ns => width,
-                .e, .w, .ew => 1,
-                .ne, .sw, .nesw => width - 1,
-                .nw, .se, .nwse => width + 1,
+        /// 8方向
+        pub const Direction = enum { n, s, e, w, nw, ne, sw, se };
+
+        /// 方向に対応する移動距離を計算する。
+        fn moveLength(direction: Direction) Index {
+            return switch (direction) {
+                .n, .s => width,
+                .e, .w => 1,
+                .ne, .sw => width - 1,
+                .nw, .se => width + 1,
             };
+        }
+
+        /// ボードの全てのビットを移動する。
+        pub fn move(self: Self, direction: Direction) Self {
+            const length = moveLength(direction);
 
             switch (direction) {
-                .n, .w, .ne, .nw => {
-                    return self.shr(length);
+                .n, .w, .ne, .nw => return self.shr(length),
+                .s, .e, .se, .sw => return self.shl(length),
+            }
+        }
+
+        /// ボードの全てのビットを移動する。
+        /// 右端→左端、左端→右端の移動を制御する。
+        pub fn moveMasked(self: Self, direction: Direction) Self {
+            const length = moveLength(direction);
+
+            switch (direction) {
+                .n => return self.shr(length),
+                .w, .nw => return self.masks(west_mask).shr(length),
+                .ne => return self.masks(east_mask).shr(length),
+                .s => return self.shl(length),
+                .e, .se => return self.masks(east_mask).shl(length),
+                .sw => return self.masks(west_mask).shl(length),
+            }
+        }
+
+        /// ボードの全てのビットを複数の方向に移動する。
+        pub fn moveMultiple(self: Self, directions: []const Direction) Self {
+            var result = init();
+
+            for (directions) |direction| {
+                result.setUnion(self.move(direction));
+            }
+
+            return result;
+        }
+
+        /// ボードの全てのビットを複数の方向に移動する。
+        /// 右端→左端、左端→右端の移動を制御する。
+        pub fn moveMaskedMultiple(self: Self, directions: []const Direction) Self {
+            var result = init();
+
+            for (directions) |direction| {
+                result.setUnion(self.moveMasked(direction));
+            }
+
+            return result;
+        }
+
+        /// next()の返り値はビットのインデックス。
+        /// `BitBoard.fromIndex`で復元できる。
+        pub inline fn iterator(self: Self) Board.Iterator(.{}) {
+            return self.board.iterator(.{});
+        }
+
+        /// ボードを整数に変換する
+        pub fn toInteger(self: Self) std.meta.Int(.unsigned, size) {
+            switch (Board) {
+                std.bit_set.IntegerBitSet(size) => {
+                    return self.board.mask;
                 },
-                .s, .e, .se, .sw => {
-                    return self.shl(length);
+                std.bit_set.ArrayBitSet(usize, size) => {
+                    const mask = self.board.masks;
+                    const masks_int: std.meta.Int(.unsigned, @bitSizeOf(@TypeOf(mask))) = @bitCast(mask);
+                    return @intCast(masks_int);
                 },
-                .ns, .ew, .nesw, .nwse => {
-                    return self.shl(length).unions(self.shr(length));
+                else => {
+                    @compileError("board is static bitset");
                 },
             }
+        }
+
+        pub fn toIndexInteger(self: Self) Index {
+            const int = self.toInteger();
+            return @intCast(@ctz(int));
+        }
+
+        pub fn toCoordinate(self: Self) Coordinate {
+            const index = self.toIndexInteger();
+            return Coordinate.fromIndex(index);
+        }
+
+        /// ビットボードを文字列に変換する。
+        pub fn toString(self: Self, piece_symbol: u8, empty_symbol: u8) [string_size]u8 {
+            var str: [string_size]u8 = .{empty_symbol} ** string_size;
+
+            var char_count: UCharLength = 0;
+            var bit_count: Index = 0;
+            for (0..height) |l| {
+                for (0..width) |_| {
+                    if (self.board.isSet(bit_count)) {
+                        str[char_count] = piece_symbol;
+                    }
+
+                    char_count += 1;
+                    bit_count +|= 1;
+                }
+
+                if (l == height - 1) {
+                    break;
+                }
+
+                str[char_count] = '\n';
+                char_count += 1;
+            }
+
+            return str;
+        }
+
+        pub fn format(value: @This(), comptime fmt: []const u8, options: std.fmt.FormatOptions, writer: anytype) !void {
+            _ = fmt;
+            _ = options;
+
+            return writer.print("{s}", .{value.toString('o', '.')});
         }
 
         pub fn expect(self: Self, expected: []const u8) error{TestExpectedEqual}!void {

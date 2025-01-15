@@ -1,35 +1,17 @@
 ---
 import Head from "@/components/head.astro";
-import Header from "@/components/header.astro";
-import Setting from "@/components/setting-form/form.astro";
-import InputRadio from "@/components/setting-form/input-radio.astro";
-import SubHeader from "@/components/sub-header.astro";
+import { App } from "@/games/knight-tour/components/app";
+import { Define } from "@/games/knight-tour/components/define";
+import { TEXT_GAME_KNIGHT_TOUR } from "@/scripts/constants";
 ---
 
-<Head title="Knight's Tour" />
+<Head title={TEXT_GAME_KNIGHT_TOUR} />
+<link
+    rel="stylesheet"
+    href=`https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap&text=01234567`
+/>
 
-<Header>Knight's Tour</Header>
-<Setting action="game/">
-    <dt>Hint mode</dt>
-    <dd>
-        <InputRadio name="board" value="hide" checked>O and X only</InputRadio>
-    </dd>
-    <dt></dt>
-    <dd>
-        <InputRadio name="board" value="hint">Number is order of visit</InputRadio>
-    </dd>
-    <dt></dt>
-    <dd>
-        <InputRadio name="board" value="history">Number is onward moves</InputRadio>
-    </dd>
-</Setting>
-
-<p>
-    <SubHeader>How to play Knight's Tour</SubHeader>
-
-    <p>
-        Knight's Tour is a puzzle using an 8 x 8 chess board and one knight
-        piece. The player moves the knight and wins if he crosses every square
-        on the board exactly once.
-    </p>
-</p>
+<div class="text-slate-800">
+    <Define />
+    <App client:load />
+</div>

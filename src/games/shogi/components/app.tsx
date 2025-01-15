@@ -1,8 +1,13 @@
-import { Button } from "@/components/button";
+import { Start } from "@/components/header-buttons/start";
+import { PageBody } from "@/components/page-body/page-body";
+import { PageHeader } from "@/components/page-header/page-header";
 import { doNothingFunction } from "@/scripts/do-nothing";
 import { MultiPromise } from "@/scripts/multi-promise";
-import { PlayerTypeAi, PlayerTypeHuman, playerType } from "@/scripts/player";
-import { createResource, createSignal } from "solid-js";
+import { PlayerTypeAi, PlayerTypeHuman } from "@/scripts/player";
+import type { PlayerType } from "@/scripts/player";
+import { usePromise } from "@/scripts/use-promise";
+import { createUrlQuerySignal } from "@/scripts/use-url-query";
+import { createSignal } from "solid-js";
 import type { JSXElement } from "solid-js";
 import type { Hand } from "../constants";
 import { BLACK, MOVE_TARGET, WHITE } from "../constants";
@@ -10,15 +15,11 @@ import { gameLoop, getWasm } from "../game-loop";
 import { ShogiBoard } from "./board";
 import { GameOverPopUp } from "./game-over-pop-up";
 import { PromotionPopUp } from "./promotion-pop-up";
-
-// memo
-// motigoma
+import { Settings } from "./settings";
 
 export const App = (): JSXElement => {
-  const query = new URLSearchParams(location.search);
-
-  const playerBlack = playerType(query.get("first"), PlayerTypeHuman);
-  const playerWhite = playerType(query.get("second"), PlayerTypeAi);
+  const [black, setBlack] = createUrlQuerySignal<PlayerType>("first", PlayerTypeHuman);
+  const [white, setWhite] = createUrlQuerySignal<PlayerType>("second", PlayerTypeAi);
 
   const [board, setFullBoard] = createSignal<readonly { piece: number; moveTarget: boolean }[]>(
     Array.from({ length: 81 }, () => ({ piece: 0, moveTarget: false })),
@@ -27,7 +28,7 @@ export const App = (): JSXElement => {
   const [blackHands, setBlackHands] = createSignal<Hand>([0, 0, 0, 0, 0, 0, 0, 0]);
   const [gameOver, setGameOver] = createSignal<number>(0);
   const [promotion, setPromotion] = createSignal(false);
-  const [wasm] = createResource(getWasm);
+  const wasm = usePromise(getWasm);
 
   const setBoard = (board: readonly number[]): void => {
     setFullBoard(
@@ -93,8 +94,8 @@ export const App = (): JSXElement => {
       setPromotion,
       humanInput,
       {
-        [WHITE]: playerBlack,
-        [BLACK]: playerWhite,
+        [WHITE]: black(),
+        [BLACK]: white(),
       },
     );
   };
@@ -105,15 +106,24 @@ export const App = (): JSXElement => {
 
   return (
     <>
-      <ShogiBoard board={board()} hands={[whiteHands(), blackHands()]} onSquareClick={handleBoardClick} />
-      <Button onClick={start}>Start</Button>
-      <GameOverPopUp gameOver={gameOver() !== 0} set={setGameOver} />
-      <PromotionPopUp
-        promotion={promotion()}
-        resolve={(value) => {
-          resolve(value);
-        }}
+      <PageHeader
+        buttons={
+          <>
+            <Start start={start} />
+            <Settings white={white()} black={black()} setWhite={setWhite} setBlack={setBlack} />
+            <GameOverPopUp gameOver={gameOver() !== 0} set={setGameOver} />
+            <PromotionPopUp
+              promotion={promotion()}
+              resolve={(value) => {
+                resolve(value);
+              }}
+            />
+          </>
+        }
       />
+      <PageBody>
+        <ShogiBoard board={board()} hands={[whiteHands(), blackHands()]} onSquareClick={handleBoardClick} />
+      </PageBody>
     </>
   );
 };

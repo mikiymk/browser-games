@@ -2,5 +2,6 @@ node_modules
 dist
 .eslintcache
 target
-zig-cache
+.zig-cache
 public/wasm
+.astro

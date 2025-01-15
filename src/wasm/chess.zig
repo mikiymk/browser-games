@@ -10,23 +10,12 @@ const ColorPieceType = Board.ColorPieceType;
 // common import
 const common = @import("libs/common/main.zig");
 const BitBoard = common.bit_board.BitBoard(8, 8);
-
-/// アロケーター
-const allocator = if (builtin.target.isWasm()) std.heap.wasm_allocator else std.heap.page_allocator;
-
-fn getRamdom() f64 {
-    const S = struct {
-        var rand_gen = std.rand.DefaultPrng.init(0xfe_dc_ba_98_76_54_32_10);
-        var rand = rand_gen.random();
-    };
-
-    return S.rand.float(f64);
-}
+const a = common.allocator;
 
 /// ゲームを作成する
 export fn init() ?*Game {
-    const game_ptr = allocator.create(Game) catch return null;
-    game_ptr.* = Game.init(allocator);
+    const game_ptr = a.create(Game) catch return null;
+    game_ptr.* = Game.init(a);
 
     return game_ptr;
 }
@@ -34,7 +23,7 @@ export fn init() ?*Game {
 /// ゲームを削除する
 export fn deinit(g: ?*Game) void {
     if (g) |game_ptr| {
-        allocator.destroy(game_ptr);
+        a.destroy(game_ptr);
     }
 }
 
@@ -88,7 +77,7 @@ export fn promote(g: *Game, index: u8, piece_kind: ColorPieceType) void {
 
 /// AIで駒を移動する
 export fn moveAi(g: *Game) void {
-    const ai_move = ai.getAiMove(g.board, allocator, g.next_color, 3, getRamdom) catch return;
+    const ai_move = ai.getAiMove(g.board, a, g.next_color, 3) catch return;
 
     if (g.applyMove(ai_move.from, ai_move.to)) {
         g.applyPromote(ai_move.to, .queen);

@@ -7,6 +7,7 @@ pub const ColorBoards = std.enums.EnumArray(Color, BitBoard);
 // common import
 const common = @import("../common/main.zig");
 pub const BitBoard = common.bit_board.BitBoard(8, 8);
+pub const Direction = BitBoard.Direction;
 
 // internal import
 
@@ -39,6 +40,8 @@ pub const Color = enum(u1) {
     }
 };
 
+const mask_west_east = BitBoard.east_mask.masks(BitBoard.west_mask);
+
 /// ボードの初期状態を作る
 pub fn init() Board {
     return fromString(
@@ -53,6 +56,17 @@ pub fn init() Board {
     );
 }
 
+/// ボードの文字列からボード構造体を作る
+/// oが黒石、xが白石、それ以外で空白を表す。
+pub fn fromString(comptime str: []const u8) Board {
+    return .{
+        .boards = ColorBoards.init(.{
+            .black = BitBoard.fromString(str, 'o'),
+            .white = BitBoard.fromString(str, 'x'),
+        }),
+    };
+}
+
 /// 現在のプレイヤー側のビットボードを取得する
 pub fn getPlayer(board: Board) BitBoard {
     return board.boards.get(board.nextColor);
@@ -63,49 +77,34 @@ pub fn getOpponent(board: Board) BitBoard {
     return board.boards.get(board.nextColor.turn());
 }
 
-/// 場所に置いた時、ひっくり返す石を求める
-fn getFlipSquares(board: Board, place: BitBoard) BitBoard {
+/// 石を置ける場所のリストを作成する
+pub fn getValidMoves(board: Board) BitBoard {
     const player_board = board.getPlayer();
     const opponent_board = board.getOpponent();
+    const empty = player_board.unions(opponent_board).getInverted();
+    const mask = opponent_board.masks(mask_west_east);
 
-    const mask = opponent_board.masks(BitBoard.fromString(
-        \\.oooooo.
-        \\.oooooo.
-        \\.oooooo.
-        \\.oooooo.
-        \\.oooooo.
-        \\.oooooo.
-        \\.oooooo.
-        \\.oooooo.
-    , 'o'));
+    var target = getDirMoves(player_board, mask, &.{ .e, .w });
+    target.setUnion(getDirMoves(player_board, opponent_board, &.{ .n, .s }));
+    target.setUnion(getDirMoves(player_board, mask, &.{ .ne, .sw }));
+    target.setUnion(getDirMoves(player_board, mask, &.{ .nw, .se }));
+    target.setMask(empty);
 
-    const flip =
-        moveDir(player_board, place, mask, .e)
-        .unions(moveDir(player_board, place, mask, .w))
-        .unions(moveDir(player_board, place, opponent_board, .n))
-        .unions(moveDir(player_board, place, opponent_board, .s))
-        .unions(moveDir(player_board, place, mask, .ne))
-        .unions(moveDir(player_board, place, mask, .sw))
-        .unions(moveDir(player_board, place, mask, .nw))
-        .unions(moveDir(player_board, place, mask, .se));
-
-    return flip;
+    return target;
 }
 
-/// Placeで示された場所に石を置く。
-/// 既に置いてある石でひっくり返す石がある場合は、それをひっくり返す。
-/// ボードを更新する
-pub fn moveMutate(board: *Board, place: BitBoard) void {
-    const flip = board.getFlipSquares(place);
+/// Dirで示された方向に挟める場所を探す
+fn getDirMoves(board: BitBoard, mask: BitBoard, dirs: []const Direction) BitBoard {
+    var flip = board;
+    flip = flip.moveMultiple(dirs).masks(mask);
 
-    board.boards.getPtr(.black).setToggle(flip);
-    board.boards.getPtr(.white).setToggle(flip);
-    board.boards.getPtr(board.nextColor).setUnion(place);
-    board.nextColor = board.nextColor.turn();
+    flip.setUnion(flip.moveMultiple(dirs).masks(mask));
+    flip.setUnion(flip.moveMultiple(dirs).masks(mask));
+    flip.setUnion(flip.moveMultiple(dirs).masks(mask));
+    flip.setUnion(flip.moveMultiple(dirs).masks(mask));
+    flip.setUnion(flip.moveMultiple(dirs).masks(mask));
 
-    if (board.getValidMoves().isEmpty()) {
-        board.nextColor = board.nextColor.turn();
-    }
+    return flip.moveMultiple(dirs);
 }
 
 /// Placeで示された場所に石を置く。
@@ -118,8 +117,43 @@ pub fn move(board: Board, place: BitBoard) Board {
     return new_board;
 }
 
+/// Placeで示された場所に石を置く。
+/// 既に置いてある石でひっくり返す石がある場合は、それをひっくり返す。
+/// ボードを更新する
+pub fn moveMutate(board: *Board, place: BitBoard) void {
+    const flip = board.getFlipSquares(place);
+
+    board.boards.getPtr(.black).setToggle(flip);
+    board.boards.getPtr(.white).setToggle(flip);
+    board.boards.getPtr(board.nextColor).setUnion(place);
+
+    board.nextColor = board.nextColor.turn();
+    if (board.getValidMoves().isEmpty()) {
+        board.nextColor = board.nextColor.turn();
+    }
+}
+
+/// 場所に置いた時、ひっくり返す石を求める
+fn getFlipSquares(board: Board, place: BitBoard) BitBoard {
+    const player_board = board.getPlayer();
+    const opponent_board = board.getOpponent();
+
+    const mask = opponent_board.masks(mask_west_east);
+
+    var flip = moveDir(player_board, place, mask, .e);
+    flip.setUnion(moveDir(player_board, place, mask, .w));
+    flip.setUnion(moveDir(player_board, place, opponent_board, .n));
+    flip.setUnion(moveDir(player_board, place, opponent_board, .s));
+    flip.setUnion(moveDir(player_board, place, mask, .ne));
+    flip.setUnion(moveDir(player_board, place, mask, .sw));
+    flip.setUnion(moveDir(player_board, place, mask, .nw));
+    flip.setUnion(moveDir(player_board, place, mask, .se));
+
+    return flip;
+}
+
 /// Dirで示された方向にひっくり返す石を探す。
-fn moveDir(player_board: BitBoard, place: BitBoard, mask: BitBoard, dir: BitBoard.Direction) BitBoard {
+fn moveDir(player_board: BitBoard, place: BitBoard, mask: BitBoard, dir: Direction) BitBoard {
     var flip = place.move(dir).masks(mask);
     flip.setUnion(flip.move(dir).masks(mask));
     flip.setUnion(flip.move(dir).masks(mask));
@@ -135,44 +169,6 @@ fn moveDir(player_board: BitBoard, place: BitBoard, mask: BitBoard, dir: BitBoar
     return BitBoard.init();
 }
 
-/// 石を置ける場所のリストを作成する
-pub fn getValidMoves(board: Board) BitBoard {
-    const player_board = board.getPlayer();
-    const opponent_board = board.getOpponent();
-    const empty = player_board.unions(opponent_board).inversed();
-
-    const mask = opponent_board.masks(BitBoard.fromString(
-        \\.oooooo.
-        \\.oooooo.
-        \\.oooooo.
-        \\.oooooo.
-        \\.oooooo.
-        \\.oooooo.
-        \\.oooooo.
-        \\.oooooo.
-    , 'o'));
-
-    return getDirMoves(player_board, mask, .ew)
-        .unions(getDirMoves(player_board, opponent_board, .ns))
-        .unions(getDirMoves(player_board, mask, .nesw))
-        .unions(getDirMoves(player_board, mask, .nwse))
-        .masks(empty);
-}
-
-/// Dirで示された方向に挟める場所を探す
-fn getDirMoves(board: BitBoard, mask: BitBoard, dir: BitBoard.Direction) BitBoard {
-    var flip = board;
-    flip = flip.move(dir).masks(mask);
-
-    flip.setUnion(flip.move(dir).masks(mask));
-    flip.setUnion(flip.move(dir).masks(mask));
-    flip.setUnion(flip.move(dir).masks(mask));
-    flip.setUnion(flip.move(dir).masks(mask));
-    flip.setUnion(flip.move(dir).masks(mask));
-
-    return flip.move(dir);
-}
-
 /// ゲームが終了しているか判定する。
 /// どちらのプレイヤーも置く場所がなかったら終了
 pub fn isEnd(board: Board) bool {
@@ -180,21 +176,7 @@ pub fn isEnd(board: Board) bool {
         return false;
     }
 
-    const pass_board = Board{
-        .boards = board.boards,
-        .nextColor = board.nextColor.turn(),
-    };
-
+    var pass_board = board;
+    pass_board.nextColor = pass_board.nextColor.turn();
     return pass_board.getValidMoves().isEmpty();
-}
-
-/// ボードの文字列からボード構造体を作る
-/// oが黒石、xが白石、それ以外で空白を表す。
-pub fn fromString(comptime str: []const u8) Board {
-    return .{
-        .boards = ColorBoards.init(.{
-            .black = BitBoard.fromString(str, 'o'),
-            .white = BitBoard.fromString(str, 'x'),
-        }),
-    };
 }

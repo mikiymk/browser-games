@@ -1,19 +1,20 @@
-import { Button } from "@/components/button";
+import { PageBody } from "@/components/page-body/page-body";
+import { PageHeader } from "@/components/page-header/page-header";
 import { CellKnight, CellMovable, CellVisited } from "@/games/knight-tour/consts";
 import { createGame } from "@/games/knight-tour/create-game";
 import { setKnightMovable } from "@/games/knight-tour/knight-move";
-import { PopUp } from "@/games/shogi/components/pop-up";
+import { createUrlQuerySignal } from "@/scripts/use-url-query";
 import type { JSXElement } from "solid-js";
-import { createSignal, onMount } from "solid-js";
+import { onMount } from "solid-js";
 import { KnightBoard } from "./board";
 import { History } from "./history";
+import { HowToPlayKnightTour } from "./how-to-play";
+import { KnightTourSettings } from "./settings";
 
 export const App = (): JSXElement => {
-  const query = new URLSearchParams(location.search);
-  const hintMode = query.get("board") === "hint";
+  const [hint, setHint] = createUrlQuerySignal("board", "hide");
 
   const { board, history, resetBoard, reset, setHistory, backHistory } = createGame();
-  const [open, setOpen] = createSignal(false);
 
   const handleClick = (index: number): void => {
     if (board()[index] !== CellMovable) {
@@ -28,23 +29,22 @@ export const App = (): JSXElement => {
     });
   };
 
-  const handleOpen = (): void => {
-    setOpen(true);
-  };
-  const handleClose = (): void => {
-    setOpen(false);
-  };
-
   onMount(reset);
 
   return (
     <>
-      <KnightBoard board={board()} handleClick={handleClick} hintMode={hintMode} />
-      <Button onClick={handleOpen}>History</Button>
-      <PopUp open={open()}>
-        <History history_={history()} back_={backHistory} />
-        <Button onClick={handleClose}>Close</Button>
-      </PopUp>
+      <PageHeader
+        buttons={
+          <>
+            <History history={history()} back={backHistory} />
+            <KnightTourSettings hint={hint()} setHint={setHint} />
+            <HowToPlayKnightTour />
+          </>
+        }
+      />
+      <PageBody>
+        <KnightBoard board={board()} handleClick={handleClick} hintMode={hint() !== "hide"} />
+      </PageBody>
     </>
   );
 };

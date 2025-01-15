@@ -1,33 +1,22 @@
 ---
 import Head from "@/components/head.astro";
-import Header from "@/components/header.astro";
-import Setting from "@/components/setting-form/form.astro";
-import InputNumber from "@/components/setting-form/input-number.astro";
-import SubHeader from "@/components/sub-header.astro";
+import { App } from "@/games/mine-sweeper/components/app";
+import { Define } from "@/games/mine-sweeper/components/define";
+import { EmojiBombed, EmojiClear, EmojiSmile } from "@/games/mine-sweeper/consts";
+import { TEXT_GAME_MINE_SWEEPER } from "@/scripts/constants";
 ---
 
-<Head title="Mine Sweeper" />
+<Head title={TEXT_GAME_MINE_SWEEPER} />
+<link
+    rel="stylesheet"
+    href=`https://fonts.googleapis.com/css2?family=Noto+Color+Emoji&display=swap&text=${EmojiSmile}${EmojiBombed}${EmojiClear}`
+/>
+<link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap&text=12345678"
+/>
 
-<Header>Mine Sweeper</Header>
-<Setting action="game/">
-    <dt>Height</dt>
-    <dd>
-        <InputNumber name="height" value="10" />
-    </dd>
-
-    <dt>Width</dt>
-    <dd>
-        <InputNumber name="width" value="10" />
-    </dd>
-
-    <dt>Count of Mines</dt>
-    <dd>
-        <InputNumber name="mines" value="10" />
-    </dd>
-</Setting>
-
-<p>
-    <SubHeader>How to play Mine Sweeper</SubHeader>
-
-    <!-- TODO -->
-</p>
+<div class="text-slate-800">
+    <Define />
+    <App client:load />
+</div>

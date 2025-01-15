@@ -1,27 +1,33 @@
+import { PlayerSetting, Settings } from "@/components/header-buttons/settings";
+import { Start } from "@/components/header-buttons/start";
+import { PageBody } from "@/components/page-body/page-body";
+import { PageHeader } from "@/components/page-header/page-header";
 import { doNothingFunction } from "@/scripts/do-nothing";
 import { MultiPromise } from "@/scripts/multi-promise";
-import { PlayerTypeAi, PlayerTypeHuman, playerType } from "@/scripts/player";
+import { PlayerTypeAi, PlayerTypeHuman } from "@/scripts/player";
+import type { PlayerType } from "@/scripts/player";
+import { usePromise } from "@/scripts/use-promise";
+import { createUrlQuerySignal } from "@/scripts/use-url-query";
 import type { JSXElement } from "solid-js";
-import { createResource, createSignal } from "solid-js";
-import { CellCanMoveBlack, CellCanMoveWhite, CellEmpty } from "../const";
+import { createSignal } from "solid-js";
+import { CellBlack, CellCanMoveBlack, CellCanMoveWhite, CellEmpty, CellWhite } from "../const";
 import { gameLoop } from "../game-loop";
 import { getReversiWasm } from "../get-wasm";
 import { ReversiBoard } from "./board";
-import { Info } from "./information";
+import { HowToPlayReversi } from "./how-to-play";
+import { StoneCount } from "./information";
 
 const emptyBoard: number[] = Array.from({ length: 64 }, () => CellEmpty);
 
 export const App = (): JSXElement => {
-  const query = new URLSearchParams(location.search);
-
-  const black = playerType(query.get("black"), PlayerTypeHuman);
-  const white = playerType(query.get("white"), PlayerTypeAi);
+  const [black, setBlack] = createUrlQuerySignal<PlayerType>("black", PlayerTypeHuman);
+  const [white, setWhite] = createUrlQuerySignal<PlayerType>("white", PlayerTypeAi);
 
   const [gamePlaying, setGamePlaying] = createSignal(false);
 
   const [board, setBoard] = createSignal(emptyBoard);
 
-  const [wasm] = createResource(getReversiWasm);
+  const wasm = usePromise(getReversiWasm);
   let terminateGame: () => void = doNothingFunction;
   let getColor: (() => number) | undefined;
 
@@ -43,8 +49,8 @@ export const App = (): JSXElement => {
       setBoard,
       humanInput,
       {
-        black,
-        white,
+        black: black(),
+        white: white(),
       },
       () => {
         setGamePlaying(false);
@@ -56,11 +62,6 @@ export const App = (): JSXElement => {
     setGamePlaying(true);
   };
 
-  const handleEnd = (): void => {
-    terminateGame();
-    setBoard(emptyBoard);
-  };
-
   const handleClick = (square: number, index: number): void => {
     if (square !== CellCanMoveBlack && square !== CellCanMoveWhite) {
       return;
@@ -69,10 +70,30 @@ export const App = (): JSXElement => {
     resolve(index);
   };
 
+  const count = (color: number): number => {
+    return board().filter((square) => square === color).length;
+  };
+  const countBlack = (): number => count(CellBlack);
+  const countWhite = (): number => count(CellWhite);
+
   return (
     <>
-      <ReversiBoard board={board()} click={handleClick} />
-      <Info start={handleStart} end={handleEnd} playing={gamePlaying()} board={board()} color={getColor?.()} />
+      <PageHeader
+        buttons={
+          <>
+            <StoneCount count={countBlack()} color={CellBlack} isNext={gamePlaying() && getColor?.() === CellBlack} />
+            <StoneCount count={countWhite()} color={CellWhite} isNext={gamePlaying() && getColor?.() === CellWhite} />
+            <Start start={handleStart} />
+            <Settings>
+              <PlayerSetting white={white()} black={black()} setWhite={setWhite} setBlack={setBlack} />
+            </Settings>
+            <HowToPlayReversi />
+          </>
+        }
+      />
+      <PageBody>
+        <ReversiBoard board={board()} click={handleClick} />
+      </PageBody>
     </>
   );
 };

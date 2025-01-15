@@ -1,13 +1,24 @@
 import type { Config } from "tailwindcss";
+import plugin from "tailwindcss/plugin";
 
 export default {
-  content: ["./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}"],
+  content: ["./src/**/*.{astro,html,js,jsx,md,mdx,ts,tsx}"],
   theme: {
-    fontFamily: {
-      noto: ["Noto Sans JP", "sans-serif"],
+    extend: {
+      fontFamily: {
+        noto: ["Noto Sans", "sans-serif"],
+        "noto-jp": ["Noto Sans JP", "sans-serif"],
+        "noto-emoji": ["Noto Color Emoji", "sans-serif"],
+      },
     },
-
-    extend: {},
   },
-  plugins: [],
+  plugins: [
+    plugin(({ addComponents }) => {
+      addComponents({
+        ".anchor-mid": {
+          textAnchor: "middle",
+        },
+      });
+    }),
+  ],
 } satisfies Config;

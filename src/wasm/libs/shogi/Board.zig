@@ -237,7 +237,7 @@ pub fn movedBoard(board: Board, from: BitBoard, to: BitBoard) Board {
         const to_color = to_color_piece.color;
         const to_piece = to_color_piece.piece;
 
-        const to_inversed = to.inversed();
+        const to_inversed = to.getInverted();
         new_board.getBoardPtr(to_color, to_piece).setMask(to_inversed);
     }
 
@@ -252,7 +252,7 @@ pub fn promotedBoard(board: Board, position: BitBoard) Board {
 
     var new_board = board;
 
-    new_board.getBoardPtr(color, piece).setMask(position.inversed());
+    new_board.getBoardPtr(color, piece).setMask(position.getInverted());
     new_board.getBoardPtr(color, piece.promoted()).setUnion(position);
 
     return new_board;
@@ -292,7 +292,7 @@ pub fn movePositions(board: Board, from: BitBoard) BitBoard {
 }
 
 pub fn hitPositions(board: Board, color: Color, piece: Piece) BitBoard {
-    const empty = board.getColorPieces(.black).unions(board.getColorPieces(.white)).inversed();
+    const empty = board.getColorPieces(.black).unions(board.getColorPieces(.white)).getInverted();
 
     return switch (piece) {
         .pawn, .lance => switch (color) {

@@ -102,7 +102,7 @@ fn evaluate(board: Board) isize {
     const player_valid_count = board.getValidMoves().count();
     const opponent_board = Board{
         .boards = board.boards,
-        .nextColor = board.nextColor,
+        .nextColor = board.nextColor.turn(),
     };
     const opponent_valid_count = opponent_board.getValidMoves().count();
 
@@ -118,8 +118,10 @@ fn evaluate(board: Board) isize {
 
     // 確定石の数
 
-    return @bitCast(black_stone_count * 200 -% white_stone_count * 20 +%
-        black_valid_count * 700 -% white_valid_count * 700);
+    return @bitCast(black_stone_count * 200 -%
+        white_stone_count * 20 +%
+        black_valid_count * 700 -%
+        white_valid_count * 700);
 }
 
 fn randomAi(board: Board, comptime random: *const fn () f64) u6 {
