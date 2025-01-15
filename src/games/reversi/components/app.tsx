@@ -1,6 +1,7 @@
+import { PlayerSetting, Settings } from "@/components/header-buttons/settings";
+import { Start } from "@/components/header-buttons/start";
 import { PageBody } from "@/components/page-body/page-body";
 import { PageHeader } from "@/components/page-header/page-header";
-import { Start } from "@/components/header-buttons/start";
 import { doNothingFunction } from "@/scripts/do-nothing";
 import { MultiPromise } from "@/scripts/multi-promise";
 import { PlayerTypeAi, PlayerTypeHuman } from "@/scripts/player";
@@ -15,7 +16,6 @@ import { getReversiWasm } from "../get-wasm";
 import { ReversiBoard } from "./board";
 import { HowToPlayReversi } from "./how-to-play";
 import { StoneCount } from "./information";
-import { PlayerSetting, Settings } from "@/components/header-buttons/settings";
 
 const emptyBoard: number[] = Array.from({ length: 64 }, () => CellEmpty);
 

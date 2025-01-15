@@ -1,7 +1,8 @@
 import { Board } from "@/components/board/board";
+import { PlayerSetting, Settings } from "@/components/header-buttons/settings";
+import { Start } from "@/components/header-buttons/start";
 import { PageBody } from "@/components/page-body/page-body";
 import { PageHeader } from "@/components/page-header/page-header";
-import { Start } from "@/components/header-buttons/start";
 import board from "@/images/chess/board.svg";
 import { MultiPromise } from "@/scripts/multi-promise";
 import { PlayerTypeAi, PlayerTypeHuman } from "@/scripts/player";
@@ -16,7 +17,6 @@ import { gameLoop } from "../game-loop";
 import type { PlayerColor } from "../game-loop";
 import { getWasm } from "../wasm";
 import { UsePiece } from "./define";
-import { PlayerSetting, Settings } from "@/components/header-buttons/settings";
 
 export const App = (): JSXElement => {
   const [white, setWhite] = createUrlQuerySignal<PlayerType>("white", PlayerTypeHuman);

@@ -1,6 +1,6 @@
+import { Start } from "@/components/header-buttons/start";
 import { PageBody } from "@/components/page-body/page-body";
 import { PageHeader } from "@/components/page-header/page-header";
-import { Start } from "@/components/header-buttons/start";
 import { Bombed, Clear, FieldBomb, FieldFlag, FieldNoOpen, FirstClick, Playing } from "@/games/mine-sweeper/consts";
 import { getAround, initializeField, isClear, resetMines } from "@/games/mine-sweeper/field";
 import { createUrlQuerySignal } from "@/scripts/use-url-query";
