@@ -2,7 +2,7 @@
 import icon from "@/images/theme-icon.svg";
 
 interface Props {
-  title: string;
+  title?: string;
 }
 
 const { title } = Astro.props;
@@ -10,6 +10,7 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
 
 const symbols = ["help", "history", "replay", "settings"];
 const symbolsText = encodeURIComponent(symbols.join(""));
+const titleText = title ? `${title} | Board Games` : "Board Games";
 ---
 
 <meta charset="UTF-8" />
@@ -17,4 +18,4 @@ const symbolsText = encodeURIComponent(symbols.join(""));
 <link rel="shortcut icon" type="image/svg+xml" href={icon.src} />
 <link rel="canonical" href={canonicalUrl} />
 <link rel="stylesheet" href=`https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0&text=${symbolsText}` />
-<title>{title}</title>
+<title>{titleText}</title>

@@ -1,6 +1,7 @@
+import { PlayerSetting, Settings } from "@/components/header-buttons/settings";
+import { Start } from "@/components/header-buttons/start";
 import { PageBody } from "@/components/page-body/page-body";
 import { PageHeader } from "@/components/page-header/page-header";
-import { StartButton } from "@/components/page-header/start-button";
 import { createBoard } from "@/games/chess/board";
 import type { BoardCell } from "@/games/chess/board";
 import { EndNotYet, White } from "@/games/chess/constants";
@@ -14,7 +15,6 @@ import { createUrlQuerySignal } from "@/scripts/use-url-query";
 import type { JSXElement } from "solid-js";
 import { createSignal } from "solid-js";
 import { ChessBoard } from "./board";
-import { Settings } from "./settings";
 import { Status } from "./status";
 
 export const App = (): JSXElement => {
@@ -56,8 +56,10 @@ export const App = (): JSXElement => {
         buttons={
           <>
             <Status color={color()} end={end()} />
-            <StartButton start={start} />
-            <Settings white={white()} black={black()} setWhite={setWhite} setBlack={setBlack} />
+            <Start start={start} />
+            <Settings>
+              <PlayerSetting white={white()} black={black()} setWhite={setWhite} setBlack={setBlack} />
+            </Settings>
           </>
         }
       />

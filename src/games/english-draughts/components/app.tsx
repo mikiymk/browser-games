@@ -1,7 +1,8 @@
 import { Board } from "@/components/board/board";
+import { PlayerSetting, Settings } from "@/components/header-buttons/settings";
+import { Start } from "@/components/header-buttons/start";
 import { PageBody } from "@/components/page-body/page-body";
 import { PageHeader } from "@/components/page-header/page-header";
-import { StartButton } from "@/components/page-header/start-button";
 import board from "@/images/chess/board.svg";
 import { MultiPromise } from "@/scripts/multi-promise";
 import { PlayerTypeAi, PlayerTypeHuman } from "@/scripts/player";
@@ -16,7 +17,6 @@ import { gameLoop } from "../game-loop";
 import type { PlayerColor } from "../game-loop";
 import { getWasm } from "../wasm";
 import { UsePiece } from "./define";
-import { Settings } from "./settings";
 
 export const App = (): JSXElement => {
   const [white, setWhite] = createUrlQuerySignal<PlayerType>("white", PlayerTypeHuman);
@@ -87,8 +87,10 @@ export const App = (): JSXElement => {
       <PageHeader
         buttons={
           <>
-            <StartButton start={handleStart} />
-            <Settings white={white()} black={black()} setWhite={setWhite} setBlack={setBlack} />
+            <Start start={handleStart} />
+            <Settings>
+              <PlayerSetting white={white()} black={black()} setWhite={setWhite} setBlack={setBlack} />
+            </Settings>
           </>
         }
       />

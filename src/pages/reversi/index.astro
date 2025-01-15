@@ -1,9 +1,10 @@
 ---
 import Head from "@/components/head.astro";
 import { App } from "@/games/reversi/components/app";
+import { TEXT_GAME_REVERSI } from "@/scripts/constants";
 ---
 
-<Head title="Reversi" />
+<Head title={TEXT_GAME_REVERSI} />
 
 <div class="text-slate-800">
     <App client:load />

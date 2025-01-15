@@ -1,6 +1,7 @@
+import { PlayerSetting, Settings } from "@/components/header-buttons/settings";
+import { Start } from "@/components/header-buttons/start";
 import { PageBody } from "@/components/page-body/page-body";
 import { PageHeader } from "@/components/page-header/page-header";
-import { StartButton } from "@/components/page-header/start-button";
 import { doNothingFunction } from "@/scripts/do-nothing";
 import { MultiPromise } from "@/scripts/multi-promise";
 import { PlayerTypeAi, PlayerTypeHuman } from "@/scripts/player";
@@ -13,9 +14,8 @@ import { CellBlack, CellCanMoveBlack, CellCanMoveWhite, CellEmpty, CellWhite } f
 import { gameLoop } from "../game-loop";
 import { getReversiWasm } from "../get-wasm";
 import { ReversiBoard } from "./board";
-import { HowToPlay } from "./how-to-play";
+import { HowToPlayReversi } from "./how-to-play";
 import { StoneCount } from "./information";
-import { Settings } from "./settings";
 
 const emptyBoard: number[] = Array.from({ length: 64 }, () => CellEmpty);
 
@@ -83,9 +83,11 @@ export const App = (): JSXElement => {
           <>
             <StoneCount count={countBlack()} color={CellBlack} isNext={gamePlaying() && getColor?.() === CellBlack} />
             <StoneCount count={countWhite()} color={CellWhite} isNext={gamePlaying() && getColor?.() === CellWhite} />
-            <StartButton start={handleStart} />
-            <Settings white={white()} black={black()} setWhite={setWhite} setBlack={setBlack} />
-            <HowToPlay />
+            <Start start={handleStart} />
+            <Settings>
+              <PlayerSetting white={white()} black={black()} setWhite={setWhite} setBlack={setBlack} />
+            </Settings>
+            <HowToPlayReversi />
           </>
         }
       />

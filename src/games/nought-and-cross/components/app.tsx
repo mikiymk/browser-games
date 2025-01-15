@@ -1,6 +1,6 @@
+import { Start } from "@/components/header-buttons/start";
 import { PageBody } from "@/components/page-body/page-body";
 import { PageHeader } from "@/components/page-header/page-header";
-import { StartButton } from "@/components/page-header/start-button";
 import { filledBoard, gameLoop, isWin } from "@/games/nought-and-cross/game-model";
 import {
   Empty,
@@ -23,7 +23,7 @@ import type { JSXElement } from "solid-js";
 import { createSignal, onMount } from "solid-js";
 import { NncBoard } from "./board";
 import { History } from "./history";
-import { Settings } from "./settings";
+import { NoughtAndCrossSettings } from "./settings";
 import { StatusButton } from "./status";
 
 export const App = (): JSXElement => {
@@ -89,9 +89,9 @@ export const App = (): JSXElement => {
         buttons={
           <>
             <StatusButton status={status()} />
-            <StartButton start={reset} />
+            <Start start={reset} />
             <History history={history()} />
-            <Settings o={playerO()} x={playerX()} setO={setPlayerO} setX={setPlayerX} />
+            <NoughtAndCrossSettings o={playerO()} x={playerX()} setO={setPlayerO} setX={setPlayerX} />
           </>
         }
       />
