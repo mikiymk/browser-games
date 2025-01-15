@@ -86,12 +86,10 @@ export default typescript.config(
           allow: [
             {
               from: "lib",
-              name: ["MouseEvent"],
-            },
-            {
-              from: "package",
-              package: "solid-js",
-              name: ["Element"],
+              name: [
+                "MouseEvent",
+                "Element", //  solid-jsのJSXElementに必要
+              ],
             },
           ],
           ignoreInferredTypes: true,
