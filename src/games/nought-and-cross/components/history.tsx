@@ -1,4 +1,4 @@
-import { HeaderPopup } from "@/components/page-header/header-popup";
+import { HeaderPopup } from "@/components/page/header-popup";
 import { StyledSvg } from "@/components/styled-svg";
 import cross from "@/images/icon/cross.svg";
 import nought from "@/images/icon/nought.svg";

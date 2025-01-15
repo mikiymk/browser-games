@@ -2,8 +2,8 @@ import { For } from "solid-js";
 import type { JSXElement } from "solid-js";
 import { List, ListItem } from "@/components/elements/list";
 import { Anchor } from "@/components/elements/anchor";
-import { PageBody } from "@/components/page-body/page-body";
-import { PageHeader } from "@/components/page-header/page-header";
+import { PageBody } from "@/components/page/body";
+import { PageHeader } from "@/components/page/header";
 import {
   TEXT_GAME_CHESS,
   TEXT_GAME_ENGLISH_DRAUGHTS,

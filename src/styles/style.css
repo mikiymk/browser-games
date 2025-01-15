@@ -1,19 +1,4 @@
 body {
   color: #091323;
-  font-family: 'Noto Sans Variable', sans-serif;
-}
-
-.icon {
-  font-family: "Material Symbols Rounded Variable" serif;
-  font-weight: normal;
-  font-style: normal;
-  /* Preferred icon size */
-  font-size: 24px;
-  display: inline-block;
-  line-height: 1;
-  text-transform: none;
-  letter-spacing: normal;
-  word-wrap: normal;
-  white-space: nowrap;
-  direction: ltr;
+  font-family: "Noto Sans Variable", sans-serif;
 }

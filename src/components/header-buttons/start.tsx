@@ -1,6 +1,6 @@
 import { TEXT_START } from "@/scripts/constants";
 import type { JSXElement } from "solid-js";
-import { HeaderButton } from "../page-header/header-button";
+import { HeaderButton } from "../page/header-button";
 
 type StartButtonProperties = {
   readonly start: () => void;

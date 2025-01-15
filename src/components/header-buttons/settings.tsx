@@ -1,4 +1,4 @@
-import { HeaderPopup } from "@/components/page-header/header-popup";
+import { HeaderPopup } from "@/components/page/header-popup";
 import { TEXT_BLACK_PLAYER, TEXT_SETTINGS, TEXT_WHITE_PLAYER } from "@/scripts/constants";
 import { playerValues } from "@/scripts/player";
 import type { PlayerType } from "@/scripts/player";

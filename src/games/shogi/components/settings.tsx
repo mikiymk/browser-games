@@ -1,5 +1,5 @@
 import { Radio } from "@/components/input/radio";
-import { HeaderPopup } from "@/components/page-header/header-popup";
+import { HeaderPopup } from "@/components/page/header-popup";
 import { TEXT_FIRST_PLAYER, TEXT_SECOND_PLAYER, TEXT_SETTINGS } from "@/scripts/constants";
 import { playerValues } from "@/scripts/player";
 import type { PlayerType } from "@/scripts/player";

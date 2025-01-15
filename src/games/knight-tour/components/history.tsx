@@ -1,4 +1,4 @@
-import { HeaderPopup } from "@/components/page-header/header-popup";
+import { HeaderPopup } from "@/components/page/header-popup";
 import { TEXT_HISTORY } from "@/scripts/constants";
 import type { JSXElement } from "solid-js";
 import { For } from "solid-js";
