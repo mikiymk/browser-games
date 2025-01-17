@@ -4,6 +4,7 @@ import { playerValues } from "@/scripts/player";
 import type { PlayerType } from "@/scripts/player";
 import type { JSXElement, Setter } from "solid-js";
 import { Radio } from "../input/radio";
+import Styles from "./style.module.css";
 
 type SettingsProperties = {
   readonly children: JSXElement;
@@ -13,7 +14,7 @@ export const Settings = (properties: SettingsProperties): JSXElement => {
     <HeaderPopup icon="settings" label={TEXT_SETTINGS}>
       <h2>{TEXT_SETTINGS}</h2>
 
-      <dl class="grid grid-cols-2">{properties.children}</dl>
+      <dl class={Styles.settings}>{properties.children}</dl>
     </HeaderPopup>
   );
 };
