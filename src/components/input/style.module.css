@@ -1,0 +1,21 @@
+.number {
+  text-align: right;
+
+  border-bottom-width: 2px;
+  border-color: #0f172a;
+  border-style: solid;
+}
+
+.radio {
+  padding: 0 0.5rem;
+  border-radius: 0.25rem;
+
+  &:has(:checked) {
+    background-color: #d9f99d;
+    border-bottom: solid #0f172a 2px;
+  }
+}
+
+.radio-input {
+  display: none;
+}
