@@ -1,4 +1,4 @@
-import { Button } from "@/components/button";
+import { Button } from "@/components/elements/button";
 import { PopUp } from "@/components/pop-up/pop-up";
 import type { JSXElement } from "solid-js";
 

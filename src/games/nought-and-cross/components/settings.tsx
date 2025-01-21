@@ -1,6 +1,6 @@
 import { Item, Settings } from "@/components/header-buttons/settings";
 import { Radio } from "@/components/input/radio";
-import { StyledSvg } from "@/components/styled-svg";
+import { StyledSvg } from "@/components/elements/styled-svg";
 import cross from "@/images/icon/cross.svg";
 import nought from "@/images/icon/nought.svg";
 import { playerValues } from "@/scripts/player";

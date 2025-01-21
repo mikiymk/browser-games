@@ -1,5 +1,5 @@
 import { HeaderPopup } from "@/components/page/header-popup";
-import { StyledSvg } from "@/components/styled-svg";
+import { StyledSvg } from "@/components/elements/styled-svg";
 import cross from "@/images/icon/cross.svg";
 import nought from "@/images/icon/nought.svg";
 import { TEXT_HISTORY } from "@/scripts/constants";

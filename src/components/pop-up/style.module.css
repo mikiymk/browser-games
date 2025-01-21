@@ -1,7 +1,7 @@
 .popup {
   background-color: #fef9c3;
 
-  border-color: #1e293b;
+  border-color: var(--color);
   border-width: 2px;
 
   &::backdrop {

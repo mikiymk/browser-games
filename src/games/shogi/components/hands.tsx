@@ -1,4 +1,4 @@
-import { Button } from "@/components/button";
+import { Button } from "@/components/elements/button";
 import { For, Show } from "solid-js";
 import type { JSXElement } from "solid-js";
 import { WHITE } from "../constants";

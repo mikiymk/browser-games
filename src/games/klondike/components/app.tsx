@@ -1,4 +1,4 @@
-import { Button } from "@/components/button";
+import { Button } from "@/components/elements/button";
 import { Start } from "@/components/header-buttons/start";
 import { PageBody } from "@/components/page/body";
 import { PageHeader } from "@/components/page/header";

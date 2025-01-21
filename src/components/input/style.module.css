@@ -2,7 +2,7 @@
   text-align: right;
 
   border-bottom-width: 2px;
-  border-color: #0f172a;
+  border-color: var(--color);
   border-style: solid;
 }
 
@@ -12,7 +12,7 @@
 
   &:has(:checked) {
     background-color: #d9f99d;
-    border-bottom: solid #0f172a 2px;
+    border-bottom: solid var(--color) 2px;
   }
 }
 
