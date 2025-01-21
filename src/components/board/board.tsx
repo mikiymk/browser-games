@@ -1,5 +1,6 @@
 import type { JSXElement } from "solid-js";
 import { For, Show } from "solid-js";
+import Styles from "./style.module.css";
 
 type BoardProperties<T> = {
   readonly height: number;
@@ -51,7 +52,7 @@ export const Board = <T,>(properties: BoardProperties<T>): JSXElement => {
         <rect
           height={properties.height * 10}
           width={properties.width * 10}
-          class="opacity-0"
+          class={Styles.clear}
           tabindex={0}
           onClick={(event) => {
             const [square, index] = handleClick(event);
