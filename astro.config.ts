@@ -1,5 +1,4 @@
 import solidJs from "@astrojs/solid-js";
-import tailwind from "@astrojs/tailwind";
 import type { AstroIntegration } from "astro";
 import compress from "astro-compress";
 import { defineConfig } from "astro/config";
@@ -10,7 +9,6 @@ export default defineConfig({
   base: "browser-games/",
   integrations: [
     solidJs({}),
-    tailwind(),
     compress({
       // biome-ignore lint/style/useNamingConvention: ライブラリに合わせる
       HTML: {

@@ -37,14 +37,14 @@
   padding: 0.3rem 0;
 }
 
-.icon {
+.svg {
   height: 2rem;
   width: 2rem;
   display: inline;
   aspect-ratio: 1 / 1;
 }
 
-.icon-use {
+.svg-use {
   fill: none;
   stroke: var(--color);
   stroke-width: 2;
