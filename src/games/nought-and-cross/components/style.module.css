@@ -1,0 +1,23 @@
+.nought {
+  fill: none;
+  stroke: #2563eb;
+  stroke-width: 2;
+}
+
+.cross {
+  fill: none;
+  stroke: #dc2626;
+  stroke-width: 2;
+}
+
+.history {
+  list-style-position: inside;
+  list-style-type: decimal;
+}
+
+.history-item {
+  width: 8rem;
+  margin: auto;
+  text-align: left;
+  background-color: #fef9c3;
+}

@@ -5,6 +5,7 @@ import nought from "@/images/icon/nought.svg";
 import board from "@/images/nought-and-cross/board.svg";
 import type { JSXElement } from "solid-js";
 import { Match, Switch } from "solid-js";
+import Styles from "./style.module.css";
 
 type CellProperties = {
   readonly mark: number;
@@ -21,18 +22,11 @@ const Cell = (properties: CellProperties): JSXElement => {
           y={properties.y}
           height={10}
           width={10}
-          class="fill-none stroke-blue-600 stroke-2"
+          class={Styles.nought}
         />
       </Match>
       <Match when={properties.mark === MarkX}>
-        <use
-          href={`${cross.src}#root`}
-          x={properties.x}
-          y={properties.y}
-          height={10}
-          width={10}
-          class="fill-none stroke-red-600 stroke-2"
-        />
+        <use href={`${cross.src}#root`} x={properties.x} y={properties.y} height={10} width={10} class={Styles.cross} />
       </Match>
     </Switch>
   );
