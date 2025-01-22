@@ -43,10 +43,11 @@
 
 .header-text {
   display: none;
-  @media (min-width: 640px) {
-    & {
-      display: inline;
-    }
+}
+
+@media (min-width: 640px) {
+  .header-text {
+    display: inline;
   }
 }
 
