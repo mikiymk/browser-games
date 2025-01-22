@@ -3,11 +3,11 @@
 }
 
 .black {
-  fill: #0f172a;
+  fill: var(--black);
 }
 
 .red {
-  fill: #ef4444;
+  fill: var(--red);
 }
 
 .rev {
@@ -24,10 +24,10 @@
 
 .card {
   fill: #e2e8f0;
-  stroke: #0f172a;
+  stroke: var(--black);
 }
 
 .selected {
   fill: none;
-  stroke: #0f172a;
+  stroke: var(--black);
 }

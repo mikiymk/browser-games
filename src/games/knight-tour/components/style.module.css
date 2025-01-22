@@ -1,6 +1,6 @@
 .knight {
-  fill: #e7e5e4;
-  stroke: #0f172a;
+  fill: var(--light);
+  stroke: var(--black);
 }
 
 .number {
@@ -27,5 +27,5 @@
 .history-button {
   width: 4rem;
   text-align: center;
-  border: 1px solid #0f172a;
+  border: 1px solid var(--black);
 }

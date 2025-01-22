@@ -1,5 +1,5 @@
 .symbol {
-  stroke: #0f172a;
+  stroke: var(--black);
   stroke-width: 2;
 }
 

@@ -1,6 +1,6 @@
 .piece {
   fill: #fde047;
-  stroke: #0f172a;
+  stroke: var(--black);
 }
 
 .text {
@@ -9,11 +9,11 @@
 }
 
 .black {
-  fill: #0f172a;
+  fill: var(--black);
 }
 
 .red {
-  fill: #dc2626;
+  fill: var(--red);
 }
 
 .rev {
@@ -30,7 +30,7 @@
 
   text-align: center;
 
-  border: 1px solid #0f172a;
+  border: 1px solid var(--black);
 }
 
 .hand-header {

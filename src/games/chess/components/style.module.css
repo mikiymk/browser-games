@@ -18,11 +18,11 @@
 }
 
 .define-black {
-  fill: #78716c;
-  stroke: #0f172a;
+  fill: var(--dark);
+  stroke: var(--black);
 }
 
 .define-white {
-  fill: #e7e5e4;
-  stroke: #0f172a;
+  fill: var(--light);
+  stroke: var(--black);
 }

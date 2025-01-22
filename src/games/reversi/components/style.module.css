@@ -1,18 +1,18 @@
 .stone {
-  stroke: #0f172a;
+  stroke: var(--black);
   stroke-width: 0.5;
 }
 
 .white {
-  fill: #e7e5e4;
+  fill: var(--light);
 }
 
 .black {
-  fill: #292524;
+  fill: var(--dark);
 }
 
 .next {
-  border-color: #1e293b;
+  border-color: var(--black);
   border-width: 2px;
   border-radius: 0.25rem;
 }
@@ -25,5 +25,5 @@
 }
 
 .icon-stone {
-  stroke: #0f172a;
+  stroke: var(--black);
 }

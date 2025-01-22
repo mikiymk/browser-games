@@ -5,16 +5,16 @@
 .stone-white,
 .stone-black,
 .stone-move {
-  stroke: #0f172a;
+  stroke: var(--black);
   stroke-width: 2;
 }
 
 .stone-white {
-  fill: #e7e5e4;
+  fill: var(--light);
 }
 
 .stone-black {
-  fill: #78716c;
+  fill: var(--dark);
 }
 
 .stone-move {
