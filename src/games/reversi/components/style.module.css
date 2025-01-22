@@ -1,0 +1,29 @@
+.stone {
+  stroke: #0f172a;
+  stroke-width: 0.5;
+}
+
+.white {
+  fill: #e7e5e4;
+}
+
+.black {
+  fill: #292524;
+}
+
+.next {
+  border-color: #1e293b;
+  border-width: 2px;
+  border-radius: 0.25rem;
+}
+
+.icon {
+  height: 2rem;
+  width: 2rem;
+  display: inline;
+  aspect-ratio: 1 / 1;
+}
+
+.icon-stone {
+  stroke: #0f172a;
+}
