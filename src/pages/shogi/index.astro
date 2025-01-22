@@ -30,7 +30,7 @@ const pieceNameKanji = [...new Set(pieceNames.flatMap((name) => [...name]))].toS
     href=`https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap&text=${pieceNameKanji}`
 />
 
-<div class="text-slate-800">
-    <DefinePieces />
-    <App client:load />
-</div>
+<DefinePieces />
+<App client:load />
+
+<div />
