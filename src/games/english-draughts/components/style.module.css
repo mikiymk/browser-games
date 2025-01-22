@@ -1,0 +1,22 @@
+.define {
+  display: none;
+}
+
+.stone-white,
+.stone-black,
+.stone-move {
+  stroke: #0f172a;
+  stroke-width: 2;
+}
+
+.stone-white {
+  fill: #e7e5e4;
+}
+
+.stone-black {
+  fill: #78716c;
+}
+
+.stone-move {
+  fill: none;
+}
