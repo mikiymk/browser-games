@@ -2,6 +2,7 @@ import { Use } from "@/components/define/use";
 import piece from "@/images/shogi/piece.svg";
 import type { JSXElement } from "solid-js";
 import Styles from "./style.module.css";
+import CommonStyles from "@/styles/common.module.css";
 import { Define } from "@/components/define/define";
 import { classes } from "@/scripts/classes";
 
@@ -40,20 +41,20 @@ const DefinePiece = (properties: DefinePieceProperties): JSXElement => {
     <>
       <symbol id={properties.id} viewBox="0 0 60 60">
         <use href={`${piece.src}#root`} height={60} width={60} class={Styles.piece} />
-        <text x="30" y="28" class={classes(Styles.text, color())}>
+        <text x="30" y="28" class={classes(Styles.text, CommonStyles["font-jp"], color())}>
           {properties.pieces[0]}
         </text>
-        <text x="30" y="50" class={classes(Styles.text, color())}>
+        <text x="30" y="50" class={classes(Styles.text, CommonStyles["font-jp"], color())}>
           {properties.pieces[1]}
         </text>
       </symbol>
 
       <symbol id={`${properties.id}-rev`} viewBox="0 0 60 60">
         <use href={`${piece.src}#root`} height={60} width={60} class={classes(Styles.piece, Styles.rev)} />
-        <text x="30" y="28" class={classes(Styles.text, color(), Styles.rev)}>
+        <text x="30" y="28" class={classes(Styles.text, CommonStyles["font-jp"], color(), Styles.rev)}>
           {properties.pieces[0]}
         </text>
-        <text x="30" y="50" class={classes(Styles.text, color(), Styles.rev)}>
+        <text x="30" y="50" class={classes(Styles.text, CommonStyles["font-jp"], color(), Styles.rev)}>
           {properties.pieces[1]}
         </text>
       </symbol>

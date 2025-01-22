@@ -71,6 +71,7 @@
     "@fontsource-variable/material-symbols-rounded": "^5.1.4",
     "@fontsource-variable/noto-sans": "^5.1.1",
     "@fontsource-variable/noto-sans-jp": "^5.1.1",
+    "@fontsource/noto-color-emoji": "^5.1.1",
     "destyle.css": "^4.0.1",
     "solid-js": "^1.9.4"
   }

@@ -1,5 +1,6 @@
 body {
   --color: #091323;
+  
   color: var(--color);
   font-family: "Noto Sans Variable", sans-serif;
 }

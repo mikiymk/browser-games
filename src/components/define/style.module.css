@@ -3,8 +3,7 @@
 }
 
 .def-text {
-  text-anchor: middle;
-
-  font-family: Noto Sans JP, sans-serif;
   font-size: 60px;
+
+  text-anchor: middle;
 }
