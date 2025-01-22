@@ -1,3 +1,7 @@
+.def {
+  display: none;
+}
+
 .def-text {
   text-anchor: middle;
 

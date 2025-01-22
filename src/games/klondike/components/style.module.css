@@ -1,0 +1,35 @@
+.field {
+  fill: #15803d;
+}
+
+.black {
+  fill: #0f172a;
+}
+
+.red {
+  fill: #ef4444;
+}
+
+.rev {
+  transform: translate(100%, 100%) rotate(180deg);
+}
+
+.text {
+  font-family: Noto Sans JP, sans-serif;
+  font-weight: 25px;
+}
+
+.text-rank {
+  font-family: Noto Sans JP, sans-serif;
+  font-weight: 16px;
+}
+
+.card {
+  fill: #e2e8f0;
+  stroke: #0f172a;
+}
+
+.selected {
+  fill: none;
+  stroke: #0f172a;
+}
