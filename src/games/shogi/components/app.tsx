@@ -15,7 +15,7 @@ import { gameLoop, getWasm } from "../game-loop";
 import { ShogiBoard } from "./board";
 import { GameOverPopUp } from "./game-over-pop-up";
 import { PromotionPopUp } from "./promotion-pop-up";
-import { Settings } from "./settings";
+import { ShogiSettings } from "./settings";
 
 export const App = (): JSXElement => {
   const [black, setBlack] = createUrlQuerySignal<PlayerType>("first", PlayerTypeHuman);
@@ -110,7 +110,7 @@ export const App = (): JSXElement => {
         buttons={
           <>
             <Start start={start} />
-            <Settings white={white()} black={black()} setWhite={setWhite} setBlack={setBlack} />
+            <ShogiSettings white={white()} black={black()} setWhite={setWhite} setBlack={setBlack} />
             <GameOverPopUp gameOver={gameOver() !== 0} set={setGameOver} />
             <PromotionPopUp
               promotion={promotion()}

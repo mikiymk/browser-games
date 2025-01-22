@@ -2,6 +2,7 @@ import { Show } from "solid-js";
 import type { JSXElement } from "solid-js";
 import { BISHOP, COLOR, GOLD, KING, KNIGHT, LANCE, PAWN, PIECE, PROMOTED, ROOK, SILVER } from "../constants";
 import { UsePiece } from "./define";
+import Styles from "./style.module.css";
 
 type SquareProperties = {
   readonly x: number;
@@ -54,7 +55,7 @@ export const Square = (properties: SquareProperties): JSXElement => {
   return (
     <>
       <Show when={properties.move}>
-        <rect x={properties.x + 1} y={properties.y + 1} height={8} width={8} class="fill-amber-400" />
+        <rect x={properties.x + 1} y={properties.y + 1} height={8} width={8} class={Styles.board} />
       </Show>
       <Show when={source()}>
         {(source) => (

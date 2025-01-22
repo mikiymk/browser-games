@@ -1,0 +1,39 @@
+.piece {
+  fill: #fde047;
+  stroke: #0f172a;
+}
+
+.text {
+  font-family: "Noto Sans JP", sans-serif;
+  font-size: 20px;
+  text-anchor: middle;
+}
+
+.black {
+  fill: #0f172a;
+}
+
+.red {
+  fill: #dc2626;
+}
+
+.rev {
+  transform: translate(100%, 100%) rotate(180deg);
+}
+
+.board {
+  fill: #fbbf24;
+}
+
+.hand {
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
+
+  text-align: center;
+
+  border: 1px solid #0f172a;
+}
+
+.hand-header {
+  background-color: #fbbf24;
+}
