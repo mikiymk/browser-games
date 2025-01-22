@@ -22,12 +22,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Install Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 21
-
-      - name: Install bun
+      - name: Install Bun
         uses: oven-sh/setup-bun@v1
         with:
           bun-version: latest
@@ -35,31 +30,9 @@ jobs:
       - name: Install Dependencies
         run: bun install --frozen-lockfile
 
-      # zig setup
-      - uses: goto-bus-stop/setup-zig@v2
+      - name: Install Zig
+        uses: goto-bus-stop/setup-zig@v2
         with:
-          version: 0.12.0
+          version: 0.13.0
 
-      - name: check zig is formatted
-        run: bun run lint:format-zig
-
-      - name: test zig
-        run: bun run test:wasm
-
-      - name: generate wasm
-        run: bun run build:wasm
-
-      - name: check biome
-        run: bun run lint:biome
-
-      - name: check eslint
-        run: bun run lint:eslint
-
-      - name: check typescript
-        run: bun run lint:typescript
-
-      - name: check knip
-        run: bun run lint:knip
-
-      - name: build astro
-        run: bun run build:js
+      - run: bun run ci

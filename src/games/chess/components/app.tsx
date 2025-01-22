@@ -1,7 +1,7 @@
 import { PlayerSetting, Settings } from "@/components/header-buttons/settings";
 import { Start } from "@/components/header-buttons/start";
-import { PageBody } from "@/components/page-body/page-body";
-import { PageHeader } from "@/components/page-header/page-header";
+import { PageBody } from "@/components/page/body";
+import { PageHeader } from "@/components/page/header";
 import { createBoard } from "@/games/chess/board";
 import type { BoardCell } from "@/games/chess/board";
 import { EndNotYet, White } from "@/games/chess/constants";

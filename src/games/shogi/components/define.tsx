@@ -1,12 +1,14 @@
+import { Define } from "@/components/define/define";
 import { Use } from "@/components/define/use";
 import piece from "@/images/shogi/piece.svg";
+import { classes } from "@/scripts/classes";
+import CommonStyles from "@/styles/common.module.css";
 import type { JSXElement } from "solid-js";
+import Styles from "./style.module.css";
 
-export const Define = (): JSXElement => {
+export const DefinePieces = (): JSXElement => {
   return (
-    <svg viewBox="0 0 0 0" xmlns="http://www.w3.org/2000/svg" class="hidden">
-      <title>define cards</title>
-
+    <Define>
       <DefinePiece id="王将" pieces={["王", "将"]} />
       <DefinePiece id="玉将" pieces={["玉", "将"]} />
       <DefinePiece id="飛車" pieces={["飛", "車"]} />
@@ -22,7 +24,7 @@ export const Define = (): JSXElement => {
       <DefinePiece id="成桂" pieces={["成", "桂"]} promoted />
       <DefinePiece id="成香" pieces={["成", "香"]} promoted />
       <DefinePiece id="と金" pieces={["と", "金"]} promoted />
-    </svg>
+    </Define>
   );
 };
 
@@ -33,45 +35,26 @@ type DefinePieceProperties = {
 };
 
 const DefinePiece = (properties: DefinePieceProperties): JSXElement => {
+  const color = (): string | undefined => (properties.promoted === true ? Styles.red : Styles.black);
+
   return (
     <>
       <symbol id={properties.id} viewBox="0 0 60 60">
-        <use href={`${piece.src}#root`} height={60} width={60} class="fill-yellow-300 stroke-slate-900" />
-        <text
-          x="30"
-          y="28"
-          class={`font-noto-jp text-[20px] anchor-mid ${properties.promoted === true ? "fill-red-600" : "fill-slate-900"}`}
-        >
+        <use href={`${piece.src}#root`} height={60} width={60} class={Styles.piece} />
+        <text x="30" y="28" class={classes(Styles.text, CommonStyles["font-jp"], color())}>
           {properties.pieces[0]}
         </text>
-        <text
-          x="30"
-          y="50"
-          class={`font-noto-jp text-[20px] anchor-mid ${properties.promoted === true ? "fill-red-600" : "fill-slate-900"}`}
-        >
+        <text x="30" y="50" class={classes(Styles.text, CommonStyles["font-jp"], color())}>
           {properties.pieces[1]}
         </text>
       </symbol>
 
       <symbol id={`${properties.id}-rev`} viewBox="0 0 60 60">
-        <use
-          href={`${piece.src}#root`}
-          height={60}
-          width={60}
-          class="fill-yellow-300 stroke-slate-900 rotate-180 translate-x-full translate-y-full"
-        />
-        <text
-          x="30"
-          y="28"
-          class={`font-noto-jp text-[20px] anchor-mid ${properties.promoted === true ? "fill-red-600" : "fill-slate-900"} rotate-180 translate-x-full translate-y-full`}
-        >
+        <use href={`${piece.src}#root`} height={60} width={60} class={classes(Styles.piece, Styles.rev)} />
+        <text x="30" y="28" class={classes(Styles.text, CommonStyles["font-jp"], color(), Styles.rev)}>
           {properties.pieces[0]}
         </text>
-        <text
-          x="30"
-          y="50"
-          class={`font-noto-jp text-[20px] anchor-mid ${properties.promoted === true ? "fill-red-600" : "fill-slate-900"} rotate-180 translate-x-full translate-y-full`}
-        >
+        <text x="30" y="50" class={classes(Styles.text, CommonStyles["font-jp"], color(), Styles.rev)}>
           {properties.pieces[1]}
         </text>
       </symbol>

@@ -1,7 +1,7 @@
 import { PlayerSetting, Settings } from "@/components/header-buttons/settings";
 import { Start } from "@/components/header-buttons/start";
-import { PageBody } from "@/components/page-body/page-body";
-import { PageHeader } from "@/components/page-header/page-header";
+import { PageBody } from "@/components/page/body";
+import { PageHeader } from "@/components/page/header";
 import { doNothingFunction } from "@/scripts/do-nothing";
 import { MultiPromise } from "@/scripts/multi-promise";
 import { PlayerTypeAi, PlayerTypeHuman } from "@/scripts/player";

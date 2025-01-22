@@ -13,6 +13,7 @@
     "enpassant",
     "errdefer",
     "knip",
+    "noto",
     "orelse",
     "Reversi",
     "Shogi",
@@ -45,8 +46,9 @@
     "editor.defaultFormatter": "biomejs.biome"
   },
   "[css]": {
-    "editor.defaultFormatter": "vscode.css-language-features"
+    "editor.defaultFormatter": "biomejs.biome"
   },
+
   "[html]": {
     "editor.defaultFormatter": "vscode.html-language-features"
   },

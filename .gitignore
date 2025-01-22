@@ -1,6 +1,7 @@
 node_modules
 dist
 .eslintcache
+.stylelintcache
 target
 .zig-cache
 public/wasm

@@ -21,10 +21,11 @@ import pawn from "@/images/chess/pawn.svg";
 import queen from "@/images/chess/queen.svg";
 import rook from "@/images/chess/rook.svg";
 import type { JSXElement } from "solid-js";
+import Styles from "./style.module.css";
 
 export const DefinePieces = (): JSXElement => {
   return (
-    <svg viewBox="0 0 0 0" xmlns="http://www.w3.org/2000/svg" class="hidden">
+    <svg viewBox="0 0 0 0" xmlns="http://www.w3.org/2000/svg" class={Styles.define}>
       <title>define cards</title>
 
       <DefinePiece name="bishop" color="black" />
@@ -66,7 +67,7 @@ const DefinePiece = (properties: DefinePieceProperties): JSXElement => {
     <DefineUse
       id={`${properties.color}-${properties.name}`}
       href={pieceImage()}
-      class={properties.color === "black" ? "fill-stone-500 stroke-slate-900" : "fill-stone-200 stroke-slate-900"}
+      class={properties.color === "black" ? Styles["define-black"] : Styles["define-white"]}
     />
   );
 };

@@ -32,12 +32,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Install Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 21
-
-      - name: Install bun
+      - name: Install Bun
         uses: oven-sh/setup-bun@v1
         with:
           bun-version: latest
@@ -45,10 +40,10 @@ jobs:
       - name: Install Dependencies
         run: bun install --frozen-lockfile
 
-      # zig setup
-      - uses: goto-bus-stop/setup-zig@v2
+      - name: Install Zig
+        uses: goto-bus-stop/setup-zig@v2
         with:
-          version: 0.12.0
+          version: 0.13.0
 
       - name: Build
         run: bun run build
@@ -59,7 +54,6 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
-          # Upload entire repository
           path: "./dist"
 
       - name: Deploy to GitHub Pages

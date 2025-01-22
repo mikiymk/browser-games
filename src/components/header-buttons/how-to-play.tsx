@@ -1,4 +1,4 @@
-import { HeaderPopup } from "@/components/page-header/header-popup";
+import { HeaderPopup } from "@/components/page/header-popup";
 import { TEXT_HOW_TO_PLAY } from "@/scripts/constants";
 import type { JSXElement } from "solid-js";
 

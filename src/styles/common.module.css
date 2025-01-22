@@ -1,0 +1,17 @@
+.font-jp {
+  font-family: "Noto Sans JP Variable", sans-serif;
+}
+
+.font-emoji {
+  font-family: "Noto Color Emoji", sans-serif;
+}
+
+.stone-black {
+  fill: var(--dark);
+  stroke: var(--black);
+}
+
+.stone-white {
+  fill: var(--light);
+  stroke: var(--black);
+}

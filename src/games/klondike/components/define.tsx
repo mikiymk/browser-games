@@ -1,3 +1,4 @@
+import { Define } from "@/components/define/define";
 import { DefineUse } from "@/components/define/define-use";
 import back from "@/images/card/back.svg";
 import club from "@/images/card/club.svg";
@@ -5,15 +6,15 @@ import diamond from "@/images/card/diamond.svg";
 import empty from "@/images/card/empty.svg";
 import heart from "@/images/card/heart.svg";
 import spade from "@/images/card/spade.svg";
+import { classes } from "@/scripts/classes";
 import { Match, Show, Switch } from "solid-js";
 import type { JSXElement } from "solid-js";
 import type { Card, Rank, Suit } from "../card";
+import Styles from "./style.module.css";
 
 export const DefineCards = (): JSXElement => {
   return (
-    <svg viewBox="0 0 0 0" xmlns="http://www.w3.org/2000/svg" class="hidden">
-      <title>define cards</title>
-
+    <Define>
       <DefineSuits />
 
       <DefineCard suit="club" rank={1} />
@@ -78,25 +79,22 @@ export const DefineCards = (): JSXElement => {
       <symbol id="empty" viewBox="0 0 100 156">
         <use href={`${empty.src}#root`} height={156} width={100} />
       </symbol>
-    </svg>
+    </Define>
   );
 };
 
 const DefineSuits = (): JSXElement => {
   return (
     <>
-      <DefineUse id="spade" href={spade.src} class="fill-slate-900" />
-      <DefineUse id="spade-rev" href={spade.src} class="fill-slate-900 rotate-180 translate-x-full translate-y-full" />
-      <DefineUse id="heart" href={heart.src} class="fill-red-500" />
-      <DefineUse id="heart-rev" href={heart.src} class="fill-red-500 rotate-180 translate-x-full translate-y-full" />
-      <DefineUse id="diamond" href={diamond.src} class="fill-red-500" />
-      <DefineUse
-        id="diamond-rev"
-        href={diamond.src}
-        class="fill-red-500 rotate-180 translate-x-full translate-y-full"
-      />
-      <DefineUse id="club" href={club.src} class="fill-slate-900" />
-      <DefineUse id="club-rev" href={club.src} class="fill-slate-900 rotate-180 translate-x-full translate-y-full" />
+      <DefineUse id="spade" href={spade.src} class={Styles.black} />
+      <DefineUse id="club" href={club.src} class={Styles.black} />
+      <DefineUse id="heart" href={heart.src} class={Styles.red} />
+      <DefineUse id="diamond" href={diamond.src} class={Styles.red} />
+
+      <DefineUse id="spade-rev" href={spade.src} class={classes(Styles.black, Styles.rev)} />
+      <DefineUse id="club-rev" href={club.src} class={classes(Styles.black, Styles.rev)} />
+      <DefineUse id="heart-rev" href={heart.src} class={classes(Styles.red, Styles.rev)} />
+      <DefineUse id="diamond-rev" href={diamond.src} class={classes(Styles.red, Styles.rev)} />
     </>
   );
 };
@@ -126,7 +124,7 @@ const DefineCard = (properties: DefineCardProperties): JSXElement => {
       y={properties.y - 15}
       height={30}
       width={30}
-      class={isRed() ? "fill-red-500" : "fill-slate-900"}
+      class={isRed() ? Styles.red : Styles.black}
     />
   );
 
@@ -135,12 +133,7 @@ const DefineCard = (properties: DefineCardProperties): JSXElement => {
   };
   const UseText = (properties: UseTextProperties): JSXElement => {
     return (
-      <text
-        x={50}
-        y={88}
-        text-anchor="middle"
-        class={`font-noto-jp font-[25px] ${isRed() ? "fill-red-500" : "fill-slate-900"}`}
-      >
+      <text x={50} y={88} text-anchor="middle" class={classes(Styles.text, isRed() ? Styles.red : Styles.black)}>
         {properties.children}
       </text>
     );
@@ -148,7 +141,7 @@ const DefineCard = (properties: DefineCardProperties): JSXElement => {
 
   return (
     <symbol id={`${properties.suit}-${properties.rank}`} viewBox="0 0 100 156">
-      <rect x={0} y={0} height={156} width={100} rx={10} ry={10} class="fill-slate-200 stroke-slate-900" />
+      <rect x={0} y={0} height={156} width={100} rx={10} ry={10} class={Styles.card} />
 
       <use
         href={`#${properties.suit}`}
@@ -156,9 +149,9 @@ const DefineCard = (properties: DefineCardProperties): JSXElement => {
         y={7}
         height={16}
         width={16}
-        class={isRed() ? "fill-red-500" : "fill-slate-900"}
+        class={isRed() ? Styles.red : Styles.black}
       />
-      <text x={22} y={20} class={`font-noto-jp font-[16px] ${isRed() ? "fill-red-500" : "fill-slate-900"}`}>
+      <text x={22} y={20} class={classes(Styles["text-rank"], isRed() ? Styles.red : Styles.black)}>
         {properties.rank}
       </text>
 
@@ -289,15 +282,7 @@ export const UseCard = (properties: UseCardProperties): JSXElement => {
         }}
       />
       <Show when={properties.selected}>
-        <rect
-          x={properties.x}
-          y={properties.y}
-          height={31.2}
-          width={20}
-          rx={2}
-          ry={2}
-          class="fill-none stroke-slate-900"
-        />
+        <rect x={properties.x} y={properties.y} height={31.2} width={20} rx={2} ry={2} class={Styles.selected} />
       </Show>
     </>
   );

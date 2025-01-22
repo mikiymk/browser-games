@@ -1,4 +1,4 @@
-import { StyledSvg } from "@/components/styled-svg";
+import { StyledSvg } from "@/components/elements/styled-svg";
 import { StatusDraw, StatusNextO, StatusNextX, StatusWinO, StatusWinX } from "@/games/nought-and-cross/types";
 import type { Status } from "@/games/nought-and-cross/types";
 import cross from "@/images/icon/cross.svg";

@@ -2,11 +2,12 @@
 import Head from "@/components/head.astro";
 import { App } from "@/games/klondike/components/app";
 import { DefineCards } from "@/games/klondike/components/define";
+import { TEXT_GAME_KLONDIKE } from "@/scripts/constants";
 ---
 
-<Head title="Klondike" />
+<Head title={TEXT_GAME_KLONDIKE} />
 
-<div class=" text-slate-800">
-    <DefineCards />
-    <App client:load />
-</div>
+<DefineCards />
+<App client:load />
+
+<div />

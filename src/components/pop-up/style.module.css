@@ -1,0 +1,15 @@
+.popup {
+  background-color: #fef9c3;
+  border-color: var(--black);
+  border-width: 2px;
+
+  &::backdrop {
+    position: fixed;
+    inset: 0;
+    background-color: #0001;
+  }
+}
+
+.popup-inner {
+  padding: 1rem;
+}

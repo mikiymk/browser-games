@@ -1,17 +1,13 @@
 ---
 import Head from "@/components/head.astro";
 import { App } from "@/games/knight-tour/components/app";
-import { Define } from "@/games/knight-tour/components/define";
+import { DefineSymbol } from "@/games/knight-tour/components/define";
 import { TEXT_GAME_KNIGHT_TOUR } from "@/scripts/constants";
 ---
 
 <Head title={TEXT_GAME_KNIGHT_TOUR} />
-<link
-    rel="stylesheet"
-    href=`https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap&text=01234567`
-/>
 
-<div class="text-slate-800">
-    <Define />
-    <App client:load />
-</div>
+<DefineSymbol />
+<App client:load />
+
+<div />

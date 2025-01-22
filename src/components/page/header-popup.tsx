@@ -1,4 +1,4 @@
-import { HeaderButton } from "@/components/page-header/header-button";
+import { HeaderButton } from "@/components/page/header-button";
 import { PopUp } from "@/components/pop-up/pop-up";
 import type { JSXElement } from "solid-js";
 import { createSignal } from "solid-js";

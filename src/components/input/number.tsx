@@ -1,4 +1,5 @@
 import type { JSXElement } from "solid-js";
+import Styles from "./style.module.css";
 
 type InputNumberProperties = {
   readonly name: string;
@@ -15,7 +16,7 @@ export const InputNumber = (properties: InputNumberProperties): JSXElement => {
       onChange={(event) => {
         properties.setValue(Number.parseInt(event.currentTarget.value));
       }}
-      class="text-right border-b-2 border-slate-900 border-solid"
+      class={Styles.number}
     />
   );
 };

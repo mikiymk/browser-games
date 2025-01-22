@@ -1,0 +1,9 @@
+body {
+  --black: #091323;
+  --red: #dc2626;
+  --dark: #78716c;
+  --light: #e7e5e4;
+
+  color: var(--black);
+  font-family: "Noto Sans Variable", sans-serif;
+}

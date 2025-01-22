@@ -1,5 +1,5 @@
-import { PageBody } from "@/components/page-body/page-body";
-import { PageHeader } from "@/components/page-header/page-header";
+import { PageBody } from "@/components/page/body";
+import { PageHeader } from "@/components/page/header";
 import { CellKnight, CellMovable, CellVisited } from "@/games/knight-tour/consts";
 import { createGame } from "@/games/knight-tour/create-game";
 import { setKnightMovable } from "@/games/knight-tour/knight-move";

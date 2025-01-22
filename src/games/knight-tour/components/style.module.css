@@ -1,0 +1,30 @@
+.knight {
+  fill: var(--light);
+  stroke: var(--black);
+}
+
+.number {
+  fill: #475569;
+}
+
+.figure {
+  fill: none;
+  stroke: #475569;
+  stroke-width: 2;
+}
+
+.history {
+  margin-right: 0;
+  margin-left: 0.5rem;
+  text-align: start;
+}
+
+.history-item {
+  display: inline;
+}
+
+.history-button {
+  width: 4rem;
+  text-align: center;
+  border: 1px solid var(--black);
+}

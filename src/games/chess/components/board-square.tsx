@@ -1,6 +1,7 @@
 import { MoveFrom, MoveTarget } from "@/games/chess/constants";
 import type { JSXElement } from "solid-js";
 import { UsePiece } from "./define";
+import Styles from "./style.module.css";
 
 type BoardSquareProperties = {
   readonly piece: number;
@@ -12,10 +13,10 @@ type BoardSquareProperties = {
 export const BoardSquare = (properties: BoardSquareProperties): JSXElement => {
   const markStyle = (): string | undefined =>
     properties.mark === MoveTarget
-      ? "cursor-pointer fill-orange-500"
+      ? Styles["square-target"]
       : properties.mark === MoveFrom
-        ? "cursor-pointer fill-slate-900"
-        : "fill-none";
+        ? Styles["square-from"]
+        : Styles.square;
 
   return (
     <>

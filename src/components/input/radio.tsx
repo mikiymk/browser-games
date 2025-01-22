@@ -1,5 +1,6 @@
 import type { JSXElement } from "solid-js";
 import { For } from "solid-js";
+import Styles from "./style.module.css";
 
 type RadioProperties<T> = {
   readonly name: string;
@@ -16,12 +17,12 @@ export const Radio = <T,>(properties: RadioProperties<T>): JSXElement => {
     <For each={properties.values}>
       {(value) => {
         return (
-          <label class="px-2 has-[:checked]:bg-lime-200 rounded">
+          <label class={Styles.radio}>
             <input
               type="radio"
               name={properties.name}
               checked={value.value === properties.value}
-              class="hidden"
+              class={Styles["radio-input"]}
               onChange={() => {
                 properties.setValue(value.value);
               }}

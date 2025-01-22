@@ -1,11 +1,13 @@
 import { Board } from "@/components/board/board";
 import board from "@/images/shogi/board.svg";
+import { classes } from "@/scripts/classes";
 import { For } from "solid-js";
 import type { JSXElement } from "solid-js";
 import { BLACK, WHITE } from "../constants";
 import type { Hand } from "../constants";
 import { Hands } from "./hands";
 import { Square } from "./square";
+import Styles from "./style.module.css";
 
 type BoardProperties = {
   readonly board: readonly { readonly piece: number; readonly moveTarget: boolean }[];
@@ -30,7 +32,7 @@ export const ShogiBoard = (properties: BoardProperties): JSXElement => {
         <thead>
           <tr>
             <For each={["", "王", "飛", "角", "金", "銀", "桂", "香", "歩"]}>
-              {(cell) => <th class="px-1 bg-amber-400 text-center border border-slate-900 border-solid">{cell}</th>}
+              {(cell) => <th class={classes(Styles.hand, Styles["hand-header"])}>{cell}</th>}
             </For>
           </tr>
         </thead>
