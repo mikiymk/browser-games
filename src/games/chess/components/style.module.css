@@ -1,0 +1,28 @@
+.square,
+.square-target,
+.square-from {
+  fill: none;
+  cursor: pointer;
+}
+
+.square-target {
+  fill: #f97316;
+}
+
+.square-from {
+  fill: #64748b;
+}
+
+.define {
+  display: none;
+}
+
+.define-black {
+  fill: #78716c;
+  stroke: #0f172a;
+}
+
+.define-white {
+  fill: #e7e5e4;
+  stroke: #0f172a;
+}

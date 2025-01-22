@@ -3,7 +3,7 @@ import type { JSXElement } from "solid-js";
 type DefineUseProperties = {
   readonly id: string;
   readonly href: string;
-  readonly class: string;
+  readonly class?: string | undefined;
 };
 export const DefineUse = (properties: DefineUseProperties): JSXElement => {
   return (
