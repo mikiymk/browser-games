@@ -1,14 +1,15 @@
 import type { JSXElement } from "solid-js";
 import Styles from "./style.module.css";
+import { classes } from "@/scripts/classes";
 
 type DefineNumberProperties = {
   readonly number: number;
-  readonly class: string;
+  readonly class?: string | undefined;
 };
 export const DefineNumber = (properties: DefineNumberProperties): JSXElement => {
   return (
-    <symbol id={`${properties.number}`} viewBox="0 0 60 60">
-      <text x={30} y={54} class={`${Styles["def-text"] ?? ""} ${properties.class}`}>
+    <symbol id={String(properties.number)} viewBox="0 0 60 60">
+      <text x={30} y={54} class={classes(Styles["def-text"], properties.class)}>
         {properties.number}
       </text>
     </symbol>

@@ -1,7 +1,7 @@
 ---
 import Head from "@/components/head.astro";
 import { App } from "@/games/knight-tour/components/app";
-import { Define } from "@/games/knight-tour/components/define";
+import { DefineSymbol } from "@/games/knight-tour/components/define";
 import { TEXT_GAME_KNIGHT_TOUR } from "@/scripts/constants";
 ---
 
@@ -12,6 +12,6 @@ import { TEXT_GAME_KNIGHT_TOUR } from "@/scripts/constants";
 />
 
 <div class="text-slate-800">
-    <Define />
+    <DefineSymbol />
     <App client:load />
 </div>
