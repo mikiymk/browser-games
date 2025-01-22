@@ -1,37 +1,21 @@
+import { Define } from "@/components/define/define";
 import { Use } from "@/components/define/use";
 import flag from "@/images/icon/flag.svg";
 import mine from "@/images/icon/mine.svg";
+import { classes } from "@/scripts/classes";
 import type { JSXElement } from "solid-js";
+import Styles from "./style.module.css";
 
-export const Define = (): JSXElement => {
+export const DefineSymbol = (): JSXElement => {
   return (
-    <svg viewBox="0 0 0 0" xmlns="http://www.w3.org/2000/svg" class="hidden">
-      <title>define cards</title>
-
-      <DefineSymbol />
-      <DefineNumbers />
-    </svg>
-  );
-};
-
-const Closed = (): JSXElement => {
-  return <rect height={60} width={60} class="fill-slate-400 stroke-slate-900 stroke-2" />;
-};
-
-const Opened = (): JSXElement => {
-  return <rect height={60} width={60} class="fill-none stroke-slate-900 stroke-2" />;
-};
-
-const DefineSymbol = (): JSXElement => {
-  return (
-    <>
+    <Define>
       <symbol id="mine" viewBox="0 0 60 60">
         <Closed />
-        <use href={`${mine.src}#root`} class="fill-slate-900 stroke-slate-900 stroke-2" />
+        <use href={`${mine.src}#root`} class={classes(Styles.symbol, Styles.mine)} />
       </symbol>
       <symbol id="flag" viewBox="0 0 60 60">
         <Closed />
-        <use href={`${flag.src}#root`} class="fill-red-500 stroke-slate-900 stroke-2" />
+        <use href={`${flag.src}#root`} class={classes(Styles.symbol, Styles.flag)} />
       </symbol>
       <symbol id="close" viewBox="0 0 60 60">
         <Closed />
@@ -39,37 +23,39 @@ const DefineSymbol = (): JSXElement => {
       <symbol id="open" viewBox="0 0 60 60">
         <Opened />
       </symbol>
-    </>
+
+      <DefineNumber number={1} class={Styles["num-1"]} />
+      <DefineNumber number={2} class={Styles["num-2"]} />
+      <DefineNumber number={3} class={Styles["num-3"]} />
+      <DefineNumber number={4} class={Styles["num-4"]} />
+      <DefineNumber number={5} class={Styles["num-5"]} />
+      <DefineNumber number={6} class={Styles["num-6"]} />
+      <DefineNumber number={7} class={Styles["num-7"]} />
+      <DefineNumber number={8} class={Styles["num-8"]} />
+    </Define>
   );
+};
+
+const Closed = (): JSXElement => {
+  return <rect height={60} width={60} class={classes(Styles.symbol, Styles.closed)} />;
+};
+
+const Opened = (): JSXElement => {
+  return <rect height={60} width={60} class={classes(Styles.symbol, Styles.opened)} />;
 };
 
 type DefineNumberProperties = {
   readonly number: number;
-  readonly class: string;
+  readonly class?: string | undefined;
 };
 const DefineNumber = (properties: DefineNumberProperties): JSXElement => {
   return (
     <symbol id={String(properties.number)} viewBox="0 0 60 60">
       <Opened />
-      <text x={30} y={54} class={`font-noto-jp text-[60px] stroke-none anchor-mid ${properties.class}`}>
+      <text x={30} y={54} class={classes(Styles.num, properties.class)}>
         {properties.number}
       </text>
     </symbol>
-  );
-};
-
-const DefineNumbers = (): JSXElement => {
-  return (
-    <>
-      <DefineNumber number={1} class="fill-blue-500" />
-      <DefineNumber number={2} class="fill-green-500" />
-      <DefineNumber number={3} class="fill-red-500" />
-      <DefineNumber number={4} class="fill-fuchsia-500" />
-      <DefineNumber number={5} class="fill-red-800" />
-      <DefineNumber number={6} class="fill-teal-400" />
-      <DefineNumber number={7} class="fill-slate-900" />
-      <DefineNumber number={8} class="fill-stone-500" />
-    </>
   );
 };
 

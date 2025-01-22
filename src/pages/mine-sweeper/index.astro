@@ -1,7 +1,7 @@
 ---
 import Head from "@/components/head.astro";
 import { App } from "@/games/mine-sweeper/components/app";
-import { Define } from "@/games/mine-sweeper/components/define";
+import { DefineSymbol } from "@/games/mine-sweeper/components/define";
 import { EmojiBombed, EmojiClear, EmojiSmile } from "@/games/mine-sweeper/consts";
 import { TEXT_GAME_MINE_SWEEPER } from "@/scripts/constants";
 ---
@@ -17,6 +17,6 @@ import { TEXT_GAME_MINE_SWEEPER } from "@/scripts/constants";
 />
 
 <div class="text-slate-800">
-    <Define />
+    <DefineSymbol />
     <App client:load />
 </div>

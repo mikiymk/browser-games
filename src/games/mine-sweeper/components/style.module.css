@@ -1,0 +1,65 @@
+.emoji {
+  font-family: "Noto Color Emoji", sans-serif;
+}
+
+.symbol {
+  stroke: #0f172a;
+  stroke-width: 2;
+}
+
+.mine {
+  fill: #0f172a;
+}
+
+.flag {
+  fill: #ef4444;
+}
+
+.closed {
+  fill: #94a3b8;
+}
+
+.opened {
+  fill: none;
+}
+
+.num {
+  font-family: Noto Sans JP, sans-serif;
+  font-size: 60px;
+
+  text-anchor: middle;
+
+  stroke: none;
+}
+
+.num-1 {
+  fill: #3b82f6;
+}
+
+.num-2 {
+  fill: #22c55e;
+}
+
+.num-3 {
+  fill: #ef4444;
+}
+
+.num-4 {
+  fill: #d946ef;
+}
+
+.num-5 {
+  fill: #991b1b;
+}
+
+.num-6 {
+  fill: #2dd4bf;
+}
+
+.num-7 {
+  fill: #0f172a;
+}
+
+.num-8 {
+  fill: #78716c;
+}
