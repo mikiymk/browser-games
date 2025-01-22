@@ -1,7 +1,7 @@
+import { classes } from "@/scripts/classes";
+import CommonStyles from "@/styles/common.module.css";
 import type { JSXElement } from "solid-js";
 import Styles from "./style.module.css";
-import CommonStyles from "@/styles/common.module.css";
-import { classes } from "@/scripts/classes";
 
 type DefineNumberProperties = {
   readonly number: number;

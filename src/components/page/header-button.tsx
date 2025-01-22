@@ -1,7 +1,7 @@
+import { Icon } from "@/components/elements/material-icon";
 import { Show } from "solid-js";
 import type { JSXElement } from "solid-js";
 import Styles from "./style.module.css";
-import { Icon } from "@/components/elements/material-icon";
 
 type HeaderButtonProperites = {
   readonly icon?: string | undefined;

@@ -1,8 +1,8 @@
+import { classes } from "@/scripts/classes";
 import { Show } from "solid-js";
 import type { JSXElement } from "solid-js";
 import { CellBlack } from "../const";
 import Styles from "./style.module.css";
-import { classes } from "@/scripts/classes";
 
 // ゲーム終了時に結果を表示する
 

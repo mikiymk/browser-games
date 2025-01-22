@@ -1,10 +1,10 @@
+import { Define } from "@/components/define/define";
 import { Use } from "@/components/define/use";
 import piece from "@/images/shogi/piece.svg";
+import { classes } from "@/scripts/classes";
+import CommonStyles from "@/styles/common.module.css";
 import type { JSXElement } from "solid-js";
 import Styles from "./style.module.css";
-import CommonStyles from "@/styles/common.module.css";
-import { Define } from "@/components/define/define";
-import { classes } from "@/scripts/classes";
 
 export const DefinePieces = (): JSXElement => {
   return (

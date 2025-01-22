@@ -1,5 +1,6 @@
 import { Board } from "@/components/board/board";
 import board from "@/images/shogi/board.svg";
+import { classes } from "@/scripts/classes";
 import { For } from "solid-js";
 import type { JSXElement } from "solid-js";
 import { BLACK, WHITE } from "../constants";
@@ -7,7 +8,6 @@ import type { Hand } from "../constants";
 import { Hands } from "./hands";
 import { Square } from "./square";
 import Styles from "./style.module.css";
-import { classes } from "@/scripts/classes";
 
 type BoardProperties = {
   readonly board: readonly { readonly piece: number; readonly moveTarget: boolean }[];

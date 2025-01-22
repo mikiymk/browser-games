@@ -1,9 +1,9 @@
+import { Settings } from "@/components/header-buttons/settings";
 import { Radio } from "@/components/input/radio";
 import { TEXT_FIRST_PLAYER, TEXT_SECOND_PLAYER } from "@/scripts/constants";
 import { playerValues } from "@/scripts/player";
 import type { PlayerType } from "@/scripts/player";
 import type { JSXElement, Setter } from "solid-js";
-import { Settings } from "@/components/header-buttons/settings";
 
 type SettingsProperties = {
   readonly white: PlayerType;

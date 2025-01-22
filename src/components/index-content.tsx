@@ -1,7 +1,5 @@
-import { For } from "solid-js";
-import type { JSXElement } from "solid-js";
-import { List, ListItem } from "@/components/elements/list";
 import { Anchor } from "@/components/elements/anchor";
+import { List, ListItem } from "@/components/elements/list";
 import { PageBody } from "@/components/page/body";
 import { PageHeader } from "@/components/page/header";
 import {
@@ -14,6 +12,8 @@ import {
   TEXT_GAME_REVERSI,
   TEXT_GAME_SHOGI,
 } from "@/scripts/constants";
+import { For } from "solid-js";
+import type { JSXElement } from "solid-js";
 
 const pages = [
   { title: TEXT_GAME_NOUGHT_AND_CROSS, name: "nought-and-cross" },

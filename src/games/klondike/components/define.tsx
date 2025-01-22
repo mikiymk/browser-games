@@ -1,3 +1,4 @@
+import { Define } from "@/components/define/define";
 import { DefineUse } from "@/components/define/define-use";
 import back from "@/images/card/back.svg";
 import club from "@/images/card/club.svg";
@@ -5,12 +6,11 @@ import diamond from "@/images/card/diamond.svg";
 import empty from "@/images/card/empty.svg";
 import heart from "@/images/card/heart.svg";
 import spade from "@/images/card/spade.svg";
+import { classes } from "@/scripts/classes";
 import { Match, Show, Switch } from "solid-js";
 import type { JSXElement } from "solid-js";
 import type { Card, Rank, Suit } from "../card";
-import { Define } from "@/components/define/define";
 import Styles from "./style.module.css";
-import { classes } from "@/scripts/classes";
 
 export const DefineCards = (): JSXElement => {
   return (

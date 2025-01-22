@@ -1,7 +1,7 @@
+import CommonStyles from "@/styles/common.module.css";
 import { Match, Show, Switch } from "solid-js";
 import type { JSXElement } from "solid-js";
 import { Bombed, Clear, EmojiBombed, EmojiClear, EmojiSmile, FieldFlag } from "../consts";
-import CommonStyles from "@/styles/common.module.css";
 
 type ControllerProperties = {
   readonly state: number;

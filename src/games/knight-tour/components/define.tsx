@@ -1,3 +1,4 @@
+import { Define } from "@/components/define/define";
 import { DefineNumber } from "@/components/define/define-number";
 import { DefineUse } from "@/components/define/define-use";
 import { Use } from "@/components/define/use";
@@ -6,7 +7,6 @@ import cross from "@/images/icon/cross.svg";
 import nought from "@/images/icon/nought.svg";
 import type { JSXElement } from "solid-js";
 import Styles from "./style.module.css";
-import { Define } from "@/components/define/define";
 
 export const DefineSymbol = (): JSXElement => {
   return (
