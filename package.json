@@ -17,6 +17,7 @@
     "lint:eslint": "eslint src --cache",
     "lint:eslint:fix": "eslint src --cache --fix",
     "lint:stylelint": "stylelint **/*.css --cache",
+    "lint:stylelint:fix": "stylelint **/*.css --cache --fix",
     "lint:typescript": "tsc",
     "lint:knip": "knip --cache",
     "build:js": "astro build",
@@ -32,8 +33,7 @@
     "build:wasm:small": "zig build all -Dtarget=wasm32-freestanding -Doptimize=ReleaseSmall",
     "test:wasm": "zig build test",
     "check:wasm": "run-z format:wasm test:wasm build:wasm",
-    "ci:wasm": "run-z lint:wasm:format test:wasm build:wasm",
-    "dummy": "dummy"
+    "ci:wasm": "run-z lint:wasm:format test:wasm build:wasm"
   },
   "repository": {
     "type": "git",
