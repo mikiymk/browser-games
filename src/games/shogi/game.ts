@@ -72,10 +72,7 @@ export const createGame = (white: Accessor<PlayerType>, black: Accessor<PlayerTy
     setBlackHands(hands[1]);
   };
 
-  let resolve: (value: number) => void = doNothingFunction;
-  const humanInput = new MultiPromise<number>((rs) => {
-    resolve = rs;
-  });
+  const { resolve, promise: humanInput } = MultiPromise.withResolvers<number>();
 
   let terminate = doNothingFunction;
   const start = (): void => {
