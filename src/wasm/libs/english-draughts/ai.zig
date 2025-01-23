@@ -10,7 +10,6 @@ const BitBoard = draughts.BitBoard;
 // common import
 const common = @import("../common/main.zig");
 const random = common.random.getRandomIntRange;
-const log = common.console.log;
 
 const ai_depth = 5;
 
