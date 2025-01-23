@@ -295,7 +295,14 @@ pub fn hitPositions(board: Board, color: Color, piece: Piece) BitBoard {
     const empty = board.getColorPieces(.black).unions(board.getColorPieces(.white)).getInverted();
 
     return switch (piece) {
-        .pawn, .lance => switch (color) {
+        .pawn => {
+            const pawn_lines = board.getPawnLines(color);
+            return switch (color) {
+                .white => empty.excludes(white_farest).excludes(pawn_lines),
+                .black => empty.excludes(black_farest).excludes(pawn_lines),
+            };
+        },
+        .lance => switch (color) {
             .white => empty.excludes(white_farest),
             .black => empty.excludes(black_farest),
         },
@@ -305,6 +312,16 @@ pub fn hitPositions(board: Board, color: Color, piece: Piece) BitBoard {
         },
         else => empty,
     };
+}
+
+pub fn getPawnLines(board: Board, color: Color) BitBoard {
+    var pawn_board = board.getBoard(color, .pawn);
+
+    for (0..8) |_| {
+        pawn_board.setUnion(pawn_board.moveMultiple(&.{ .n, .s }));
+    }
+
+    return pawn_board;
 }
 
 /// その色の駒の行ける範囲をすべて得る
