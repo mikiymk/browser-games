@@ -28,9 +28,9 @@
     "serve:preview": "astro preview",
     "format:wasm": "zig fmt ./src",
     "lint:wasm:format": "zig fmt --check ./src",
-    "build:wasm": "zig build all -Dtarget=wasm32-freestanding -Doptimize=Debug",
-    "build:wasm:fast": "zig build all -Dtarget=wasm32-freestanding -Doptimize=ReleaseFast",
-    "build:wasm:small": "zig build all -Dtarget=wasm32-freestanding -Doptimize=ReleaseSmall",
+    "build:wasm": "zig build -Doptimize=Debug",
+    "build:wasm:fast": "zig build -Doptimize=ReleaseFast",
+    "build:wasm:small": "zig build -Doptimize=ReleaseSmall",
     "test:wasm": "zig build test",
     "check:wasm": "run-z format:wasm test:wasm build:wasm",
     "ci:wasm": "run-z lint:wasm:format test:wasm build:wasm"

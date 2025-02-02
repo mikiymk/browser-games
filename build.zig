@@ -5,75 +5,58 @@ const Dir = Build.Step.InstallArtifact.Options.Dir;
 const Target = std.Build.ResolvedTarget;
 const Optimize = std.builtin.OptimizeMode;
 
-pub fn build(b: *Build) void {
-    const target: Target = b.standardTargetOptions(.{});
-    const optimize: Optimize = b.standardOptimizeOption(.{});
+const public_dir: Dir = .{ .override = .{ .custom = "../public/wasm" } };
 
-    const public_dir: Dir = .{ .override = .{ .custom = "../public/wasm" } };
+pub fn build(b: *Build) void {
+    const target: Target = b.standardTargetOptions(.{ .default_target = .{
+        .cpu_arch = .wasm32,
+        .os_tag = .freestanding,
+    } });
+    const optimize: Optimize = b.standardOptimizeOption(.{});
 
     // build
     const build_all = b.step("all", "Build all library");
 
-    const build_reversi = buildLib(b, "reversi", public_dir, target, optimize);
-    const build_chess = buildLib(b, "chess", public_dir, target, optimize);
-    const build_shogi = buildLib(b, "shogi", public_dir, target, optimize);
-    const build_draughts = buildLib(b, "english-draughts", public_dir, target, optimize);
+    const reversi = buildLib(b, "reversi", target, optimize);
+    const chess = buildLib(b, "chess", target, optimize);
+    const shogi = buildLib(b, "shogi", target, optimize);
+    const e_draughts = buildLib(b, "english-draughts", target, optimize);
 
-    build_all.dependOn(build_reversi);
-    build_all.dependOn(build_chess);
-    build_all.dependOn(build_shogi);
-    build_all.dependOn(build_draughts);
+    build_all.dependOn(reversi);
+    build_all.dependOn(chess);
+    build_all.dependOn(shogi);
+    build_all.dependOn(e_draughts);
 
     // test
     buildTest(b);
+
+    b.default_step = build_all;
 }
 
 fn source(comptime name: []const u8) []const u8 {
     return "src-zig/" ++ name ++ ".zig";
 }
 
-fn buildLib(b: *Build, comptime name: []const u8, public_dir: Dir, target: Target, optimize: Optimize) *Build.Step {
-    if (target.result.isWasm()) {
-        const exe = b.addExecutable(.{
-            .name = name,
-            .root_source_file = b.path(source(name)),
-            .target = target,
-            .optimize = optimize,
+fn buildLib(b: *Build, comptime name: []const u8, target: Target, optimize: Optimize) *Build.Step {
+    const step = b.step(name, "Build " ++ name ++ " library");
 
-            // Omit debug symbols
-            .strip = true,
-        });
+    const exe = b.addExecutable(.{
+        .name = name,
+        .root_source_file = b.path(source(name)),
+        .target = target,
+        .optimize = optimize,
+        // Omit debug symbols
+        .strip = true,
+    });
 
-        // exports all "export" functions
-        exe.rdynamic = true;
-        // no-entry
-        exe.entry = .disabled;
+    // exports all "export" functions
+    exe.rdynamic = true;
+    // no-entry
+    exe.entry = .disabled;
 
-        const artifact = b.addInstallArtifact(exe, .{ .dest_dir = public_dir });
-        const step = b.step(name, "Build " ++ name ++ " library");
-        step.dependOn(&artifact.step);
-
-        return step;
-    } else {
-        const lib = b.addSharedLibrary(.{
-            .name = name,
-            .root_source_file = b.path(source(name)),
-            .target = target,
-            .optimize = optimize,
-
-            // Omit debug symbols
-            .strip = true,
-        });
-
-        // exports all "export" functions
-        lib.rdynamic = true;
-
-        const artifact = b.addInstallArtifact(lib, .{ .dest_dir = public_dir });
-        const step = b.step(name, "Build " ++ name ++ " library");
-        step.dependOn(&artifact.step);
-
-        return step;
-    }
+    const artifact = b.addInstallArtifact(exe, .{ .dest_dir = public_dir });
+    step.dependOn(&artifact.step);
+    return step;
 }
 
 fn buildTest(b: *Build) void {
