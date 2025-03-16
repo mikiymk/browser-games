@@ -17,7 +17,7 @@ test "get random move with AI" {
     const board = Game.init();
 
     for (0..11) |_| {
-        var rand_gen = std.rand.DefaultPrng.init(0);
+        var rand_gen = std.Random.DefaultPrng.init(0);
 
         const move = ai.move(board, rand_gen.random());
 

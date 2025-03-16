@@ -1,7 +1,7 @@
 // std import
 const std = @import("std");
 const builtin = @import("builtin");
-const Random = std.rand.Random;
+const Random = std.Random;
 const assert = std.debug.assert;
 
 // common import

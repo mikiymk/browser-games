@@ -23,8 +23,8 @@ test "get random move with AI" {
     );
 
     const S = struct {
-        var rand_gen: std.rand.DefaultPrng = undefined;
-        var rand: std.rand.Random = undefined;
+        var rand_gen: std.Random.DefaultPrng = undefined;
+        var rand: std.Random = undefined;
 
         fn random() f64 {
             return rand.float(f64);
@@ -32,7 +32,7 @@ test "get random move with AI" {
     };
 
     for (0..11) |i| {
-        S.rand_gen = std.rand.DefaultPrng.init(i);
+        S.rand_gen = std.Random.DefaultPrng.init(i);
         S.rand = S.rand_gen.random();
 
         const actual = BitBoard.fromIndex(ai.getAiMove(board, S.random));
