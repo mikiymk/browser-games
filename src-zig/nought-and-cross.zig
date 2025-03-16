@@ -27,6 +27,16 @@ export fn getCurrentPlayer(game: *Game) usize {
     return @intFromEnum(game.getCurrentPlayer());
 }
 
+/// 勝利者がいるかどうかを得る
+export fn isWin(game: *Game) bool {
+    return game.winner() != null;
+}
+
+/// 勝利者を得る
+export fn getWinner(game: *Game) usize {
+    return @intFromEnum(game.winner().?);
+}
+
 /// ボードに駒を置き、ターンを進める
 export fn move(game: *Game, position_to: usize) void {
     game.move(position_to);

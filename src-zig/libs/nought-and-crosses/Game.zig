@@ -55,6 +55,38 @@ pub fn move(game: *Game, to: usize) void {
     game.next_color = game.next_color.turn();
 }
 
+pub fn winner(game: *Game) ?Color {
+    if (game.isWin(.white)) return .white;
+    if (game.isWin(.black)) return .black;
+    return null;
+}
+
+const win_lines = b: {
+    const win_lines_str = [_][]const u8{
+        "ooo\n...\n...",
+        "...\nooo\n...",
+        "...\n...\nooo",
+        "o..\no..\no..",
+        ".o.\n.o.\n.o.",
+        "..o\n..o\n..o",
+        "o..\n.o.\n..o",
+        "..o\n.o.\no..",
+    };
+    var lines = [_]BitBoard.BitBoard{undefined} ** win_lines_str.len;
+    for (win_lines_str, &lines) |str, *line| {
+        line.* = BitBoard.BitBoard.fromString(str, 'o');
+    }
+    break :b lines;
+};
+
+pub fn isWin(game: Game, color: Color) bool {
+    const board = game.boards.get(color);
+    for (win_lines) |line| {
+        if (board.masks(line).eql(line)) return true;
+    }
+    return false;
+}
+
 pub fn ai(game: *Game) void {
     const empty = game.boards.getEmpty();
     const count = empty.count();
