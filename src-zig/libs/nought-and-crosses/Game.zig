@@ -1,9 +1,9 @@
 const std = @import("std");
 const builtin = @import("builtin");
 const common = @import("../common/main.zig");
-const nougut_and_cross = @import("main.zig");
-const Game = nougut_and_cross.Game;
-const Board = nougut_and_cross.Board;
+const nought_and_cross = @import("main.zig");
+const Game = nought_and_cross.Game;
+const BitBoard = nought_and_cross.BitBoard;
 
 pub const Position = struct {
     x: u32,
@@ -19,37 +19,53 @@ pub const Position = struct {
 pub const Color = enum(u1) {
     white,
     black,
+
+    pub fn turn(color: Color) Color {
+        return switch (color) {
+            .white => .black,
+            .black => .white,
+        };
+    }
 };
 
-board: Board,
+boards: BitBoard,
+next_color: Color,
 
 pub fn init() Game {
     return .{
-        .board = Board.init(),
+        .boards = BitBoard.init(
+            \\...
+            \\...
+            \\...
+        ),
+        .next_color = .white,
     };
 }
 
-pub fn deinit(game: *Game) void {
-    game.board.deinit();
-}
-
 pub fn getBoard(game: Game, color: Color) u32 {
-    _ = game;
-    _ = color;
-    return 0;
+    return game.boards.get(color).toInteger();
 }
 
 pub fn getCurrentPlayer(game: Game) Color {
-    _ = game;
-    return .white;
+    return game.next_color;
 }
 
-pub fn move(game: *Game, from: Position, to: Position) void {
-    _ = game;
-    _ = from;
-    _ = to;
+pub fn move(game: *Game, to: usize) void {
+    game.boards.set(game.next_color, @intCast(to));
+    game.next_color = game.next_color.turn();
 }
 
 pub fn ai(game: *Game) void {
-    _ = game;
+    const empty = game.boards.getEmpty();
+    const count = empty.count();
+    var rand_int = common.random.getRandomIntRange(0, count);
+    var it = empty.iterator();
+    const move_to = b: while (it.next()) |index| {
+        if (rand_int == 0) {
+            break :b index;
+        }
+        rand_int -= 1;
+    } else unreachable;
+
+    game.move(move_to);
 }
