@@ -6,6 +6,10 @@ const Game = nougut_and_cross.Game;
 const Board = nougut_and_cross.Board;
 const BitBoard = common.bit_board.BitBoard(3, 3);
 
-pub fn init() Game {
+pub fn init() Board {
     return .{};
+}
+
+pub fn deinit(board: Board) void {
+    _ = board;
 }
