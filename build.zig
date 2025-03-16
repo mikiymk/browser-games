@@ -17,15 +17,17 @@ pub fn build(b: *Build) void {
     // build
     const build_all = b.step("all", "Build all library");
 
-    const reversi = buildLib(b, "reversi", target, optimize);
-    const chess = buildLib(b, "chess", target, optimize);
-    const shogi = buildLib(b, "shogi", target, optimize);
-    const e_draughts = buildLib(b, "english-draughts", target, optimize);
-
-    build_all.dependOn(reversi);
-    build_all.dependOn(chess);
-    build_all.dependOn(shogi);
-    build_all.dependOn(e_draughts);
+    const names = [_][]const u8{
+        "reversi",
+        "chess",
+        "shogi",
+        "english-draughts",
+        "nought-and-cross",
+    };
+    inline for (names) |name| {
+        const step = buildLib(b, name, target, optimize);
+        build_all.dependOn(step);
+    }
 
     // test
     buildTest(b);
