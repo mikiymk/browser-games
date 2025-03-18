@@ -5,20 +5,9 @@ const nought_and_cross = @import("main.zig");
 const Game = nought_and_cross.Game;
 const BitBoard = nought_and_cross.BitBoard;
 
-pub const Position = struct {
-    x: u32,
-    y: u32,
-
-    pub fn from(index: usize) Position {
-        return .{
-            .x = index % 3,
-            .y = index / 3,
-        };
-    }
-};
 pub const Color = enum(u1) {
-    white,
-    black,
+    white = 0,
+    black = 1,
 
     pub fn turn(color: Color) Color {
         return switch (color) {
