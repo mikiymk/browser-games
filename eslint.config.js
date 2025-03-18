@@ -1,7 +1,7 @@
 import eslintComments from "@eslint-community/eslint-plugin-eslint-comments";
 import eslint from "@eslint/js";
-import prettier from "eslint-config-prettier";
-import pluginImport from "eslint-plugin-i";
+import biome from "eslint-config-biome";
+import pluginImport from "eslint-plugin-import";
 import solid from "eslint-plugin-solid";
 import unicorn from "eslint-plugin-unicorn";
 import vitest from "eslint-plugin-vitest";
@@ -51,7 +51,7 @@ export default typescript.config(
       ...unicorn.configs.recommended.rules,
       ...solid.configs.typescript.rules,
       ...vitest.configs.recommended.rules,
-      ...prettier.rules,
+      ...biome.rules,
 
       // my custom
 
