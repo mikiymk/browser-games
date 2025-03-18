@@ -17,14 +17,14 @@ type WasmExports = {
   memory: WebAssembly.Memory;
 };
 
-type GameController = {
-  init: () => GameObject;
-  deinit: (g: GameObject) => void;
-  getColor: (g: GameObject) => PlayerColor;
-  getWinner: (g: GameObject) => PlayerColor | undefined;
-  getBoard: (g: GameObject) => readonly number[];
-  move: (g: GameObject, position: number) => void;
-  ai: (g: GameObject) => void;
+export type GameController = {
+  readonly init: () => GameObject;
+  readonly deinit: (g: GameObject) => void;
+  readonly getColor: (g: GameObject) => PlayerColor;
+  readonly getWinner: (g: GameObject) => PlayerColor | undefined;
+  readonly getBoard: (g: GameObject) => readonly number[];
+  readonly move: (g: GameObject, position: number) => void;
+  readonly ai: (g: GameObject) => void;
 };
 
 export const getWasm = async (): Promise<GameController> => {

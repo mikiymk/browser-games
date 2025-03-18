@@ -1,26 +1,28 @@
 import { Start } from "@/components/header-buttons/start";
 import { PageBody } from "@/components/page/body";
 import { PageHeader } from "@/components/page/header";
-import { filledBoard, gameLoop, isWin } from "@/games/nought-and-cross/game-model";
-import {
-  Empty,
-  MarkO,
-  MarkX,
-  StatusDraw,
-  StatusNextO,
-  StatusNextX,
-  StatusNone,
-  StatusWinO,
-  StatusWinX,
-} from "@/games/nought-and-cross/types";
-import type { Status } from "@/games/nought-and-cross/types";
+import { Empty } from "@/games/nought-and-cross/types";
 import { doNothingFunction } from "@/scripts/do-nothing";
 import { MultiPromise } from "@/scripts/multi-promise";
 import { PlayerTypeAi, PlayerTypeHuman } from "@/scripts/player";
 import type { PlayerType } from "@/scripts/player";
+import { usePromise } from "@/scripts/use-promise";
 import { createUrlQuerySignal } from "@/scripts/use-url-query";
 import type { JSXElement } from "solid-js";
 import { createSignal, onMount } from "solid-js";
+import {
+  BLACK,
+  STATUS_DRAW,
+  STATUS_NONE,
+  STATUS_PLAY_BLACK,
+  STATUS_PLAY_WHITE,
+  STATUS_WIN_BLACK,
+  STATUS_WIN_WHITE,
+  WHITE,
+} from "../constants";
+import type { EndType, GameStatus, PlayerColor } from "../constants";
+import { startGame } from "../game-body";
+import { getWasm } from "../wasm";
 import { NncBoard } from "./board";
 import { History } from "./history";
 import { NoughtAndCrossSettings } from "./settings";
@@ -31,15 +33,19 @@ export const App = (): JSXElement => {
   const [playerX, setPlayerX] = createUrlQuerySignal<PlayerType>("x", PlayerTypeAi);
 
   const [board, setBoardData] = createSignal<readonly number[]>([]);
-  const [mark, setMark] = createSignal(MarkO);
-  const [history, setHistory] = createSignal<readonly number[]>([]);
+  const [history] = createSignal<readonly number[]>([]);
+
+  const wasm = usePromise(getWasm);
+  const { resolve, promise } = MultiPromise.withResolvers<number>();
+  const [status, setStatus] = createSignal<GameStatus>(STATUS_NONE);
+  const setColor = (color: PlayerColor): void => {
+    setStatus(color === WHITE ? STATUS_PLAY_WHITE : STATUS_PLAY_BLACK);
+  };
+  const setEnd = (end: EndType): void => {
+    setStatus(end === WHITE ? STATUS_WIN_WHITE : end === BLACK ? STATUS_WIN_BLACK : STATUS_DRAW);
+  };
 
   let terminate = doNothingFunction;
-  let resolve: (value: number) => void = doNothingFunction;
-
-  const humanInput = new MultiPromise<number>((rs) => {
-    resolve = rs;
-  });
 
   const handleClick = (index: number): void => {
     if (board()[index] !== Empty) {
@@ -51,34 +57,22 @@ export const App = (): JSXElement => {
 
   const reset = (): void => {
     terminate();
-
-    const players = {
-      o: playerO(),
-      x: playerX(),
-    };
-
-    // eslint-disable-next-line @typescript-eslint/prefer-destructuring -- 再代入
-    terminate = gameLoop(setBoardData, setMark, setHistory, humanInput, players).terminate;
-  };
-
-  const status = (): Status => {
-    if (isWin(board(), MarkO)) {
-      return StatusWinO;
-    }
-    if (isWin(board(), MarkX)) {
-      return StatusWinX;
-    }
-    if (filledBoard(board())) {
-      return StatusDraw;
-    }
-    if (mark() === MarkO) {
-      return StatusNextO;
-    }
-    if (mark() === MarkX) {
-      return StatusNextX;
+    const wasmBody = wasm();
+    if (!wasmBody) {
+      return;
     }
 
-    return StatusNone;
+    terminate = startGame({
+      game: wasmBody,
+      setBoard: setBoardData,
+      setColor: setColor,
+      setEnd: setEnd,
+      requestInput: () => promise.request(),
+      players: {
+        [WHITE]: playerO(),
+        [BLACK]: playerX(),
+      },
+    });
   };
 
   onMount(reset);
