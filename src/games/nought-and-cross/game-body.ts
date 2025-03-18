@@ -1,13 +1,13 @@
 import { PlayerTypeHuman } from "@/scripts/player";
 import type { PlayerType } from "@/scripts/player";
 import { sleep } from "@/scripts/sleep";
-import { BLACK, WHITE } from "./constants";
+import { CROSS, NOUGHT } from "./constants";
 import type { EndType, PlayerColor } from "./constants";
 import type { GameController } from "./wasm";
 
 type Players = {
-  readonly [WHITE]: PlayerType;
-  readonly [BLACK]: PlayerType;
+  readonly [NOUGHT]: PlayerType;
+  readonly [CROSS]: PlayerType;
 };
 
 type Parameters = {

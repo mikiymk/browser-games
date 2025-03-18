@@ -10,14 +10,14 @@ import { createUrlQuerySignal } from "@/scripts/use-url-query";
 import type { JSXElement } from "solid-js";
 import { createSignal, onMount } from "solid-js";
 import {
-  BLACK,
+  CROSS,
   STATUS_DRAW,
   STATUS_NONE,
-  STATUS_PLAY_BLACK,
-  STATUS_PLAY_WHITE,
-  STATUS_WIN_BLACK,
-  STATUS_WIN_WHITE,
-  WHITE,
+  STATUS_PLAY_CROSS,
+  STATUS_PLAY_NOUGHT,
+  STATUS_WIN_CROSS,
+  STATUS_WIN_NOUGHT,
+  NOUGHT,
 } from "../constants";
 import type { EndType, GameStatus, PlayerColor } from "../constants";
 import { startGame } from "../game-body";
@@ -38,10 +38,10 @@ export const App = (): JSXElement => {
   const { resolve, promise } = MultiPromise.withResolvers<number>();
   const [status, setStatus] = createSignal<GameStatus>(STATUS_NONE);
   const setColor = (color: PlayerColor): void => {
-    setStatus(color === WHITE ? STATUS_PLAY_WHITE : STATUS_PLAY_BLACK);
+    setStatus(color === NOUGHT ? STATUS_PLAY_NOUGHT : STATUS_PLAY_CROSS);
   };
   const setEnd = (end: EndType): void => {
-    setStatus(end === WHITE ? STATUS_WIN_WHITE : end === BLACK ? STATUS_WIN_BLACK : STATUS_DRAW);
+    setStatus(end === NOUGHT ? STATUS_WIN_NOUGHT : end === CROSS ? STATUS_WIN_CROSS : STATUS_DRAW);
   };
 
   let terminate = doNothingFunction;
@@ -68,8 +68,8 @@ export const App = (): JSXElement => {
       setEnd: setEnd,
       requestInput: () => promise.request(),
       players: {
-        [WHITE]: playerO(),
-        [BLACK]: playerX(),
+        [NOUGHT]: playerO(),
+        [CROSS]: playerX(),
       },
     });
   };

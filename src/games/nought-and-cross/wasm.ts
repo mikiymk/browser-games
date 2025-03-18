@@ -1,5 +1,5 @@
 import { mergeBoards, transBoard } from "../english-draughts/boards";
-import { BLACK, BLACK_NUMBER, WHITE, WHITE_NUMBER } from "./constants";
+import { CROSS, CROSS_WASM, NOUGHT, NOUGHT_WASM } from "./constants";
 import type { PlayerColor } from "./constants";
 
 type GameObject = 0 | (number & { readonly __unique: "Wasm pointer of Game object" });
@@ -36,7 +36,7 @@ export const getWasm = async (): Promise<GameController> => {
     deinit: exports.deinit,
 
     getColor(game): PlayerColor {
-      return exports.getCurrentPlayer(game) === WHITE_NUMBER ? WHITE : BLACK;
+      return exports.getCurrentPlayer(game) === NOUGHT_WASM ? NOUGHT : CROSS;
     },
 
     getWinner(game): PlayerColor | undefined {
@@ -44,12 +44,12 @@ export const getWasm = async (): Promise<GameController> => {
         return undefined;
       }
 
-      return exports.getWinner(game) === WHITE_NUMBER ? WHITE : BLACK;
+      return exports.getWinner(game) === NOUGHT_WASM ? NOUGHT : CROSS;
     },
 
     getBoard(game): readonly number[] {
-      const whiteBoard = transBoard(3, 3, exports.getBoard(game, WHITE_NUMBER), WHITE);
-      const blackBoard = transBoard(3, 3, exports.getBoard(game, BLACK_NUMBER), BLACK);
+      const whiteBoard = transBoard(3, 3, exports.getBoard(game, NOUGHT_WASM), NOUGHT);
+      const blackBoard = transBoard(3, 3, exports.getBoard(game, CROSS_WASM), CROSS);
 
       return mergeBoards(whiteBoard, blackBoard);
     },

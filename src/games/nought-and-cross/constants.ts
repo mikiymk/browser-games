@@ -1,26 +1,26 @@
-export const WHITE_NUMBER = 0;
-export const BLACK_NUMBER = 1;
+export const NOUGHT_WASM = 0;
+export const CROSS_WASM = 1;
 
-export const WHITE = 1; // nought
-export const BLACK = 2;
+export const NOUGHT = 1;
+export const CROSS = 2;
 
-export type PlayerColor = typeof BLACK | typeof WHITE;
+export type PlayerColor = typeof CROSS | typeof NOUGHT;
 
-const DRAW = "draw";
+const DRAW = 3;
 
-export type EndType = typeof BLACK | typeof DRAW | typeof WHITE;
+export type EndType = typeof CROSS | typeof DRAW | typeof NOUGHT;
 
-export const STATUS_PLAY_WHITE = "white play";
-export const STATUS_PLAY_BLACK = "black play";
-export const STATUS_WIN_WHITE = "white win";
-export const STATUS_WIN_BLACK = "black win";
+export const STATUS_PLAY_NOUGHT = "nought play";
+export const STATUS_PLAY_CROSS = "cross play";
+export const STATUS_WIN_NOUGHT = "nought win";
+export const STATUS_WIN_CROSS = "cross win";
 export const STATUS_DRAW = "draw";
 export const STATUS_NONE = "none";
 
 export type GameStatus =
   | typeof STATUS_DRAW
   | typeof STATUS_NONE
-  | typeof STATUS_PLAY_BLACK
-  | typeof STATUS_PLAY_WHITE
-  | typeof STATUS_WIN_BLACK
-  | typeof STATUS_WIN_WHITE;
+  | typeof STATUS_PLAY_CROSS
+  | typeof STATUS_PLAY_NOUGHT
+  | typeof STATUS_WIN_CROSS
+  | typeof STATUS_WIN_NOUGHT;
