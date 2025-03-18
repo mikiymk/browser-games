@@ -6,9 +6,12 @@ export const CROSS = 2;
 
 export type PlayerColor = typeof CROSS | typeof NOUGHT;
 
-const DRAW = 3;
+export const END_PLAYING = 0;
+export const END_NOUGHT_WIN = 1;
+export const END_CROSS_WIN = 2;
+export const END_DRAW = 3;
 
-export type EndType = typeof CROSS | typeof DRAW | typeof NOUGHT;
+export type EndType = typeof END_CROSS_WIN | typeof END_DRAW | typeof END_NOUGHT_WIN | typeof END_PLAYING;
 
 export const STATUS_PLAY_NOUGHT = "nought play";
 export const STATUS_PLAY_CROSS = "cross play";

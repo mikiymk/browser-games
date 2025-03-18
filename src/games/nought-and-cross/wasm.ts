@@ -1,6 +1,6 @@
 import { mergeBoards, transBoard } from "../english-draughts/boards";
 import { CROSS, CROSS_WASM, NOUGHT, NOUGHT_WASM } from "./constants";
-import type { PlayerColor } from "./constants";
+import type { EndType, PlayerColor } from "./constants";
 
 type GameObject = 0 | (number & { readonly __unique: "Wasm pointer of Game object" });
 
@@ -9,7 +9,6 @@ type WasmExports = {
   deinit: (g: GameObject) => void;
   getBoard: (g: GameObject, color: number) => number;
   getCurrentPlayer: (g: GameObject) => number;
-  isWin: (g: GameObject) => boolean;
   getWinner: (g: GameObject) => number;
   move: (g: GameObject, to: number) => void;
   ai: (g: GameObject) => void;
@@ -21,7 +20,7 @@ export type GameController = {
   readonly init: () => GameObject;
   readonly deinit: (g: GameObject) => void;
   readonly getColor: (g: GameObject) => PlayerColor;
-  readonly getWinner: (g: GameObject) => PlayerColor | undefined;
+  readonly getWinner: (g: GameObject) => EndType;
   readonly getBoard: (g: GameObject) => readonly number[];
   readonly move: (g: GameObject, position: number) => void;
   readonly ai: (g: GameObject) => void;
@@ -39,12 +38,8 @@ export const getWasm = async (): Promise<GameController> => {
       return exports.getCurrentPlayer(game) === NOUGHT_WASM ? NOUGHT : CROSS;
     },
 
-    getWinner(game): PlayerColor | undefined {
-      if (!exports.isWin(game)) {
-        return undefined;
-      }
-
-      return exports.getWinner(game) === NOUGHT_WASM ? NOUGHT : CROSS;
+    getWinner(game): EndType {
+      return exports.getWinner(game) as EndType;
     },
 
     getBoard(game): readonly number[] {

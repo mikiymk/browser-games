@@ -17,6 +17,13 @@ pub const Color = enum(u1) {
     }
 };
 
+pub const GameEnd = enum(u2) {
+    playing = 0,
+    white_win = 1,
+    black_win = 2,
+    draw = 3,
+};
+
 boards: BitBoard,
 next_color: Color,
 
@@ -44,10 +51,11 @@ pub fn move(game: *Game, to: usize) void {
     game.next_color = game.next_color.turn();
 }
 
-pub fn winner(game: *Game) ?Color {
-    if (game.isWin(.white)) return .white;
-    if (game.isWin(.black)) return .black;
-    return null;
+pub fn winner(game: *Game) GameEnd {
+    if (game.isWin(.white)) return .white_win;
+    if (game.isWin(.black)) return .black_win;
+    if (game.isFilled()) return .draw;
+    return .playing;
 }
 
 const win_lines = b: {
@@ -74,6 +82,10 @@ pub fn isWin(game: Game, color: Color) bool {
         if (board.masks(line).eql(line)) return true;
     }
     return false;
+}
+
+pub fn isFilled(game: Game) bool {
+    return game.boards.getEmpty().isEmpty();
 }
 
 pub fn ai(game: *Game) void {

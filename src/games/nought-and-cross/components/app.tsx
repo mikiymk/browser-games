@@ -11,13 +11,17 @@ import type { JSXElement } from "solid-js";
 import { createSignal, onMount } from "solid-js";
 import {
   CROSS,
+  END_CROSS_WIN,
+  END_DRAW,
+  END_NOUGHT_WIN,
+  END_PLAYING,
+  NOUGHT,
   STATUS_DRAW,
   STATUS_NONE,
   STATUS_PLAY_CROSS,
   STATUS_PLAY_NOUGHT,
   STATUS_WIN_CROSS,
   STATUS_WIN_NOUGHT,
-  NOUGHT,
 } from "../constants";
 import type { EndType, GameStatus, PlayerColor } from "../constants";
 import { startGame } from "../game-body";
@@ -41,7 +45,22 @@ export const App = (): JSXElement => {
     setStatus(color === NOUGHT ? STATUS_PLAY_NOUGHT : STATUS_PLAY_CROSS);
   };
   const setEnd = (end: EndType): void => {
-    setStatus(end === NOUGHT ? STATUS_WIN_NOUGHT : end === CROSS ? STATUS_WIN_CROSS : STATUS_DRAW);
+    switch (end) {
+      case END_PLAYING:
+        break;
+      case END_NOUGHT_WIN:
+        setStatus(STATUS_WIN_NOUGHT);
+        break;
+      case END_CROSS_WIN:
+        setStatus(STATUS_WIN_CROSS);
+        break;
+      case END_DRAW:
+        setStatus(STATUS_DRAW);
+        break;
+      default: {
+        const _exhaustiveCheck: never = end;
+      }
+    }
   };
 
   let terminate = doNothingFunction;
@@ -64,8 +83,8 @@ export const App = (): JSXElement => {
     terminate = startGame({
       game: wasmBody,
       setBoard: setBoardData,
-      setColor: setColor,
-      setEnd: setEnd,
+      setColor,
+      setEnd,
       requestInput: () => promise.request(),
       players: {
         [NOUGHT]: playerO(),

@@ -1,7 +1,7 @@
 import { PlayerTypeHuman } from "@/scripts/player";
 import type { PlayerType } from "@/scripts/player";
 import { sleep } from "@/scripts/sleep";
-import { CROSS, NOUGHT } from "./constants";
+import { CROSS, END_PLAYING, NOUGHT } from "./constants";
 import type { EndType, PlayerColor } from "./constants";
 import type { GameController } from "./wasm";
 
@@ -46,7 +46,7 @@ export const startGame = (parameters: Parameters): Terminator => {
     setBoard(game.getBoard(gameObject));
 
     const end = game.getWinner(gameObject);
-    if (end !== undefined) {
+    if (end !== END_PLAYING) {
       setEnd(end);
       terminate();
     }
