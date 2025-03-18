@@ -2,7 +2,7 @@ import { mergeBoards, transBoard } from "../english-draughts/boards";
 import { BLACK, BLACK_NUMBER, WHITE, WHITE_NUMBER } from "./constants";
 import type { PlayerColor } from "./constants";
 
-export type GameObject = 0 | (number & { readonly __unique: "Wasm pointer of Game object" });
+type GameObject = 0 | (number & { readonly __unique: "Wasm pointer of Game object" });
 
 type WasmExports = {
   init: () => GameObject;
@@ -48,8 +48,8 @@ export const getWasm = async (): Promise<GameController> => {
     },
 
     getBoard(game): readonly number[] {
-      const whiteBoard = transBoard(3, 3, exports.getBoard(game, WHITE_NUMBER), WHITE_NUMBER);
-      const blackBoard = transBoard(3, 3, exports.getBoard(game, BLACK_NUMBER), BLACK_NUMBER);
+      const whiteBoard = transBoard(3, 3, exports.getBoard(game, WHITE_NUMBER), WHITE);
+      const blackBoard = transBoard(3, 3, exports.getBoard(game, BLACK_NUMBER), BLACK);
 
       return mergeBoards(whiteBoard, blackBoard);
     },

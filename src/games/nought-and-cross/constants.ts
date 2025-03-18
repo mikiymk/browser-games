@@ -1,12 +1,12 @@
 export const WHITE_NUMBER = 0;
 export const BLACK_NUMBER = 1;
 
-export const WHITE = "white";
-export const BLACK = "black";
+export const WHITE = 1; // nought
+export const BLACK = 2;
 
 export type PlayerColor = typeof BLACK | typeof WHITE;
 
-export const DRAW = "draw";
+const DRAW = "draw";
 
 export type EndType = typeof BLACK | typeof DRAW | typeof WHITE;
 

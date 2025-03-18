@@ -1,7 +1,6 @@
 import { Start } from "@/components/header-buttons/start";
 import { PageBody } from "@/components/page/body";
 import { PageHeader } from "@/components/page/header";
-import { Empty } from "@/games/nought-and-cross/types";
 import { doNothingFunction } from "@/scripts/do-nothing";
 import { MultiPromise } from "@/scripts/multi-promise";
 import { PlayerTypeAi, PlayerTypeHuman } from "@/scripts/player";
@@ -48,7 +47,7 @@ export const App = (): JSXElement => {
   let terminate = doNothingFunction;
 
   const handleClick = (index: number): void => {
-    if (board()[index] !== Empty) {
+    if (board()[index] !== 0) {
       return;
     }
 
