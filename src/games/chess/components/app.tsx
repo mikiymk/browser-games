@@ -14,8 +14,8 @@ import { usePromise } from "@/scripts/use-promise";
 import { createUrlQuerySignal } from "@/scripts/use-url-query";
 import type { JSXElement } from "solid-js";
 import { createSignal } from "solid-js";
-import { ChessBoard } from "./board";
-import { Status } from "./status";
+import { ChessBoard } from "./board.tsx";
+import { Status } from "./status.tsx";
 
 export const App = (): JSXElement => {
   const [white, setWhite] = createUrlQuerySignal<PlayerType>("white", PlayerTypeHuman);

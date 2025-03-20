@@ -9,7 +9,7 @@ type PopUpProperties = {
   readonly children: JSXElement;
 };
 export const PopUp = (properties: PopUpProperties): JSXElement => {
-  let dialogReference: HTMLDialogElement | undefined = undefined;
+  let dialogReference: HTMLDialogElement | undefined;
 
   createEffect(() => {
     if (properties.open) {

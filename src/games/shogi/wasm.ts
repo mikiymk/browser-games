@@ -1,4 +1,4 @@
-import type { Hand } from "./constants";
+import type { Hand } from "./constants.ts";
 
 type GamePtr = 0 | (number & { readonly __uniqueShogiGame: "Wasm pointer of Game struct" });
 type BoardArray = 0 | (number & { readonly __uniqueShogiBoardArray: "Wasm pointer of Game struct" });

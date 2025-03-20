@@ -1,8 +1,8 @@
 import { For, Show } from "solid-js";
 import type { JSXElement } from "solid-js";
-import type { Card } from "../card";
-import type { Select } from "../klondike";
-import { UseCard } from "./define";
+import type { Card } from "../card.ts";
+import type { Select } from "../klondike.tsx";
+import { UseCard } from "./define.tsx";
 import Styles from "./style.module.css";
 
 type FieldProperties = {

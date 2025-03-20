@@ -3,7 +3,7 @@ import { TEXT_BLACK_PLAYER, TEXT_SETTINGS, TEXT_WHITE_PLAYER } from "@/scripts/c
 import { playerValues } from "@/scripts/player";
 import type { PlayerType } from "@/scripts/player";
 import type { JSXElement, Setter } from "solid-js";
-import { Radio } from "../input/radio";
+import { Radio } from "../input/radio.tsx";
 import Styles from "./style.module.css";
 
 type SettingsProperties = {

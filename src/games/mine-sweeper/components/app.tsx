@@ -6,9 +6,9 @@ import { getAround, initializeField, isClear, resetMines } from "@/games/mine-sw
 import { createUrlQuerySignal } from "@/scripts/use-url-query";
 import type { JSXElement } from "solid-js";
 import { batch, createEffect, createSignal } from "solid-js";
-import { Status } from "./controller";
-import { MineFields } from "./field";
-import { MineSweeperSettings } from "./settings";
+import { Status } from "./controller.tsx";
+import { MineFields } from "./field.tsx";
+import { MineSweeperSettings } from "./settings.tsx";
 
 export const App = (): JSXElement => {
   const [heightString, setHeight] = createUrlQuerySignal("height", "10");

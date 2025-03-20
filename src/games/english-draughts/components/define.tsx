@@ -1,6 +1,6 @@
 import { Use } from "@/components/define/use";
 import type { JSXElement } from "solid-js";
-import { COLOR_KING_BLACK, COLOR_KING_WHITE, COLOR_PAWN_BLACK, COLOR_PAWN_WHITE, MOVE_TARGET } from "../constants";
+import { COLOR_KING_BLACK, COLOR_KING_WHITE, COLOR_PAWN_BLACK, COLOR_PAWN_WHITE, MOVE_TARGET } from "../constants.ts";
 import Styles from "./style.module.css";
 
 const WHITE_PAWN_ID = "white-pawn";

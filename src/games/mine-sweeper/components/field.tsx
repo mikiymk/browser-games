@@ -1,7 +1,7 @@
 import { Board } from "@/components/board/board";
 import { FieldBomb, FieldFlag, FieldNoOpen, FieldOpen } from "@/games/mine-sweeper/consts";
 import type { JSXElement } from "solid-js";
-import { UseSymbol } from "./define";
+import { UseSymbol } from "./define.tsx";
 
 type MineCellProperties = {
   readonly field: number;

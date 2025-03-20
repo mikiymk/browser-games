@@ -3,8 +3,14 @@ import cross from "@/images/icon/cross.svg";
 import nought from "@/images/icon/nought.svg";
 import { Match, Switch } from "solid-js";
 import type { JSXElement } from "solid-js";
-import { STATUS_DRAW, STATUS_PLAY_CROSS, STATUS_PLAY_NOUGHT, STATUS_WIN_CROSS, STATUS_WIN_NOUGHT } from "../constants";
-import type { GameStatus } from "../constants";
+import {
+  STATUS_DRAW,
+  STATUS_PLAY_CROSS,
+  STATUS_PLAY_NOUGHT,
+  STATUS_WIN_CROSS,
+  STATUS_WIN_NOUGHT,
+} from "../constants.ts";
+import type { GameStatus } from "../constants.ts";
 
 type StatusButtonProperties = {
   readonly status: GameStatus;

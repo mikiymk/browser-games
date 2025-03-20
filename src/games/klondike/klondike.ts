@@ -1,7 +1,7 @@
 import { shuffledArray } from "@/scripts/random-select";
 import { createStore } from "solid-js/store";
-import { Cards, colorOf, rankOf, suitOf } from "./card";
-import type { Card } from "./card";
+import { Cards, colorOf, rankOf, suitOf } from "./card.ts";
+import type { Card } from "./card.ts";
 
 type Pile = {
   opened: Card[];

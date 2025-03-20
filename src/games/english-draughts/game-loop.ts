@@ -1,7 +1,7 @@
 import { PlayerTypeHuman } from "@/scripts/player";
 import type { PlayerType } from "@/scripts/player";
 import { sleep } from "@/scripts/sleep";
-import { MOVE_TARGET, NotEnd } from "./constants";
+import { MOVE_TARGET, NotEnd } from "./constants.ts";
 
 export type GameObject = 0 | (number & { readonly __unique: "Wasm pointer of Board struct" });
 

@@ -1,6 +1,6 @@
-import { mergeBoards, transBoard } from "../english-draughts/boards";
-import { CROSS, CROSS_WASM, NOUGHT, NOUGHT_WASM } from "./constants";
-import type { EndType, PlayerColor } from "./constants";
+import { mergeBoards, transBoard } from "../english-draughts/boards.ts";
+import { CROSS, CROSS_WASM, NOUGHT, NOUGHT_WASM } from "./constants.ts";
+import type { EndType, PlayerColor } from "./constants.ts";
 
 type GameObject = 0 | (number & { readonly __unique: "Wasm pointer of Game object" });
 

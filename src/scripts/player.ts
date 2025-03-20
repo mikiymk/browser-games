@@ -1,4 +1,4 @@
-import { TEXT_NON_PLAYER, TEXT_PLAYER } from "./constants";
+import { TEXT_NON_PLAYER, TEXT_PLAYER } from "./constants.ts";
 
 export const PlayerTypeHuman = "player";
 export const PlayerTypeAi = "non-player";

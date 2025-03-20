@@ -3,10 +3,10 @@ import board from "@/images/shogi/board.svg";
 import { classes } from "@/scripts/classes";
 import { For } from "solid-js";
 import type { JSXElement } from "solid-js";
-import { BLACK, WHITE } from "../constants";
-import type { Hand } from "../constants";
-import { Hands } from "./hands";
-import { Square } from "./square";
+import { BLACK, WHITE } from "../constants.ts";
+import type { Hand } from "../constants.ts";
+import { Hands } from "./hands.tsx";
+import { Square } from "./square.tsx";
 import Styles from "./style.module.css";
 
 type BoardProperties = {

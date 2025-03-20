@@ -4,7 +4,7 @@ import nought from "@/images/icon/nought.svg";
 import board from "@/images/nought-and-cross/board.svg";
 import type { JSXElement } from "solid-js";
 import { Match, Switch } from "solid-js";
-import { CROSS, NOUGHT } from "../constants";
+import { CROSS, NOUGHT } from "../constants.ts";
 import Styles from "./style.module.css";
 
 type CellProperties = {

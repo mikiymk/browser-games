@@ -14,6 +14,7 @@
     "lint:js": "run-z lint:biome lint:eslint lint:typescript lint:stylelint lint:knip",
     "lint:biome": "biome ci .",
     "lint:biome:fix": "biome check . --write",
+    "lint:biome:fix-unsafe": "biome check . --write --unsafe",
     "lint:eslint": "eslint src --cache",
     "lint:eslint:fix": "eslint src --cache --fix",
     "lint:stylelint": "stylelint src/**/*.css --cache",

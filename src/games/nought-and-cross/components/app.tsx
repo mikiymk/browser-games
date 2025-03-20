@@ -22,14 +22,14 @@ import {
   STATUS_PLAY_NOUGHT,
   STATUS_WIN_CROSS,
   STATUS_WIN_NOUGHT,
-} from "../constants";
-import type { EndType, GameStatus, PlayerColor } from "../constants";
-import { startGame } from "../game-body";
-import { getWasm } from "../wasm";
-import { NncBoard } from "./board";
-import { History } from "./history";
-import { NoughtAndCrossSettings } from "./settings";
-import { StatusButton } from "./status";
+} from "../constants.ts";
+import type { EndType, GameStatus, PlayerColor } from "../constants.ts";
+import { startGame } from "../game-body.ts";
+import { getWasm } from "../wasm.ts";
+import { NncBoard } from "./board.tsx";
+import { History } from "./history.tsx";
+import { NoughtAndCrossSettings } from "./settings.tsx";
+import { StatusButton } from "./status.tsx";
 
 export const App = (): JSXElement => {
   const [playerO, setPlayerO] = createUrlQuerySignal<PlayerType>("o", PlayerTypeHuman);

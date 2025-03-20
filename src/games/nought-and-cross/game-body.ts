@@ -1,9 +1,9 @@
 import { PlayerTypeHuman } from "@/scripts/player";
 import type { PlayerType } from "@/scripts/player";
 import { sleep } from "@/scripts/sleep";
-import { CROSS, END_PLAYING, NOUGHT } from "./constants";
-import type { EndType, PlayerColor } from "./constants";
-import type { GameController } from "./wasm";
+import { CROSS, END_PLAYING, NOUGHT } from "./constants.ts";
+import type { EndType, PlayerColor } from "./constants.ts";
+import type { GameController } from "./wasm.ts";
 
 type Players = {
   readonly [NOUGHT]: PlayerType;
