@@ -534,7 +534,7 @@ pub fn isInsufficientMaterial(board: Board) bool {
     if (bn == 0 and
         wn == 0 and
         (bishops.masks(position.mask_black_square).eql(bishops) or
-        bishops.masks(position.mask_white_square).eql(bishops)))
+            bishops.masks(position.mask_white_square).eql(bishops)))
     {
         return true;
     }
@@ -561,9 +561,9 @@ pub fn getMovedBoard(board: Board, from: BitBoard, to: BitBoard) Board {
         return new_board;
     } else if (piece_type.pieceType() == .pawn and
         (from.move(.ne).eql(to) or
-        from.move(.se).eql(to) or
-        from.move(.nw).eql(to) or
-        from.move(.sw).eql(to)) and
+            from.move(.se).eql(to) or
+            from.move(.nw).eql(to) or
+            from.move(.sw).eql(to)) and
         to_piece_type == null)
     {
         // ポーンが斜めに動いて動かし先に駒がない場合

@@ -1,29 +1,35 @@
 import { StyledSvg } from "@/components/elements/styled-svg";
-import { StatusDraw, StatusNextO, StatusNextX, StatusWinO, StatusWinX } from "@/games/nought-and-cross/types";
-import type { Status } from "@/games/nought-and-cross/types";
 import cross from "@/images/icon/cross.svg";
 import nought from "@/images/icon/nought.svg";
 import { Match, Switch } from "solid-js";
 import type { JSXElement } from "solid-js";
+import {
+  STATUS_DRAW,
+  STATUS_PLAY_CROSS,
+  STATUS_PLAY_NOUGHT,
+  STATUS_WIN_CROSS,
+  STATUS_WIN_NOUGHT,
+} from "../constants.ts";
+import type { GameStatus } from "../constants.ts";
 
 type StatusButtonProperties = {
-  readonly status: Status;
+  readonly status: GameStatus;
 };
 export const StatusButton = (properties: StatusButtonProperties): JSXElement => {
   return (
     <div>
       <Switch>
-        <Match when={properties.status === StatusWinO}>
+        <Match when={properties.status === STATUS_WIN_NOUGHT}>
           win <StyledSvg src={nought.src} alt="nought" />
         </Match>
-        <Match when={properties.status === StatusWinX}>
+        <Match when={properties.status === STATUS_WIN_CROSS}>
           win <StyledSvg src={cross.src} alt="cross" />
         </Match>
-        <Match when={properties.status === StatusDraw}>Draw!</Match>
-        <Match when={properties.status === StatusNextO}>
+        <Match when={properties.status === STATUS_DRAW}>Draw!</Match>
+        <Match when={properties.status === STATUS_PLAY_NOUGHT}>
           next <StyledSvg src={nought.src} alt="nought" />
         </Match>
-        <Match when={properties.status === StatusNextX}>
+        <Match when={properties.status === STATUS_PLAY_CROSS}>
           next <StyledSvg src={cross.src} alt="cross" />
         </Match>
       </Switch>

@@ -21,7 +21,7 @@ import {
   MoveFrom,
   MoveTarget,
   White,
-} from "./constants";
+} from "./constants.ts";
 
 type GamePtr = 0 | (number & { readonly __unique: "Wasm pointer of Board struct" });
 type WasmExports = {
@@ -321,9 +321,7 @@ export const gameLoop = (
         promote(boardPtr, to, kind);
       }
     } else {
-      console.time("ai think");
       ai(boardPtr);
-      console.timeEnd("ai think");
 
       await sleep(AI_SLEEP_TIME_MS);
     }

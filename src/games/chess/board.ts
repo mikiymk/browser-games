@@ -1,6 +1,6 @@
 import type { Accessor } from "solid-js";
 import { createSignal } from "solid-js";
-import { CellEmpty } from "./constants";
+import { CellEmpty } from "./constants.ts";
 
 export type BoardCell = {
   readonly piece: number;

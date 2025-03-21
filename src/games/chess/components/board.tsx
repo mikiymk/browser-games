@@ -2,7 +2,7 @@ import { Board } from "@/components/board/board";
 import type { BoardCell } from "@/games/chess/board";
 import board from "@/images/chess/board.svg";
 import type { JSXElement } from "solid-js";
-import { BoardSquare } from "./board-square";
+import { BoardSquare } from "./board-square.tsx";
 
 type BoardProperties = {
   readonly board: readonly BoardCell[];

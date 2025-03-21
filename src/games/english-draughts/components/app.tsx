@@ -11,12 +11,12 @@ import { usePromise } from "@/scripts/use-promise";
 import { createUrlQuerySignal } from "@/scripts/use-url-query";
 import { createSignal, mapArray } from "solid-js";
 import type { JSXElement } from "solid-js";
-import { createBoard } from "../boards";
-import { COLOR_KING_BLACK, COLOR_KING_WHITE, COLOR_PAWN_BLACK, COLOR_PAWN_WHITE, MOVE_TARGET } from "../constants";
-import { gameLoop } from "../game-loop";
-import type { PlayerColor } from "../game-loop";
-import { getWasm } from "../wasm";
-import { UsePiece } from "./define";
+import { createBoard } from "../boards.ts";
+import { COLOR_KING_BLACK, COLOR_KING_WHITE, COLOR_PAWN_BLACK, COLOR_PAWN_WHITE, MOVE_TARGET } from "../constants.ts";
+import { gameLoop } from "../game-loop.ts";
+import type { PlayerColor } from "../game-loop.ts";
+import { getWasm } from "../wasm.ts";
+import { UsePiece } from "./define.tsx";
 
 export const App = (): JSXElement => {
   const [white, setWhite] = createUrlQuerySignal<PlayerType>("white", PlayerTypeHuman);

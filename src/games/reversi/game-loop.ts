@@ -4,8 +4,8 @@ import { PlayerTypeHuman } from "@/scripts/player";
 import { sleep } from "@/scripts/sleep";
 import type { Accessor } from "solid-js";
 import { createSignal } from "solid-js";
-import { CellBlack, CellEmpty, CellWhite } from "./const";
-import type { ReversiWasmConnect } from "./get-wasm";
+import { CellBlack, CellEmpty, CellWhite } from "./const.ts";
+import type { ReversiWasmConnect } from "./get-wasm.ts";
 
 const AI_SLEEP_TIME_MS = 500;
 

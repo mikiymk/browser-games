@@ -11,14 +11,14 @@ test {
 }
 
 pub fn UInt(comptime bits: u16) type {
-    return @Type(.{ .Int = .{
+    return @Type(.{ .int = .{
         .signedness = .unsigned,
         .bits = bits,
     } });
 }
 
 pub fn Int(comptime bits: u16) type {
-    return @Type(.{ .Int = .{
+    return @Type(.{ .int = .{
         .signedness = .signed,
         .bits = bits,
     } });

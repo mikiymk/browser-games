@@ -9,7 +9,7 @@ import spade from "@/images/card/spade.svg";
 import { classes } from "@/scripts/classes";
 import { Match, Show, Switch } from "solid-js";
 import type { JSXElement } from "solid-js";
-import type { Card, Rank, Suit } from "../card";
+import type { Card, Rank, Suit } from "../card.ts";
 import Styles from "./style.module.css";
 
 export const DefineCards = (): JSXElement => {

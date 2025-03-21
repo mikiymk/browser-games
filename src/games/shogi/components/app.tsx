@@ -5,11 +5,11 @@ import { PlayerTypeAi, PlayerTypeHuman } from "@/scripts/player";
 import type { PlayerType } from "@/scripts/player";
 import { createUrlQuerySignal } from "@/scripts/use-url-query";
 import type { JSXElement } from "solid-js";
-import { createGame } from "../game";
-import { ShogiBoard } from "./board";
-import { GameOverPopUp } from "./game-over-pop-up";
-import { PromotionPopUp } from "./promotion-pop-up";
-import { ShogiSettings } from "./settings";
+import { createGame } from "../game.ts";
+import { ShogiBoard } from "./board.tsx";
+import { GameOverPopUp } from "./game-over-pop-up.tsx";
+import { PromotionPopUp } from "./promotion-pop-up.tsx";
+import { ShogiSettings } from "./settings.tsx";
 
 export const App = (): JSXElement => {
   const [black, setBlack] = createUrlQuerySignal<PlayerType>("first", PlayerTypeHuman);

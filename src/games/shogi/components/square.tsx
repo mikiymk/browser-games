@@ -1,7 +1,7 @@
 import { Show } from "solid-js";
 import type { JSXElement } from "solid-js";
-import { BISHOP, COLOR, GOLD, KING, KNIGHT, LANCE, PAWN, PIECE, PROMOTED, ROOK, SILVER } from "../constants";
-import { UsePiece } from "./define";
+import { BISHOP, COLOR, GOLD, KING, KNIGHT, LANCE, PAWN, PIECE, PROMOTED, ROOK, SILVER } from "../constants.ts";
+import { UsePiece } from "./define.tsx";
 import Styles from "./style.module.css";
 
 type SquareProperties = {

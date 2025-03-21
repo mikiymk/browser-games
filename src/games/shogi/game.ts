@@ -4,10 +4,10 @@ import type { PlayerType } from "@/scripts/player";
 import { usePromise } from "@/scripts/use-promise";
 import { createSignal } from "solid-js";
 import type { Accessor, Setter } from "solid-js";
-import type { Hand } from "./constants";
-import { BLACK, MOVE_TARGET, WHITE } from "./constants";
-import { gameLoop } from "./game-loop";
-import { getWasm } from "./wasm";
+import type { Hand } from "./constants.ts";
+import { BLACK, MOVE_TARGET, WHITE } from "./constants.ts";
+import { gameLoop } from "./game-loop.ts";
+import { getWasm } from "./wasm.ts";
 
 type Board = readonly { piece: number; moveTarget: boolean }[];
 type Game = {

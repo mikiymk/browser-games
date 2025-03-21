@@ -2,7 +2,7 @@ import { CellKnight, CellMovable, CellVisited } from "@/games/knight-tour/consts
 import { getLegalMove } from "@/games/knight-tour/knight-move";
 import type { JSXElement } from "solid-js";
 import { createMemo } from "solid-js";
-import { UsePiece } from "./define";
+import { UsePiece } from "./define.tsx";
 
 type SquareProperties = {
   readonly board: readonly number[];

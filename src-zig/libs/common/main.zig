@@ -5,7 +5,7 @@ pub const types = @import("./types.zig");
 pub const bit_board = @import("./bit-board.zig");
 pub const random = @import("./random.zig");
 pub const console = @import("./console.zig");
-pub const allocator = if (builtin.target.isWasm()) std.heap.wasm_allocator else std.heap.page_allocator;
+pub const allocator = if (builtin.target.cpu.arch.isWasm()) std.heap.wasm_allocator else std.heap.page_allocator;
 
 test {
     _ = types;

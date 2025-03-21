@@ -1,7 +1,7 @@
 import eslintComments from "@eslint-community/eslint-plugin-eslint-comments";
 import eslint from "@eslint/js";
-import prettier from "eslint-config-prettier";
-import pluginImport from "eslint-plugin-i";
+import biome from "eslint-config-biome";
+import pluginImport from "eslint-plugin-import";
 import solid from "eslint-plugin-solid";
 import unicorn from "eslint-plugin-unicorn";
 import vitest from "eslint-plugin-vitest";
@@ -51,7 +51,7 @@ export default typescript.config(
       ...unicorn.configs.recommended.rules,
       ...solid.configs.typescript.rules,
       ...vitest.configs.recommended.rules,
-      ...prettier.rules,
+      ...biome.rules,
 
       // my custom
 
@@ -267,6 +267,40 @@ export default typescript.config(
       "unicorn/no-thenable": "off", // lint/suspicious/noThenProperty
 
       // 1.7.0 promoted
+      "barrel-files/avoid-barrel-files": "off", // performance/noBarrelFile
+      "barrel-files/avoid-re-export-all": "off", // performance/noReExportAll
+      "barrel-files/avoid-namespace-import": "off", // style/noNamespaceImport
+      // style/useNodeAssertStrict
+      "jest/no-disabled-tests": "off", // suspicious/noSkippedTests
+
+      // 1.8.0 promoted
+      "import/no-nodejs-modules": "off", // correctness/noNodejsModules
+      "no-array-constructor": "off", // correctness/useArrayLiterals
+      // correctness/noConstantMathMinMaxClamp
+      // correctness/noFlatMapIdentity
+
+      // 1.9.0 promoted
+      "no-useless-concat": "off", // complexity/noUselessStringConcat
+      "no-undef-init": "off", // complexity/noUselessUndefinedInitialization
+      "unicorn/prefer-date-now": "off", // complexity/useDateNow
+      // correctness/noUndeclaredDependencies
+      // correctness/noUnusedFunctionParameters
+      // correctness/useImportExtensions
+      // performance/useTopLevelRegex
+      "jest/no-done-callback": "off", // style/noDoneCallback
+      yoda: "off", // style/noYodaExpression
+      "no-new-wrappers": "off", // style/useConsistentBuiltinInstantiation
+      "default-case": "off", // style/useDefaultSwitchClause
+      "unicorn/explicit-length-check": "off", // style/useExplicitLengthCheck
+      "unicorn/throw-new-error": "off", // style/useThrowNewError
+      "no-throw-literal": "off", // style/useThrowOnlyError
+      "@typescript-eslint/only-throw-error": "off", // style/useThrowOnlyError
+      "no-console": "off", // suspicious/noConsole
+      // suspicious/noEvolvingTypes
+      "jest/no-standalone-expect": "off", // suspicious/noMisplacedAssertion
+      "solidjs/no-react-specific-props": "off", // suspicious/noReactSpecificProps
+      "unicorn/error-message": "off", // suspicious/useErrorMessage
+      "unicorn/require-number-to-fixed-digits-argument": "off", // suspicious/useNumberToFixedDigitsArgument
     },
   },
 

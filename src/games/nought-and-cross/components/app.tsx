@@ -1,48 +1,72 @@
 import { Start } from "@/components/header-buttons/start";
 import { PageBody } from "@/components/page/body";
 import { PageHeader } from "@/components/page/header";
-import { filledBoard, gameLoop, isWin } from "@/games/nought-and-cross/game-model";
-import {
-  Empty,
-  MarkO,
-  MarkX,
-  StatusDraw,
-  StatusNextO,
-  StatusNextX,
-  StatusNone,
-  StatusWinO,
-  StatusWinX,
-} from "@/games/nought-and-cross/types";
-import type { Status } from "@/games/nought-and-cross/types";
 import { doNothingFunction } from "@/scripts/do-nothing";
 import { MultiPromise } from "@/scripts/multi-promise";
 import { PlayerTypeAi, PlayerTypeHuman } from "@/scripts/player";
 import type { PlayerType } from "@/scripts/player";
+import { usePromise } from "@/scripts/use-promise";
 import { createUrlQuerySignal } from "@/scripts/use-url-query";
 import type { JSXElement } from "solid-js";
 import { createSignal, onMount } from "solid-js";
-import { NncBoard } from "./board";
-import { History } from "./history";
-import { NoughtAndCrossSettings } from "./settings";
-import { StatusButton } from "./status";
+import {
+  CROSS,
+  END_CROSS_WIN,
+  END_DRAW,
+  END_NOUGHT_WIN,
+  END_PLAYING,
+  NOUGHT,
+  STATUS_DRAW,
+  STATUS_NONE,
+  STATUS_PLAY_CROSS,
+  STATUS_PLAY_NOUGHT,
+  STATUS_WIN_CROSS,
+  STATUS_WIN_NOUGHT,
+} from "../constants.ts";
+import type { EndType, GameStatus, PlayerColor } from "../constants.ts";
+import { startGame } from "../game-body.ts";
+import { getWasm } from "../wasm.ts";
+import { NncBoard } from "./board.tsx";
+import { History } from "./history.tsx";
+import { NoughtAndCrossSettings } from "./settings.tsx";
+import { StatusButton } from "./status.tsx";
 
 export const App = (): JSXElement => {
   const [playerO, setPlayerO] = createUrlQuerySignal<PlayerType>("o", PlayerTypeHuman);
   const [playerX, setPlayerX] = createUrlQuerySignal<PlayerType>("x", PlayerTypeAi);
 
   const [board, setBoardData] = createSignal<readonly number[]>([]);
-  const [mark, setMark] = createSignal(MarkO);
-  const [history, setHistory] = createSignal<readonly number[]>([]);
+  const [history] = createSignal<readonly number[]>([]);
+
+  const wasm = usePromise(getWasm);
+  const { resolve, promise } = MultiPromise.withResolvers<number>();
+  const [status, setStatus] = createSignal<GameStatus>(STATUS_NONE);
+  const setColor = (color: PlayerColor): void => {
+    setStatus(color === NOUGHT ? STATUS_PLAY_NOUGHT : STATUS_PLAY_CROSS);
+  };
+  const setEnd = (end: EndType): void => {
+    switch (end) {
+      case END_PLAYING:
+        break;
+      case END_NOUGHT_WIN:
+        setStatus(STATUS_WIN_NOUGHT);
+        break;
+      case END_CROSS_WIN:
+        setStatus(STATUS_WIN_CROSS);
+        break;
+      case END_DRAW:
+        setStatus(STATUS_DRAW);
+        break;
+      default: {
+        const _exhaustiveCheck: never = end;
+      }
+    }
+  };
 
   let terminate = doNothingFunction;
-  let resolve: (value: number) => void = doNothingFunction;
-
-  const humanInput = new MultiPromise<number>((rs) => {
-    resolve = rs;
-  });
 
   const handleClick = (index: number): void => {
-    if (board()[index] !== Empty) {
+    if (board()[index] !== 0) {
       return;
     }
 
@@ -51,34 +75,22 @@ export const App = (): JSXElement => {
 
   const reset = (): void => {
     terminate();
-
-    const players = {
-      o: playerO(),
-      x: playerX(),
-    };
-
-    // eslint-disable-next-line @typescript-eslint/prefer-destructuring -- 再代入
-    terminate = gameLoop(setBoardData, setMark, setHistory, humanInput, players).terminate;
-  };
-
-  const status = (): Status => {
-    if (isWin(board(), MarkO)) {
-      return StatusWinO;
-    }
-    if (isWin(board(), MarkX)) {
-      return StatusWinX;
-    }
-    if (filledBoard(board())) {
-      return StatusDraw;
-    }
-    if (mark() === MarkO) {
-      return StatusNextO;
-    }
-    if (mark() === MarkX) {
-      return StatusNextX;
+    const wasmBody = wasm();
+    if (!wasmBody) {
+      return;
     }
 
-    return StatusNone;
+    terminate = startGame({
+      game: wasmBody,
+      setBoard: setBoardData,
+      setColor,
+      setEnd,
+      requestInput: () => promise.request(),
+      players: {
+        [NOUGHT]: playerO(),
+        [CROSS]: playerX(),
+      },
+    });
   };
 
   onMount(reset);

@@ -1,6 +1,6 @@
-import { mergeBoards, transBoard } from "./boards";
-import { COLOR_KING_BLACK, COLOR_KING_WHITE, COLOR_PAWN_BLACK, COLOR_PAWN_WHITE, MOVE_TARGET } from "./constants";
-import type { GameController, GameObject, PlayerColor } from "./game-loop";
+import { mergeBoards, transBoard } from "./boards.ts";
+import { COLOR_KING_BLACK, COLOR_KING_WHITE, COLOR_PAWN_BLACK, COLOR_PAWN_WHITE, MOVE_TARGET } from "./constants.ts";
+import type { GameController, GameObject, PlayerColor } from "./game-loop.ts";
 
 type WasmExports = {
   init: () => GameObject;

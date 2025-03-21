@@ -6,10 +6,10 @@ import { setKnightMovable } from "@/games/knight-tour/knight-move";
 import { createUrlQuerySignal } from "@/scripts/use-url-query";
 import type { JSXElement } from "solid-js";
 import { onMount } from "solid-js";
-import { KnightBoard } from "./board";
-import { History } from "./history";
-import { HowToPlayKnightTour } from "./how-to-play";
-import { KnightTourSettings } from "./settings";
+import { KnightBoard } from "./board.tsx";
+import { History } from "./history.tsx";
+import { HowToPlayKnightTour } from "./how-to-play.tsx";
+import { KnightTourSettings } from "./settings.tsx";
 
 export const App = (): JSXElement => {
   const [hint, setHint] = createUrlQuerySignal("board", "hide");

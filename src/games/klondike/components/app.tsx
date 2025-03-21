@@ -5,9 +5,9 @@ import { PageHeader } from "@/components/page/header";
 import { PopUp } from "@/components/pop-up/pop-up";
 import { createSignal } from "solid-js";
 import type { JSXElement } from "solid-js";
-import { createKlondike } from "../klondike";
-import type { Select } from "../klondike";
-import { Field } from "./field";
+import { createKlondike } from "../klondike.ts";
+import type { Select } from "../klondike.ts";
+import { Field } from "./field.tsx";
 
 export const App = (): JSXElement => {
   const { start, cards, moveCards, openStock, autoFoundation, isCleared } = createKlondike();

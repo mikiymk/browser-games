@@ -10,12 +10,12 @@ import { usePromise } from "@/scripts/use-promise";
 import { createUrlQuerySignal } from "@/scripts/use-url-query";
 import type { JSXElement } from "solid-js";
 import { createSignal } from "solid-js";
-import { CellBlack, CellCanMoveBlack, CellCanMoveWhite, CellEmpty, CellWhite } from "../const";
-import { gameLoop } from "../game-loop";
-import { getReversiWasm } from "../get-wasm";
-import { ReversiBoard } from "./board";
-import { HowToPlayReversi } from "./how-to-play";
-import { StoneCount } from "./information";
+import { CellBlack, CellCanMoveBlack, CellCanMoveWhite, CellEmpty, CellWhite } from "../const.ts";
+import { gameLoop } from "../game-loop.ts";
+import { getReversiWasm } from "../get-wasm.ts";
+import { ReversiBoard } from "./board.tsx";
+import { HowToPlayReversi } from "./how-to-play.tsx";
+import { StoneCount } from "./information.tsx";
 
 const emptyBoard: number[] = Array.from({ length: 64 }, () => CellEmpty);
 
