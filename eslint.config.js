@@ -134,15 +134,7 @@ export default typescript.config(
 
       // import
       "import/no-empty-named-blocks": "error",
-      "import/no-extraneous-dependencies": [
-        "error",
-        {
-          devDependencies: false,
-          optionalDependencies: false,
-          peerDependencies: false,
-          bundledDependencies: false,
-        },
-      ],
+      "import/no-extraneous-dependencies": "off",
       // biome-ignore lint/suspicious/noDuplicateObjectKeys: importがeslint-v9に対応するまでOff
       "import/no-mutable-exports": "error",
       "import/unambiguous": "error",
