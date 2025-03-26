@@ -1,5 +1,5 @@
-import icon from "@/images/theme-icon.svg";
 import type { JSXElement } from "solid-js";
+import icon from "../../images/theme-icon.svg";
 import { header, headerButton, headerIcon, headerText, headerTitle } from "./style.css.ts";
 
 type PageHeaderProperites = {

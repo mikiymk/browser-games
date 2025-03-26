@@ -1,10 +1,10 @@
-import { Button } from "@/components/elements/button";
-import { Start } from "@/components/header-buttons/start";
-import { PageBody } from "@/components/page/body";
-import { PageHeader } from "@/components/page/header";
-import { PopUp } from "@/components/pop-up/pop-up";
 import { createSignal } from "solid-js";
 import type { JSXElement } from "solid-js";
+import { Button } from "../../../components/elements/button.ts";
+import { Start } from "../../../components/header-buttons/start.ts";
+import { PageBody } from "../../../components/page/body.ts";
+import { PageHeader } from "../../../components/page/header.ts";
+import { PopUp } from "../../../components/pop-up/pop-up.ts";
 import { createKlondike } from "../klondike.ts";
 import type { Select } from "../klondike.ts";
 import { Field } from "./field.tsx";

@@ -1,6 +1,6 @@
-import { Board } from "@/components/board/board";
-import board from "@/images/reversi/board.svg";
 import type { JSXElement } from "solid-js";
+import { Board } from "../../../components/board/board.ts";
+import board from "../../../images/reversi/board.svg";
 import { CellImage } from "./cell-image.tsx";
 
 type BoardProperties = {

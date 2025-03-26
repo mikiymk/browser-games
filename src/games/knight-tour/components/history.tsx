@@ -1,7 +1,7 @@
-import { HeaderPopup } from "@/components/page/header-popup";
-import { TEXT_HISTORY } from "@/scripts/constants";
 import type { JSXElement } from "solid-js";
 import { For } from "solid-js";
+import { HeaderPopup } from "../../../components/page/header-popup.ts";
+import { TEXT_HISTORY } from "../../../scripts/constants.ts";
 import Styles from "./style.module.css";
 
 type HistoryProperties = {

@@ -14,9 +14,7 @@
     "erasableSyntaxOnly": true,
 
     "baseUrl": "./",
-    "paths": {
-      "@/*": ["src/*"]
-    },
+    "paths": {},
 
     // unnecessary with Biome
 

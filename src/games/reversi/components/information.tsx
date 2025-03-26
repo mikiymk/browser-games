@@ -1,6 +1,6 @@
-import { classes } from "@/scripts/classes";
 import { Show } from "solid-js";
 import type { JSXElement } from "solid-js";
+import { classes } from "../../../scripts/classes.ts";
 import { CellBlack } from "../const.ts";
 import Styles from "./style.module.css";
 

@@ -1,8 +1,8 @@
-import { Board } from "@/components/board/board";
-import board from "@/images/shogi/board.svg";
-import { classes } from "@/scripts/classes";
 import { For } from "solid-js";
 import type { JSXElement } from "solid-js";
+import { Board } from "../../../components/board/board.ts";
+import board from "../../../images/shogi/board.svg";
+import { classes } from "../../../scripts/classes.ts";
 import { BLACK, WHITE } from "../constants.ts";
 import type { Hand } from "../constants.ts";
 import { Hands } from "./hands.tsx";

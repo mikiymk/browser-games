@@ -1,9 +1,9 @@
-import { Board } from "@/components/board/board";
-import cross from "@/images/icon/cross.svg";
-import nought from "@/images/icon/nought.svg";
-import board from "@/images/nought-and-cross/board.svg";
 import type { JSXElement } from "solid-js";
 import { Match, Switch } from "solid-js";
+import { Board } from "../../../components/board/board.ts";
+import cross from "../../../images/icon/cross.svg";
+import nought from "../../../images/icon/nought.svg";
+import board from "../../../images/nought-and-cross/board.svg";
 import { CROSS, NOUGHT } from "../constants.ts";
 import Styles from "./style.module.css";
 

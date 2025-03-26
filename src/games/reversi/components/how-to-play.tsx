@@ -1,5 +1,5 @@
-import { HowToPlay } from "@/components/header-buttons/how-to-play";
 import type { JSXElement } from "solid-js";
+import { HowToPlay } from "../../../components/header-buttons/how-to-play.ts";
 
 export const HowToPlayReversi = (): JSXElement => {
   return (

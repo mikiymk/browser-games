@@ -1,11 +1,11 @@
-import { Define } from "@/components/define/define";
-import { DefineNumber } from "@/components/define/define-number";
-import { DefineUse } from "@/components/define/define-use";
-import { Use } from "@/components/define/use";
-import knight from "@/images/chess/knight.svg";
-import cross from "@/images/icon/cross.svg";
-import nought from "@/images/icon/nought.svg";
 import type { JSXElement } from "solid-js";
+import { DefineNumber } from "../../../components/define/define-number.ts";
+import { DefineUse } from "../../../components/define/define-use.ts";
+import { Define } from "../../../components/define/define.ts";
+import { Use } from "../../../components/define/use.ts";
+import knight from "../../../images/chess/knight.svg";
+import cross from "../../../images/icon/cross.svg";
+import nought from "../../../images/icon/nought.svg";
 import Styles from "./style.module.css";
 
 export const DefineSymbol = (): JSXElement => {

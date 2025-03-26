@@ -1,7 +1,7 @@
-import { CellKnight, CellMovable, CellVisited } from "@/games/knight-tour/consts";
-import { getLegalMove } from "@/games/knight-tour/knight-move";
 import type { JSXElement } from "solid-js";
 import { createMemo } from "solid-js";
+import { CellKnight, CellMovable, CellVisited } from "../consts.ts";
+import { getLegalMove } from "../knight-move.ts";
 import { UsePiece } from "./define.tsx";
 
 type SquareProperties = {

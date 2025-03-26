@@ -1,6 +1,6 @@
-import { classes } from "@/scripts/classes";
 import { Match, Switch } from "solid-js";
 import type { JSXElement } from "solid-js";
+import { classes } from "../../../scripts/classes.ts";
 import { CellBlack, CellCanMoveBlack, CellCanMoveWhite, CellWhite } from "../const.ts";
 import Styles from "./style.module.css";
 

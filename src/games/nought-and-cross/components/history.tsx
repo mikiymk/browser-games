@@ -1,10 +1,10 @@
-import { StyledSvg } from "@/components/elements/styled-svg";
-import { HeaderPopup } from "@/components/page/header-popup";
-import cross from "@/images/icon/cross.svg";
-import nought from "@/images/icon/nought.svg";
-import { TEXT_HISTORY } from "@/scripts/constants";
 import type { JSXElement } from "solid-js";
 import { For, Show } from "solid-js";
+import { StyledSvg } from "../../../components/elements/styled-svg.ts";
+import { HeaderPopup } from "../../../components/page/header-popup.ts";
+import cross from "../../../images/icon/cross.svg";
+import nought from "../../../images/icon/nought.svg";
+import { TEXT_HISTORY } from "../../../scripts/constants.ts";
 import Styles from "./style.module.css";
 
 const historyFillArray = [-1, -1, -1, -1, -1, -1, -1, -1, -1];

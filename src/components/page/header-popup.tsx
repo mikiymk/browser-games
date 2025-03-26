@@ -1,7 +1,7 @@
-import { HeaderButton } from "@/components/page/header-button";
-import { PopUp } from "@/components/pop-up/pop-up";
 import type { JSXElement } from "solid-js";
 import { createSignal } from "solid-js";
+import { HeaderButton } from "../../components/page/header-button.ts";
+import { PopUp } from "../../components/pop-up/pop-up.ts";
 
 type HeaderPopupProperties = {
   readonly icon?: string | undefined;

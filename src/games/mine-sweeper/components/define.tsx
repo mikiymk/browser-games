@@ -1,9 +1,9 @@
-import { Define } from "@/components/define/define";
-import { Use } from "@/components/define/use";
-import flag from "@/images/icon/flag.svg";
-import mine from "@/images/icon/mine.svg";
-import { classes } from "@/scripts/classes";
 import type { JSXElement } from "solid-js";
+import { Define } from "../../../components/define/define.ts";
+import { Use } from "../../../components/define/use.ts";
+import flag from "../../../images/icon/flag.svg";
+import mine from "../../../images/icon/mine.svg";
+import { classes } from "../../../scripts/classes.ts";
 import Styles from "./style.module.css";
 
 export const DefineSymbol = (): JSXElement => {

@@ -1,9 +1,9 @@
-import { Define } from "@/components/define/define";
-import { Use } from "@/components/define/use";
-import piece from "@/images/shogi/piece.svg";
-import { classes } from "@/scripts/classes";
-import CommonStyles from "@/styles/common.module.css";
 import type { JSXElement } from "solid-js";
+import { Define } from "../../../components/define/define.ts";
+import { Use } from "../../../components/define/use.ts";
+import piece from "../../../images/shogi/piece.svg";
+import { classes } from "../../../scripts/classes.ts";
+import CommonStyles from "../../../styles/common.module.css";
 import Styles from "./style.module.css";
 
 export const DefinePieces = (): JSXElement => {

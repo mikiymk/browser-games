@@ -1,5 +1,5 @@
-import { MoveFrom, MoveTarget } from "@/games/chess/constants";
 import type { JSXElement } from "solid-js";
+import { MoveFrom, MoveTarget } from "../constants.ts";
 import { UsePiece } from "./define.tsx";
 import Styles from "./style.module.css";
 

@@ -1,8 +1,8 @@
-import { BoardLength, CellMovable, CellUnvisited, CellVisited } from "@/games/knight-tour/consts";
-import { setKnightMovable } from "@/games/knight-tour/knight-move";
-import { randomRange } from "@/scripts/random-select";
 import type { Accessor, Setter } from "solid-js";
 import { createSignal } from "solid-js";
+import { randomRange } from "../../scripts/random-select.ts";
+import { BoardLength, CellMovable, CellUnvisited, CellVisited } from "./consts.ts";
+import { setKnightMovable } from "./knight-move.ts";
 
 type GameObject = {
   board: Accessor<readonly number[]>;

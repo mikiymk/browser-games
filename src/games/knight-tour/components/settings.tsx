@@ -1,7 +1,7 @@
-import { Item, Settings } from "@/components/header-buttons/settings";
-import { Radio } from "@/components/input/radio";
-import { TEXT_HINT, TEXT_HINT_NONE, TEXT_HINT_NUMBER } from "@/scripts/constants";
 import type { JSXElement, Setter } from "solid-js";
+import { Item, Settings } from "../../../components/header-buttons/settings.ts";
+import { Radio } from "../../../components/input/radio.ts";
+import { TEXT_HINT, TEXT_HINT_NONE, TEXT_HINT_NUMBER } from "../../../scripts/constants.ts";
 
 const hintValues = [
   { value: "hide", label: TEXT_HINT_NONE },

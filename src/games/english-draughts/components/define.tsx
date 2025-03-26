@@ -1,5 +1,5 @@
-import { Use } from "@/components/define/use";
 import type { JSXElement } from "solid-js";
+import { Use } from "../../../components/define/use.ts";
 import { COLOR_KING_BLACK, COLOR_KING_WHITE, COLOR_PAWN_BLACK, COLOR_PAWN_WHITE, MOVE_TARGET } from "../constants.ts";
 import Styles from "./style.module.css";
 

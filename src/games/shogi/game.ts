@@ -1,9 +1,9 @@
-import { doNothingFunction } from "@/scripts/do-nothing";
-import { MultiPromise } from "@/scripts/multi-promise";
-import type { PlayerType } from "@/scripts/player";
-import { usePromise } from "@/scripts/use-promise";
 import { createSignal } from "solid-js";
 import type { Accessor, Setter } from "solid-js";
+import { doNothingFunction } from "../../scripts/do-nothing.ts";
+import { MultiPromise } from "../../scripts/multi-promise.ts";
+import type { PlayerType } from "../../scripts/player.ts";
+import { usePromise } from "../../scripts/use-promise.ts";
 import type { Hand } from "./constants.ts";
 import { BLACK, MOVE_TARGET, WHITE } from "./constants.ts";
 import { gameLoop } from "./game-loop.ts";

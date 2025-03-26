@@ -1,9 +1,9 @@
-import type { MultiPromise } from "@/scripts/multi-promise";
-import type { PlayerType } from "@/scripts/player";
-import { PlayerTypeHuman } from "@/scripts/player";
-import { sleep } from "@/scripts/sleep";
 import type { Accessor } from "solid-js";
 import { createSignal } from "solid-js";
+import type { MultiPromise } from "../../scripts/multi-promise.ts";
+import type { PlayerType } from "../../scripts/player.ts";
+import { PlayerTypeHuman } from "../../scripts/player.ts";
+import { sleep } from "../../scripts/sleep.ts";
 import { CellBlack, CellEmpty, CellWhite } from "./const.ts";
 import type { ReversiWasmConnect } from "./get-wasm.ts";
 

@@ -1,6 +1,6 @@
-import { classes } from "@/scripts/classes";
-import CommonStyles from "@/styles/common.module.css";
 import type { JSXElement } from "solid-js";
+import { classes } from "../../scripts/classes.ts";
+import CommonStyles from "../../styles/common.module.css";
 import Styles from "./style.module.css";
 
 type DefineNumberProperties = {

@@ -1,5 +1,12 @@
-import { DefineUse } from "@/components/define/define-use";
-import { Use } from "@/components/define/use";
+import type { JSXElement } from "solid-js";
+import { DefineUse } from "../../../components/define/define-use.ts";
+import { Use } from "../../../components/define/use.ts";
+import bishop from "../../../images/chess/bishop.svg";
+import king from "../../../images/chess/king.svg";
+import knight from "../../../images/chess/knight.svg";
+import pawn from "../../../images/chess/pawn.svg";
+import queen from "../../../images/chess/queen.svg";
+import rook from "../../../images/chess/rook.svg";
 import {
   CellBlackBishop,
   CellBlackKing,
@@ -13,14 +20,7 @@ import {
   CellWhitePawn,
   CellWhiteQueen,
   CellWhiteRook,
-} from "@/games/chess/constants";
-import bishop from "@/images/chess/bishop.svg";
-import king from "@/images/chess/king.svg";
-import knight from "@/images/chess/knight.svg";
-import pawn from "@/images/chess/pawn.svg";
-import queen from "@/images/chess/queen.svg";
-import rook from "@/images/chess/rook.svg";
-import type { JSXElement } from "solid-js";
+} from "../constants.ts";
 import Styles from "./style.module.css";
 
 export const DefinePieces = (): JSXElement => {

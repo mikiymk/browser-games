@@ -1,6 +1,6 @@
-import { HeaderPopup } from "@/components/page/header-popup";
-import { TEXT_HOW_TO_PLAY } from "@/scripts/constants";
 import type { JSXElement } from "solid-js";
+import { HeaderPopup } from "../../components/page/header-popup.ts";
+import { TEXT_HOW_TO_PLAY } from "../../scripts/constants.ts";
 
 type HowToPlayProperties = {
   readonly children: JSXElement;

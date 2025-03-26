@@ -1,6 +1,6 @@
-import { Button } from "@/components/elements/button";
 import { For, Show } from "solid-js";
 import type { JSXElement } from "solid-js";
+import { Button } from "../../../components/elements/button.ts";
 import { WHITE } from "../constants.ts";
 import type { Hand } from "../constants.ts";
 import Styles from "./style.module.css";
