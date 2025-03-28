@@ -1,16 +1,16 @@
 import type { JSXElement } from "solid-js";
-import Styles from "./style.module.css";
+import { list, listItem } from "./style.css.ts";
 
 type ListProperties = {
   readonly children: JSXElement;
 };
 export const List = (properties: ListProperties): JSXElement => {
-  return <ul class={Styles.list}>{properties.children}</ul>;
+  return <ul class={list}>{properties.children}</ul>;
 };
 
 type ListItemProperties = {
   readonly children: JSXElement;
 };
 export const ListItem = (properties: ListItemProperties): JSXElement => {
-  return <li class={Styles["list-item"]}>{properties.children}</li>;
+  return <li class={listItem}>{properties.children}</li>;
 };
