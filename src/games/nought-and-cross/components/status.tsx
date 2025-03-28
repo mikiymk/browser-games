@@ -1,6 +1,6 @@
 import { Match, Switch } from "solid-js";
 import type { JSXElement } from "solid-js";
-import { StyledSvg } from "../../../components/elements/styled-svg.ts";
+import { StyledSvg } from "../../../components/elements/styled-svg.tsx";
 import cross from "../../../images/icon/cross.svg";
 import nought from "../../../images/icon/nought.svg";
 import {

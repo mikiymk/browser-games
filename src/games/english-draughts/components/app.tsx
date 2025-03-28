@@ -1,10 +1,10 @@
 import { createSignal, mapArray } from "solid-js";
 import type { JSXElement } from "solid-js";
-import { Board } from "../../../components/board/board.ts";
-import { PlayerSetting, Settings } from "../../../components/header-buttons/settings.ts";
-import { Start } from "../../../components/header-buttons/start.ts";
-import { PageBody } from "../../../components/page/body.ts";
-import { PageHeader } from "../../../components/page/header.ts";
+import { Board } from "../../../components/board/board.tsx";
+import { PlayerSetting, Settings } from "../../../components/header-buttons/settings.tsx";
+import { Start } from "../../../components/header-buttons/start.tsx";
+import { PageBody } from "../../../components/page/body.tsx";
+import { PageHeader } from "../../../components/page/header.tsx";
 import board from "../../../images/chess/board.svg";
 import { MultiPromise } from "../../../scripts/multi-promise.ts";
 import { PlayerTypeAi, PlayerTypeHuman } from "../../../scripts/player.ts";

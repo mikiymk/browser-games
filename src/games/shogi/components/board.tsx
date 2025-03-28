@@ -1,6 +1,6 @@
 import { For } from "solid-js";
 import type { JSXElement } from "solid-js";
-import { Board } from "../../../components/board/board.ts";
+import { Board } from "../../../components/board/board.tsx";
 import board from "../../../images/shogi/board.svg";
 import { classes } from "../../../scripts/classes.ts";
 import { BLACK, WHITE } from "../constants.ts";

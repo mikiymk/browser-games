@@ -1,6 +1,6 @@
 import type { JSXElement } from "solid-js";
-import { DefineUse } from "../../../components/define/define-use.ts";
-import { Use } from "../../../components/define/use.ts";
+import { DefineUse } from "../../../components/define/define-use.tsx";
+import { Use } from "../../../components/define/use.tsx";
 import bishop from "../../../images/chess/bishop.svg";
 import king from "../../../images/chess/king.svg";
 import knight from "../../../images/chess/knight.svg";

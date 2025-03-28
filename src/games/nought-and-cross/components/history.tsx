@@ -1,7 +1,7 @@
 import type { JSXElement } from "solid-js";
 import { For, Show } from "solid-js";
-import { StyledSvg } from "../../../components/elements/styled-svg.ts";
-import { HeaderPopup } from "../../../components/page/header-popup.ts";
+import { StyledSvg } from "../../../components/elements/styled-svg.tsx";
+import { HeaderPopup } from "../../../components/page/header-popup.tsx";
 import cross from "../../../images/icon/cross.svg";
 import nought from "../../../images/icon/nought.svg";
 import { TEXT_HISTORY } from "../../../scripts/constants.ts";

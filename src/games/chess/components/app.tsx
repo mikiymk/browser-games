@@ -1,9 +1,9 @@
 import type { JSXElement } from "solid-js";
 import { createSignal } from "solid-js";
-import { PlayerSetting, Settings } from "../../../components/header-buttons/settings.ts";
-import { Start } from "../../../components/header-buttons/start.ts";
-import { PageBody } from "../../../components/page/body.ts";
-import { PageHeader } from "../../../components/page/header.ts";
+import { PlayerSetting, Settings } from "../../../components/header-buttons/settings.tsx";
+import { Start } from "../../../components/header-buttons/start.tsx";
+import { PageBody } from "../../../components/page/body.tsx";
+import { PageHeader } from "../../../components/page/header.tsx";
 import { doNothingFunction } from "../../../scripts/do-nothing.ts";
 import { MultiPromise } from "../../../scripts/multi-promise.ts";
 import { PlayerTypeAi, PlayerTypeHuman } from "../../../scripts/player.ts";

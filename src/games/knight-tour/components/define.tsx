@@ -1,8 +1,8 @@
 import type { JSXElement } from "solid-js";
-import { DefineNumber } from "../../../components/define/define-number.ts";
-import { DefineUse } from "../../../components/define/define-use.ts";
-import { Define } from "../../../components/define/define.ts";
-import { Use } from "../../../components/define/use.ts";
+import { DefineNumber } from "../../../components/define/define-number.tsx";
+import { DefineUse } from "../../../components/define/define-use.tsx";
+import { Define } from "../../../components/define/define.tsx";
+import { Use } from "../../../components/define/use.tsx";
 import knight from "../../../images/chess/knight.svg";
 import cross from "../../../images/icon/cross.svg";
 import nought from "../../../images/icon/nought.svg";

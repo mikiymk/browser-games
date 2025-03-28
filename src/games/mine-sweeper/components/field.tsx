@@ -1,5 +1,5 @@
 import type { JSXElement } from "solid-js";
-import { Board } from "../../../components/board/board.ts";
+import { Board } from "../../../components/board/board.tsx";
 import { FieldBomb, FieldFlag, FieldNoOpen, FieldOpen } from "../consts.ts";
 import { UseSymbol } from "./define.tsx";
 

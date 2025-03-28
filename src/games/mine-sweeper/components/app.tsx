@@ -1,8 +1,8 @@
 import type { JSXElement } from "solid-js";
 import { batch, createEffect, createSignal } from "solid-js";
-import { Start } from "../../../components/header-buttons/start.ts";
-import { PageBody } from "../../../components/page/body.ts";
-import { PageHeader } from "../../../components/page/header.ts";
+import { Start } from "../../../components/header-buttons/start.tsx";
+import { PageBody } from "../../../components/page/body.tsx";
+import { PageHeader } from "../../../components/page/header.tsx";
 import { createUrlQuerySignal } from "../../../scripts/use-url-query.ts";
 import { Bombed, Clear, FieldBomb, FieldFlag, FieldNoOpen, FirstClick, Playing } from "../consts.ts";
 import { getAround, initializeField, isClear, resetMines } from "../field.ts";

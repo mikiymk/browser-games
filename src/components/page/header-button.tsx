@@ -1,6 +1,6 @@
 import { Show } from "solid-js";
 import type { JSXElement } from "solid-js";
-import { Icon } from "../../components/elements/material-icon.ts";
+import { Icon } from "../elements/material-icon.tsx";
 import { headerButton, headerText } from "./style.css.ts";
 
 type HeaderButtonProperites = {

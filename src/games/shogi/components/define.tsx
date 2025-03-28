@@ -1,6 +1,6 @@
 import type { JSXElement } from "solid-js";
-import { Define } from "../../../components/define/define.ts";
-import { Use } from "../../../components/define/use.ts";
+import { Define } from "../../../components/define/define.tsx";
+import { Use } from "../../../components/define/use.tsx";
 import piece from "../../../images/shogi/piece.svg";
 import { classes } from "../../../scripts/classes.ts";
 import CommonStyles from "../../../styles/common.module.css";

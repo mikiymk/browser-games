@@ -170,7 +170,8 @@ export default typescript.config(
       "import/default": "off",
       "import/named": "off",
       "import/namespace": "off",
-      "import/no-unresolved": "off",
+      // "import/no-unresolved": "error",
+      "import/no-unresolved": ["error", { ignore: ["\\.css$"] }],
       "import/no-named-as-default": "off",
       "import/no-named-as-default-member": "off",
 

@@ -1,5 +1,5 @@
 import type { JSXElement } from "solid-js";
-import { HeaderPopup } from "../../components/page/header-popup.ts";
+import { HeaderPopup } from "../page/header-popup.tsx";
 import { TEXT_HOW_TO_PLAY } from "../../scripts/constants.ts";
 
 type HowToPlayProperties = {

@@ -1,7 +1,7 @@
 import { Match, Show, Switch } from "solid-js";
 import type { JSXElement } from "solid-js";
-import { DefineUse } from "../../../components/define/define-use.ts";
-import { Define } from "../../../components/define/define.ts";
+import { DefineUse } from "../../../components/define/define-use.tsx";
+import { Define } from "../../../components/define/define.tsx";
 import back from "../../../images/card/back.svg";
 import club from "../../../images/card/club.svg";
 import diamond from "../../../images/card/diamond.svg";

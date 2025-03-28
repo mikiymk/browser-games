@@ -1,7 +1,7 @@
 import type { JSXElement } from "solid-js";
-import { Start } from "../../../components/header-buttons/start.ts";
-import { PageBody } from "../../../components/page/body.ts";
-import { PageHeader } from "../../../components/page/header.ts";
+import { Start } from "../../../components/header-buttons/start.tsx";
+import { PageBody } from "../../../components/page/body.tsx";
+import { PageHeader } from "../../../components/page/header.tsx";
 import { PlayerTypeAi, PlayerTypeHuman } from "../../../scripts/player.ts";
 import type { PlayerType } from "../../../scripts/player.ts";
 import { createUrlQuerySignal } from "../../../scripts/use-url-query.ts";

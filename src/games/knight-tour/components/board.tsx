@@ -1,5 +1,5 @@
 import type { JSXElement } from "solid-js";
-import { Board } from "../../../components/board/board.ts";
+import { Board } from "../../../components/board/board.tsx";
 import board from "../../../images/chess/board.svg";
 import { Square } from "./square.tsx";
 
