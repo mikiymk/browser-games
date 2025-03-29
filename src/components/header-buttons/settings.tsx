@@ -1,10 +1,10 @@
 import type { JSXElement, Setter } from "solid-js";
-import { HeaderPopup } from "../page/header-popup.tsx";
 import { TEXT_BLACK_PLAYER, TEXT_SETTINGS, TEXT_WHITE_PLAYER } from "../../scripts/constants.ts";
 import { playerValues } from "../../scripts/player.ts";
 import type { PlayerType } from "../../scripts/player.ts";
 import { Radio } from "../input/radio.tsx";
-import Styles from "./style.module.css";
+import { HeaderPopup } from "../page/header-popup.tsx";
+import { setting } from "./style.css.ts";
 
 type SettingsProperties = {
   readonly children: JSXElement;
@@ -14,7 +14,7 @@ export const Settings = (properties: SettingsProperties): JSXElement => {
     <HeaderPopup icon="settings" label={TEXT_SETTINGS}>
       <h2>{TEXT_SETTINGS}</h2>
 
-      <dl class={Styles.settings}>{properties.children}</dl>
+      <dl class={setting}>{properties.children}</dl>
     </HeaderPopup>
   );
 };
