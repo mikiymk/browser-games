@@ -1,0 +1,11 @@
+---
+import Head from "../components/head.astro";
+import { App } from "../games/nought-and-cross/components/app.tsx";
+import { TEXT_GAME_NOUGHT_AND_CROSS } from "../scripts/constants.ts";
+---
+
+<Head title={TEXT_GAME_NOUGHT_AND_CROSS} />
+
+<App client:load />
+
+<div />
