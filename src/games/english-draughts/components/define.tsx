@@ -1,7 +1,7 @@
 import type { JSXElement } from "solid-js";
 import { Use } from "../../../components/define/use.tsx";
 import { COLOR_KING_BLACK, COLOR_KING_WHITE, COLOR_PAWN_BLACK, COLOR_PAWN_WHITE, MOVE_TARGET } from "../constants.ts";
-import Styles from "./style.module.css";
+import { define, stoneBlack, stoneMove, stoneWhite } from "./style.css.ts";
 
 const WHITE_PAWN_ID = "white-pawn";
 const WHITE_KING_ID = "white-king";
@@ -10,29 +10,29 @@ const BLACK_KING_ID = "black-king";
 
 export const DefinePieces = (): JSXElement => {
   return (
-    <svg viewBox="0 0 0 0" xmlns="http://www.w3.org/2000/svg" class={Styles.define}>
+    <svg viewBox="0 0 0 0" xmlns="http://www.w3.org/2000/svg" class={define}>
       <title>define stones</title>
 
       <symbol id={WHITE_PAWN_ID} viewBox="0 0 60 60">
-        <circle cx={30} cy={30} r={25} class={Styles["stone-white"]} />
+        <circle cx={30} cy={30} r={25} class={stoneWhite} />
       </symbol>
 
       <symbol id={WHITE_KING_ID} viewBox="0 0 60 60">
-        <circle cx={30} cy={30} r={25} class={Styles["stone-white"]} />
-        <circle cx={30} cy={30} r={15} class={Styles["stone-white"]} />
+        <circle cx={30} cy={30} r={25} class={stoneWhite} />
+        <circle cx={30} cy={30} r={15} class={stoneWhite} />
       </symbol>
 
       <symbol id={BLACK_PAWN_ID} viewBox="0 0 60 60">
-        <circle cx={30} cy={30} r={25} class={Styles["stone-black"]} />
+        <circle cx={30} cy={30} r={25} class={stoneBlack} />
       </symbol>
 
       <symbol id={BLACK_KING_ID} viewBox="0 0 60 60">
-        <circle cx={30} cy={30} r={25} class={Styles["stone-black"]} />
-        <circle cx={30} cy={30} r={15} class={Styles["stone-black"]} />
+        <circle cx={30} cy={30} r={25} class={stoneBlack} />
+        <circle cx={30} cy={30} r={15} class={stoneBlack} />
       </symbol>
 
       <symbol id="move" viewBox="0 0 60 60">
-        <circle cx={30} cy={30} r={15} class={Styles["stone-move"]} />
+        <circle cx={30} cy={30} r={15} class={stoneMove} />
       </symbol>
     </svg>
   );
