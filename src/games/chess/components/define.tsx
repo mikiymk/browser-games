@@ -21,11 +21,11 @@ import {
   CellWhiteQueen,
   CellWhiteRook,
 } from "../constants.ts";
-import Styles from "./style.module.css";
+import { define, defineUse } from "./style.css.ts";
 
 export const DefinePieces = (): JSXElement => {
   return (
-    <svg viewBox="0 0 0 0" xmlns="http://www.w3.org/2000/svg" class={Styles.define}>
+    <svg viewBox="0 0 0 0" xmlns="http://www.w3.org/2000/svg" class={define}>
       <title>define cards</title>
 
       <DefinePiece name="bishop" color="black" />
@@ -64,11 +64,7 @@ const DefinePiece = (properties: DefinePieceProperties): JSXElement => {
   };
 
   return (
-    <DefineUse
-      id={`${properties.color}-${properties.name}`}
-      href={pieceImage()}
-      class={properties.color === "black" ? Styles["define-black"] : Styles["define-white"]}
-    />
+    <DefineUse id={`${properties.color}-${properties.name}`} href={pieceImage()} class={defineUse[properties.color]} />
   );
 };
 
