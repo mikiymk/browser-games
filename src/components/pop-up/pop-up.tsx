@@ -1,7 +1,7 @@
 import type { JSXElement } from "solid-js";
 import { createEffect } from "solid-js";
 import { Portal } from "solid-js/web";
-import Styles from "./style.module.css";
+import { popup, popupInner } from "./style.css.ts";
 
 type PopUpProperties = {
   readonly open: boolean;
@@ -22,7 +22,7 @@ export const PopUp = (properties: PopUpProperties): JSXElement => {
   return (
     <Portal>
       <dialog
-        class={Styles.popup}
+        class={popup}
         onClick={(event) => {
           if (event.target === event.currentTarget) {
             properties.outerClick?.();
@@ -35,7 +35,7 @@ export const PopUp = (properties: PopUpProperties): JSXElement => {
           dialogReference = element;
         }}
       >
-        <div class={Styles["popup-inner"]}>{properties.children}</div>
+        <div class={popupInner}>{properties.children}</div>
       </dialog>
     </Portal>
   );
