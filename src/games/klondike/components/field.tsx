@@ -3,7 +3,7 @@ import type { JSXElement } from "solid-js";
 import type { Card } from "../card.ts";
 import type { Select } from "../klondike.tsx";
 import { UseCard } from "./define.tsx";
-import Styles from "./style.module.css";
+import { field } from "./style.css.ts";
 
 type FieldProperties = {
   readonly stock: {
@@ -27,7 +27,7 @@ type FieldProperties = {
 export const Field = (properties: FieldProperties): JSXElement => {
   return (
     <svg viewBox="0 0 256 144" xmlns="http://www.w3.org/2000/svg">
-      <rect height={144} width={256} class={Styles.field} />
+      <rect height={144} width={256} class={field} />
       <title>cards</title>
 
       <FieldStock
