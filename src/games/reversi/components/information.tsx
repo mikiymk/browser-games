@@ -1,7 +1,7 @@
 import { Show } from "solid-js";
 import type { JSXElement } from "solid-js";
 import { CellBlack } from "../const.ts";
-import { iconOuter, iconBlack, iconWhite, next } from "./style.css.ts";
+import { iconBlack, iconOuter, iconWhite, next } from "./style.css.ts";
 
 // ゲーム終了時に結果を表示する
 

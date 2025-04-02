@@ -9,7 +9,7 @@ import empty from "../../../images/card/empty.svg";
 import heart from "../../../images/card/heart.svg";
 import spade from "../../../images/card/spade.svg";
 import type { Card, Rank, Suit } from "../card.ts";
-import { card, reversed, selected, suitColor, rankColor, textColor } from "./style.css.ts";
+import { card, rankColor, reversed, selected, suitColor, textColor } from "./style.css.ts";
 
 export const DefineCards = (): JSXElement => {
   return (

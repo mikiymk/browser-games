@@ -1,7 +1,7 @@
 import { style, styleVariants } from "@vanilla-extract/css";
 import { variables } from "../../../styles/style.css.ts";
 
-export const squareBase = style({
+const squareBase = style({
   fill: "none",
   cursor: "pointer",
 });

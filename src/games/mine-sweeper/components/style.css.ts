@@ -1,8 +1,8 @@
 import { style } from "@vanilla-extract/css";
-import { variables } from "../../../styles/style.css.ts";
 import { emoji } from "../../../styles/fonts.css.ts";
+import { variables } from "../../../styles/style.css.ts";
 
-export const symbol = style({
+const symbol = style({
   stroke: variables.color.black,
   strokeWidth: 2,
 });

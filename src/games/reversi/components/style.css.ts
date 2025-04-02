@@ -9,7 +9,7 @@ export const black = style({
   fill: variables.color.dark,
 });
 
-export const stone = style({
+const stone = style({
   stroke: variables.color.black,
   strokeWidth: 0.5,
 });
@@ -29,7 +29,7 @@ export const iconOuter = style({
   aspectRatio: "1 / 1",
 });
 
-export const icon = style({
+const icon = style({
   stroke: variables.color.black,
 });
 
