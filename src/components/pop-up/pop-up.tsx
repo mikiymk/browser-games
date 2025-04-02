@@ -21,6 +21,7 @@ export const PopUp = (properties: PopUpProperties): JSXElement => {
 
   return (
     <Portal>
+      {/* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions -- ダイアログの外側をクリックするとポップアップが閉じる */}
       <dialog
         class={popup}
         onClick={(event) => {

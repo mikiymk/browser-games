@@ -5,7 +5,6 @@
       "name": "js-html-game",
       "dependencies": {
         "@vanilla-extract/css": "^1.17.1",
-        "destyle.css": "^4.0.1",
         "solid-js": "^1.9.5",
       },
       "devDependencies": {
@@ -624,8 +623,6 @@
     "dequal": ["dequal@2.0.3", "", {}, "sha512-0je+qPKHEMohvfRTCEo3CrPG6cAzAYgmzKyxRiYSSDkS6eGJdyVJm7WaYA5ECaAD9wLB2T4EEeymA5aFVcYXCA=="],
 
     "destr": ["destr@2.0.3", "", {}, "sha512-2N3BOUU4gYMpTP24s5rF5iP7BDr7uNTCs4ozw3kf/eKfvWSIu93GEBi5m427YoyJoeOzQ5smuu4nNAPGb8idSQ=="],
-
-    "destyle.css": ["destyle.css@4.0.1", "", {}, "sha512-G9iyW0JfRkgdxhbWQeuLdO1KZ40nzKssHtArbSFvaU/w44G0cZ5v3u4bHY829INSu480J/fxae+lTm225mN3Vw=="],
 
     "detect-libc": ["detect-libc@2.0.3", "", {}, "sha512-bwy0MGW55bG41VqxxypOsdSdGqLwXPI/focwgTYCFMbdUiBAxLg9CFzG08sz2aqzknwiX7Hkl0bQENjg8iLByw=="],
 

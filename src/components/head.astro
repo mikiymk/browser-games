@@ -1,7 +1,6 @@
 ---
 import icon from "../images/theme-icon.svg";
 import { rootStyle } from "../styles/style.css.ts";
-import "destyle.css";
 
 interface Props {
   title?: string;
@@ -16,6 +15,7 @@ const titleText = title ? `${title} | Board Games` : "Board Games";
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="shortcut icon" type="image/svg+xml" href={icon.src} />
 <link rel="canonical" href={canonicalUrl} />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/destyle.css@latest/destyle.min.css"/>
 <title>{titleText}</title>
 
 <body class={rootStyle} />

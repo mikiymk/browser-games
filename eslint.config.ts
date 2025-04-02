@@ -166,7 +166,18 @@ export default typescript.config(
     files: ["**/*.astro"],
     extends: [typescript.configs.disableTypeChecked], // 型を利用する検査を行わない
     rules: {
-      "import/no-unused-modules": "off", // Astroファイルはexportを使わない
+      "import/no-unused-modules": "off",
+      "@typescript-eslint/consistent-type-definitions": "off",
+      "unicorn/text-encoding-identifier-case": "off",
+      "unicorn/prevent-abbreviations": [
+        "error",
+        {
+          allowList: {
+            // biome-ignore lint/style/useNamingConvention: Astroのプロパティの型はPropsで表す
+            Props: true,
+          },
+        },
+      ],
     },
   },
   {
