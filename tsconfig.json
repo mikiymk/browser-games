@@ -23,6 +23,6 @@
     "noUnusedLocals": false, // correctness/noUnusedVariables
     "noUnusedParameters": false // correctness/noUnusedVariables
   },
-  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.astro"],
+  "include": ["src/**/*.ts", "src/**/*.tsx"],
   "exclude": ["./vitest.config.ts"]
 }

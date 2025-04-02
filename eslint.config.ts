@@ -1,10 +1,11 @@
 import eslintComments from "@eslint-community/eslint-plugin-eslint-comments";
 import eslint from "@eslint/js";
 import biome from "eslint-config-biome";
+import astro from "eslint-plugin-astro";
 import pluginImport from "eslint-plugin-import";
+import jsxA11y from "eslint-plugin-jsx-a11y";
 import solid from "eslint-plugin-solid";
 import unicorn from "eslint-plugin-unicorn";
-import vitest from "eslint-plugin-vitest";
 import globals from "globals";
 import typescript from "typescript-eslint";
 
@@ -12,16 +13,16 @@ export default typescript.config(
   {
     ignores: ["src/env.d.ts"],
   },
+  {
+    files: ["**/*.{ts,tsx,astro}"],
+  },
   eslint.configs.recommended,
   typescript.configs.strictTypeChecked,
   typescript.configs.stylisticTypeChecked,
   unicorn.configs.recommended,
   solid.configs["flat/typescript"],
-  {
-    files: ["**/*.test.{ts,tsx}"],
-    plugins: { vitest },
-    rules: { ...vitest.configs.recommended.rules },
-  },
+  astro.configs.recommended,
+  jsxA11y.flatConfigs.strict,
   biome,
   {
     languageOptions: {
@@ -29,17 +30,21 @@ export default typescript.config(
         ...globals.builtin,
         ...globals.browser,
       },
-
-      parserOptions: {
-        projectService: true,
-        tsconfigRootDir: import.meta.dirname,
-      },
     },
 
     linterOptions: {
       noInlineConfig: false,
       reportUnusedDisableDirectives: "error",
       reportUnusedInlineConfigs: "error",
+    },
+  },
+  {
+    files: ["**/*.{ts,tsx}"],
+    languageOptions: {
+      parserOptions: {
+        projectService: true,
+        tsconfigRootDir: import.meta.dirname,
+      },
     },
   },
   {
@@ -154,6 +159,14 @@ export default typescript.config(
     rules: {
       "@eslint-community/eslint-comments/no-use": ["error", { allow: ["eslint-disable-next-line"] }],
       "@eslint-community/eslint-comments/require-description": "error",
+    },
+  },
+  {
+    // Astroファイル
+    files: ["**/*.astro"],
+    extends: [typescript.configs.disableTypeChecked], // 型を利用する検査を行わない
+    rules: {
+      "import/no-unused-modules": "off", // Astroファイルはexportを使わない
     },
   },
   {
