@@ -1,4 +1,5 @@
-import { style } from "@vanilla-extract/css";
+import { keyframes, style } from "@vanilla-extract/css";
+import { variables } from "../../styles/style.css.ts";
 
 export const header = style({
   height: "3rem",
@@ -53,4 +54,28 @@ export const body = style({
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
+});
+
+const fade = keyframes({
+  from: { opacity: 0 },
+  to: { opacity: 1 },
+});
+
+export const overlay = style({
+  position: "fixed",
+  inset: 0,
+  background: "#0001",
+});
+
+export const content = style({
+  position: "fixed",
+  left: "50%",
+  top: "50%",
+  transform: "translate(-50%, -50%)",
+
+  padding: "1rem",
+  backgroundColor: "#fef9c3",
+  border: `2px solid ${variables.color.black}`,
+
+  animation: `${fade} 0.1s`,
 });

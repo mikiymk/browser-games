@@ -1,6 +1,6 @@
+import { Close } from "@corvu/dialog";
 import type { JSXElement } from "solid-js";
-import { Button } from "../../../components/elements/button.tsx";
-import { PopUp } from "../../../components/pop-up/pop-up.tsx";
+import { InformationPopUp } from "../../../components/page/information-popup.tsx";
 
 type GameOverPopUpProperties = {
   readonly gameOver: boolean;
@@ -8,16 +8,15 @@ type GameOverPopUpProperties = {
 };
 export const GameOverPopUp = (properties: GameOverPopUpProperties): JSXElement => {
   return (
-    <PopUp open={properties.gameOver}>
+    <InformationPopUp open={properties.gameOver}>
       Game End
-      <br />
-      <Button
+      <Close
         onClick={() => {
           properties.set(0);
         }}
       >
-        Close
-      </Button>
-    </PopUp>
+        close
+      </Close>
+    </InformationPopUp>
   );
 };

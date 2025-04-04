@@ -1,3 +1,4 @@
+import { Close } from "@corvu/dialog";
 import type { JSXElement, Setter } from "solid-js";
 import { TEXT_BLACK_PLAYER, TEXT_SETTINGS, TEXT_WHITE_PLAYER } from "../../scripts/constants.ts";
 import { playerValues } from "../../scripts/player.ts";
@@ -15,6 +16,9 @@ export const Settings = (properties: SettingsProperties): JSXElement => {
       <h2>{TEXT_SETTINGS}</h2>
 
       <dl class={setting}>{properties.children}</dl>
+
+      <Close>Submit</Close>
+      <Close>Cancel</Close>
     </HeaderPopup>
   );
 };
