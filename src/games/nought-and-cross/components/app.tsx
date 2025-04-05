@@ -1,8 +1,6 @@
 import type { JSXElement } from "solid-js";
 import { createSignal, onMount } from "solid-js";
 import { Start } from "../../../components/header-buttons/start.tsx";
-import { PageBody } from "../../../components/page/body.tsx";
-import { PageHeader } from "../../../components/page/header.tsx";
 import { doNothingFunction } from "../../../scripts/do-nothing.ts";
 import { MultiPromise } from "../../../scripts/multi-promise.ts";
 import { PlayerTypeAi, PlayerTypeHuman } from "../../../scripts/player.ts";
@@ -30,6 +28,7 @@ import { NncBoard } from "./board.tsx";
 import { History } from "./history.tsx";
 import { NoughtAndCrossSettings } from "./settings.tsx";
 import { StatusButton } from "./status.tsx";
+import { Page } from "../../../components/page/page.tsx";
 
 export const App = (): JSXElement => {
   const [playerO, setPlayerO] = createUrlQuerySignal<PlayerType>("o", PlayerTypeHuman);
@@ -96,20 +95,17 @@ export const App = (): JSXElement => {
   onMount(reset);
 
   return (
-    <>
-      <PageHeader
-        buttons={
-          <>
-            <StatusButton status={status()} />
-            <Start start={reset} />
-            <History history={history()} />
-            <NoughtAndCrossSettings o={playerO()} x={playerX()} setO={setPlayerO} setX={setPlayerX} />
-          </>
-        }
-      />
-      <PageBody>
-        <NncBoard board={board()} click={handleClick} />
-      </PageBody>
-    </>
+    <Page
+      header={
+        <>
+          <StatusButton status={status()} />
+          <Start start={reset} />
+          <History history={history()} />
+          <NoughtAndCrossSettings o={playerO()} x={playerX()} setO={setPlayerO} setX={setPlayerX} />
+        </>
+      }
+    >
+      <NncBoard board={board()} click={handleClick} />
+    </Page>
   );
 };

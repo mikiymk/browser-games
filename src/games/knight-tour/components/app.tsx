@@ -1,7 +1,5 @@
 import type { JSXElement } from "solid-js";
 import { onMount } from "solid-js";
-import { PageBody } from "../../../components/page/body.tsx";
-import { PageHeader } from "../../../components/page/header.tsx";
 import { createUrlQuerySignal } from "../../../scripts/use-url-query.ts";
 import { CellKnight, CellMovable, CellVisited } from "../consts.ts";
 import { createGame } from "../create-game.ts";
@@ -10,6 +8,7 @@ import { KnightBoard } from "./board.tsx";
 import { History } from "./history.tsx";
 import { HowToPlayKnightTour } from "./how-to-play.tsx";
 import { KnightTourSettings } from "./settings.tsx";
+import { Page } from "../../../components/page/page.tsx";
 
 export const App = (): JSXElement => {
   const [hint, setHint] = createUrlQuerySignal("board", "hide");
@@ -32,19 +31,16 @@ export const App = (): JSXElement => {
   onMount(reset);
 
   return (
-    <>
-      <PageHeader
-        buttons={
-          <>
-            <History history={history()} back={backHistory} />
-            <KnightTourSettings hint={hint()} setHint={setHint} />
-            <HowToPlayKnightTour />
-          </>
-        }
-      />
-      <PageBody>
-        <KnightBoard board={board()} handleClick={handleClick} hintMode={hint() !== "hide"} />
-      </PageBody>
-    </>
+    <Page
+      header={
+        <>
+          <History history={history()} back={backHistory} />
+          <KnightTourSettings hint={hint()} setHint={setHint} />
+          <HowToPlayKnightTour />
+        </>
+      }
+    >
+      <KnightBoard board={board()} handleClick={handleClick} hintMode={hint() !== "hide"} />
+    </Page>
   );
 };

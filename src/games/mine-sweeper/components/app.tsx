@@ -1,14 +1,13 @@
 import type { JSXElement } from "solid-js";
 import { batch, createEffect, createSignal } from "solid-js";
 import { Start } from "../../../components/header-buttons/start.tsx";
-import { PageBody } from "../../../components/page/body.tsx";
-import { PageHeader } from "../../../components/page/header.tsx";
 import { createUrlQuerySignal } from "../../../scripts/use-url-query.ts";
 import { Bombed, Clear, FieldBomb, FieldFlag, FieldNoOpen, FirstClick, Playing } from "../consts.ts";
 import { getAround, initializeField, isClear, resetMines } from "../field.ts";
 import { Status } from "./controller.tsx";
 import { MineFields } from "./field.tsx";
 import { MineSweeperSettings } from "./settings.tsx";
+import { Page } from "../../../components/page/page.tsx";
 
 export const App = (): JSXElement => {
   const [heightString, setHeight] = createUrlQuerySignal("height", "10");
@@ -103,26 +102,23 @@ export const App = (): JSXElement => {
   };
 
   return (
-    <>
-      <PageHeader
-        buttons={
-          <>
-            <Status state={gameState()} fields={fields()} mines={mineCount()} />
-            <Start start={reset} />
-            <MineSweeperSettings
-              height={height()}
-              width={width()}
-              mineCount={mineCount()}
-              setHeight={(height) => setHeight(String(height))}
-              setWidth={(width) => setWidth(String(width))}
-              setMineCount={(mineCount) => setMineCount(String(mineCount))}
-            />
-          </>
-        }
-      />
-      <PageBody>
-        <MineFields height={height()} width={width()} fields={fields()} open={openField} flag={flagField} />
-      </PageBody>
-    </>
+    <Page
+      header={
+        <>
+          <Status state={gameState()} fields={fields()} mines={mineCount()} />
+          <Start start={reset} />
+          <MineSweeperSettings
+            height={height()}
+            width={width()}
+            mineCount={mineCount()}
+            setHeight={(height) => setHeight(String(height))}
+            setWidth={(width) => setWidth(String(width))}
+            setMineCount={(mineCount) => setMineCount(String(mineCount))}
+          />
+        </>
+      }
+    >
+      <MineFields height={height()} width={width()} fields={fields()} open={openField} flag={flagField} />
+    </Page>
   );
 };

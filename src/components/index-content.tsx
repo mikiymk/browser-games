@@ -13,8 +13,7 @@ import {
 } from "../scripts/constants.ts";
 import { Anchor } from "./elements/anchor.tsx";
 import { List, ListItem } from "./elements/list.tsx";
-import { PageBody } from "./page/body.tsx";
-import { PageHeader } from "./page/header.tsx";
+import { Page } from "./page/page.tsx";
 
 const pages = [
   { title: TEXT_GAME_NOUGHT_AND_CROSS, name: "nought-and-cross" },
@@ -30,19 +29,16 @@ const pages = [
 
 export const IndexContent = (): JSXElement => {
   return (
-    <>
-      <PageHeader />
-      <PageBody>
-        <List>
-          <For each={pages}>
-            {({ title, name }) => (
-              <ListItem>
-                <Anchor href={`${name}/`}>{title}</Anchor>
-              </ListItem>
-            )}
-          </For>
-        </List>
-      </PageBody>
-    </>
+    <Page>
+      <List>
+        <For each={pages}>
+          {({ title, name }) => (
+            <ListItem>
+              <Anchor href={`${name}/`}>{title}</Anchor>
+            </ListItem>
+          )}
+        </For>
+      </List>
+    </Page>
   );
 };

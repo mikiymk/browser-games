@@ -3,8 +3,6 @@ import type { JSXElement } from "solid-js";
 import { Board } from "../../../components/board/board.tsx";
 import { PlayerSetting, Settings } from "../../../components/header-buttons/settings.tsx";
 import { Start } from "../../../components/header-buttons/start.tsx";
-import { PageBody } from "../../../components/page/body.tsx";
-import { PageHeader } from "../../../components/page/header.tsx";
 import board from "../../../images/chess/board.svg";
 import { MultiPromise } from "../../../scripts/multi-promise.ts";
 import { PlayerTypeAi, PlayerTypeHuman } from "../../../scripts/player.ts";
@@ -17,6 +15,7 @@ import { gameLoop } from "../game-loop.ts";
 import type { PlayerColor } from "../game-loop.ts";
 import { getWasm } from "../wasm.ts";
 import { UsePiece } from "./define.tsx";
+import { Page } from "../../../components/page/page.tsx";
 
 export const App = (): JSXElement => {
   const [white, setWhite] = createUrlQuerySignal<PlayerType>("white", PlayerTypeHuman);
@@ -83,22 +82,19 @@ export const App = (): JSXElement => {
   };
 
   return (
-    <>
-      <PageHeader
-        buttons={
-          <>
-            <Start start={handleStart} />
-            <Settings>
-              <PlayerSetting white={white()} black={black()} setWhite={setWhite} setBlack={setBlack} />
-            </Settings>
-          </>
-        }
-      />
-      <PageBody>
-        <Board height={8} width={8} data={boardNumber()} background={board.src} click={handleClick}>
-          {(square, _, x, y) => <UsePiece piece={square} x={x} y={y} />}
-        </Board>
-      </PageBody>
-    </>
+    <Page
+      header={
+        <>
+          <Start start={handleStart} />
+          <Settings>
+            <PlayerSetting white={white()} black={black()} setWhite={setWhite} setBlack={setBlack} />
+          </Settings>
+        </>
+      }
+    >
+      <Board height={8} width={8} data={boardNumber()} background={board.src} click={handleClick}>
+        {(square, _, x, y) => <UsePiece piece={square} x={x} y={y} />}
+      </Board>
+    </Page>
   );
 };

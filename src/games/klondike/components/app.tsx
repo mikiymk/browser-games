@@ -2,12 +2,11 @@ import { Close } from "@corvu/dialog";
 import { createSignal } from "solid-js";
 import type { JSXElement } from "solid-js";
 import { Start } from "../../../components/header-buttons/start.tsx";
-import { PageBody } from "../../../components/page/body.tsx";
-import { PageHeader } from "../../../components/page/header.tsx";
 import { InformationPopUp } from "../../../components/page/information-popup.tsx";
 import { createKlondike } from "../klondike.ts";
 import type { Select } from "../klondike.ts";
 import { Field } from "./field.tsx";
+import { Page } from "../../../components/page/page.tsx";
 
 export const App = (): JSXElement => {
   const { start, cards, moveCards, openStock, autoFoundation, isCleared } = createKlondike();
@@ -48,31 +47,27 @@ export const App = (): JSXElement => {
   };
 
   return (
-    <>
-      <PageHeader buttons={<Start start={start} />} />
+    <Page header={<Start start={start} />}>
+      <Field
+        {...cards}
+        select={select()}
+        openStock={openStock}
+        selectStock={selectStock}
+        selectTableau={selectTableau}
+        selectFoundation={selectFoundation}
+        autoFoundation={autoFoundation}
+      />
 
-      <PageBody>
-        <Field
-          {...cards}
-          select={select()}
-          openStock={openStock}
-          selectStock={selectStock}
-          selectTableau={selectTableau}
-          selectFoundation={selectFoundation}
-          autoFoundation={autoFoundation}
-        />
-
-        <InformationPopUp open={popText() !== undefined}>
-          {popText()}
-          <Close
-            onClick={() => {
-              setPopText();
-            }}
-          >
-            close
-          </Close>
-        </InformationPopUp>
-      </PageBody>
-    </>
+      <InformationPopUp open={popText() !== undefined}>
+        {popText()}
+        <Close
+          onClick={() => {
+            setPopText();
+          }}
+        >
+          close
+        </Close>
+      </InformationPopUp>
+    </Page>
   );
 };

@@ -2,8 +2,6 @@ import type { JSXElement } from "solid-js";
 import { createSignal } from "solid-js";
 import { PlayerSetting, Settings } from "../../../components/header-buttons/settings.tsx";
 import { Start } from "../../../components/header-buttons/start.tsx";
-import { PageBody } from "../../../components/page/body.tsx";
-import { PageHeader } from "../../../components/page/header.tsx";
 import { doNothingFunction } from "../../../scripts/do-nothing.ts";
 import { MultiPromise } from "../../../scripts/multi-promise.ts";
 import { PlayerTypeAi, PlayerTypeHuman } from "../../../scripts/player.ts";
@@ -16,6 +14,7 @@ import { getReversiWasm } from "../get-wasm.ts";
 import { ReversiBoard } from "./board.tsx";
 import { HowToPlayReversi } from "./how-to-play.tsx";
 import { StoneCount } from "./information.tsx";
+import { Page } from "../../../components/page/page.tsx";
 
 const emptyBoard: number[] = Array.from({ length: 64 }, () => CellEmpty);
 
@@ -77,23 +76,20 @@ export const App = (): JSXElement => {
   const countWhite = (): number => count(CellWhite);
 
   return (
-    <>
-      <PageHeader
-        buttons={
-          <>
-            <StoneCount count={countBlack()} color={CellBlack} isNext={gamePlaying() && getColor?.() === CellBlack} />
-            <StoneCount count={countWhite()} color={CellWhite} isNext={gamePlaying() && getColor?.() === CellWhite} />
-            <Start start={handleStart} />
-            <Settings>
-              <PlayerSetting white={white()} black={black()} setWhite={setWhite} setBlack={setBlack} />
-            </Settings>
-            <HowToPlayReversi />
-          </>
-        }
-      />
-      <PageBody>
-        <ReversiBoard board={board()} click={handleClick} />
-      </PageBody>
-    </>
+    <Page
+      header={
+        <>
+          <StoneCount count={countBlack()} color={CellBlack} isNext={gamePlaying() && getColor?.() === CellBlack} />
+          <StoneCount count={countWhite()} color={CellWhite} isNext={gamePlaying() && getColor?.() === CellWhite} />
+          <Start start={handleStart} />
+          <Settings>
+            <PlayerSetting white={white()} black={black()} setWhite={setWhite} setBlack={setBlack} />
+          </Settings>
+          <HowToPlayReversi />
+        </>
+      }
+    >
+      <ReversiBoard board={board()} click={handleClick} />
+    </Page>
   );
 };
