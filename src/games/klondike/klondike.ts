@@ -1,5 +1,5 @@
-import { shuffledArray } from "@/scripts/random-select";
 import { createStore } from "solid-js/store";
+import { shuffledArray } from "../../scripts/random-select.ts";
 import { Cards, colorOf, rankOf, suitOf } from "./card.ts";
 import type { Card } from "./card.ts";
 

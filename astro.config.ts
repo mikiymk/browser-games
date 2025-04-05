@@ -1,5 +1,5 @@
 import solidJs from "@astrojs/solid-js";
-import type { AstroIntegration } from "astro";
+import { vanillaExtractPlugin } from "@vanilla-extract/vite-plugin";
 import compress from "astro-compress";
 import { defineConfig } from "astro/config";
 
@@ -58,11 +58,16 @@ export default defineConfig({
           ],
         },
       },
-    }) as unknown as AstroIntegration,
+    }),
   ],
   // biome-ignore lint/style/useNamingConvention: ライブラリに合わせる
   compressHTML: true,
   vite: {
+    plugins: [
+      vanillaExtractPlugin({
+        identifiers: "short",
+      }),
+    ],
     esbuild: {
       mangleProps: /_$/,
     },

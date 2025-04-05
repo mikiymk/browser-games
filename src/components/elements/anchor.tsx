@@ -1,5 +1,5 @@
 import type { JSXElement } from "solid-js";
-import Styles from "./style.module.css";
+import { anchor } from "./style.css.ts";
 
 type ListProperties = {
   readonly href: string;
@@ -7,7 +7,7 @@ type ListProperties = {
 };
 export const Anchor = (properties: ListProperties): JSXElement => {
   return (
-    <a href={properties.href} class={Styles.anchor}>
+    <a href={properties.href} class={anchor}>
       {properties.children}
     </a>
   );

@@ -1,7 +1,7 @@
-import { Icon } from "@/components/elements/material-icon";
 import { Show } from "solid-js";
 import type { JSXElement } from "solid-js";
-import Styles from "./style.module.css";
+import { Icon } from "../elements/material-icon.tsx";
+import { headerButton, headerText } from "./style.css.ts";
 
 type HeaderButtonProperites = {
   readonly icon?: string | undefined;
@@ -9,9 +9,9 @@ type HeaderButtonProperites = {
 };
 export const HeaderButton = (properties: HeaderButtonProperites): JSXElement => {
   return (
-    <span class={Styles["header-button"]}>
+    <span class={headerButton}>
       <Show when={properties.icon}>{(icon) => <Icon>{icon()}</Icon>}</Show>
-      <span class={Styles["header-text"]}>{properties.children}</span>
+      <span class={headerText}>{properties.children}</span>
     </span>
   );
 };

@@ -1,11 +1,11 @@
-import { Board } from "@/components/board/board";
-import cross from "@/images/icon/cross.svg";
-import nought from "@/images/icon/nought.svg";
-import board from "@/images/nought-and-cross/board.svg";
 import type { JSXElement } from "solid-js";
 import { Match, Switch } from "solid-js";
+import { Board } from "../../../components/board/board.tsx";
+import cross from "../../../images/icon/cross.svg";
+import nought from "../../../images/icon/nought.svg";
+import board from "../../../images/nought-and-cross/board.svg";
 import { CROSS, NOUGHT } from "../constants.ts";
-import Styles from "./style.module.css";
+import { crossStyle, noughtStyle } from "./style.css.ts";
 
 type CellProperties = {
   readonly mark: number;
@@ -16,17 +16,10 @@ const Cell = (properties: CellProperties): JSXElement => {
   return (
     <Switch>
       <Match when={properties.mark === NOUGHT}>
-        <use
-          href={`${nought.src}#root`}
-          x={properties.x}
-          y={properties.y}
-          height={10}
-          width={10}
-          class={Styles.nought}
-        />
+        <use href={`${nought.src}#root`} x={properties.x} y={properties.y} height={10} width={10} class={noughtStyle} />
       </Match>
       <Match when={properties.mark === CROSS}>
-        <use href={`${cross.src}#root`} x={properties.x} y={properties.y} height={10} width={10} class={Styles.cross} />
+        <use href={`${cross.src}#root`} x={properties.x} y={properties.y} height={10} width={10} class={crossStyle} />
       </Match>
     </Switch>
   );

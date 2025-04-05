@@ -1,7 +1,7 @@
-import type { MultiPromise } from "@/scripts/multi-promise";
-import type { PlayerType } from "@/scripts/player";
-import { PlayerTypeHuman } from "@/scripts/player";
-import { sleep } from "@/scripts/sleep";
+import type { MultiPromise } from "../../scripts/multi-promise.ts";
+import type { PlayerType } from "../../scripts/player.ts";
+import { PlayerTypeHuman } from "../../scripts/player.ts";
+import { sleep } from "../../scripts/sleep.ts";
 import {
   Black,
   CellBlackBishop,

@@ -1,28 +1,28 @@
-import { Define } from "@/components/define/define";
-import { DefineNumber } from "@/components/define/define-number";
-import { DefineUse } from "@/components/define/define-use";
-import { Use } from "@/components/define/use";
-import knight from "@/images/chess/knight.svg";
-import cross from "@/images/icon/cross.svg";
-import nought from "@/images/icon/nought.svg";
 import type { JSXElement } from "solid-js";
-import Styles from "./style.module.css";
+import { DefineNumber } from "../../../components/define/define-number.tsx";
+import { DefineUse } from "../../../components/define/define-use.tsx";
+import { Define } from "../../../components/define/define.tsx";
+import { Use } from "../../../components/define/use.tsx";
+import knight from "../../../images/chess/knight.svg";
+import cross from "../../../images/icon/cross.svg";
+import nought from "../../../images/icon/nought.svg";
+import { figure, number, piece } from "./style.css.ts";
 
 export const DefineSymbol = (): JSXElement => {
   return (
     <Define>
-      <DefineNumber number={0} class={Styles.number} />
-      <DefineNumber number={1} class={Styles.number} />
-      <DefineNumber number={2} class={Styles.number} />
-      <DefineNumber number={3} class={Styles.number} />
-      <DefineNumber number={4} class={Styles.number} />
-      <DefineNumber number={5} class={Styles.number} />
-      <DefineNumber number={6} class={Styles.number} />
-      <DefineNumber number={7} class={Styles.number} />
+      <DefineNumber number={0} class={number} />
+      <DefineNumber number={1} class={number} />
+      <DefineNumber number={2} class={number} />
+      <DefineNumber number={3} class={number} />
+      <DefineNumber number={4} class={number} />
+      <DefineNumber number={5} class={number} />
+      <DefineNumber number={6} class={number} />
+      <DefineNumber number={7} class={number} />
 
-      <DefineUse id="knight" href={knight.src} class={Styles.knight} />
-      <DefineUse id="nought" href={nought.src} class={Styles.figure} />
-      <DefineUse id="cross" href={cross.src} class={Styles.figure} />
+      <DefineUse id="knight" href={knight.src} class={piece} />
+      <DefineUse id="nought" href={nought.src} class={figure} />
+      <DefineUse id="cross" href={cross.src} class={figure} />
     </Define>
   );
 };

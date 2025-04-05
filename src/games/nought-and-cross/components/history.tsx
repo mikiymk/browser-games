@@ -1,11 +1,11 @@
-import { StyledSvg } from "@/components/elements/styled-svg";
-import { HeaderPopup } from "@/components/page/header-popup";
-import cross from "@/images/icon/cross.svg";
-import nought from "@/images/icon/nought.svg";
-import { TEXT_HISTORY } from "@/scripts/constants";
 import type { JSXElement } from "solid-js";
 import { For, Show } from "solid-js";
-import Styles from "./style.module.css";
+import { StyledSvg } from "../../../components/elements/styled-svg.tsx";
+import { HeaderPopup } from "../../../components/page/header-popup.tsx";
+import cross from "../../../images/icon/cross.svg";
+import nought from "../../../images/icon/nought.svg";
+import { TEXT_HISTORY } from "../../../scripts/constants.ts";
+import { history, historyItem } from "./style.css.ts";
 
 const historyFillArray = [-1, -1, -1, -1, -1, -1, -1, -1, -1];
 
@@ -22,10 +22,10 @@ export const History = (properties: HistoryProperties): JSXElement => {
   return (
     <HeaderPopup icon="history" label={TEXT_HISTORY}>
       <h2>{TEXT_HISTORY}</h2>
-      <ol class={Styles.history}>
+      <ol class={history}>
         <For each={paddedHistory()}>
           {(history, index) => (
-            <li class={Styles["history-item"]}>
+            <li class={historyItem}>
               <Show when={index() % 2} fallback={<StyledSvg src={nought.src} alt="nought" />}>
                 <StyledSvg src={cross.src} alt="cross" />
               </Show>

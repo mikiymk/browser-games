@@ -1,11 +1,11 @@
-import { StyledSvg } from "@/components/elements/styled-svg";
-import { Item, Settings } from "@/components/header-buttons/settings";
-import { Radio } from "@/components/input/radio";
-import cross from "@/images/icon/cross.svg";
-import nought from "@/images/icon/nought.svg";
-import { playerValues } from "@/scripts/player";
-import type { PlayerType } from "@/scripts/player";
 import type { JSXElement, Setter } from "solid-js";
+import { StyledSvg } from "../../../components/elements/styled-svg.tsx";
+import { Item, Settings } from "../../../components/header-buttons/settings.tsx";
+import { Radio } from "../../../components/input/radio.tsx";
+import cross from "../../../images/icon/cross.svg";
+import nought from "../../../images/icon/nought.svg";
+import { playerValues } from "../../../scripts/player.ts";
+import type { PlayerType } from "../../../scripts/player.ts";
 
 type Properties = {
   readonly o: PlayerType;

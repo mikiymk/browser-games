@@ -1,9 +1,9 @@
 import type { JSXElement } from "solid-js";
-import Styles from "./style.module.css";
+import { icon } from "./style.css.ts";
 
 type Properties = {
   readonly children: string;
 };
 export const Icon = (properties: Properties): JSXElement => {
-  return <span class={Styles.icon}>{properties.children}</span>;
+  return <span class={icon}>{properties.children}</span>;
 };

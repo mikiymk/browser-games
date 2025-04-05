@@ -14,18 +14,15 @@
     "erasableSyntaxOnly": true,
 
     "baseUrl": "./",
-    "paths": {
-      "@/*": ["src/*"]
-    },
+    "paths": {},
 
-    // unnecessary with Biome
-
-    "allowUnusedLabels": true, // lint/correctness/noUnusedLabels
-    "allowUnreachableCode": true, // lint/correctness/noUnreachable
-    "noFallthroughCasesInSwitch": false, // lint/suspicious/noFallthroughSwitchClause
-    "noUnusedLocals": false, // lint/correctness/noUnusedVariables
-    "noUnusedParameters": false // lint/correctness/noUnusedVariables
+    // Biomeで検出できるルール
+    "allowUnusedLabels": true, // correctness/noUnusedLabels
+    "allowUnreachableCode": true, // correctness/noUnreachable
+    "noFallthroughCasesInSwitch": false, // suspicious/noFallthroughSwitchClause
+    "noUnusedLocals": false, // correctness/noUnusedVariables
+    "noUnusedParameters": false // correctness/noUnusedVariables
   },
-  "include": ["**/*.ts", "**/*.tsx", "src/**/*.astro"],
+  "include": ["src/**/*.ts", "src/**/*.tsx"],
   "exclude": ["./vitest.config.ts"]
 }

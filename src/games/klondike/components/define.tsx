@@ -1,16 +1,15 @@
-import { Define } from "@/components/define/define";
-import { DefineUse } from "@/components/define/define-use";
-import back from "@/images/card/back.svg";
-import club from "@/images/card/club.svg";
-import diamond from "@/images/card/diamond.svg";
-import empty from "@/images/card/empty.svg";
-import heart from "@/images/card/heart.svg";
-import spade from "@/images/card/spade.svg";
-import { classes } from "@/scripts/classes";
 import { Match, Show, Switch } from "solid-js";
 import type { JSXElement } from "solid-js";
+import { DefineUse } from "../../../components/define/define-use.tsx";
+import { Define } from "../../../components/define/define.tsx";
+import back from "../../../images/card/back.svg";
+import club from "../../../images/card/club.svg";
+import diamond from "../../../images/card/diamond.svg";
+import empty from "../../../images/card/empty.svg";
+import heart from "../../../images/card/heart.svg";
+import spade from "../../../images/card/spade.svg";
 import type { Card, Rank, Suit } from "../card.ts";
-import Styles from "./style.module.css";
+import { card, rankColor, reversed, selected, suitColor, textColor } from "./style.css.ts";
 
 export const DefineCards = (): JSXElement => {
   return (
@@ -86,15 +85,15 @@ export const DefineCards = (): JSXElement => {
 const DefineSuits = (): JSXElement => {
   return (
     <>
-      <DefineUse id="spade" href={spade.src} class={Styles.black} />
-      <DefineUse id="club" href={club.src} class={Styles.black} />
-      <DefineUse id="heart" href={heart.src} class={Styles.red} />
-      <DefineUse id="diamond" href={diamond.src} class={Styles.red} />
+      <DefineUse id="spade" href={spade.src} />
+      <DefineUse id="club" href={club.src} />
+      <DefineUse id="heart" href={heart.src} />
+      <DefineUse id="diamond" href={diamond.src} />
 
-      <DefineUse id="spade-rev" href={spade.src} class={classes(Styles.black, Styles.rev)} />
-      <DefineUse id="club-rev" href={club.src} class={classes(Styles.black, Styles.rev)} />
-      <DefineUse id="heart-rev" href={heart.src} class={classes(Styles.red, Styles.rev)} />
-      <DefineUse id="diamond-rev" href={diamond.src} class={classes(Styles.red, Styles.rev)} />
+      <DefineUse id="spade-rev" href={spade.src} class={reversed} />
+      <DefineUse id="club-rev" href={club.src} class={reversed} />
+      <DefineUse id="heart-rev" href={heart.src} class={reversed} />
+      <DefineUse id="diamond-rev" href={diamond.src} class={reversed} />
     </>
   );
 };
@@ -108,50 +107,39 @@ const DefineCard = (properties: DefineCardProperties): JSXElement => {
     return `#${properties.suit}${rotate ? "-rev" : ""}`;
   };
 
-  const isRed = (): boolean => {
-    return properties.suit === "heart" || properties.suit === "diamond";
-  };
-
   type UseSuitProperties = {
     readonly x: number;
     readonly y: number;
     readonly rotate?: boolean;
   };
-  const UseSuit = (properties: UseSuitProperties): JSXElement => (
+  const UseSuit = (suitProperties: UseSuitProperties): JSXElement => (
     <use
-      href={suitImage(properties.rotate === true)}
-      x={properties.x - 15}
-      y={properties.y - 15}
+      href={suitImage(suitProperties.rotate === true)}
+      x={suitProperties.x - 15}
+      y={suitProperties.y - 15}
       height={30}
       width={30}
-      class={isRed() ? Styles.red : Styles.black}
+      class={suitColor[properties.suit]}
     />
   );
 
   type UseTextProperties = {
     readonly children: string;
   };
-  const UseText = (properties: UseTextProperties): JSXElement => {
+  const UseText = (textProperties: UseTextProperties): JSXElement => {
     return (
-      <text x={50} y={88} text-anchor="middle" class={classes(Styles.text, isRed() ? Styles.red : Styles.black)}>
-        {properties.children}
+      <text x={50} y={88} text-anchor="middle" class={textColor[properties.suit]}>
+        {textProperties.children}
       </text>
     );
   };
 
   return (
     <symbol id={`${properties.suit}-${properties.rank}`} viewBox="0 0 100 156">
-      <rect x={0} y={0} height={156} width={100} rx={10} ry={10} class={Styles.card} />
+      <rect x={0} y={0} height={156} width={100} rx={10} ry={10} class={card} />
 
-      <use
-        href={`#${properties.suit}`}
-        x={4}
-        y={7}
-        height={16}
-        width={16}
-        class={isRed() ? Styles.red : Styles.black}
-      />
-      <text x={22} y={20} class={classes(Styles["text-rank"], isRed() ? Styles.red : Styles.black)}>
+      <use href={`#${properties.suit}`} x={4} y={7} height={16} width={16} class={suitColor[properties.suit]} />
+      <text x={22} y={20} class={rankColor[properties.suit]}>
         {properties.rank}
       </text>
 
@@ -282,7 +270,7 @@ export const UseCard = (properties: UseCardProperties): JSXElement => {
         }}
       />
       <Show when={properties.selected}>
-        <rect x={properties.x} y={properties.y} height={31.2} width={20} rx={2} ry={2} class={Styles.selected} />
+        <rect x={properties.x} y={properties.y} height={31.2} width={20} rx={2} ry={2} class={selected} />
       </Show>
     </>
   );

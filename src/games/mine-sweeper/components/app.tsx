@@ -1,11 +1,11 @@
-import { Start } from "@/components/header-buttons/start";
-import { PageBody } from "@/components/page/body";
-import { PageHeader } from "@/components/page/header";
-import { Bombed, Clear, FieldBomb, FieldFlag, FieldNoOpen, FirstClick, Playing } from "@/games/mine-sweeper/consts";
-import { getAround, initializeField, isClear, resetMines } from "@/games/mine-sweeper/field";
-import { createUrlQuerySignal } from "@/scripts/use-url-query";
 import type { JSXElement } from "solid-js";
 import { batch, createEffect, createSignal } from "solid-js";
+import { Start } from "../../../components/header-buttons/start.tsx";
+import { PageBody } from "../../../components/page/body.tsx";
+import { PageHeader } from "../../../components/page/header.tsx";
+import { createUrlQuerySignal } from "../../../scripts/use-url-query.ts";
+import { Bombed, Clear, FieldBomb, FieldFlag, FieldNoOpen, FirstClick, Playing } from "../consts.ts";
+import { getAround, initializeField, isClear, resetMines } from "../field.ts";
 import { Status } from "./controller.tsx";
 import { MineFields } from "./field.tsx";
 import { MineSweeperSettings } from "./settings.tsx";

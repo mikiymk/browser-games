@@ -1,9 +1,9 @@
-import { Button } from "@/components/elements/button";
 import { For, Show } from "solid-js";
 import type { JSXElement } from "solid-js";
+import { Button } from "../../../components/elements/button.tsx";
 import { WHITE } from "../constants.ts";
 import type { Hand } from "../constants.ts";
-import Styles from "./style.module.css";
+import { hand } from "./style.css.ts";
 
 type HandsProperties = {
   readonly color: number;
@@ -13,14 +13,14 @@ type HandsProperties = {
 export const Hands = (properties: HandsProperties): JSXElement => {
   return (
     <tr>
-      <th class={Styles.hand}>
+      <th class={hand}>
         <Show when={properties.color === WHITE} fallback="☖">
           ☗
         </Show>
       </th>
       <For each={properties.hands}>
         {(piece, index) => (
-          <td class={Styles.hand}>
+          <td class={hand}>
             <Button
               onClick={() => {
                 properties.onClick(index() + 100);

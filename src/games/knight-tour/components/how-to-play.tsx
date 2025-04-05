@@ -1,5 +1,5 @@
-import { HowToPlay } from "@/components/header-buttons/how-to-play";
 import type { JSXElement } from "solid-js";
+import { HowToPlay } from "../../../components/header-buttons/how-to-play.tsx";
 
 export const HowToPlayKnightTour = (): JSXElement => {
   return (

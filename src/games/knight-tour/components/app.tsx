@@ -1,11 +1,11 @@
-import { PageBody } from "@/components/page/body";
-import { PageHeader } from "@/components/page/header";
-import { CellKnight, CellMovable, CellVisited } from "@/games/knight-tour/consts";
-import { createGame } from "@/games/knight-tour/create-game";
-import { setKnightMovable } from "@/games/knight-tour/knight-move";
-import { createUrlQuerySignal } from "@/scripts/use-url-query";
 import type { JSXElement } from "solid-js";
 import { onMount } from "solid-js";
+import { PageBody } from "../../../components/page/body.tsx";
+import { PageHeader } from "../../../components/page/header.tsx";
+import { createUrlQuerySignal } from "../../../scripts/use-url-query.ts";
+import { CellKnight, CellMovable, CellVisited } from "../consts.ts";
+import { createGame } from "../create-game.ts";
+import { setKnightMovable } from "../knight-move.ts";
 import { KnightBoard } from "./board.tsx";
 import { History } from "./history.tsx";
 import { HowToPlayKnightTour } from "./how-to-play.tsx";

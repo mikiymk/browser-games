@@ -1,6 +1,6 @@
-import { Board } from "@/components/board/board";
-import { FieldBomb, FieldFlag, FieldNoOpen, FieldOpen } from "@/games/mine-sweeper/consts";
 import type { JSXElement } from "solid-js";
+import { Board } from "../../../components/board/board.tsx";
+import { FieldBomb, FieldFlag, FieldNoOpen, FieldOpen } from "../consts.ts";
 import { UseSymbol } from "./define.tsx";
 
 type MineCellProperties = {

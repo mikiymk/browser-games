@@ -1,10 +1,10 @@
-import { Button } from "@/components/elements/button";
-import { Start } from "@/components/header-buttons/start";
-import { PageBody } from "@/components/page/body";
-import { PageHeader } from "@/components/page/header";
-import { PopUp } from "@/components/pop-up/pop-up";
+import { Close } from "@corvu/dialog";
 import { createSignal } from "solid-js";
 import type { JSXElement } from "solid-js";
+import { Start } from "../../../components/header-buttons/start.tsx";
+import { PageBody } from "../../../components/page/body.tsx";
+import { PageHeader } from "../../../components/page/header.tsx";
+import { InformationPopUp } from "../../../components/page/information-popup.tsx";
 import { createKlondike } from "../klondike.ts";
 import type { Select } from "../klondike.ts";
 import { Field } from "./field.tsx";
@@ -62,17 +62,16 @@ export const App = (): JSXElement => {
           autoFoundation={autoFoundation}
         />
 
-        <PopUp open={popText() !== undefined}>
+        <InformationPopUp open={popText() !== undefined}>
           {popText()}
-          <br />
-          <Button
+          <Close
             onClick={() => {
               setPopText();
             }}
           >
-            Close
-          </Button>
-        </PopUp>
+            close
+          </Close>
+        </InformationPopUp>
       </PageBody>
     </>
   );

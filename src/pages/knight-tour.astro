@@ -1,0 +1,13 @@
+---
+import Head from "../components/head.astro";
+import { App } from "../games/knight-tour/components/app.tsx";
+import { DefineSymbol } from "../games/knight-tour/components/define.tsx";
+import { TEXT_GAME_KNIGHT_TOUR } from "../scripts/constants.ts";
+---
+
+<Head title={TEXT_GAME_KNIGHT_TOUR} />
+
+<DefineSymbol />
+<App client:load />
+
+<div />

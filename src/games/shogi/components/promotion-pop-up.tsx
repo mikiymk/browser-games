@@ -1,6 +1,6 @@
-import { Button } from "@/components/elements/button";
-import { PopUp } from "@/components/pop-up/pop-up";
+import { Close } from "@corvu/dialog";
 import type { JSXElement } from "solid-js";
+import { InformationPopUp } from "../../../components/page/information-popup.tsx";
 
 type PromotionPopUpProperties = {
   readonly promotion: boolean;
@@ -8,23 +8,23 @@ type PromotionPopUpProperties = {
 };
 export const PromotionPopUp = (properties: PromotionPopUpProperties): JSXElement => {
   return (
-    <PopUp open={properties.promotion}>
+    <InformationPopUp open={properties.promotion}>
       Promotion?
       <br />
-      <Button
+      <Close
         onClick={() => {
           properties.resolve(1);
         }}
       >
         Yes
-      </Button>
-      <Button
+      </Close>
+      <Close
         onClick={() => {
           properties.resolve(0);
         }}
       >
         No
-      </Button>
-    </PopUp>
+      </Close>
+    </InformationPopUp>
   );
 };

@@ -1,7 +1,8 @@
-import { HeaderButton } from "@/components/page/header-button";
-import { PopUp } from "@/components/pop-up/pop-up";
+import { Content, Overlay, Root, Trigger } from "@corvu/dialog";
 import type { JSXElement } from "solid-js";
-import { createSignal } from "solid-js";
+import { Portal } from "solid-js/web";
+import { HeaderButton } from "./header-button.tsx";
+import { content, overlay } from "./style.css.ts";
 
 type HeaderPopupProperties = {
   readonly icon?: string | undefined;
@@ -9,26 +10,15 @@ type HeaderPopupProperties = {
   readonly children: JSXElement;
 };
 export const HeaderPopup = (properties: HeaderPopupProperties): JSXElement => {
-  const [open, setOpen] = createSignal(false);
-
   return (
-    <>
-      <button
-        type="button"
-        onClick={() => {
-          setOpen(true);
-        }}
-      >
+    <Root>
+      <Trigger>
         <HeaderButton icon={properties.icon}>{properties.label}</HeaderButton>
-      </button>
-      <PopUp
-        open={open()}
-        outerClick={() => {
-          setOpen(false);
-        }}
-      >
-        {properties.children}
-      </PopUp>
-    </>
+      </Trigger>
+      <Portal>
+        <Overlay class={overlay} />
+        <Content class={content}>{properties.children}</Content>
+      </Portal>
+    </Root>
   );
 };

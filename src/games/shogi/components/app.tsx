@@ -1,10 +1,10 @@
-import { Start } from "@/components/header-buttons/start";
-import { PageBody } from "@/components/page/body";
-import { PageHeader } from "@/components/page/header";
-import { PlayerTypeAi, PlayerTypeHuman } from "@/scripts/player";
-import type { PlayerType } from "@/scripts/player";
-import { createUrlQuerySignal } from "@/scripts/use-url-query";
 import type { JSXElement } from "solid-js";
+import { Start } from "../../../components/header-buttons/start.tsx";
+import { PageBody } from "../../../components/page/body.tsx";
+import { PageHeader } from "../../../components/page/header.tsx";
+import { PlayerTypeAi, PlayerTypeHuman } from "../../../scripts/player.ts";
+import type { PlayerType } from "../../../scripts/player.ts";
+import { createUrlQuerySignal } from "../../../scripts/use-url-query.ts";
 import { createGame } from "../game.ts";
 import { ShogiBoard } from "./board.tsx";
 import { GameOverPopUp } from "./game-over-pop-up.tsx";

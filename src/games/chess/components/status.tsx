@@ -1,3 +1,4 @@
+import type { JSXElement } from "solid-js";
 import {
   Black,
   End5Repetition,
@@ -6,8 +7,7 @@ import {
   EndInsufficientMaterial,
   EndStalemate,
   EndWhiteWin,
-} from "@/games/chess/constants";
-import type { JSXElement } from "solid-js";
+} from "../constants.ts";
 
 type StatusProperties = {
   readonly color: number;

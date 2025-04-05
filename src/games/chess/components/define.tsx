@@ -1,5 +1,12 @@
-import { DefineUse } from "@/components/define/define-use";
-import { Use } from "@/components/define/use";
+import type { JSXElement } from "solid-js";
+import { DefineUse } from "../../../components/define/define-use.tsx";
+import { Use } from "../../../components/define/use.tsx";
+import bishop from "../../../images/chess/bishop.svg";
+import king from "../../../images/chess/king.svg";
+import knight from "../../../images/chess/knight.svg";
+import pawn from "../../../images/chess/pawn.svg";
+import queen from "../../../images/chess/queen.svg";
+import rook from "../../../images/chess/rook.svg";
 import {
   CellBlackBishop,
   CellBlackKing,
@@ -13,19 +20,12 @@ import {
   CellWhitePawn,
   CellWhiteQueen,
   CellWhiteRook,
-} from "@/games/chess/constants";
-import bishop from "@/images/chess/bishop.svg";
-import king from "@/images/chess/king.svg";
-import knight from "@/images/chess/knight.svg";
-import pawn from "@/images/chess/pawn.svg";
-import queen from "@/images/chess/queen.svg";
-import rook from "@/images/chess/rook.svg";
-import type { JSXElement } from "solid-js";
-import Styles from "./style.module.css";
+} from "../constants.ts";
+import { define, defineUse } from "./style.css.ts";
 
 export const DefinePieces = (): JSXElement => {
   return (
-    <svg viewBox="0 0 0 0" xmlns="http://www.w3.org/2000/svg" class={Styles.define}>
+    <svg viewBox="0 0 0 0" xmlns="http://www.w3.org/2000/svg" class={define}>
       <title>define cards</title>
 
       <DefinePiece name="bishop" color="black" />
@@ -64,11 +64,7 @@ const DefinePiece = (properties: DefinePieceProperties): JSXElement => {
   };
 
   return (
-    <DefineUse
-      id={`${properties.color}-${properties.name}`}
-      href={pieceImage()}
-      class={properties.color === "black" ? Styles["define-black"] : Styles["define-white"]}
-    />
+    <DefineUse id={`${properties.color}-${properties.name}`} href={pieceImage()} class={defineUse[properties.color]} />
   );
 };
 

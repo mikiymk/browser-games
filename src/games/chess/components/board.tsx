@@ -1,7 +1,7 @@
-import { Board } from "@/components/board/board";
-import type { BoardCell } from "@/games/chess/board";
-import board from "@/images/chess/board.svg";
 import type { JSXElement } from "solid-js";
+import { Board } from "../../../components/board/board.tsx";
+import board from "../../../images/chess/board.svg";
+import type { BoardCell } from "../board.ts";
 import { BoardSquare } from "./board-square.tsx";
 
 type BoardProperties = {
