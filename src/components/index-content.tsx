@@ -1,6 +1,7 @@
 import { For } from "solid-js";
 import type { JSXElement } from "solid-js";
 import {
+  TEXT_GAME_BULLS_AND_COWS,
   TEXT_GAME_CHESS,
   TEXT_GAME_ENGLISH_DRAUGHTS,
   TEXT_GAME_KLONDIKE,
@@ -24,6 +25,7 @@ const pages = [
   { title: TEXT_GAME_SHOGI, name: "shogi" },
   { title: TEXT_GAME_KLONDIKE, name: "klondike" },
   { title: TEXT_GAME_ENGLISH_DRAUGHTS, name: "english-draughts" },
+  { title: TEXT_GAME_BULLS_AND_COWS, name: "bulls-and-cows" },
 ];
 
 export const IndexContent = (): JSXElement => {

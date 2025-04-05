@@ -1,0 +1,11 @@
+---
+import Head from "../components/head.astro";
+import { App } from "../games/bulls-and-cows/components/app.tsx";
+import { TEXT_GAME_BULLS_AND_COWS } from "../scripts/constants.ts";
+---
+
+<Head title={TEXT_GAME_BULLS_AND_COWS} />
+
+<App client:load />
+
+<div />
