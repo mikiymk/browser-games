@@ -1,12 +1,12 @@
 import { keyframes, style } from "@vanilla-extract/css";
-import { variables } from "../../styles/style.css.ts";
+import { pageBody, pageHeader, pageHeaderShadow, text } from "../../styles/colors.css.ts";
 
 export const header = style({
   height: "3rem",
   padding: "0 0.5rem",
   fontSize: "1.25rem",
   lineHeight: "1.75rem",
-  backgroundColor: "#fdba74",
+  backgroundColor: pageHeader,
   display: "flex",
   flexDirection: "row",
   alignItems: "center",
@@ -25,7 +25,7 @@ export const headerButton = style({
   alignItems: "center",
   gap: "0.5rem",
 
-  border: "4px #f97316 outset",
+  border: `4px ${pageHeaderShadow} outset`,
   borderRadius: "0.25rem",
 
   ":active": {
@@ -50,7 +50,7 @@ export const headerText = style({
 
 export const body = style({
   height: "calc(100dvh - 3rem)",
-  backgroundColor: "#fef3c7",
+  backgroundColor: pageBody,
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
@@ -74,8 +74,8 @@ export const content = style({
   transform: "translate(-50%, -50%)",
 
   padding: "1rem",
-  backgroundColor: "#fef9c3",
-  border: `2px solid ${variables.color.black}`,
+  backgroundColor: pageBody,
+  border: `2px solid ${text}`,
 
   animation: `${fade} 0.1s`,
 });

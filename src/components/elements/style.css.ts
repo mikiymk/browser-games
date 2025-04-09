@@ -1,18 +1,18 @@
 import { style } from "@vanilla-extract/css";
 import { symbols } from "../../styles/fonts.css.ts";
-import { variables } from "../../styles/style.css.ts";
+import { hoveredText, text } from "../../styles/colors.css.ts";
 
 export const anchor = style({
   textDecorationLine: "underline",
 
   ":hover": {
-    color: "#64748b",
+    color: hoveredText,
   },
 });
 
 export const button = style({
   textDecorationLine: "underline",
-  textDecorationColor: variables.color.black,
+  textDecorationColor: text,
   textDecorationStyle: "double",
   margin: "0 0.25rem",
 });
@@ -48,6 +48,6 @@ export const svg = style({
 
 export const svgUse = style({
   fill: "none",
-  stroke: variables.color.black,
+  stroke: text,
   strokeWidth: "2",
 });

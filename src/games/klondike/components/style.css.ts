@@ -1,45 +1,45 @@
 import { style, styleVariants } from "@vanilla-extract/css";
-import { variables } from "../../../styles/style.css.ts";
+import { colorBlack, cardFieldBg, colorRed, text, cardBg } from "../../../styles/colors.css.ts";
 
 export const field = style({
-  fill: "#15803d",
+  fill: cardFieldBg,
 });
 
-const black = style({
-  fill: variables.color.black,
+const blackCard = style({
+  fill: colorBlack,
 });
 
-const red = style({
-  fill: variables.color.red,
+const redCard = style({
+  fill: colorRed,
 });
 
 export const suitColor = styleVariants({
-  club: [black],
-  diamond: [red],
-  heart: [red],
-  spade: [black],
+  club: [blackCard],
+  diamond: [redCard],
+  heart: [redCard],
+  spade: [blackCard],
 });
 
-const text = style({
+const textBase = style({
   fontSize: 25,
 });
 
 export const textColor = styleVariants({
-  club: [black, text],
-  diamond: [red, text],
-  heart: [red, text],
-  spade: [black, text],
+  club: [blackCard, textBase],
+  diamond: [redCard, textBase],
+  heart: [redCard, textBase],
+  spade: [blackCard, textBase],
 });
 
-const rank = style({
+const rankBase = style({
   fontSize: 16,
 });
 
 export const rankColor = styleVariants({
-  club: [black, rank],
-  diamond: [red, rank],
-  heart: [red, rank],
-  spade: [black, rank],
+  club: [blackCard, rankBase],
+  diamond: [redCard, rankBase],
+  heart: [redCard, rankBase],
+  spade: [blackCard, rankBase],
 });
 
 export const reversed = style({
@@ -47,11 +47,11 @@ export const reversed = style({
 });
 
 export const card = style({
-  fill: "#e2e8f0",
-  stroke: variables.color.black,
+  fill: cardBg,
+  stroke: text,
 });
 
 export const selected = style({
   fill: "none",
-  stroke: variables.color.black,
+  stroke: text,
 });

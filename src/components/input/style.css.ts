@@ -1,19 +1,18 @@
 import { style } from "@vanilla-extract/css";
-import { variables } from "../../styles/style.css.ts";
+import { settingRadioSelected, text } from "../../styles/colors.css.ts";
 
 export const number = style({
   textAlign: "right",
-  borderBottom: `solid ${variables.color.black} 2px`,
+  borderBottom: `solid ${text} 2px`,
 });
 
 export const radio = style({
   padding: "0 0.5rem",
-  borderRadius: "0.25rem",
 
   selectors: {
     "&:has(:checked)": {
-      backgroundColor: "#d9f99d",
-      borderBottom: `solid ${variables.color.black} 2px`,
+      backgroundColor: settingRadioSelected,
+      borderBottom: `solid ${text} 2px`,
     },
   },
 });

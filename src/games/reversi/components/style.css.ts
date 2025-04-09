@@ -1,16 +1,16 @@
 import { style } from "@vanilla-extract/css";
-import { variables } from "../../../styles/style.css.ts";
+import { stoneDark, stoneLight, text } from "../../../styles/colors.css.ts";
 
 export const white = style({
-  fill: variables.color.light,
+  fill: stoneLight,
 });
 
 export const black = style({
-  fill: variables.color.dark,
+  fill: stoneDark,
 });
 
 const stone = style({
-  stroke: variables.color.black,
+  stroke: text,
   strokeWidth: 0.5,
 });
 
@@ -18,7 +18,7 @@ export const stoneWhite = style([stone, white]);
 export const stoneBlack = style([stone, black]);
 
 export const next = style({
-  border: `2px solid ${variables.color.black}`,
+  border: `2px solid ${text}`,
   borderRadius: "0.25rem",
 });
 
@@ -28,10 +28,3 @@ export const iconOuter = style({
   display: "inline",
   aspectRatio: "1 / 1",
 });
-
-const icon = style({
-  stroke: variables.color.black,
-});
-
-export const iconWhite = style([icon, white]);
-export const iconBlack = style([icon, black]);
