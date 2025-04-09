@@ -1,4 +1,5 @@
 import { style } from "@vanilla-extract/css";
+import { colorWhite, text } from "../../../styles/colors.css.ts";
 
 export const inputContainer = style({
   display: "flex",
@@ -12,6 +13,8 @@ export const input = style({
   fontSize: "1.5rem",
   textAlign: "center",
 
-  borderBottom: "2px solid black",
+  background: colorWhite,
+  border: `2px solid ${text}`,
+  borderRadius: "0.25rem",
   outline: "none",
 });

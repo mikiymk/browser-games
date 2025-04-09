@@ -1,21 +1,21 @@
 // 文字色
 export const text = "#001122";
-export const hoveredText = "#64748b";
+export const hoveredText = "#667788";
 
 // ページ背景
-export const pageHeader = "#fdba74";
-export const pageHeaderShadow = "#f97316";
-export const pageBody = "#fef9c3";
+export const pageHeader = "#ffcc77";
+export const pageHeaderShadow = "#ff7711";
+export const pageBody = "#ffffbb";
 
 // 設定
-export const settingRadioSelected = "#d9f99d";
+export const settingRadioSelected = "#ddff99";
 
 // 入力の背景
 export const inputBg = "#ffeeee";
 
 // マスの色
-export const squareTarget = "#f97316";
-export const squareFrom = "#64748b";
+export const squareTarget = "#ff7711";
+export const squareFrom = "#667788";
 
 // チェスやオセロの石
 export const stoneDark = "#78716c";
@@ -27,14 +27,15 @@ export const shogiBoard = "#fbbf24";
 
 // カードの背景
 export const cardFieldBg = "#15803d";
-export const cardBg = "#e2e8f0";
+export const cardBg = "#eeeeff";
 
 // 共通
 export const colorBlack = "#000000";
-export const colorRed = "#ff0000";
-export const colorBlue = "#3b82f6";
-export const colorGreen = "#22c55e";
-export const colorPurple = "#d946ef";
-export const colorBrown = "#991b1b";
-export const colorLightBlue = "#2dd4bf";
-export const colorGray = "#78716c";
+export const colorRed = "#ff1100";
+export const colorBlue = "#0011ff";
+export const colorGreen = "#008811";
+export const colorPurple = "#dd44ee";
+export const colorBrown = "#662211";
+export const colorLightBlue = "#11ffcc";
+export const colorGray = "#777766";
+export const colorWhite = "#ffffff";
