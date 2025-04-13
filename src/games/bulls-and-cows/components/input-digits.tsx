@@ -18,6 +18,11 @@ export const InputDigits = (properties: InputDigitsProperties): JSXElement => {
     }).toReversed();
   };
 
+  const handleClick = (): void => {
+    properties.setDigits(innerDigitsArray());
+    setInnerDigits(0);
+  };
+
   createEffect(() => setInnerDigits(0));
 
   return (
@@ -29,7 +34,7 @@ export const InputDigits = (properties: InputDigitsProperties): JSXElement => {
         value={innerDigits()}
         onChange={(element) => setInnerDigits(element.target.valueAsNumber)}
       />
-      <button type="button" class={submitButton} onClick={() => properties.setDigits(innerDigitsArray())}>
+      <button type="button" class={submitButton} onClick={handleClick}>
         Submit
       </button>
     </span>
