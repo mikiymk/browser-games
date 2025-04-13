@@ -3,10 +3,10 @@ import { createSignal } from "solid-js";
 import type { JSXElement } from "solid-js";
 import { Start } from "../../../components/header-buttons/start.tsx";
 import { InformationPopUp } from "../../../components/page/information-popup.tsx";
+import { Page } from "../../../components/page/page.tsx";
 import { createKlondike } from "../klondike.ts";
 import type { Select } from "../klondike.ts";
 import { Field } from "./field.tsx";
-import { Page } from "../../../components/page/page.tsx";
 
 export const App = (): JSXElement => {
   const { start, cards, moveCards, openStock, autoFoundation, isCleared } = createKlondike();

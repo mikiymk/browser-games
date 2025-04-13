@@ -1,5 +1,5 @@
 import { style } from "@vanilla-extract/css";
-import { colorWhite, pageBodyShadow, text } from "../../../styles/colors.css.ts";
+import { inputBg, pageBodyShadow, text } from "../../../styles/colors.css.ts";
 
 export const digitsContainer = style({
   display: "inline flex",
@@ -24,7 +24,7 @@ export const input = style({
   fontSize: "1.5rem",
   letterSpacing: "0.5rem",
   textAlign: "center",
-  background: colorWhite,
+  background: inputBg,
   border: `2px solid ${text}`,
   borderRadius: "0.25rem",
   outline: "none",

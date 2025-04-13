@@ -1,5 +1,5 @@
 import { style, styleVariants } from "@vanilla-extract/css";
-import { colorBlack, cardFieldBg, colorRed, text, cardBg } from "../../../styles/colors.css.ts";
+import { cardBg, cardFieldBg, colorBlack, colorRed, text } from "../../../styles/colors.css.ts";
 
 export const field = style({
   fill: cardFieldBg,

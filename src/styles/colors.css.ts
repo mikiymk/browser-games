@@ -39,4 +39,3 @@ export const colorPurple = "#dd44ee";
 export const colorBrown = "#662211";
 export const colorLightBlue = "#11ffcc";
 export const colorGray = "#777766";
-export const colorWhite = "#ffffff";

@@ -3,7 +3,7 @@ import { Define } from "../../../components/define/define.tsx";
 import { Use } from "../../../components/define/use.tsx";
 import piece from "../../../images/shogi/piece.svg";
 import { classes } from "../../../scripts/classes.ts";
-import { blackText, pieceStyle, redText, reversed, pieceText } from "./style.css.ts";
+import { blackText, pieceStyle, pieceText, redText, reversed } from "./style.css.ts";
 
 export const DefinePieces = (): JSXElement => {
   return (

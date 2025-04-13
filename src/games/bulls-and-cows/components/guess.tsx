@@ -1,6 +1,6 @@
 import type { JSXElement } from "solid-js";
-import { guess } from "./style.css.ts";
 import { Digits } from "./digits.tsx";
+import { guess } from "./style.css.ts";
 
 type GuessProperties = {
   readonly digits: readonly number[];

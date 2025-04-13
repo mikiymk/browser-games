@@ -2,6 +2,7 @@ import type { JSXElement } from "solid-js";
 import { createSignal } from "solid-js";
 import { PlayerSetting, Settings } from "../../../components/header-buttons/settings.tsx";
 import { Start } from "../../../components/header-buttons/start.tsx";
+import { Page } from "../../../components/page/page.tsx";
 import { doNothingFunction } from "../../../scripts/do-nothing.ts";
 import { MultiPromise } from "../../../scripts/multi-promise.ts";
 import { PlayerTypeAi, PlayerTypeHuman } from "../../../scripts/player.ts";
@@ -14,7 +15,6 @@ import { getReversiWasm } from "../get-wasm.ts";
 import { ReversiBoard } from "./board.tsx";
 import { HowToPlayReversi } from "./how-to-play.tsx";
 import { StoneCount } from "./information.tsx";
-import { Page } from "../../../components/page/page.tsx";
 
 const emptyBoard: number[] = Array.from({ length: 64 }, () => CellEmpty);
 

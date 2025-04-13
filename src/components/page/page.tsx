@@ -1,6 +1,6 @@
 import type { JSXElement } from "solid-js";
-import { body, header, headerButton, headerIcon, headerText, headerTitle } from "./style.css.ts";
 import icon from "../../images/theme-icon.svg";
+import { body, header, headerButton, headerIcon, headerText, headerTitle } from "./style.css.ts";
 
 type PageBodyProperties = {
   readonly header?: JSXElement;

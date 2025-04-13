@@ -1,5 +1,6 @@
 import type { JSXElement } from "solid-js";
 import { onMount } from "solid-js";
+import { Page } from "../../../components/page/page.tsx";
 import { createUrlQuerySignal } from "../../../scripts/use-url-query.ts";
 import { CellKnight, CellMovable, CellVisited } from "../consts.ts";
 import { createGame } from "../create-game.ts";
@@ -8,7 +9,6 @@ import { KnightBoard } from "./board.tsx";
 import { History } from "./history.tsx";
 import { HowToPlayKnightTour } from "./how-to-play.tsx";
 import { KnightTourSettings } from "./settings.tsx";
-import { Page } from "../../../components/page/page.tsx";
 
 export const App = (): JSXElement => {
   const [hint, setHint] = createUrlQuerySignal("board", "hide");

@@ -1,6 +1,6 @@
 import { style } from "@vanilla-extract/css";
-import { symbols } from "../../styles/fonts.css.ts";
 import { hoveredText, text } from "../../styles/colors.css.ts";
+import { symbols } from "../../styles/fonts.css.ts";
 
 export const anchor = style({
   textDecorationLine: "underline",

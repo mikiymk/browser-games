@@ -2,6 +2,7 @@ import type { JSXElement } from "solid-js";
 import { createSignal } from "solid-js";
 import { PlayerSetting, Settings } from "../../../components/header-buttons/settings.tsx";
 import { Start } from "../../../components/header-buttons/start.tsx";
+import { Page } from "../../../components/page/page.tsx";
 import { doNothingFunction } from "../../../scripts/do-nothing.ts";
 import { MultiPromise } from "../../../scripts/multi-promise.ts";
 import { PlayerTypeAi, PlayerTypeHuman } from "../../../scripts/player.ts";
@@ -14,7 +15,6 @@ import { EndNotYet, White } from "../constants.ts";
 import { gameLoop, getWasm } from "../game-loop.ts";
 import { ChessBoard } from "./board.tsx";
 import { Status } from "./status.tsx";
-import { Page } from "../../../components/page/page.tsx";
 
 export const App = (): JSXElement => {
   const [white, setWhite] = createUrlQuerySignal<PlayerType>("white", PlayerTypeHuman);

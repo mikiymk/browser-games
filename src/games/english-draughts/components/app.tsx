@@ -3,6 +3,7 @@ import type { JSXElement } from "solid-js";
 import { Board } from "../../../components/board/board.tsx";
 import { PlayerSetting, Settings } from "../../../components/header-buttons/settings.tsx";
 import { Start } from "../../../components/header-buttons/start.tsx";
+import { Page } from "../../../components/page/page.tsx";
 import board from "../../../images/chess/board.svg";
 import { MultiPromise } from "../../../scripts/multi-promise.ts";
 import { PlayerTypeAi, PlayerTypeHuman } from "../../../scripts/player.ts";
@@ -15,7 +16,6 @@ import { gameLoop } from "../game-loop.ts";
 import type { PlayerColor } from "../game-loop.ts";
 import { getWasm } from "../wasm.ts";
 import { UsePiece } from "./define.tsx";
-import { Page } from "../../../components/page/page.tsx";
 
 export const App = (): JSXElement => {
   const [white, setWhite] = createUrlQuerySignal<PlayerType>("white", PlayerTypeHuman);

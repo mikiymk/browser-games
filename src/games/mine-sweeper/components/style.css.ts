@@ -1,5 +1,4 @@
 import { style } from "@vanilla-extract/css";
-import { emoji } from "../../../styles/fonts.css.ts";
 import {
   colorBlack,
   colorBlue,
@@ -11,6 +10,7 @@ import {
   colorRed,
   text,
 } from "../../../styles/colors.css.ts";
+import { emoji } from "../../../styles/fonts.css.ts";
 
 const symbol = style({
   stroke: text,

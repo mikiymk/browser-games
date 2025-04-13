@@ -1,12 +1,12 @@
 import { For, Show } from "solid-js";
 import type { JSXElement } from "solid-js";
-import { createGame } from "../game.ts";
-import { Page } from "../../../components/page/page.tsx";
-import { InputDigits } from "./input-digits.tsx";
-import { Start } from "../../../components/header-buttons/start.tsx";
 import { SettingItem, Settings } from "../../../components/header-buttons/settings.tsx";
+import { Start } from "../../../components/header-buttons/start.tsx";
 import { InputNumber } from "../../../components/input/number.tsx";
+import { Page } from "../../../components/page/page.tsx";
+import { createGame } from "../game.ts";
 import { Guess } from "./guess.tsx";
+import { InputDigits } from "./input-digits.tsx";
 
 export const App = (): JSXElement => {
   const game = createGame();

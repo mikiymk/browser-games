@@ -1,5 +1,5 @@
 import { style, styleVariants } from "@vanilla-extract/css";
-import { stoneDark, stoneLight, squareFrom, squareTarget, text } from "../../../styles/colors.css.ts";
+import { squareFrom, squareTarget, stoneDark, stoneLight, text } from "../../../styles/colors.css.ts";
 
 const squareBase = style({
   fill: "none",

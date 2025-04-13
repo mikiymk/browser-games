@@ -1,6 +1,7 @@
 import type { JSXElement } from "solid-js";
 import { createSignal, onMount } from "solid-js";
 import { Start } from "../../../components/header-buttons/start.tsx";
+import { Page } from "../../../components/page/page.tsx";
 import { doNothingFunction } from "../../../scripts/do-nothing.ts";
 import { MultiPromise } from "../../../scripts/multi-promise.ts";
 import { PlayerTypeAi, PlayerTypeHuman } from "../../../scripts/player.ts";
@@ -28,7 +29,6 @@ import { NncBoard } from "./board.tsx";
 import { History } from "./history.tsx";
 import { NoughtAndCrossSettings } from "./settings.tsx";
 import { StatusButton } from "./status.tsx";
-import { Page } from "../../../components/page/page.tsx";
 
 export const App = (): JSXElement => {
   const [playerO, setPlayerO] = createUrlQuerySignal<PlayerType>("o", PlayerTypeHuman);
