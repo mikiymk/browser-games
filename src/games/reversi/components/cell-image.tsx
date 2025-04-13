@@ -1,5 +1,7 @@
-import { Match, Switch } from "solid-js";
 import type { JSXElement } from "solid-js";
+
+import { Match, Switch } from "solid-js";
+
 import { CellBlack, CellCanMoveBlack, CellCanMoveWhite, CellWhite } from "../const.ts";
 import { black, stoneBlack, stoneWhite, white } from "./style.css.ts";
 
@@ -12,16 +14,16 @@ export const CellImage = (properties: CellImageProperties): JSXElement => {
   return (
     <Switch>
       <Match when={properties.square === CellBlack}>
-        <circle cx={properties.x + 5} cy={properties.y + 5} r={4} class={stoneBlack} />
+        <circle class={stoneBlack} cx={properties.x + 5} cy={properties.y + 5} r={4} />
       </Match>
       <Match when={properties.square === CellWhite}>
-        <circle cx={properties.x + 5} cy={properties.y + 5} r={4} class={stoneWhite} />
+        <circle class={stoneWhite} cx={properties.x + 5} cy={properties.y + 5} r={4} />
       </Match>
       <Match when={properties.square === CellCanMoveBlack}>
-        <circle cx={properties.x + 5} cy={properties.y + 5} r={2} class={black} />
+        <circle class={black} cx={properties.x + 5} cy={properties.y + 5} r={2} />
       </Match>
       <Match when={properties.square === CellCanMoveWhite}>
-        <circle cx={properties.x + 5} cy={properties.y + 5} r={2} class={white} />
+        <circle class={white} cx={properties.x + 5} cy={properties.y + 5} r={2} />
       </Match>
     </Switch>
   );

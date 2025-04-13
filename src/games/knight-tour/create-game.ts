@@ -1,16 +1,18 @@
 import type { Accessor, Setter } from "solid-js";
+
 import { createSignal } from "solid-js";
+
 import { randomRange } from "../../scripts/random-select.ts";
 import { BoardLength, CellMovable, CellUnvisited, CellVisited } from "./consts.ts";
 import { setKnightMovable } from "./knight-move.ts";
 
 type GameObject = {
-  board: Accessor<readonly number[]>;
-  resetBoard: (callback: (board: readonly number[]) => readonly number[]) => void;
-  reset: () => void;
-  history: Accessor<readonly number[]>;
-  setHistory: Setter<readonly number[]>;
   backHistory: (index: number) => void;
+  board: Accessor<readonly number[]>;
+  history: Accessor<readonly number[]>;
+  reset: () => void;
+  resetBoard: (callback: (board: readonly number[]) => readonly number[]) => void;
+  setHistory: Setter<readonly number[]>;
 };
 
 export const createGame = (): GameObject => {
@@ -52,11 +54,11 @@ export const createGame = (): GameObject => {
   };
 
   return {
-    board,
-    resetBoard,
-    reset,
-    history,
-    setHistory,
     backHistory,
+    board,
+    history,
+    reset,
+    resetBoard,
+    setHistory,
   };
 };

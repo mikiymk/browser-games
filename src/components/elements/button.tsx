@@ -1,18 +1,19 @@
 import type { JSXElement } from "solid-js";
+
 import { button } from "./style.css.ts";
 
 type ButtonProperties = {
-  readonly onClick?: (event: MouseEvent) => void;
   readonly children: JSXElement;
+  readonly onClick?: (event: MouseEvent) => void;
 };
 export const Button = (properties: ButtonProperties): JSXElement => {
   return (
     <button
-      type="button"
+      class={button}
       onClick={(event: MouseEvent) => {
         properties.onClick?.(event);
       }}
-      class={button}
+      type="button"
     >
       {properties.children}
     </button>

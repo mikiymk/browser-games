@@ -1,5 +1,7 @@
 import type { JSXElement } from "solid-js";
+
 import { batch, createEffect, createSignal } from "solid-js";
+
 import { Start } from "../../../components/header-buttons/start.tsx";
 import { Page } from "../../../components/page/page.tsx";
 import { createUrlQuerySignal } from "../../../scripts/use-url-query.ts";
@@ -105,20 +107,20 @@ export const App = (): JSXElement => {
     <Page
       header={
         <>
-          <Status state={gameState()} fields={fields()} mines={mineCount()} />
+          <Status fields={fields()} mines={mineCount()} state={gameState()} />
           <Start start={reset} />
           <MineSweeperSettings
             height={height()}
-            width={width()}
             mineCount={mineCount()}
             setHeight={(height) => setHeight(String(height))}
-            setWidth={(width) => setWidth(String(width))}
             setMineCount={(mineCount) => setMineCount(String(mineCount))}
+            setWidth={(width) => setWidth(String(width))}
+            width={width()}
           />
         </>
       }
     >
-      <MineFields height={height()} width={width()} fields={fields()} open={openField} flag={flagField} />
+      <MineFields fields={fields()} flag={flagField} height={height()} open={openField} width={width()} />
     </Page>
   );
 };

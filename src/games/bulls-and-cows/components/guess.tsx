@@ -1,4 +1,5 @@
 import type { JSXElement } from "solid-js";
+
 import { Digits } from "./digits.tsx";
 import { guess } from "./style.css.ts";
 

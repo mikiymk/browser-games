@@ -1,5 +1,7 @@
-import { For, Show } from "solid-js";
 import type { JSXElement } from "solid-js";
+
+import { For, Show } from "solid-js";
+
 import { SettingItem, Settings } from "../../../components/header-buttons/settings.tsx";
 import { Start } from "../../../components/header-buttons/start.tsx";
 import { InputNumber } from "../../../components/input/number.tsx";
@@ -18,7 +20,7 @@ export const App = (): JSXElement => {
           <Start start={() => game.reset()} />
           <Settings>
             <SettingItem label="Digits">
-              <InputNumber name="digits" value={game.digits().length} setValue={game.setNumberOfDigits} />
+              <InputNumber name="digits" setValue={game.setNumberOfDigits} value={game.digits().length} />
             </SettingItem>
           </Settings>
         </>

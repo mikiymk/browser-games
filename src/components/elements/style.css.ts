@@ -1,34 +1,35 @@
 import { style } from "@vanilla-extract/css";
+
 import { hoveredText, text } from "../../styles/colors.css.ts";
 import { symbols } from "../../styles/fonts.css.ts";
 
 export const anchor = style({
-  textDecorationLine: "underline",
-
   ":hover": {
     color: hoveredText,
   },
+
+  textDecorationLine: "underline",
 });
 
 export const button = style({
-  textDecorationLine: "underline",
-  textDecorationColor: text,
-  textDecorationStyle: "double",
   margin: "0 0.25rem",
+  textDecorationColor: text,
+  textDecorationLine: "underline",
+  textDecorationStyle: "double",
 });
 
 export const icon = style({
-  fontFamily: symbols,
-  fontWeight: "normal",
-  fontStyle: "normal",
-  fontSize: "24px",
+  direction: "ltr",
   display: "inline-block",
+  fontFamily: symbols,
+  fontSize: "24px",
+  fontStyle: "normal",
+  fontWeight: "normal",
+  letterSpacing: "normal",
   lineHeight: "1",
   textTransform: "none",
-  letterSpacing: "normal",
-  wordWrap: "normal",
   whiteSpace: "nowrap",
-  direction: "ltr",
+  wordWrap: "normal",
 });
 
 export const list = style({
@@ -40,10 +41,10 @@ export const listItem = style({
 });
 
 export const svg = style({
+  aspectRatio: "1 / 1",
+  display: "inline",
   height: "2rem",
   width: "2rem",
-  display: "inline",
-  aspectRatio: "1 / 1",
 });
 
 export const svgUse = style({

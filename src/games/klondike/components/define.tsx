@@ -1,5 +1,9 @@
-import { Match, Show, Switch } from "solid-js";
 import type { JSXElement } from "solid-js";
+
+import { Match, Show, Switch } from "solid-js";
+
+import type { Card, Rank, Suit } from "../card.ts";
+
 import { DefineUse } from "../../../components/define/define-use.tsx";
 import { Define } from "../../../components/define/define.tsx";
 import back from "../../../images/card/back.svg";
@@ -8,7 +12,6 @@ import diamond from "../../../images/card/diamond.svg";
 import empty from "../../../images/card/empty.svg";
 import heart from "../../../images/card/heart.svg";
 import spade from "../../../images/card/spade.svg";
-import type { Card, Rank, Suit } from "../card.ts";
 import { card, rankColor, reversed, selected, suitColor, textColor } from "./style.css.ts";
 
 export const DefineCards = (): JSXElement => {
@@ -16,67 +19,67 @@ export const DefineCards = (): JSXElement => {
     <Define>
       <DefineSuits />
 
-      <DefineCard suit="club" rank={1} />
-      <DefineCard suit="club" rank={2} />
-      <DefineCard suit="club" rank={3} />
-      <DefineCard suit="club" rank={4} />
-      <DefineCard suit="club" rank={5} />
-      <DefineCard suit="club" rank={6} />
-      <DefineCard suit="club" rank={7} />
-      <DefineCard suit="club" rank={8} />
-      <DefineCard suit="club" rank={9} />
-      <DefineCard suit="club" rank={10} />
-      <DefineCard suit="club" rank={11} />
-      <DefineCard suit="club" rank={12} />
-      <DefineCard suit="club" rank={13} />
+      <DefineCard rank={1} suit="club" />
+      <DefineCard rank={2} suit="club" />
+      <DefineCard rank={3} suit="club" />
+      <DefineCard rank={4} suit="club" />
+      <DefineCard rank={5} suit="club" />
+      <DefineCard rank={6} suit="club" />
+      <DefineCard rank={7} suit="club" />
+      <DefineCard rank={8} suit="club" />
+      <DefineCard rank={9} suit="club" />
+      <DefineCard rank={10} suit="club" />
+      <DefineCard rank={11} suit="club" />
+      <DefineCard rank={12} suit="club" />
+      <DefineCard rank={13} suit="club" />
 
-      <DefineCard suit="diamond" rank={1} />
-      <DefineCard suit="diamond" rank={2} />
-      <DefineCard suit="diamond" rank={3} />
-      <DefineCard suit="diamond" rank={4} />
-      <DefineCard suit="diamond" rank={5} />
-      <DefineCard suit="diamond" rank={6} />
-      <DefineCard suit="diamond" rank={7} />
-      <DefineCard suit="diamond" rank={8} />
-      <DefineCard suit="diamond" rank={9} />
-      <DefineCard suit="diamond" rank={10} />
-      <DefineCard suit="diamond" rank={11} />
-      <DefineCard suit="diamond" rank={12} />
-      <DefineCard suit="diamond" rank={13} />
+      <DefineCard rank={1} suit="diamond" />
+      <DefineCard rank={2} suit="diamond" />
+      <DefineCard rank={3} suit="diamond" />
+      <DefineCard rank={4} suit="diamond" />
+      <DefineCard rank={5} suit="diamond" />
+      <DefineCard rank={6} suit="diamond" />
+      <DefineCard rank={7} suit="diamond" />
+      <DefineCard rank={8} suit="diamond" />
+      <DefineCard rank={9} suit="diamond" />
+      <DefineCard rank={10} suit="diamond" />
+      <DefineCard rank={11} suit="diamond" />
+      <DefineCard rank={12} suit="diamond" />
+      <DefineCard rank={13} suit="diamond" />
 
-      <DefineCard suit="heart" rank={1} />
-      <DefineCard suit="heart" rank={2} />
-      <DefineCard suit="heart" rank={3} />
-      <DefineCard suit="heart" rank={4} />
-      <DefineCard suit="heart" rank={5} />
-      <DefineCard suit="heart" rank={6} />
-      <DefineCard suit="heart" rank={7} />
-      <DefineCard suit="heart" rank={8} />
-      <DefineCard suit="heart" rank={9} />
-      <DefineCard suit="heart" rank={10} />
-      <DefineCard suit="heart" rank={11} />
-      <DefineCard suit="heart" rank={12} />
-      <DefineCard suit="heart" rank={13} />
+      <DefineCard rank={1} suit="heart" />
+      <DefineCard rank={2} suit="heart" />
+      <DefineCard rank={3} suit="heart" />
+      <DefineCard rank={4} suit="heart" />
+      <DefineCard rank={5} suit="heart" />
+      <DefineCard rank={6} suit="heart" />
+      <DefineCard rank={7} suit="heart" />
+      <DefineCard rank={8} suit="heart" />
+      <DefineCard rank={9} suit="heart" />
+      <DefineCard rank={10} suit="heart" />
+      <DefineCard rank={11} suit="heart" />
+      <DefineCard rank={12} suit="heart" />
+      <DefineCard rank={13} suit="heart" />
 
-      <DefineCard suit="spade" rank={1} />
-      <DefineCard suit="spade" rank={2} />
-      <DefineCard suit="spade" rank={3} />
-      <DefineCard suit="spade" rank={4} />
-      <DefineCard suit="spade" rank={5} />
-      <DefineCard suit="spade" rank={6} />
-      <DefineCard suit="spade" rank={7} />
-      <DefineCard suit="spade" rank={8} />
-      <DefineCard suit="spade" rank={9} />
-      <DefineCard suit="spade" rank={10} />
-      <DefineCard suit="spade" rank={11} />
-      <DefineCard suit="spade" rank={12} />
-      <DefineCard suit="spade" rank={13} />
+      <DefineCard rank={1} suit="spade" />
+      <DefineCard rank={2} suit="spade" />
+      <DefineCard rank={3} suit="spade" />
+      <DefineCard rank={4} suit="spade" />
+      <DefineCard rank={5} suit="spade" />
+      <DefineCard rank={6} suit="spade" />
+      <DefineCard rank={7} suit="spade" />
+      <DefineCard rank={8} suit="spade" />
+      <DefineCard rank={9} suit="spade" />
+      <DefineCard rank={10} suit="spade" />
+      <DefineCard rank={11} suit="spade" />
+      <DefineCard rank={12} suit="spade" />
+      <DefineCard rank={13} suit="spade" />
 
       <symbol id="back" viewBox="0 0 100 156">
-        <use href={`${back.src}#root`} height={156} width={100} />
+        <use height={156} href={`${back.src}#root`} width={100} />
       </symbol>
       <symbol id="empty" viewBox="0 0 100 156">
-        <use href={`${empty.src}#root`} height={156} width={100} />
+        <use height={156} href={`${empty.src}#root`} width={100} />
       </symbol>
     </Define>
   );
@@ -85,22 +88,22 @@ export const DefineCards = (): JSXElement => {
 const DefineSuits = (): JSXElement => {
   return (
     <>
-      <DefineUse id="spade" href={spade.src} />
-      <DefineUse id="club" href={club.src} />
-      <DefineUse id="heart" href={heart.src} />
-      <DefineUse id="diamond" href={diamond.src} />
+      <DefineUse href={spade.src} id="spade" />
+      <DefineUse href={club.src} id="club" />
+      <DefineUse href={heart.src} id="heart" />
+      <DefineUse href={diamond.src} id="diamond" />
 
-      <DefineUse id="spade-rev" href={spade.src} class={reversed} />
-      <DefineUse id="club-rev" href={club.src} class={reversed} />
-      <DefineUse id="heart-rev" href={heart.src} class={reversed} />
-      <DefineUse id="diamond-rev" href={diamond.src} class={reversed} />
+      <DefineUse class={reversed} href={spade.src} id="spade-rev" />
+      <DefineUse class={reversed} href={club.src} id="club-rev" />
+      <DefineUse class={reversed} href={heart.src} id="heart-rev" />
+      <DefineUse class={reversed} href={diamond.src} id="diamond-rev" />
     </>
   );
 };
 
 type DefineCardProperties = {
-  readonly suit: Suit;
   readonly rank: Rank;
+  readonly suit: Suit;
 };
 const DefineCard = (properties: DefineCardProperties): JSXElement => {
   const suitImage = (rotate: boolean): string => {
@@ -108,18 +111,18 @@ const DefineCard = (properties: DefineCardProperties): JSXElement => {
   };
 
   type UseSuitProperties = {
+    readonly rotate?: boolean;
     readonly x: number;
     readonly y: number;
-    readonly rotate?: boolean;
   };
   const UseSuit = (suitProperties: UseSuitProperties): JSXElement => (
     <use
+      class={suitColor[properties.suit]}
+      height={30}
       href={suitImage(suitProperties.rotate === true)}
+      width={30}
       x={suitProperties.x - 15}
       y={suitProperties.y - 15}
-      height={30}
-      width={30}
-      class={suitColor[properties.suit]}
     />
   );
 
@@ -128,7 +131,7 @@ const DefineCard = (properties: DefineCardProperties): JSXElement => {
   };
   const UseText = (textProperties: UseTextProperties): JSXElement => {
     return (
-      <text x={50} y={88} text-anchor="middle" class={textColor[properties.suit]}>
+      <text class={textColor[properties.suit]} text-anchor="middle" x={50} y={88}>
         {textProperties.children}
       </text>
     );
@@ -136,10 +139,10 @@ const DefineCard = (properties: DefineCardProperties): JSXElement => {
 
   return (
     <symbol id={`${properties.suit}-${properties.rank}`} viewBox="0 0 100 156">
-      <rect x={0} y={0} height={156} width={100} rx={10} ry={10} class={card} />
+      <rect class={card} height={156} rx={10} ry={10} width={100} x={0} y={0} />
 
-      <use href={`#${properties.suit}`} x={4} y={7} height={16} width={16} class={suitColor[properties.suit]} />
-      <text x={22} y={20} class={rankColor[properties.suit]}>
+      <use class={suitColor[properties.suit]} height={16} href={`#${properties.suit}`} width={16} x={4} y={7} />
+      <text class={rankColor[properties.suit]} x={22} y={20}>
         {properties.rank}
       </text>
 
@@ -149,33 +152,33 @@ const DefineCard = (properties: DefineCardProperties): JSXElement => {
         </Match>
         <Match when={properties.rank === 2}>
           <UseSuit x={50} y={33} />
-          <UseSuit x={50} y={123} rotate />
+          <UseSuit rotate x={50} y={123} />
         </Match>
         <Match when={properties.rank === 3}>
           <UseSuit x={50} y={33} />
           <UseSuit x={50} y={78} />
-          <UseSuit x={50} y={123} rotate />
+          <UseSuit rotate x={50} y={123} />
         </Match>
         <Match when={properties.rank === 4}>
           <UseSuit x={30} y={33} />
           <UseSuit x={70} y={33} />
-          <UseSuit x={30} y={123} rotate />
-          <UseSuit x={70} y={123} rotate />
+          <UseSuit rotate x={30} y={123} />
+          <UseSuit rotate x={70} y={123} />
         </Match>
         <Match when={properties.rank === 5}>
           <UseSuit x={30} y={33} />
           <UseSuit x={70} y={33} />
           <UseSuit x={50} y={78} />
-          <UseSuit x={30} y={123} rotate />
-          <UseSuit x={70} y={123} rotate />
+          <UseSuit rotate x={30} y={123} />
+          <UseSuit rotate x={70} y={123} />
         </Match>
         <Match when={properties.rank === 6}>
           <UseSuit x={30} y={33} />
           <UseSuit x={70} y={33} />
           <UseSuit x={30} y={78} />
           <UseSuit x={70} y={78} />
-          <UseSuit x={30} y={123} rotate />
-          <UseSuit x={70} y={123} rotate />
+          <UseSuit rotate x={30} y={123} />
+          <UseSuit rotate x={70} y={123} />
         </Match>
         <Match when={properties.rank === 7}>
           <UseSuit x={30} y={33} />
@@ -183,8 +186,8 @@ const DefineCard = (properties: DefineCardProperties): JSXElement => {
           <UseSuit x={50} y={54} />
           <UseSuit x={30} y={78} />
           <UseSuit x={70} y={78} />
-          <UseSuit x={30} y={123} rotate />
-          <UseSuit x={70} y={123} rotate />
+          <UseSuit rotate x={30} y={123} />
+          <UseSuit rotate x={70} y={123} />
         </Match>
         <Match when={properties.rank === 8}>
           <UseSuit x={30} y={33} />
@@ -192,9 +195,9 @@ const DefineCard = (properties: DefineCardProperties): JSXElement => {
           <UseSuit x={50} y={54} />
           <UseSuit x={30} y={78} />
           <UseSuit x={70} y={78} />
-          <UseSuit x={50} y={102} rotate />
-          <UseSuit x={30} y={123} rotate />
-          <UseSuit x={70} y={123} rotate />
+          <UseSuit rotate x={50} y={102} />
+          <UseSuit rotate x={30} y={123} />
+          <UseSuit rotate x={70} y={123} />
         </Match>
         <Match when={properties.rank === 9}>
           <UseSuit x={30} y={33} />
@@ -202,10 +205,10 @@ const DefineCard = (properties: DefineCardProperties): JSXElement => {
           <UseSuit x={30} y={63} />
           <UseSuit x={70} y={63} />
           <UseSuit x={50} y={78} />
-          <UseSuit x={30} y={93} rotate />
-          <UseSuit x={70} y={93} rotate />
-          <UseSuit x={30} y={123} rotate />
-          <UseSuit x={70} y={123} rotate />
+          <UseSuit rotate x={30} y={93} />
+          <UseSuit rotate x={70} y={93} />
+          <UseSuit rotate x={30} y={123} />
+          <UseSuit rotate x={70} y={123} />
         </Match>
         <Match when={properties.rank === 10}>
           <UseSuit x={30} y={33} />
@@ -213,11 +216,11 @@ const DefineCard = (properties: DefineCardProperties): JSXElement => {
           <UseSuit x={50} y={48} />
           <UseSuit x={30} y={63} />
           <UseSuit x={70} y={63} />
-          <UseSuit x={30} y={93} rotate />
-          <UseSuit x={70} y={93} rotate />
-          <UseSuit x={50} y={108} rotate />
-          <UseSuit x={30} y={123} rotate />
-          <UseSuit x={70} y={123} rotate />
+          <UseSuit rotate x={30} y={93} />
+          <UseSuit rotate x={70} y={93} />
+          <UseSuit rotate x={50} y={108} />
+          <UseSuit rotate x={30} y={123} />
+          <UseSuit rotate x={70} y={123} />
         </Match>
         <Match when={properties.rank === 11}>
           <UseSuit x={50} y={123} />
@@ -240,37 +243,37 @@ const DefineCard = (properties: DefineCardProperties): JSXElement => {
 };
 
 type UseCardProperties = {
-  readonly card: Card | "back" | "empty";
-
-  readonly x: number;
-  readonly y: number;
+  readonly card: "back" | "empty" | Card;
 
   readonly handleClick?: () => void;
   readonly handleDoubleClick?: () => void;
 
   readonly selected?: boolean;
+  readonly x: number;
+
+  readonly y: number;
 };
 export const UseCard = (properties: UseCardProperties): JSXElement => {
   return (
     <>
       <use
-        href={`#${properties.card}`}
-        x={properties.x}
-        y={properties.y}
         height={31.2}
-        width={20}
+        href={`#${properties.card}`}
         onClick={() => {
-          return properties.handleClick?.();
-        }}
-        onKeyDown={() => {
           return properties.handleClick?.();
         }}
         onDblClick={() => {
           return properties.handleDoubleClick?.();
         }}
+        onKeyDown={() => {
+          return properties.handleClick?.();
+        }}
+        width={20}
+        x={properties.x}
+        y={properties.y}
       />
       <Show when={properties.selected}>
-        <rect x={properties.x} y={properties.y} height={31.2} width={20} rx={2} ry={2} class={selected} />
+        <rect class={selected} height={31.2} rx={2} ry={2} width={20} x={properties.x} y={properties.y} />
       </Show>
     </>
   );

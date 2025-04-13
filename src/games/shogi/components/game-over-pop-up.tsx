@@ -1,5 +1,7 @@
-import { Close } from "@corvu/dialog";
 import type { JSXElement } from "solid-js";
+
+import { Close } from "@corvu/dialog";
+
 import { InformationPopUp } from "../../../components/page/information-popup.tsx";
 
 type GameOverPopUpProperties = {

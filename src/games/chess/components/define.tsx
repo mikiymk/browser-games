@@ -1,4 +1,5 @@
 import type { JSXElement } from "solid-js";
+
 import { DefineUse } from "../../../components/define/define-use.tsx";
 import { Use } from "../../../components/define/use.tsx";
 import bishop from "../../../images/chess/bishop.svg";
@@ -25,29 +26,29 @@ import { define, defineUse } from "./style.css.ts";
 
 export const DefinePieces = (): JSXElement => {
   return (
-    <svg viewBox="0 0 0 0" xmlns="http://www.w3.org/2000/svg" class={define}>
+    <svg class={define} viewBox="0 0 0 0" xmlns="http://www.w3.org/2000/svg">
       <title>define cards</title>
 
-      <DefinePiece name="bishop" color="black" />
-      <DefinePiece name="king" color="black" />
-      <DefinePiece name="knight" color="black" />
-      <DefinePiece name="pawn" color="black" />
-      <DefinePiece name="queen" color="black" />
-      <DefinePiece name="rook" color="black" />
+      <DefinePiece color="black" name="bishop" />
+      <DefinePiece color="black" name="king" />
+      <DefinePiece color="black" name="knight" />
+      <DefinePiece color="black" name="pawn" />
+      <DefinePiece color="black" name="queen" />
+      <DefinePiece color="black" name="rook" />
 
-      <DefinePiece name="bishop" color="white" />
-      <DefinePiece name="king" color="white" />
-      <DefinePiece name="knight" color="white" />
-      <DefinePiece name="pawn" color="white" />
-      <DefinePiece name="queen" color="white" />
-      <DefinePiece name="rook" color="white" />
+      <DefinePiece color="white" name="bishop" />
+      <DefinePiece color="white" name="king" />
+      <DefinePiece color="white" name="knight" />
+      <DefinePiece color="white" name="pawn" />
+      <DefinePiece color="white" name="queen" />
+      <DefinePiece color="white" name="rook" />
     </svg>
   );
 };
 
 type DefinePieceProperties = {
-  readonly name: "bishop" | "king" | "knight" | "pawn" | "queen" | "rook";
   readonly color: "black" | "white";
+  readonly name: "bishop" | "king" | "knight" | "pawn" | "queen" | "rook";
 };
 const DefinePiece = (properties: DefinePieceProperties): JSXElement => {
   const pieceImage = (): string => {
@@ -64,7 +65,7 @@ const DefinePiece = (properties: DefinePieceProperties): JSXElement => {
   };
 
   return (
-    <DefineUse id={`${properties.color}-${properties.name}`} href={pieceImage()} class={defineUse[properties.color]} />
+    <DefineUse class={defineUse[properties.color]} href={pieceImage()} id={`${properties.color}-${properties.name}`} />
   );
 };
 

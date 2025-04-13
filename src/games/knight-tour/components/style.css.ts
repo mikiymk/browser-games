@@ -1,4 +1,5 @@
 import { style } from "@vanilla-extract/css";
+
 import { stoneLight, text } from "../../../styles/colors.css.ts";
 
 export const piece = style({
@@ -17,8 +18,8 @@ export const figure = style({
 });
 
 export const history = style({
-  marginRight: 0,
   marginLeft: "0.5rem",
+  marginRight: 0,
   textAlign: "start",
 });
 
@@ -27,7 +28,7 @@ export const historyItem = style({
 });
 
 export const historyButton = style({
-  width: "4rem",
-  textAlign: "center",
   border: `1px solid ${text}`,
+  textAlign: "center",
+  width: "4rem",
 });

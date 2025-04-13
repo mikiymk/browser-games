@@ -1,11 +1,13 @@
-import { Show } from "solid-js";
 import type { JSXElement } from "solid-js";
+
+import { Show } from "solid-js";
+
 import { Icon } from "../elements/material-icon.tsx";
 import { headerButton, headerText } from "./style.css.ts";
 
 type HeaderButtonProperites = {
-  readonly icon?: string | undefined;
   readonly children: string;
+  readonly icon?: string | undefined;
 };
 export const HeaderButton = (properties: HeaderButtonProperites): JSXElement => {
   return (

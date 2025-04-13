@@ -1,5 +1,7 @@
-import { createEffect, createSignal } from "solid-js";
 import type { JSXElement } from "solid-js";
+
+import { createEffect, createSignal } from "solid-js";
+
 import { input, submitButton } from "./style.css.ts";
 
 type InputDigitsProperties = {
@@ -29,12 +31,12 @@ export const InputDigits = (properties: InputDigitsProperties): JSXElement => {
     <span>
       <span>Guess :</span>
       <input
-        type="number"
         class={input}
-        value={innerDigits()}
         onChange={(element) => setInnerDigits(element.target.valueAsNumber)}
+        type="number"
+        value={innerDigits()}
       />
-      <button type="button" class={submitButton} onClick={handleClick}>
+      <button class={submitButton} onClick={handleClick} type="button">
         Submit
       </button>
     </span>

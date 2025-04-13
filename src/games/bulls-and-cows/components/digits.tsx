@@ -1,5 +1,7 @@
-import { For } from "solid-js";
 import type { JSXElement } from "solid-js";
+
+import { For } from "solid-js";
+
 import { digits, digitsContainer } from "./style.css.ts";
 
 type DigitsProperties = {

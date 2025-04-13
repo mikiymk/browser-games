@@ -1,4 +1,5 @@
 import { style } from "@vanilla-extract/css";
+
 import { stoneDark, stoneLight, text } from "../../../styles/colors.css.ts";
 
 export const white = style({
@@ -23,8 +24,8 @@ export const next = style({
 });
 
 export const iconOuter = style({
+  aspectRatio: "1 / 1",
+  display: "inline",
   height: "2rem",
   width: "2rem",
-  display: "inline",
-  aspectRatio: "1 / 1",
 });

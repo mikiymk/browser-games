@@ -1,16 +1,18 @@
-import { createEffect, createSignal } from "solid-js";
 import type { Accessor } from "solid-js";
+
+import { createEffect, createSignal } from "solid-js";
+
 import { shuffledArray } from "../../scripts/random-select.ts";
 import { createUrlQuerySignal } from "../../scripts/use-url-query.ts";
 
 type Game = {
+  addGuess: (guess: readonly number[]) => void;
   digits: Accessor<readonly number[]>;
   guesses: Accessor<readonly (readonly number[])[]>;
-  message: Accessor<string>;
 
+  message: Accessor<string>;
   reset: () => void;
   setNumberOfDigits: (value: number) => void;
-  addGuess: (guess: readonly number[]) => void;
 };
 
 export const createGame = (): Game => {
@@ -29,12 +31,6 @@ export const createGame = (): Game => {
   createEffect(reset);
 
   return {
-    digits,
-    guesses,
-    message,
-
-    reset,
-    setNumberOfDigits: (value: number): string => setNumberOfDigitsString(value.toString()),
     addGuess: (guess: readonly number[]): void => {
       const uniqueGuess = [...new Set(guess)];
       if (uniqueGuess.length !== guess.length || guess.some((digit) => Number.isNaN(digit))) {
@@ -45,5 +41,11 @@ export const createGame = (): Game => {
       setMessage("");
       setGuesses((previousGuesses) => [...previousGuesses, guess]);
     },
+    digits,
+    guesses,
+
+    message,
+    reset,
+    setNumberOfDigits: (value: number): string => setNumberOfDigitsString(value.toString()),
   };
 };

@@ -1,13 +1,15 @@
-import { Show } from "solid-js";
 import type { JSXElement } from "solid-js";
+
+import { Show } from "solid-js";
+
 import { CellBlack } from "../const.ts";
 import { iconOuter, next, stoneBlack, stoneWhite } from "./style.css.ts";
 
 // ゲーム終了時に結果を表示する
 
 type StoneProperties = {
-  readonly count: number;
   readonly color: number;
+  readonly count: number;
 
   readonly isNext: boolean;
 };
@@ -15,17 +17,17 @@ export const StoneCount = (properties: StoneProperties): JSXElement => {
   return (
     <div class={properties.isNext ? next : ""}>
       <Show
-        when={properties.color === CellBlack}
         fallback={
-          <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" class={iconOuter}>
+          <svg class={iconOuter} viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
             <title>white</title>
-            <circle cx={30} cy={30} r={25} class={stoneWhite} />
+            <circle class={stoneWhite} cx={30} cy={30} r={25} />
           </svg>
         }
+        when={properties.color === CellBlack}
       >
-        <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" class={iconOuter}>
+        <svg class={iconOuter} viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
           <title>black</title>
-          <circle cx={30} cy={30} r={25} class={stoneBlack} />
+          <circle class={stoneBlack} cx={30} cy={30} r={25} />
         </svg>
       </Show>
 

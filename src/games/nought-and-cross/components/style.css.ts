@@ -1,4 +1,5 @@
 import { style } from "@vanilla-extract/css";
+
 import { colorBlue, colorRed } from "../../../styles/colors.css.ts";
 
 export const noughtStyle = style({
@@ -19,7 +20,7 @@ export const history = style({
 });
 
 export const historyItem = style({
-  width: "8rem",
   margin: "auto",
   textAlign: "left",
+  width: "8rem",
 });

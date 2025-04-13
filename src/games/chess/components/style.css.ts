@@ -1,15 +1,16 @@
 import { style, styleVariants } from "@vanilla-extract/css";
+
 import { squareFrom, squareTarget, stoneDark, stoneLight, text } from "../../../styles/colors.css.ts";
 
 const squareBase = style({
-  fill: "none",
   cursor: "pointer",
+  fill: "none",
 });
 
 export const square = styleVariants({
+  from: [squareBase, { fill: squareFrom }],
   normal: [squareBase],
   target: [squareBase, { fill: squareTarget }],
-  from: [squareBase, { fill: squareFrom }],
 });
 
 export const define = style({

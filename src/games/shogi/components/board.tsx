@@ -1,15 +1,18 @@
-import { For } from "solid-js";
 import type { JSXElement } from "solid-js";
+
+import { For } from "solid-js";
+
+import type { Hand } from "../constants.ts";
+
 import { Board } from "../../../components/board/board.tsx";
 import board from "../../../images/shogi/board.svg";
 import { BLACK, WHITE } from "../constants.ts";
-import type { Hand } from "../constants.ts";
 import { Hands } from "./hands.tsx";
 import { Square } from "./square.tsx";
 import { handHeader } from "./style.css.ts";
 
 type BoardProperties = {
-  readonly board: readonly { readonly piece: number; readonly moveTarget: boolean }[];
+  readonly board: readonly { readonly moveTarget: boolean; readonly piece: number }[];
   readonly hands: readonly [Hand, Hand];
   readonly onSquareClick: (index: number) => void;
 };
@@ -17,15 +20,15 @@ export const ShogiBoard = (properties: BoardProperties): JSXElement => {
   return (
     <>
       <Board
-        height={9}
-        width={9}
-        data={properties.board}
         background={board.src}
         click={(_square, index) => {
           properties.onSquareClick(index);
         }}
+        data={properties.board}
+        height={9}
+        width={9}
       >
-        {(square, _index, x, y) => <Square x={x} y={y} square={square.piece} move={square.moveTarget} />}
+        {(square, _index, x, y) => <Square move={square.moveTarget} square={square.piece} x={x} y={y} />}
       </Board>
       <table>
         <thead>

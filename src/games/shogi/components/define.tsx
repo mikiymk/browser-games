@@ -1,4 +1,5 @@
 import type { JSXElement } from "solid-js";
+
 import { Define } from "../../../components/define/define.tsx";
 import { Use } from "../../../components/define/use.tsx";
 import piece from "../../../images/shogi/piece.svg";
@@ -38,21 +39,21 @@ const DefinePiece = (properties: DefinePieceProperties): JSXElement => {
   return (
     <>
       <symbol id={properties.piece} viewBox="0 0 60 60">
-        <use href={`${piece.src}#root`} height={60} width={60} class={pieceStyle} />
-        <text x="30" y="28" class={classes(pieceText, color())}>
+        <use class={pieceStyle} height={60} href={`${piece.src}#root`} width={60} />
+        <text class={classes(pieceText, color())} x="30" y="28">
           {properties.piece[0]}
         </text>
-        <text x="30" y="50" class={classes(pieceText, color())}>
+        <text class={classes(pieceText, color())} x="30" y="50">
           {properties.piece[1]}
         </text>
       </symbol>
 
       <symbol id={`${properties.piece}-rev`} viewBox="0 0 60 60">
-        <use href={`${piece.src}#root`} height={60} width={60} class={classes(pieceStyle, reversed)} />
-        <text x="30" y="28" class={classes(pieceText, color(), reversed)}>
+        <use class={classes(pieceStyle, reversed)} height={60} href={`${piece.src}#root`} width={60} />
+        <text class={classes(pieceText, color(), reversed)} x="30" y="28">
           {properties.piece[0]}
         </text>
-        <text x="30" y="50" class={classes(pieceText, color(), reversed)}>
+        <text class={classes(pieceText, color(), reversed)} x="30" y="50">
           {properties.piece[1]}
         </text>
       </symbol>
@@ -61,11 +62,11 @@ const DefinePiece = (properties: DefinePieceProperties): JSXElement => {
 };
 
 type UsePieceProperties = {
-  readonly x: number;
-  readonly y: number;
-
   readonly piece: string;
   readonly rotate: boolean;
+
+  readonly x: number;
+  readonly y: number;
 };
 export const UsePiece = (properties: UsePieceProperties): JSXElement => {
   return (

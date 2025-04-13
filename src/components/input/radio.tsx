@@ -1,16 +1,18 @@
 import type { JSXElement } from "solid-js";
+
 import { For } from "solid-js";
+
 import { radio, radioInput } from "./style.css.ts";
 
 type RadioProperties<T> = {
   readonly name: string;
-  readonly values: readonly {
-    readonly value: T;
-    readonly label: string;
-  }[];
+  readonly setValue: (value: T) => void;
 
   readonly value: T;
-  readonly setValue: (value: T) => void;
+  readonly values: readonly {
+    readonly label: string;
+    readonly value: T;
+  }[];
 };
 export const Radio = <T,>(properties: RadioProperties<T>): JSXElement => {
   return (
@@ -19,13 +21,13 @@ export const Radio = <T,>(properties: RadioProperties<T>): JSXElement => {
         return (
           <label class={radio}>
             <input
-              type="radio"
-              name={properties.name}
               checked={value.value === properties.value}
               class={radioInput}
+              name={properties.name}
               onChange={() => {
                 properties.setValue(value.value);
               }}
+              type="radio"
             />
 
             {value.label}

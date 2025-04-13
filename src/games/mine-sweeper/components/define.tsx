@@ -1,4 +1,5 @@
 import type { JSXElement } from "solid-js";
+
 import { Define } from "../../../components/define/define.tsx";
 import { Use } from "../../../components/define/use.tsx";
 import flag from "../../../images/icon/flag.svg";
@@ -25,11 +26,11 @@ export const DefineSymbol = (): JSXElement => {
     <Define>
       <symbol id="mine" viewBox="0 0 60 60">
         <Closed />
-        <use href={`${mine.src}#root`} class={mineStyle} />
+        <use class={mineStyle} href={`${mine.src}#root`} />
       </symbol>
       <symbol id="flag" viewBox="0 0 60 60">
         <Closed />
-        <use href={`${flag.src}#root`} class={flagStyle} />
+        <use class={flagStyle} href={`${flag.src}#root`} />
       </symbol>
       <symbol id="close" viewBox="0 0 60 60">
         <Closed />
@@ -38,39 +39,39 @@ export const DefineSymbol = (): JSXElement => {
         <Opened />
       </symbol>
 
-      <DefineNumber number={1} class={number1} />
-      <DefineNumber number={2} class={number2} />
-      <DefineNumber number={3} class={number3} />
-      <DefineNumber number={4} class={number4} />
-      <DefineNumber number={5} class={number5} />
-      <DefineNumber number={6} class={number6} />
-      <DefineNumber number={7} class={number7} />
-      <DefineNumber number={8} class={number8} />
+      <DefineNumber class={number1} number={1} />
+      <DefineNumber class={number2} number={2} />
+      <DefineNumber class={number3} number={3} />
+      <DefineNumber class={number4} number={4} />
+      <DefineNumber class={number5} number={5} />
+      <DefineNumber class={number6} number={6} />
+      <DefineNumber class={number7} number={7} />
+      <DefineNumber class={number8} number={8} />
     </Define>
   );
 };
 
 const Closed = (): JSXElement => {
-  return <rect height={60} width={60} class={closed} />;
+  return <rect class={closed} height={60} width={60} />;
 };
 
 const Opened = (): JSXElement => {
-  return <rect height={60} width={60} class={opened} />;
+  return <rect class={opened} height={60} width={60} />;
 };
 
 type DefineNumberProperties = {
-  readonly number: number;
   readonly class?: string | undefined;
+  readonly number: number;
 };
 const DefineNumber = (properties: DefineNumberProperties): JSXElement => {
   return (
     <symbol id={String(properties.number)} viewBox="0 0 60 60">
       <Opened />
-      <text x={30} y={54} class={classes(number, properties.class)}>
+      <text class={classes(number, properties.class)} x={30} y={54}>
         {properties.number}
       </text>
     </symbol>
   );
 };
 
-export const UseSymbol = Use<number | "close" | "flag" | "mine" | "open">;
+export const UseSymbol = Use<"close" | "flag" | "mine" | "open" | number>;

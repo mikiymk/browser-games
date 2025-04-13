@@ -189,6 +189,17 @@ export default typescript.config(
     },
   },
   {
+    // perfectionist
+    rules: {
+      "import/order": "off",
+      "@typescript-eslint/adjacent-overload-signatures": "off",
+      "@typescript-eslint/sort-type-constituents": "off",
+      "react/jsx-sort-props": "off",
+      "sort-imports": "off",
+      "sort-keys": "off",
+    },
+  },
+  {
     rules: {
       // typescriptで検出できるルール
       "import/export": "off",

@@ -1,13 +1,15 @@
-import { Content, Overlay, Root, Trigger } from "@corvu/dialog";
 import type { JSXElement } from "solid-js";
+
+import { Content, Overlay, Root, Trigger } from "@corvu/dialog";
 import { Portal } from "solid-js/web";
+
 import { HeaderButton } from "./header-button.tsx";
 import { content, overlay } from "./style.css.ts";
 
 type HeaderPopupProperties = {
+  readonly children: JSXElement;
   readonly icon?: string | undefined;
   readonly label: string;
-  readonly children: JSXElement;
 };
 export const HeaderPopup = (properties: HeaderPopupProperties): JSXElement => {
   return (

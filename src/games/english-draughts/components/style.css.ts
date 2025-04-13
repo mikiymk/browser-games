@@ -1,4 +1,5 @@
 import { style } from "@vanilla-extract/css";
+
 import { stoneDark, stoneLight, text } from "../../../styles/colors.css.ts";
 
 export const define = style({

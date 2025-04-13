@@ -1,4 +1,5 @@
 import { style } from "@vanilla-extract/css";
+
 import {
   colorBlack,
   colorBlue,
@@ -24,8 +25,8 @@ export const flagStyle = style([symbol, { fill: colorRed }]);
 
 export const number = style({
   fontSize: 60,
-  textAnchor: "middle",
   stroke: "none",
+  textAnchor: "middle",
 });
 
 export const number1 = style({ fill: colorBlue });

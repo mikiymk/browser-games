@@ -1,8 +1,11 @@
-import { Close } from "@corvu/dialog";
 import type { JSXElement, Setter } from "solid-js";
+
+import { Close } from "@corvu/dialog";
+
+import type { PlayerType } from "../../scripts/player.ts";
+
 import { TEXT_BLACK_PLAYER, TEXT_SETTINGS, TEXT_WHITE_PLAYER } from "../../scripts/constants.ts";
 import { playerValues } from "../../scripts/player.ts";
-import type { PlayerType } from "../../scripts/player.ts";
 import { Radio } from "../input/radio.tsx";
 import { HeaderPopup } from "../page/header-popup.tsx";
 import { setting } from "./style.css.ts";
@@ -24,8 +27,8 @@ export const Settings = (properties: SettingsProperties): JSXElement => {
 };
 
 type ItemProperties = {
-  readonly label: JSXElement;
   readonly children: JSXElement;
+  readonly label: JSXElement;
 };
 export const SettingItem = (properties: ItemProperties): JSXElement => {
   return (
@@ -37,20 +40,20 @@ export const SettingItem = (properties: ItemProperties): JSXElement => {
 };
 
 type PlayerSettingProperties = {
-  readonly white: PlayerType;
   readonly black: PlayerType;
+  readonly setBlack: Setter<PlayerType>;
 
   readonly setWhite: Setter<PlayerType>;
-  readonly setBlack: Setter<PlayerType>;
+  readonly white: PlayerType;
 };
 export const PlayerSetting = (properties: PlayerSettingProperties): JSXElement => {
   return (
     <>
       <SettingItem label={TEXT_WHITE_PLAYER}>
-        <Radio name="white" values={playerValues} value={properties.white} setValue={properties.setWhite} />
+        <Radio name="white" setValue={properties.setWhite} value={properties.white} values={playerValues} />
       </SettingItem>
       <SettingItem label={TEXT_BLACK_PLAYER}>
-        <Radio name="black" values={playerValues} value={properties.black} setValue={properties.setBlack} />
+        <Radio name="black" setValue={properties.setBlack} value={properties.black} values={playerValues} />
       </SettingItem>
     </>
   );

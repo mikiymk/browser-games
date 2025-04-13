@@ -1,5 +1,7 @@
-import { For } from "solid-js";
 import type { JSXElement } from "solid-js";
+
+import { For } from "solid-js";
+
 import {
   TEXT_GAME_BULLS_AND_COWS,
   TEXT_GAME_CHESS,
@@ -16,15 +18,15 @@ import { List, ListItem } from "./elements/list.tsx";
 import { Page } from "./page/page.tsx";
 
 const pages = [
-  { title: TEXT_GAME_NOUGHT_AND_CROSS, name: "nought-and-cross" },
-  { title: TEXT_GAME_CHESS, name: "chess" },
-  { title: TEXT_GAME_MINE_SWEEPER, name: "mine-sweeper" },
-  { title: TEXT_GAME_KNIGHT_TOUR, name: "knight-tour" },
-  { title: TEXT_GAME_REVERSI, name: "reversi" },
-  { title: TEXT_GAME_SHOGI, name: "shogi" },
-  { title: TEXT_GAME_KLONDIKE, name: "klondike" },
-  { title: TEXT_GAME_ENGLISH_DRAUGHTS, name: "english-draughts" },
-  { title: TEXT_GAME_BULLS_AND_COWS, name: "bulls-and-cows" },
+  { name: "nought-and-cross", title: TEXT_GAME_NOUGHT_AND_CROSS },
+  { name: "chess", title: TEXT_GAME_CHESS },
+  { name: "mine-sweeper", title: TEXT_GAME_MINE_SWEEPER },
+  { name: "knight-tour", title: TEXT_GAME_KNIGHT_TOUR },
+  { name: "reversi", title: TEXT_GAME_REVERSI },
+  { name: "shogi", title: TEXT_GAME_SHOGI },
+  { name: "klondike", title: TEXT_GAME_KLONDIKE },
+  { name: "english-draughts", title: TEXT_GAME_ENGLISH_DRAUGHTS },
+  { name: "bulls-and-cows", title: TEXT_GAME_BULLS_AND_COWS },
 ];
 
 export const IndexContent = (): JSXElement => {
@@ -32,7 +34,7 @@ export const IndexContent = (): JSXElement => {
     <Page>
       <List>
         <For each={pages}>
-          {({ title, name }) => (
+          {({ name, title }) => (
             <ListItem>
               <Anchor href={`${name}/`}>{title}</Anchor>
             </ListItem>

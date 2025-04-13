@@ -1,12 +1,15 @@
 import type { JSXElement } from "solid-js";
+
 import { createSignal } from "solid-js";
+
+import type { PlayerType } from "../../../scripts/player.ts";
+
 import { PlayerSetting, Settings } from "../../../components/header-buttons/settings.tsx";
 import { Start } from "../../../components/header-buttons/start.tsx";
 import { Page } from "../../../components/page/page.tsx";
 import { doNothingFunction } from "../../../scripts/do-nothing.ts";
 import { MultiPromise } from "../../../scripts/multi-promise.ts";
 import { PlayerTypeAi, PlayerTypeHuman } from "../../../scripts/player.ts";
-import type { PlayerType } from "../../../scripts/player.ts";
 import { usePromise } from "../../../scripts/use-promise.ts";
 import { createUrlQuerySignal } from "../../../scripts/use-url-query.ts";
 import { CellBlack, CellCanMoveBlack, CellCanMoveWhite, CellEmpty, CellWhite } from "../const.ts";
@@ -43,7 +46,7 @@ export const App = (): JSXElement => {
     }
     terminateGame();
 
-    const { terminate, color } = gameLoop(
+    const { color, terminate } = gameLoop(
       exports,
       setBoard,
       humanInput,
@@ -79,11 +82,11 @@ export const App = (): JSXElement => {
     <Page
       header={
         <>
-          <StoneCount count={countBlack()} color={CellBlack} isNext={gamePlaying() && getColor?.() === CellBlack} />
-          <StoneCount count={countWhite()} color={CellWhite} isNext={gamePlaying() && getColor?.() === CellWhite} />
+          <StoneCount color={CellBlack} count={countBlack()} isNext={gamePlaying() && getColor?.() === CellBlack} />
+          <StoneCount color={CellWhite} count={countWhite()} isNext={gamePlaying() && getColor?.() === CellWhite} />
           <Start start={handleStart} />
           <Settings>
-            <PlayerSetting white={white()} black={black()} setWhite={setWhite} setBlack={setBlack} />
+            <PlayerSetting black={black()} setBlack={setBlack} setWhite={setWhite} white={white()} />
           </Settings>
           <HowToPlayReversi />
         </>

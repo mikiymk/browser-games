@@ -1,9 +1,10 @@
 import { style } from "@vanilla-extract/css";
+
 import { settingRadioSelected, text } from "../../styles/colors.css.ts";
 
 export const number = style({
-  textAlign: "right",
   borderBottom: `solid ${text} 2px`,
+  textAlign: "right",
 });
 
 export const radio = style({

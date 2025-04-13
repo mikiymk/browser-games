@@ -1,37 +1,38 @@
-import { PlayerTypeHuman } from "../../scripts/player.ts";
 import type { PlayerType } from "../../scripts/player.ts";
+
+import { PlayerTypeHuman } from "../../scripts/player.ts";
 import { sleep } from "../../scripts/sleep.ts";
 import { MOVE_TARGET, NotEnd } from "./constants.ts";
 
-export type GameObject = 0 | (number & { readonly __unique: "Wasm pointer of Board struct" });
+export type GameController = {
+  readonly ai: (gameObject: GameObject) => void;
+  readonly deinit: (gameObject: GameObject) => void;
 
+  readonly getBoard: (gameObject: GameObject) => readonly number[];
+  readonly getColor: (gameObject: GameObject) => PlayerColor;
+  readonly getEnd: (gameObject: GameObject) => number;
+  readonly getMove: (gameObject: GameObject, position: number) => readonly number[];
+
+  readonly init: () => GameObject;
+  readonly move: (gameObject: GameObject, from: number, to: number) => boolean;
+};
+
+export type GameObject = 0 | (number & { readonly __unique: "Wasm pointer of Board struct" });
 export type PlayerColor = "black" | "white";
+
 type Players = {
   readonly black: PlayerType;
   readonly white: PlayerType;
 };
 
-export type GameController = {
-  readonly init: () => GameObject;
-  readonly deinit: (gameObject: GameObject) => void;
-
-  readonly getBoard: (gameObject: GameObject) => readonly number[];
-  readonly getColor: (gameObject: GameObject) => PlayerColor;
-  readonly getMove: (gameObject: GameObject, position: number) => readonly number[];
-  readonly getEnd: (gameObject: GameObject) => number;
-
-  readonly move: (gameObject: GameObject, from: number, to: number) => boolean;
-  readonly ai: (gameObject: GameObject) => void;
-};
-
 type ViewController = {
-  readonly setBoard: (board: readonly number[]) => void;
-  readonly setMove: (board: readonly number[]) => void;
-  readonly setColor: (color: PlayerColor) => void;
-  readonly setEnd: (end: number) => void;
-
   readonly players: Players;
   readonly requestInput: () => Promise<number>;
+  readonly setBoard: (board: readonly number[]) => void;
+  readonly setColor: (color: PlayerColor) => void;
+
+  readonly setEnd: (end: number) => void;
+  readonly setMove: (board: readonly number[]) => void;
 };
 
 const isHuman = (color: PlayerColor, players: Players): boolean => {

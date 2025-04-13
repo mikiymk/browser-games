@@ -1,4 +1,5 @@
 import { style } from "@vanilla-extract/css";
+
 import { colorBlack, colorRed, shogiBoard, shogiPiece, text } from "../../../styles/colors.css.ts";
 
 export const pieceStyle = style({
@@ -28,10 +29,10 @@ export const board = style({
 });
 
 export const hand = style({
+  border: `1px solid ${text}`,
   paddingLeft: "0.25rem",
   paddingRight: "0.25rem",
   textAlign: "center",
-  border: `1px solid ${text}`,
 });
 
 export const handHeader = style([hand, { backgroundColor: shogiBoard }]);
