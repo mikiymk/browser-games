@@ -1,6 +1,6 @@
 import type { JSXElement, Setter } from "solid-js";
 import { StyledSvg } from "../../../components/elements/styled-svg.tsx";
-import { Item, Settings } from "../../../components/header-buttons/settings.tsx";
+import { SettingItem, Settings } from "../../../components/header-buttons/settings.tsx";
 import { Radio } from "../../../components/input/radio.tsx";
 import cross from "../../../images/icon/cross.svg";
 import nought from "../../../images/icon/nought.svg";
@@ -17,14 +17,12 @@ type Properties = {
 export const NoughtAndCrossSettings = (properties: Properties): JSXElement => {
   return (
     <Settings>
-      <Item
-        label={<StyledSvg src={nought.src} alt="nought" />}
-        input={<Radio name="o" values={playerValues} value={properties.o} setValue={properties.setO} />}
-      />
-      <Item
-        label={<StyledSvg src={cross.src} alt="cross" />}
-        input={<Radio name="x" values={playerValues} value={properties.x} setValue={properties.setX} />}
-      />
+      <SettingItem label={<StyledSvg src={nought.src} alt="nought" />}>
+        <Radio name="o" values={playerValues} value={properties.o} setValue={properties.setO} />
+      </SettingItem>
+      <SettingItem label={<StyledSvg src={cross.src} alt="cross" />}>
+        <Radio name="x" values={playerValues} value={properties.x} setValue={properties.setX} />
+      </SettingItem>
     </Settings>
   );
 };

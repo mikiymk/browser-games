@@ -25,13 +25,13 @@ export const Settings = (properties: SettingsProperties): JSXElement => {
 
 type ItemProperties = {
   readonly label: JSXElement;
-  readonly input: JSXElement;
+  readonly children: JSXElement;
 };
-export const Item = (properties: ItemProperties): JSXElement => {
+export const SettingItem = (properties: ItemProperties): JSXElement => {
   return (
     <>
       <dt>{properties.label}</dt>
-      <dd>{properties.input}</dd>
+      <dd>{properties.children}</dd>
     </>
   );
 };
@@ -46,14 +46,12 @@ type PlayerSettingProperties = {
 export const PlayerSetting = (properties: PlayerSettingProperties): JSXElement => {
   return (
     <>
-      <Item
-        label={TEXT_WHITE_PLAYER}
-        input={<Radio name="white" values={playerValues} value={properties.white} setValue={properties.setWhite} />}
-      />
-      <Item
-        label={TEXT_BLACK_PLAYER}
-        input={<Radio name="black" values={playerValues} value={properties.black} setValue={properties.setBlack} />}
-      />
+      <SettingItem label={TEXT_WHITE_PLAYER}>
+        <Radio name="white" values={playerValues} value={properties.white} setValue={properties.setWhite} />
+      </SettingItem>
+      <SettingItem label={TEXT_BLACK_PLAYER}>
+        <Radio name="black" values={playerValues} value={properties.black} setValue={properties.setBlack} />
+      </SettingItem>
     </>
   );
 };

@@ -5,7 +5,7 @@ import { Page } from "../../../components/page/page.tsx";
 import { Digits } from "./digits.tsx";
 import { InputDigits } from "./input-digits.tsx";
 import { Start } from "../../../components/header-buttons/start.tsx";
-import { Item, Settings } from "../../../components/header-buttons/settings.tsx";
+import { SettingItem, Settings } from "../../../components/header-buttons/settings.tsx";
 import { InputNumber } from "../../../components/input/number.tsx";
 
 export const App = (): JSXElement => {
@@ -17,10 +17,9 @@ export const App = (): JSXElement => {
         <>
           <Start start={() => game.reset()} />
           <Settings>
-            <Item
-              label="Digits"
-              input={<InputNumber name="digits" value={game.digits().length} setValue={game.setNumberOfDigits} />}
-            />
+            <SettingItem label="Digits">
+              <InputNumber name="digits" value={game.digits().length} setValue={game.setNumberOfDigits} />
+            </SettingItem>
           </Settings>
         </>
       }
