@@ -1,4 +1,4 @@
-import { createEffect, createSignal, For } from "solid-js";
+import { createEffect, createSignal } from "solid-js";
 import type { JSXElement } from "solid-js";
 import { input, inputContainer } from "./style.css.ts";
 
@@ -8,32 +8,22 @@ type InputDigitsProperties = {
 };
 
 export const InputDigits = (properties: InputDigitsProperties): JSXElement => {
-  const [innerDigits, setInnerDigits] = createSignal<readonly number[]>([]);
-  createEffect(() => {
-    setInnerDigits(Array.from({ length: properties.numberOfDigits }, () => 0));
-  });
+  const [innerDigits, setInnerDigits] = createSignal<number>(0);
+  const innerDigitsArray = (): readonly number[] => {
+    let digits = innerDigits();
+    return Array.from({ length: properties.numberOfDigits }, () => {
+      const digit = digits % 10;
+      digits = Math.floor(digits / 10);
+      return digit;
+    }).toReversed();
+  };
+
+  createEffect(() => setInnerDigits(0));
 
   return (
     <span class={inputContainer}>
-      <For each={Array.from({ length: properties.numberOfDigits })}>
-        {(_, index) => (
-          <input
-            type="number"
-            class={input}
-            min={0}
-            max={9}
-            onChange={(element) => {
-              setInnerDigits((previous) => previous.with(index(), element.target.valueAsNumber));
-            }}
-          />
-        )}
-      </For>
-      <button
-        type="button"
-        onClick={() => {
-          properties.setDigits(innerDigits());
-        }}
-      >
+      <input type="number" class={input} onChange={(element) => setInnerDigits(element.target.valueAsNumber)} />
+      <button type="button" onClick={() => properties.setDigits(innerDigitsArray())}>
         Submit
       </button>
     </span>

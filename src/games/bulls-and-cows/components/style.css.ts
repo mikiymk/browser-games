@@ -8,7 +8,7 @@ export const inputContainer = style({
 
 export const input = style({
   height: "2rem",
-  width: "2rem",
+  width: "20rem",
 
   fontSize: "1.5rem",
   textAlign: "center",

@@ -4,18 +4,30 @@ import { createGame } from "../game.ts";
 import { Page } from "../../../components/page/page.tsx";
 import { Digits } from "./digits.tsx";
 import { InputDigits } from "./input-digits.tsx";
-import { createUrlQuerySignal } from "../../../scripts/use-url-query.ts";
+import { Start } from "../../../components/header-buttons/start.tsx";
+import { Item, Settings } from "../../../components/header-buttons/settings.tsx";
+import { InputNumber } from "../../../components/input/number.tsx";
 
 export const App = (): JSXElement => {
-  const [numberOfDigitsString, setNumberOfDigitsString] = createUrlQuerySignal("digits", "4");
-  const numberOfDigits = (): number => Number(numberOfDigitsString());
-  const game = createGame(numberOfDigits);
+  const game = createGame();
 
   return (
-    <Page>
+    <Page
+      header={
+        <>
+          <Start start={() => game.reset()} />
+          <Settings>
+            <Item
+              label="Digits"
+              input={<InputNumber name="digits" value={game.digits().length} setValue={game.setNumberOfDigits} />}
+            />
+          </Settings>
+        </>
+      }
+    >
       <Digits digits={game.digits()} />
       <For each={game.guesses()}>{(guess) => <Digits digits={guess} />}</For>
-      <InputDigits numberOfDigits={4} setDigits={game.addGuess} />
+      <InputDigits numberOfDigits={game.digits().length} setDigits={game.addGuess} />
     </Page>
   );
 };
