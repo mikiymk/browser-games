@@ -4,6 +4,7 @@ import biome from "eslint-config-biome";
 import astro from "eslint-plugin-astro";
 import pluginImport from "eslint-plugin-import";
 import jsxA11y from "eslint-plugin-jsx-a11y";
+import perfectionist from "eslint-plugin-perfectionist";
 import solid from "eslint-plugin-solid";
 import unicorn from "eslint-plugin-unicorn";
 import globals from "globals";
@@ -23,6 +24,7 @@ export default typescript.config(
   solid.configs["flat/typescript"],
   astro.configs.recommended,
   jsxA11y.flatConfigs.strict,
+  perfectionist.configs["recommended-natural"],
   biome,
   {
     languageOptions: {
