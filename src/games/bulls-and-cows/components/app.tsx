@@ -1,8 +1,7 @@
-import { For } from "solid-js";
+import { For, Show } from "solid-js";
 import type { JSXElement } from "solid-js";
 import { createGame } from "../game.ts";
 import { Page } from "../../../components/page/page.tsx";
-import { Digits } from "./digits.tsx";
 import { InputDigits } from "./input-digits.tsx";
 import { Start } from "../../../components/header-buttons/start.tsx";
 import { SettingItem, Settings } from "../../../components/header-buttons/settings.tsx";
@@ -25,10 +24,8 @@ export const App = (): JSXElement => {
         </>
       }
     >
-      {/* デバッグ用 */}
-      <Digits digits={game.digits()} />
-
       <For each={game.guesses()}>{(guess) => <Guess digits={game.digits()} guess={guess} />}</For>
+      <Show when={game.message()}>{(message) => message()}</Show>
       <InputDigits numberOfDigits={game.digits().length} setDigits={game.addGuess} />
     </Page>
   );

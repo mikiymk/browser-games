@@ -6,6 +6,7 @@ import { createUrlQuerySignal } from "../../scripts/use-url-query.ts";
 type Game = {
   digits: Accessor<readonly number[]>;
   guesses: Accessor<readonly (readonly number[])[]>;
+  message: Accessor<string>;
 
   reset: () => void;
   setNumberOfDigits: (value: number) => void;
@@ -16,6 +17,7 @@ export const createGame = (): Game => {
   const [digits, setDigits] = createSignal<readonly number[]>([0, 0, 0, 0]);
   const [guesses, setGuesses] = createSignal<readonly (readonly number[])[]>([]);
   const [numberOfDigitsString, setNumberOfDigitsString] = createUrlQuerySignal("digits", "4");
+  const [message, setMessage] = createSignal("");
 
   const reset = (): void => {
     const numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
@@ -29,10 +31,19 @@ export const createGame = (): Game => {
   return {
     digits,
     guesses,
+    message,
 
     reset,
     setNumberOfDigits: (value: number): string => setNumberOfDigitsString(value.toString()),
-    addGuess: (guess: readonly number[]): (readonly number[])[] =>
-      setGuesses((previousGuesses) => [...previousGuesses, guess]),
+    addGuess: (guess: readonly number[]): void => {
+      const uniqueGuess = [...new Set(guess)];
+      if (uniqueGuess.length !== guess.length || guess.some((digit) => Number.isNaN(digit))) {
+        setMessage("それぞれ別の数字を入力してください。");
+        return;
+      }
+
+      setMessage("");
+      setGuesses((previousGuesses) => [...previousGuesses, guess]);
+    },
   };
 };

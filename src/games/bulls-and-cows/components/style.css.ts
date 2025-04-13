@@ -3,22 +3,16 @@ import { colorWhite, pageBodyShadow, text } from "../../../styles/colors.css.ts"
 
 export const digitsContainer = style({
   display: "inline flex",
-
   borderBottom: `2px solid ${text}`,
-
   margin: "0.5rem",
-
   textAlign: "center",
 });
 
 export const digits = style({
   height: "2rem",
   width: "2rem",
-
   fontSize: "1.5rem",
 });
-
-export const guessContainer = style({});
 
 export const guess = style({
   margin: "0 0.5rem",
@@ -26,16 +20,14 @@ export const guess = style({
 
 export const input = style({
   height: "2rem",
-  width: "20rem",
-
+  width: "15rem",
   fontSize: "1.5rem",
+  letterSpacing: "0.5rem",
   textAlign: "center",
-
   background: colorWhite,
   border: `2px solid ${text}`,
   borderRadius: "0.25rem",
   outline: "none",
-
   margin: "0.5rem",
 });
 
