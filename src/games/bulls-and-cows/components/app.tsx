@@ -7,6 +7,7 @@ import { InputDigits } from "./input-digits.tsx";
 import { Start } from "../../../components/header-buttons/start.tsx";
 import { SettingItem, Settings } from "../../../components/header-buttons/settings.tsx";
 import { InputNumber } from "../../../components/input/number.tsx";
+import { Guess } from "./guess.tsx";
 
 export const App = (): JSXElement => {
   const game = createGame();
@@ -24,8 +25,10 @@ export const App = (): JSXElement => {
         </>
       }
     >
+      {/* デバッグ用 */}
       <Digits digits={game.digits()} />
-      <For each={game.guesses()}>{(guess) => <Digits digits={guess} />}</For>
+
+      <For each={game.guesses()}>{(guess) => <Guess digits={game.digits()} guess={guess} />}</For>
       <InputDigits numberOfDigits={game.digits().length} setDigits={game.addGuess} />
     </Page>
   );

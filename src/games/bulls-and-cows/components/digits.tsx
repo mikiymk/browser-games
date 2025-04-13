@@ -1,5 +1,6 @@
 import { For } from "solid-js";
 import type { JSXElement } from "solid-js";
+import { digits, digitsContainer } from "./style.css.ts";
 
 type DigitsProperties = {
   readonly digits: readonly number[];
@@ -7,8 +8,8 @@ type DigitsProperties = {
 
 export const Digits = (properties: DigitsProperties): JSXElement => {
   return (
-    <span>
-      <For each={properties.digits}>{(digit) => <span>{digit}</span>}</For>
+    <span class={digitsContainer}>
+      <For each={properties.digits}>{(digit) => <span class={digits}>{digit}</span>}</For>
     </span>
   );
 };

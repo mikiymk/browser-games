@@ -49,7 +49,7 @@ export const headerText = style({
 });
 
 export const body = style({
-  height: "calc(100dvh - 3rem)",
+  minHeight: "calc(100dvh - 3rem)",
   backgroundColor: pageBody,
   display: "flex",
   flexDirection: "column",

@@ -6,6 +6,7 @@ export const hoveredText = "#667788";
 export const pageHeader = "#ffcc77";
 export const pageHeaderShadow = "#ff7711";
 export const pageBody = "#ffffbb";
+export const pageBodyShadow = "#ffddaa";
 
 // 設定
 export const settingRadioSelected = "#ddff99";
