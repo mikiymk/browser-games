@@ -2,7 +2,7 @@ import eslintComments from "@eslint-community/eslint-plugin-eslint-comments";
 import eslint from "@eslint/js";
 import biome from "eslint-config-biome";
 import astro from "eslint-plugin-astro";
-import pluginImport from "eslint-plugin-import";
+import importX from "eslint-plugin-import-x";
 import jsxA11y from "eslint-plugin-jsx-a11y";
 import perfectionist from "eslint-plugin-perfectionist";
 import solid from "eslint-plugin-solid";
@@ -142,23 +142,23 @@ export default typescript.config(
   },
   {
     // import
-    plugins: { import: pluginImport },
+    plugins: { "import-x": importX },
     rules: {
-      "import/consistent-type-specifier-style": ["error", "prefer-top-level"],
-      "import/newline-after-import": "error",
-      "import/no-absolute-path": "error",
-      "import/no-anonymous-default-export": "error",
-      "import/no-duplicates": "error",
-      "import/no-empty-named-blocks": "error",
-      "import/no-extraneous-dependencies": "off",
-      "import/no-mutable-exports": "error",
-      "import/no-named-default": "error",
-      "import/no-unassigned-import": "error",
-      "import/no-unresolved": ["error", { ignore: ["\\.css$"] }],
-      "import/no-unused-modules": ["error", { missingExports: true }],
-      "import/no-useless-path-segments": "error",
-      "import/order": ["error", { groups: [], "newlines-between": "never" }],
-      "import/unambiguous": "error",
+      "import-x/consistent-type-specifier-style": ["error", "prefer-top-level"],
+      "import-x/newline-after-import": "error",
+      "import-x/no-absolute-path": "error",
+      "import-x/no-anonymous-default-export": "error",
+      "import-x/no-duplicates": "error",
+      "import-x/no-empty-named-blocks": "error",
+      "import-x/no-extraneous-dependencies": "off",
+      "import-x/no-mutable-exports": "error",
+      "import-x/no-named-default": "error",
+      "import-x/no-unassigned-import": "error",
+      "import-x/no-unresolved": ["error", { ignore: ["\\.css$"] }],
+      "import-x/no-unused-modules": ["error", { missingExports: true }],
+      "import-x/no-useless-path-segments": "error",
+      "import-x/order": ["error", { groups: [], "newlines-between": "never" }],
+      "import-x/unambiguous": "error",
     },
   },
   {
@@ -174,7 +174,7 @@ export default typescript.config(
     files: ["**/*.astro"],
     extends: [typescript.configs.disableTypeChecked], // 型を利用する検査を行わない
     rules: {
-      "import/no-unused-modules": "off",
+      "import-x/no-unused-modules": "off",
       "@typescript-eslint/consistent-type-definitions": "off",
       "unicorn/text-encoding-identifier-case": "off",
       "unicorn/prevent-abbreviations": [
@@ -191,7 +191,7 @@ export default typescript.config(
   {
     // perfectionist
     rules: {
-      "import/order": "off",
+      "import-x/order": "off",
       "@typescript-eslint/adjacent-overload-signatures": "off",
       "@typescript-eslint/sort-type-constituents": "off",
       "react/jsx-sort-props": "off",
@@ -202,12 +202,12 @@ export default typescript.config(
   {
     rules: {
       // typescriptで検出できるルール
-      "import/export": "off",
-      "import/default": "off",
-      "import/named": "off",
-      "import/namespace": "off",
-      "import/no-named-as-default": "off",
-      "import/no-named-as-default-member": "off",
+      "import-x/export": "off",
+      "import-x/default": "off",
+      "import-x/named": "off",
+      "import-x/namespace": "off",
+      "import-x/no-named-as-default": "off",
+      "import-x/no-named-as-default-member": "off",
     },
   },
   {
@@ -303,7 +303,7 @@ export default typescript.config(
       "jest/no-disabled-tests": "off", // suspicious/noSkippedTests
 
       // 1.8.0
-      "import/no-nodejs-modules": "off", // correctness/noNodejsModules
+      "import-x/no-nodejs-modules": "off", // correctness/noNodejsModules
       "no-array-constructor": "off", // correctness/useArrayLiterals
       // correctness/noConstantMathMinMaxClamp
       // correctness/noFlatMapIdentity
