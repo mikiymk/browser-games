@@ -2,9 +2,9 @@ const Suits = ["club", "diamond", "heart", "spade"] as const;
 export type Suit = (typeof Suits)[number];
 
 const Ranks = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13] as const;
-export type Rank = (typeof Ranks)[number];
-
 export type Card = `${Suit}-${Rank}`;
+
+export type Rank = (typeof Ranks)[number];
 export const Cards = [
   "club-1",
   "club-2",
@@ -74,10 +74,10 @@ export const rankOf = (card: Card): Rank => {
 export const colorOf = (card: Suit): "black" | "red" => {
   return (
     {
-      spade: "black",
       club: "black",
       diamond: "red",
       heart: "red",
+      spade: "black",
     } as const
   )[card];
 };

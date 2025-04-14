@@ -1,62 +1,64 @@
 import { createStore } from "solid-js/store";
-import { shuffledArray } from "../../scripts/random-select.ts";
-import { Cards, colorOf, rankOf, suitOf } from "./card.ts";
+
 import type { Card } from "./card.ts";
 
-type Pile = {
-  opened: Card[];
-  closed: Card[];
-};
-
-type CardField = {
-  tableaus: Pile[];
-  stock: Pile;
-  foundations: Card[][];
-};
+import { shuffledArray } from "../../scripts/random-select.ts";
+import { Cards, colorOf, rankOf, suitOf } from "./card.ts";
 
 export type Select =
-  | { readonly type: "foundation"; readonly index: number }
-  | { readonly type: "stock" }
-  | { readonly type: "tableau"; readonly index: number; readonly depth: number };
+  | { readonly depth: number; readonly index: number; readonly type: "tableau" }
+  | { readonly index: number; readonly type: "foundation" }
+  | { readonly type: "stock" };
+
+type CardField = {
+  foundations: Card[][];
+  stock: Pile;
+  tableaus: Pile[];
+};
 
 type KlondikeObject = {
-  start: () => void;
+  autoFoundation: (from: Select) => void;
 
   cards: CardField;
+  isCleared: () => boolean;
   moveCards: (from: Select | undefined, to: Select | undefined) => boolean;
   openStock: () => void;
-  autoFoundation: (from: Select) => void;
-  isCleared: () => boolean;
+  start: () => void;
+};
+
+type Pile = {
+  closed: Card[];
+  opened: Card[];
 };
 export const createKlondike = (): KlondikeObject => {
   const [cards, setCards] = createStore<CardField>({
-    tableaus: [
-      { opened: [], closed: [] },
-      { opened: [], closed: [] },
-      { opened: [], closed: [] },
-      { opened: [], closed: [] },
-      { opened: [], closed: [] },
-      { opened: [], closed: [] },
-      { opened: [], closed: [] },
-    ],
-    stock: { opened: [], closed: [] },
     foundations: [[], [], [], []],
+    stock: { closed: [], opened: [] },
+    tableaus: [
+      { closed: [], opened: [] },
+      { closed: [], opened: [] },
+      { closed: [], opened: [] },
+      { closed: [], opened: [] },
+      { closed: [], opened: [] },
+      { closed: [], opened: [] },
+      { closed: [], opened: [] },
+    ],
   });
 
   const start = (): void => {
     const cards = shuffledArray(Cards);
     setCards({
-      tableaus: [
-        { opened: [], closed: cards.slice(0, 1) },
-        { opened: [], closed: cards.slice(1, 3) },
-        { opened: [], closed: cards.slice(3, 6) },
-        { opened: [], closed: cards.slice(6, 10) },
-        { opened: [], closed: cards.slice(10, 15) },
-        { opened: [], closed: cards.slice(15, 21) },
-        { opened: [], closed: cards.slice(21, 28) },
-      ],
-      stock: { opened: [], closed: cards.slice(28) },
       foundations: [[], [], [], []],
+      stock: { closed: cards.slice(28), opened: [] },
+      tableaus: [
+        { closed: cards.slice(0, 1), opened: [] },
+        { closed: cards.slice(1, 3), opened: [] },
+        { closed: cards.slice(3, 6), opened: [] },
+        { closed: cards.slice(6, 10), opened: [] },
+        { closed: cards.slice(10, 15), opened: [] },
+        { closed: cards.slice(15, 21), opened: [] },
+        { closed: cards.slice(21, 28), opened: [] },
+      ],
     });
 
     openTableaus();
@@ -65,9 +67,9 @@ export const createKlondike = (): KlondikeObject => {
   /** 場札が1枚も開いていないなら開ける */
   const openTableaus = (): void => {
     setCards("tableaus", (previous) => {
-      return previous.map(({ opened, closed }) => ({
-        opened: opened.length > 0 ? opened : closed.slice(0, 1),
+      return previous.map(({ closed, opened }) => ({
         closed: opened.length > 0 ? closed : closed.slice(1),
+        opened: opened.length > 0 ? opened : closed.slice(0, 1),
       }));
     });
   };
@@ -78,15 +80,15 @@ export const createKlondike = (): KlondikeObject => {
       if (previous.stock.closed.length === 0) {
         return {
           ...previous,
-          stock: { opened: [], closed: previous.stock.opened },
+          stock: { closed: previous.stock.opened, opened: [] },
         };
       }
 
       return {
         ...previous,
         stock: {
-          opened: [...previous.stock.opened, ...previous.stock.closed.slice(0, 1)],
           closed: previous.stock.closed.slice(1),
+          opened: [...previous.stock.opened, ...previous.stock.closed.slice(0, 1)],
         },
       };
     });
@@ -197,10 +199,10 @@ export const createKlondike = (): KlondikeObject => {
   /** 自動でカードを組札に送る関数 */
   const autoFoundation = (from: Select): void => {
     const foundations: Select[] = [
-      { type: "foundation", index: 0 },
-      { type: "foundation", index: 1 },
-      { type: "foundation", index: 2 },
-      { type: "foundation", index: 3 },
+      { index: 0, type: "foundation" },
+      { index: 1, type: "foundation" },
+      { index: 2, type: "foundation" },
+      { index: 3, type: "foundation" },
     ];
 
     for (const foundation of foundations) {
@@ -211,12 +213,12 @@ export const createKlondike = (): KlondikeObject => {
   };
 
   return {
-    start,
+    autoFoundation,
     cards,
+    isCleared,
     moveCards,
     openStock,
-    autoFoundation,
-    isCleared,
+    start,
   };
 };
 

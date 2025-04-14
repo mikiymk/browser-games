@@ -1,8 +1,9 @@
 import type { JSXElement } from "solid-js";
+
 import { batch, createEffect, createSignal } from "solid-js";
+
 import { Start } from "../../../components/header-buttons/start.tsx";
-import { PageBody } from "../../../components/page/body.tsx";
-import { PageHeader } from "../../../components/page/header.tsx";
+import { Page } from "../../../components/page/page.tsx";
 import { createUrlQuerySignal } from "../../../scripts/use-url-query.ts";
 import { Bombed, Clear, FieldBomb, FieldFlag, FieldNoOpen, FirstClick, Playing } from "../consts.ts";
 import { getAround, initializeField, isClear, resetMines } from "../field.ts";
@@ -103,26 +104,23 @@ export const App = (): JSXElement => {
   };
 
   return (
-    <>
-      <PageHeader
-        buttons={
-          <>
-            <Status state={gameState()} fields={fields()} mines={mineCount()} />
-            <Start start={reset} />
-            <MineSweeperSettings
-              height={height()}
-              width={width()}
-              mineCount={mineCount()}
-              setHeight={(height) => setHeight(String(height))}
-              setWidth={(width) => setWidth(String(width))}
-              setMineCount={(mineCount) => setMineCount(String(mineCount))}
-            />
-          </>
-        }
-      />
-      <PageBody>
-        <MineFields height={height()} width={width()} fields={fields()} open={openField} flag={flagField} />
-      </PageBody>
-    </>
+    <Page
+      header={
+        <>
+          <Status fields={fields()} mines={mineCount()} state={gameState()} />
+          <Start start={reset} />
+          <MineSweeperSettings
+            height={height()}
+            mineCount={mineCount()}
+            setHeight={(height) => setHeight(String(height))}
+            setMineCount={(mineCount) => setMineCount(String(mineCount))}
+            setWidth={(width) => setWidth(String(width))}
+            width={width()}
+          />
+        </>
+      }
+    >
+      <MineFields fields={fields()} flag={flagField} height={height()} open={openField} width={width()} />
+    </Page>
   );
 };

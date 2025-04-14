@@ -1,9 +1,10 @@
 import type { JSXElement } from "solid-js";
-import { Start } from "../../../components/header-buttons/start.tsx";
-import { PageBody } from "../../../components/page/body.tsx";
-import { PageHeader } from "../../../components/page/header.tsx";
-import { PlayerTypeAi, PlayerTypeHuman } from "../../../scripts/player.ts";
+
 import type { PlayerType } from "../../../scripts/player.ts";
+
+import { Start } from "../../../components/header-buttons/start.tsx";
+import { Page } from "../../../components/page/page.tsx";
+import { PlayerTypeAi, PlayerTypeHuman } from "../../../scripts/player.ts";
 import { createUrlQuerySignal } from "../../../scripts/use-url-query.ts";
 import { createGame } from "../game.ts";
 import { ShogiBoard } from "./board.tsx";
@@ -15,29 +16,26 @@ export const App = (): JSXElement => {
   const [black, setBlack] = createUrlQuerySignal<PlayerType>("first", PlayerTypeHuman);
   const [white, setWhite] = createUrlQuerySignal<PlayerType>("second", PlayerTypeAi);
 
-  const { board, whiteHands, blackHands, gameOver, promotion, start, handleBoardClick, setGameOver, resolve } =
+  const { blackHands, board, gameOver, handleBoardClick, promotion, resolve, setGameOver, start, whiteHands } =
     createGame(white, black);
 
   return (
-    <>
-      <PageHeader
-        buttons={
-          <>
-            <Start start={start} />
-            <ShogiSettings white={white()} black={black()} setWhite={setWhite} setBlack={setBlack} />
-            <GameOverPopUp gameOver={gameOver() !== 0} set={setGameOver} />
-            <PromotionPopUp
-              promotion={promotion()}
-              resolve={(value) => {
-                resolve(value);
-              }}
-            />
-          </>
-        }
-      />
-      <PageBody>
-        <ShogiBoard board={board()} hands={[whiteHands(), blackHands()]} onSquareClick={handleBoardClick} />
-      </PageBody>
-    </>
+    <Page
+      header={
+        <>
+          <Start start={start} />
+          <ShogiSettings black={black()} setBlack={setBlack} setWhite={setWhite} white={white()} />
+          <GameOverPopUp gameOver={gameOver() !== 0} set={setGameOver} />
+          <PromotionPopUp
+            promotion={promotion()}
+            resolve={(value) => {
+              resolve(value);
+            }}
+          />
+        </>
+      }
+    >
+      <ShogiBoard board={board()} hands={[whiteHands(), blackHands()]} onSquareClick={handleBoardClick} />
+    </Page>
   );
 };

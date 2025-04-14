@@ -1,18 +1,20 @@
 import type { JSXElement } from "solid-js";
+
 import { For, Show } from "solid-js";
+
 import { clear } from "./style.css.ts";
 
 type BoardProperties<T> = {
-  readonly height: number;
-  readonly width: number;
-
-  readonly data: readonly T[];
-
-  readonly children: (square: T, index: number, x: number, y: number) => JSXElement;
-  readonly class?: string;
   readonly background?: string;
+  readonly children: (square: T, index: number, x: number, y: number) => JSXElement;
+
+  readonly class?: string;
+
   readonly click?: (square: T, index: number, event: MouseEvent) => void;
   readonly contextmenu?: (square: T, index: number, event: MouseEvent) => void;
+  readonly data: readonly T[];
+  readonly height: number;
+  readonly width: number;
 };
 
 export const Board = <T,>(properties: BoardProperties<T>): JSXElement => {
@@ -28,14 +30,14 @@ export const Board = <T,>(properties: BoardProperties<T>): JSXElement => {
 
   return (
     <svg
+      class={properties.class}
       viewBox={`0 0 ${properties.width * 10} ${properties.height * 10}`}
       xmlns="http://www.w3.org/2000/svg"
-      class={properties.class}
     >
       <title>board</title>
 
       <Show when={properties.background}>
-        {(bg) => <image href={bg()} height={properties.height * 10} width={properties.width * 10} />}
+        {(bg) => <image height={properties.height * 10} href={bg()} width={properties.width * 10} />}
       </Show>
 
       <For each={properties.data}>
@@ -50,10 +52,8 @@ export const Board = <T,>(properties: BoardProperties<T>): JSXElement => {
       <Show when={properties.click !== undefined || properties.contextmenu !== undefined}>
         {/* biome-ignore lint/a11y/useKeyWithClickEvents: キーボードでできない */}
         <rect
-          height={properties.height * 10}
-          width={properties.width * 10}
           class={clear}
-          tabindex={0}
+          height={properties.height * 10}
           onClick={(event) => {
             const [square, index] = handleClick(event);
 
@@ -64,6 +64,8 @@ export const Board = <T,>(properties: BoardProperties<T>): JSXElement => {
 
             properties.contextmenu?.(square, index, event);
           }}
+          tabindex={0}
+          width={properties.width * 10}
         />
       </Show>
     </svg>

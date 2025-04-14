@@ -1,12 +1,14 @@
 import type { JSXElement } from "solid-js";
+
 import { For } from "solid-js";
+
 import { HeaderPopup } from "../../../components/page/header-popup.tsx";
 import { TEXT_HISTORY } from "../../../scripts/constants.ts";
 import { history, historyButton, historyItem } from "./style.css.ts";
 
 type HistoryProperties = {
-  readonly history: readonly number[];
   readonly back: (index: number) => void;
+  readonly history: readonly number[];
 };
 export const History = (properties: HistoryProperties): JSXElement => {
   return (
@@ -17,11 +19,11 @@ export const History = (properties: HistoryProperties): JSXElement => {
           {(fill, index) => (
             <li class={historyItem}>
               <button
-                type="button"
+                class={historyButton}
                 onClick={() => {
                   properties.back(index());
                 }}
-                class={historyButton}
+                type="button"
               >
                 {"abcdefgh"[fill % 8]}-{Math.floor(fill / 8) + 1}
               </button>

@@ -1,4 +1,5 @@
 import type { JSXElement } from "solid-js";
+
 import { list, listItem } from "./style.css.ts";
 
 type ListProperties = {

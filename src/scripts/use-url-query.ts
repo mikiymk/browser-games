@@ -1,4 +1,5 @@
 import type { Accessor, Setter } from "solid-js";
+
 import { createEffect, createSignal, onMount } from "solid-js";
 
 export const createUrlQuerySignal = <T extends string>(

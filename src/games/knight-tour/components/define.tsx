@@ -1,4 +1,5 @@
 import type { JSXElement } from "solid-js";
+
 import { DefineNumber } from "../../../components/define/define-number.tsx";
 import { DefineUse } from "../../../components/define/define-use.tsx";
 import { Define } from "../../../components/define/define.tsx";
@@ -11,20 +12,20 @@ import { figure, number, piece } from "./style.css.ts";
 export const DefineSymbol = (): JSXElement => {
   return (
     <Define>
-      <DefineNumber number={0} class={number} />
-      <DefineNumber number={1} class={number} />
-      <DefineNumber number={2} class={number} />
-      <DefineNumber number={3} class={number} />
-      <DefineNumber number={4} class={number} />
-      <DefineNumber number={5} class={number} />
-      <DefineNumber number={6} class={number} />
-      <DefineNumber number={7} class={number} />
+      <DefineNumber class={number} number={0} />
+      <DefineNumber class={number} number={1} />
+      <DefineNumber class={number} number={2} />
+      <DefineNumber class={number} number={3} />
+      <DefineNumber class={number} number={4} />
+      <DefineNumber class={number} number={5} />
+      <DefineNumber class={number} number={6} />
+      <DefineNumber class={number} number={7} />
 
-      <DefineUse id="knight" href={knight.src} class={piece} />
-      <DefineUse id="nought" href={nought.src} class={figure} />
-      <DefineUse id="cross" href={cross.src} class={figure} />
+      <DefineUse class={piece} href={knight.src} id="knight" />
+      <DefineUse class={figure} href={nought.src} id="nought" />
+      <DefineUse class={figure} href={cross.src} id="cross" />
     </Define>
   );
 };
 
-export const UsePiece = Use<number | "cross" | "knight" | "nought" | undefined>;
+export const UsePiece = Use<"cross" | "knight" | "nought" | number | undefined>;

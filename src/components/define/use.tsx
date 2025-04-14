@@ -1,5 +1,6 @@
-import { Show } from "solid-js";
 import type { JSXElement } from "solid-js";
+
+import { Show } from "solid-js";
 
 type UseProperties<T extends number | string | undefined> = {
   readonly id: T;
@@ -12,7 +13,7 @@ export const Use = <T extends number | string | undefined = number | string | un
 ): JSXElement => {
   return (
     <Show when={properties.id}>
-      {(id) => <use href={`#${id()}`} x={properties.x} y={properties.y} height={10} width={10} />}
+      {(id) => <use height={10} href={`#${id()}`} width={10} x={properties.x} y={properties.y} />}
     </Show>
   );
 };

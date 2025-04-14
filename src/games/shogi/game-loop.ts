@@ -1,15 +1,16 @@
 import type { MultiPromise } from "../../scripts/multi-promise.ts";
 import type { PlayerType } from "../../scripts/player.ts";
+import type { BLACK, Hand, WHITE } from "./constants.ts";
+import type { Game, WasmConnect } from "./wasm.ts";
+
 import { PlayerTypeHuman } from "../../scripts/player.ts";
 import { sleep } from "../../scripts/sleep.ts";
-import type { BLACK, Hand, WHITE } from "./constants.ts";
 import { MOVE_TARGET } from "./constants.ts";
-import type { Game, WasmConnect } from "./wasm.ts";
 
 const AI_SLEEP_TIME_MS = 500;
 const EmptyBoard: readonly number[] = Array.from({ length: 81 }, () => 0);
 
-type Players = { readonly [WHITE]: PlayerType; readonly [BLACK]: PlayerType };
+type Players = { readonly [BLACK]: PlayerType; readonly [WHITE]: PlayerType };
 const isHuman = (players: Players, color: number): boolean => {
   return players[color as typeof BLACK | typeof WHITE] === PlayerTypeHuman;
 };
@@ -30,28 +31,28 @@ export const gameLoop = (
   players: Players,
 ): (() => void) => {
   const {
-    init,
-    deinit,
-
+    ai,
     board,
-    hands,
-    player,
-    winner,
-    movePos,
-    hitPos,
 
-    move,
+    deinit,
+    hands,
     hit,
+    hitPos,
+    init,
+    move,
+
+    movePos,
+    player,
     promote,
 
-    ai,
+    winner,
   } = wasm;
 
   let game: Game = init();
 
   const terminate = (): void => {
     deinit(game);
-    game = { game: 0, board: 0 };
+    game = { board: 0, game: 0 };
   };
 
   // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: 長い関数

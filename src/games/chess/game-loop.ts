@@ -1,5 +1,6 @@
 import type { MultiPromise } from "../../scripts/multi-promise.ts";
 import type { PlayerType } from "../../scripts/player.ts";
+
 import { PlayerTypeHuman } from "../../scripts/player.ts";
 import { sleep } from "../../scripts/sleep.ts";
 import {
@@ -24,38 +25,38 @@ import {
 } from "./constants.ts";
 
 type GamePtr = 0 | (number & { readonly __unique: "Wasm pointer of Board struct" });
-type WasmExports = {
-  init: () => GamePtr;
-  deinit: (g: GamePtr) => void;
-  setPiece: (g: GamePtr, kind: number, index: number) => void;
-  getPiece: (g: GamePtr, kind: number) => bigint;
-  isBlack: (g: GamePtr) => boolean;
-  isEnd: (g: GamePtr) => boolean;
-  winner: (g: GamePtr) => number;
-  getMove: (g: GamePtr, from: number) => bigint;
-  move: (g: GamePtr, from: number, to: number) => boolean;
-  promote: (g: GamePtr, from: number, kind: number) => void;
-  moveAi: (g: GamePtr) => void;
-};
-
-type WasmConnect = {
-  readonly init: () => GamePtr;
-  readonly deinit: (g: GamePtr) => void;
-
-  readonly getColor: (g: GamePtr) => number;
-  readonly getBoard: (g: GamePtr) => readonly number[];
-  readonly getEnd: (g: GamePtr) => number;
-  readonly getMove: (g: GamePtr, from: number) => readonly number[];
-
-  readonly move: (g: GamePtr, from: number, to: number) => boolean;
-  readonly promote: (g: GamePtr, from: number, kind: number) => void;
-
-  readonly ai: (g: GamePtr) => void;
-};
-
 type Players = {
   readonly black: PlayerType;
   readonly white: PlayerType;
+};
+
+type WasmConnect = {
+  readonly ai: (g: GamePtr) => void;
+  readonly deinit: (g: GamePtr) => void;
+
+  readonly getBoard: (g: GamePtr) => readonly number[];
+  readonly getColor: (g: GamePtr) => number;
+  readonly getEnd: (g: GamePtr) => number;
+  readonly getMove: (g: GamePtr, from: number) => readonly number[];
+
+  readonly init: () => GamePtr;
+  readonly move: (g: GamePtr, from: number, to: number) => boolean;
+
+  readonly promote: (g: GamePtr, from: number, kind: number) => void;
+};
+
+type WasmExports = {
+  deinit: (g: GamePtr) => void;
+  getMove: (g: GamePtr, from: number) => bigint;
+  getPiece: (g: GamePtr, kind: number) => bigint;
+  init: () => GamePtr;
+  isBlack: (g: GamePtr) => boolean;
+  isEnd: (g: GamePtr) => boolean;
+  move: (g: GamePtr, from: number, to: number) => boolean;
+  moveAi: (g: GamePtr) => void;
+  promote: (g: GamePtr, from: number, kind: number) => void;
+  setPiece: (g: GamePtr, kind: number, index: number) => void;
+  winner: (g: GamePtr) => number;
 };
 
 const EmptyBoard = Array.from({ length: 64 }, () => CellEmpty);
@@ -184,18 +185,18 @@ export const getWasm = async (): Promise<WasmConnect> => {
   };
 
   return {
-    init: exports.init,
+    ai: exports.moveAi,
     deinit: exports.deinit,
 
-    getColor: getColor,
     getBoard: getBoard,
+    getColor: getColor,
     getEnd: getEnd,
     getMove: getMove,
 
+    init: exports.init,
     move: exports.move,
-    promote: exports.promote,
 
-    ai: exports.moveAi,
+    promote: exports.promote,
   };
 };
 
@@ -266,17 +267,17 @@ export const gameLoop = (
   players: Players,
 ): (() => void) => {
   const {
-    init,
+    ai,
     deinit,
 
-    getColor,
     getBoard,
+    getColor,
     getEnd,
     getMove,
 
+    init,
     move,
     promote,
-    ai,
   } = wasm;
 
   let boardPtr: GamePtr = init();

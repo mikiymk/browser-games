@@ -1,5 +1,7 @@
 import type { JSXElement } from "solid-js";
+
 import { Match, Switch } from "solid-js";
+
 import { Board } from "../../../components/board/board.tsx";
 import cross from "../../../images/icon/cross.svg";
 import nought from "../../../images/icon/nought.svg";
@@ -16,10 +18,10 @@ const Cell = (properties: CellProperties): JSXElement => {
   return (
     <Switch>
       <Match when={properties.mark === NOUGHT}>
-        <use href={`${nought.src}#root`} x={properties.x} y={properties.y} height={10} width={10} class={noughtStyle} />
+        <use class={noughtStyle} height={10} href={`${nought.src}#root`} width={10} x={properties.x} y={properties.y} />
       </Match>
       <Match when={properties.mark === CROSS}>
-        <use href={`${cross.src}#root`} x={properties.x} y={properties.y} height={10} width={10} class={crossStyle} />
+        <use class={crossStyle} height={10} href={`${cross.src}#root`} width={10} x={properties.x} y={properties.y} />
       </Match>
     </Switch>
   );
@@ -33,13 +35,13 @@ type BoardProperties = {
 export const NncBoard = (properties: BoardProperties): JSXElement => {
   return (
     <Board
-      height={3}
-      width={3}
-      data={properties.board}
       background={board.src}
       click={(_, index) => {
         properties.click(index);
       }}
+      data={properties.board}
+      height={3}
+      width={3}
     >
       {(mark, _, x, y) => <Cell mark={mark} x={x} y={y} />}
     </Board>

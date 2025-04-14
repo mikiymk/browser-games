@@ -1,15 +1,16 @@
-import { mergeBoards, transBoard } from "./boards.ts";
-import { COLOR_KING_BLACK, COLOR_KING_WHITE, COLOR_PAWN_BLACK, COLOR_PAWN_WHITE, MOVE_TARGET } from "./constants.ts";
 import type { GameController, GameObject, PlayerColor } from "./game-loop.ts";
 
+import { mergeBoards, transBoard } from "./boards.ts";
+import { COLOR_KING_BLACK, COLOR_KING_WHITE, COLOR_PAWN_BLACK, COLOR_PAWN_WHITE, MOVE_TARGET } from "./constants.ts";
+
 type WasmExports = {
-  init: () => GameObject;
+  ai: (g: GameObject) => void;
   deinit: (g: GameObject) => void;
   getBoard: (g: GameObject, color: number) => bigint;
   getColor: (g: GameObject) => number;
   getMove: (g: GameObject, index: number) => bigint;
+  init: () => GameObject;
   move: (g: GameObject, from: number, to: number) => boolean;
-  ai: (g: GameObject) => void;
 } & {
   memory: WebAssembly.Memory;
 };
@@ -20,16 +21,10 @@ export const getWasm = async (): Promise<GameController> => {
   const exports = wasm.instance.exports as WasmExports;
 
   return {
-    init: exports.init,
+    ai(game): void {
+      exports.ai(game);
+    },
     deinit: exports.deinit,
-
-    getColor(game): PlayerColor {
-      return exports.getColor(game) === COLOR_PAWN_WHITE ? "white" : "black";
-    },
-
-    getEnd(_game): number {
-      return 0;
-    },
 
     getBoard(game): readonly number[] {
       const whitePawn = transBoard(8, 8, exports.getBoard(game, COLOR_PAWN_WHITE), COLOR_PAWN_WHITE);
@@ -40,16 +35,22 @@ export const getWasm = async (): Promise<GameController> => {
       return mergeBoards(whitePawn, whiteKing, blackPawn, blackKing);
     },
 
+    getColor(game): PlayerColor {
+      return exports.getColor(game) === COLOR_PAWN_WHITE ? "white" : "black";
+    },
+
+    getEnd(_game): number {
+      return 0;
+    },
+
     getMove(game, position): readonly number[] {
       return transBoard(8, 8, exports.getMove(game, position), MOVE_TARGET);
     },
 
+    init: exports.init,
+
     move(game, from, to): boolean {
       return exports.move(game, from, to);
-    },
-
-    ai(game): void {
-      exports.ai(game);
     },
   };
 };

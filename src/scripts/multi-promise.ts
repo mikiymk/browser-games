@@ -5,14 +5,10 @@ export class MultiPromise<T> {
     this.#executor = executor;
   }
 
-  request(): Promise<T> {
-    return new Promise(this.#executor);
-  }
-
   static withResolvers<T>(): {
-    resolve: (value: PromiseLike<T> | T) => void;
-    reject: (reason?: unknown) => void;
     promise: MultiPromise<T>;
+    reject: (reason?: unknown) => void;
+    resolve: (value: PromiseLike<T> | T) => void;
   } {
     let resolve: ((value: PromiseLike<T> | T) => void) | undefined;
     let reject: ((reason?: unknown) => void) | undefined;
@@ -22,9 +18,13 @@ export class MultiPromise<T> {
     });
 
     return {
-      resolve: (value: PromiseLike<T> | T) => resolve?.(value),
-      reject: (reason?: unknown) => reject?.(reason),
       promise,
+      reject: (reason?: unknown) => reject?.(reason),
+      resolve: (value: PromiseLike<T> | T) => resolve?.(value),
     };
+  }
+
+  request(): Promise<T> {
+    return new Promise(this.#executor);
   }
 }

@@ -1,31 +1,42 @@
 import { style } from "@vanilla-extract/css";
+
+import {
+  colorBlack,
+  colorBlue,
+  colorBrown,
+  colorGray,
+  colorGreen,
+  colorLightBlue,
+  colorPurple,
+  colorRed,
+  text,
+} from "../../../styles/colors.css.ts";
 import { emoji } from "../../../styles/fonts.css.ts";
-import { variables } from "../../../styles/style.css.ts";
 
 const symbol = style({
-  stroke: variables.color.black,
+  stroke: text,
   strokeWidth: 2,
 });
 
-export const closed = style([symbol, { fill: "#94a3b8" }]);
+export const closed = style([symbol, { fill: colorGray }]);
 export const opened = style([symbol, { fill: "none" }]);
-export const mineStyle = style([symbol, { fill: "#0f172a" }]);
-export const flagStyle = style([symbol, { fill: "#ef4444" }]);
+export const mineStyle = style([symbol, { fill: colorBlack }]);
+export const flagStyle = style([symbol, { fill: colorRed }]);
 
 export const number = style({
   fontSize: 60,
-  textAnchor: "middle",
   stroke: "none",
+  textAnchor: "middle",
 });
 
-export const number1 = style({ fill: "#3b82f6" });
-export const number2 = style({ fill: "#22c55e" });
-export const number3 = style({ fill: "#ef4444" });
-export const number4 = style({ fill: "#d946ef" });
-export const number5 = style({ fill: "#991b1b" });
-export const number6 = style({ fill: "#2dd4bf" });
-export const number7 = style({ fill: "#0f172a" });
-export const number8 = style({ fill: "#78716c" });
+export const number1 = style({ fill: colorBlue });
+export const number2 = style({ fill: colorGreen });
+export const number3 = style({ fill: colorRed });
+export const number4 = style({ fill: colorPurple });
+export const number5 = style({ fill: colorBrown });
+export const number6 = style({ fill: colorLightBlue });
+export const number7 = style({ fill: colorBlack });
+export const number8 = style({ fill: colorGray });
 
 export const fontEmoji = style({
   fontFamily: emoji,

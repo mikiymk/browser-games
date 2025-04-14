@@ -1,22 +1,23 @@
 import { style } from "@vanilla-extract/css";
-import { variables } from "../../../styles/style.css.ts";
+
+import { colorBlack, colorRed, shogiBoard, shogiPiece, text } from "../../../styles/colors.css.ts";
 
 export const pieceStyle = style({
-  fill: "#fde047",
-  stroke: variables.color.black,
+  fill: shogiPiece,
+  stroke: text,
 });
 
-export const text = style({
+export const pieceText = style({
   fontSize: 20,
   textAnchor: "middle",
 });
 
-export const black = style({
-  fill: variables.color.black,
+export const blackText = style({
+  fill: colorBlack,
 });
 
-export const red = style({
-  fill: variables.color.red,
+export const redText = style({
+  fill: colorRed,
 });
 
 export const reversed = style({
@@ -24,14 +25,14 @@ export const reversed = style({
 });
 
 export const board = style({
-  fill: "#fbbf24",
+  fill: shogiBoard,
 });
 
 export const hand = style({
+  border: `1px solid ${text}`,
   paddingLeft: "0.25rem",
   paddingRight: "0.25rem",
   textAlign: "center",
-  border: `1px solid ${variables.color.black}`,
 });
 
-export const handHeader = style([hand, { backgroundColor: "#fbbf24" }]);
+export const handHeader = style([hand, { backgroundColor: shogiBoard }]);

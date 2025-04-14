@@ -1,8 +1,11 @@
-import { For, Show } from "solid-js";
 import type { JSXElement } from "solid-js";
+
+import { For, Show } from "solid-js";
+
+import type { Hand } from "../constants.ts";
+
 import { Button } from "../../../components/elements/button.tsx";
 import { WHITE } from "../constants.ts";
-import type { Hand } from "../constants.ts";
 import { hand } from "./style.css.ts";
 
 type HandsProperties = {
@@ -14,7 +17,7 @@ export const Hands = (properties: HandsProperties): JSXElement => {
   return (
     <tr>
       <th class={hand}>
-        <Show when={properties.color === WHITE} fallback="☖">
+        <Show fallback="☖" when={properties.color === WHITE}>
           ☗
         </Show>
       </th>

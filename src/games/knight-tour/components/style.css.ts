@@ -1,24 +1,25 @@
 import { style } from "@vanilla-extract/css";
-import { variables } from "../../../styles/style.css.ts";
+
+import { stoneLight, text } from "../../../styles/colors.css.ts";
 
 export const piece = style({
-  fill: variables.color.light,
-  stroke: variables.color.black,
+  fill: stoneLight,
+  stroke: text,
 });
 
 export const number = style({
-  fill: variables.color.black,
+  fill: text,
 });
 
 export const figure = style({
   fill: "none",
-  stroke: variables.color.black,
+  stroke: text,
   strokeWidth: 4,
 });
 
 export const history = style({
-  marginRight: 0,
   marginLeft: "0.5rem",
+  marginRight: 0,
   textAlign: "start",
 });
 
@@ -27,7 +28,7 @@ export const historyItem = style({
 });
 
 export const historyButton = style({
-  width: "4rem",
+  border: `1px solid ${text}`,
   textAlign: "center",
-  border: `1px solid ${variables.color.black}`,
+  width: "4rem",
 });

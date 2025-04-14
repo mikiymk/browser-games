@@ -1,4 +1,5 @@
 import type { JSXElement } from "solid-js";
+
 import { icon } from "./style.css.ts";
 
 type Properties = {

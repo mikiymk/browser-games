@@ -1,5 +1,7 @@
 import type { JSXElement } from "solid-js";
+
 import { createMemo } from "solid-js";
+
 import { CellKnight, CellMovable, CellVisited } from "../consts.ts";
 import { getLegalMove } from "../knight-move.ts";
 import { UsePiece } from "./define.tsx";
@@ -7,11 +9,11 @@ import { UsePiece } from "./define.tsx";
 type SquareProperties = {
   readonly board: readonly number[];
   readonly cell: number;
+  readonly hintMode: boolean;
   readonly index: number;
   readonly x: number;
-  readonly y: number;
 
-  readonly hintMode: boolean;
+  readonly y: number;
 };
 export const Square = (properties: SquareProperties): JSXElement => {
   const getMovableCount = createMemo(
@@ -21,10 +23,10 @@ export const Square = (properties: SquareProperties): JSXElement => {
       ).length,
   );
 
-  const id = (): number | "cross" | "knight" | "nought" | undefined => {
+  const id = (): "cross" | "knight" | "nought" | number | undefined => {
     switch (properties.cell) {
-      case CellVisited:
-        return "cross";
+      case CellKnight:
+        return "knight";
       case CellMovable: {
         if (properties.hintMode) {
           return getMovableCount();
@@ -33,8 +35,8 @@ export const Square = (properties: SquareProperties): JSXElement => {
         return "nought";
       }
 
-      case CellKnight:
-        return "knight";
+      case CellVisited:
+        return "cross";
 
       default:
         return;

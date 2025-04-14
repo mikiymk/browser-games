@@ -1,26 +1,26 @@
 import { CellBlack, CellCanMoveBlack, CellCanMoveWhite, CellEmpty, CellWhite } from "./const.ts";
 
-type BoardPtr = 0 | (number & { readonly __unique: "Wasm pointer of Board struct" });
-type ReversiWasm = WebAssembly.Exports & {
-  init: () => BoardPtr;
-  deinit: (bp: BoardPtr) => void;
-  getBlack: (bp: BoardPtr) => bigint;
-  getWhite: (bp: BoardPtr) => bigint;
-  isNextBlack: (bp: BoardPtr) => boolean;
-  isGameEnd: (bp: BoardPtr) => boolean;
-  move: (bp: BoardPtr, place: number) => void;
-  getValidMoves: (bp: BoardPtr) => bigint;
-  getAiMove: (bp: BoardPtr) => number;
-};
-
 export type ReversiWasmConnect = {
-  readonly init: () => BoardPtr;
+  readonly ai: (bp: BoardPtr) => number;
   readonly deinit: (bp: BoardPtr) => void;
   readonly getBoard: (bp: BoardPtr, showValidMoves: boolean) => readonly number[];
+  readonly init: () => BoardPtr;
   readonly isBlack: (bp: BoardPtr) => boolean;
-  readonly move: (bp: BoardPtr, place: number) => void;
   readonly isEnd: (bp: BoardPtr) => boolean;
-  readonly ai: (bp: BoardPtr) => number;
+  readonly move: (bp: BoardPtr, place: number) => void;
+};
+type BoardPtr = 0 | (number & { readonly __unique: "Wasm pointer of Board struct" });
+
+type ReversiWasm = WebAssembly.Exports & {
+  deinit: (bp: BoardPtr) => void;
+  getAiMove: (bp: BoardPtr) => number;
+  getBlack: (bp: BoardPtr) => bigint;
+  getValidMoves: (bp: BoardPtr) => bigint;
+  getWhite: (bp: BoardPtr) => bigint;
+  init: () => BoardPtr;
+  isGameEnd: (bp: BoardPtr) => boolean;
+  isNextBlack: (bp: BoardPtr) => boolean;
+  move: (bp: BoardPtr, place: number) => void;
 };
 
 export const getReversiWasm = async (): Promise<ReversiWasmConnect> => {
@@ -51,13 +51,13 @@ export const getReversiWasm = async (): Promise<ReversiWasmConnect> => {
   };
 
   return {
-    init: exports.init,
+    ai: exports.getAiMove,
     deinit: exports.deinit,
-    move: exports.move,
+    getBoard,
+    init: exports.init,
     isBlack: exports.isNextBlack,
     isEnd: exports.isGameEnd,
-    ai: exports.getAiMove,
 
-    getBoard,
+    move: exports.move,
   };
 };

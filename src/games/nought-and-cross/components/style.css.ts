@@ -1,14 +1,16 @@
 import { style } from "@vanilla-extract/css";
 
+import { colorBlue, colorRed } from "../../../styles/colors.css.ts";
+
 export const noughtStyle = style({
   fill: "none",
-  stroke: "#2563eb",
+  stroke: colorBlue,
   strokeWidth: 2,
 });
 
 export const crossStyle = style({
   fill: "none",
-  stroke: "#dc2626",
+  stroke: colorRed,
   strokeWidth: 2,
 });
 
@@ -18,7 +20,7 @@ export const history = style({
 });
 
 export const historyItem = style({
-  width: "8rem",
   margin: "auto",
   textAlign: "left",
+  width: "8rem",
 });

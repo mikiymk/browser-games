@@ -1,20 +1,23 @@
 import type { Accessor } from "solid-js";
+
 import { createSignal } from "solid-js";
+
 import type { MultiPromise } from "../../scripts/multi-promise.ts";
 import type { PlayerType } from "../../scripts/player.ts";
+import type { ReversiWasmConnect } from "./get-wasm.ts";
+
 import { PlayerTypeHuman } from "../../scripts/player.ts";
 import { sleep } from "../../scripts/sleep.ts";
 import { CellBlack, CellEmpty, CellWhite } from "./const.ts";
-import type { ReversiWasmConnect } from "./get-wasm.ts";
 
 const AI_SLEEP_TIME_MS = 500;
 
-type Players = { readonly black: PlayerType; readonly white: PlayerType };
-
 type GameObject = {
-  terminate: () => void;
   color: Accessor<number>;
+  terminate: () => void;
 };
+
+type Players = { readonly black: PlayerType; readonly white: PlayerType };
 
 const isHuman = (isBlack: boolean, players: Players): boolean => {
   return (isBlack && players.black === PlayerTypeHuman) || (!isBlack && players.white === PlayerTypeHuman);
@@ -27,7 +30,7 @@ export const gameLoop = (
   players: Players,
   onEnd: () => void,
 ): GameObject => {
-  const { init, deinit, getBoard, move, isBlack, isEnd, ai } = wasm;
+  const { ai, deinit, getBoard, init, isBlack, isEnd, move } = wasm;
   const [color, setColor] = createSignal(CellEmpty);
 
   let bp = init();
@@ -81,7 +84,7 @@ export const gameLoop = (
   }, 0);
 
   return {
-    terminate,
     color,
+    terminate,
   };
 };

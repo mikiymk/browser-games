@@ -1,4 +1,5 @@
 import type { JSXElement } from "solid-js";
+
 import { define } from "./style.css.ts";
 
 type DefineProperties = {
@@ -6,7 +7,7 @@ type DefineProperties = {
 };
 export const Define = (properties: DefineProperties): JSXElement => {
   return (
-    <svg viewBox="0 0 0 0" xmlns="http://www.w3.org/2000/svg" class={define}>
+    <svg class={define} viewBox="0 0 0 0" xmlns="http://www.w3.org/2000/svg">
       <title>define</title>
 
       {properties.children}

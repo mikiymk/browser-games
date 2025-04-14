@@ -1,4 +1,5 @@
 import type { JSXElement } from "solid-js";
+
 import {
   Black,
   End5Repetition,
@@ -17,23 +18,23 @@ type StatusProperties = {
 export const Status = (properties: StatusProperties): JSXElement => {
   const message = (): string => {
     switch (properties.end) {
-      case EndBlackWin: {
-        return "black win";
-      }
-      case EndWhiteWin: {
-        return "white win";
-      }
-      case EndStalemate: {
-        return "draw - stalemate";
+      case End5Repetition: {
+        return "draw - Fivefold repetition";
       }
       case End75Moves: {
         return "draw - Seventy-five-move";
       }
-      case End5Repetition: {
-        return "draw - Fivefold repetition";
+      case EndBlackWin: {
+        return "black win";
       }
       case EndInsufficientMaterial: {
         return "draw - Insufficient material";
+      }
+      case EndStalemate: {
+        return "draw - stalemate";
+      }
+      case EndWhiteWin: {
+        return "white win";
       }
       default: {
         return properties.color === Black ? "black" : "white";

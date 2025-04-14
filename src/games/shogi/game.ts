@@ -1,29 +1,32 @@
-import { createSignal } from "solid-js";
 import type { Accessor, Setter } from "solid-js";
+
+import { createSignal } from "solid-js";
+
+import type { PlayerType } from "../../scripts/player.ts";
+import type { Hand } from "./constants.ts";
+
 import { doNothingFunction } from "../../scripts/do-nothing.ts";
 import { MultiPromise } from "../../scripts/multi-promise.ts";
-import type { PlayerType } from "../../scripts/player.ts";
 import { usePromise } from "../../scripts/use-promise.ts";
-import type { Hand } from "./constants.ts";
 import { BLACK, MOVE_TARGET, WHITE } from "./constants.ts";
 import { gameLoop } from "./game-loop.ts";
 import { getWasm } from "./wasm.ts";
 
-type Board = readonly { piece: number; moveTarget: boolean }[];
+type Board = readonly { moveTarget: boolean; piece: number }[];
 type Game = {
-  board: Accessor<Board>;
-  whiteHands: Accessor<Hand>;
   blackHands: Accessor<Hand>;
+  board: Accessor<Board>;
   gameOver: Accessor<number>;
-  promotion: Accessor<boolean>;
-  start: () => void;
   handleBoardClick: (index: number) => void;
-  setGameOver: Setter<number>;
+  promotion: Accessor<boolean>;
   resolve: (value: number) => void;
+  setGameOver: Setter<number>;
+  start: () => void;
+  whiteHands: Accessor<Hand>;
 };
 export const createGame = (white: Accessor<PlayerType>, black: Accessor<PlayerType>): Game => {
   const [board, setFullBoard] = createSignal<Board>(
-    Array.from({ length: 81 }, () => ({ piece: 0, moveTarget: false })),
+    Array.from({ length: 81 }, () => ({ moveTarget: false, piece: 0 })),
   );
   const [whiteHands, setWhiteHands] = createSignal<Hand>([0, 0, 0, 0, 0, 0, 0, 0]);
   const [blackHands, setBlackHands] = createSignal<Hand>([0, 0, 0, 0, 0, 0, 0, 0]);
@@ -35,8 +38,8 @@ export const createGame = (white: Accessor<PlayerType>, black: Accessor<PlayerTy
     setFullBoard(
       (
         previousBoard: readonly {
-          readonly piece: number;
           readonly moveTarget: boolean;
+          readonly piece: number;
         }[],
       ) => {
         const newBoard = previousBoard.map((element, index) => ({
@@ -53,8 +56,8 @@ export const createGame = (white: Accessor<PlayerType>, black: Accessor<PlayerTy
     setFullBoard(
       (
         previousBoard: readonly {
-          readonly piece: number;
           readonly moveTarget: boolean;
+          readonly piece: number;
         }[],
       ) => {
         const newBoard = previousBoard.map((element, index) => ({
@@ -72,7 +75,7 @@ export const createGame = (white: Accessor<PlayerType>, black: Accessor<PlayerTy
     setBlackHands(hands[1]);
   };
 
-  const { resolve, promise: humanInput } = MultiPromise.withResolvers<number>();
+  const { promise: humanInput, resolve } = MultiPromise.withResolvers<number>();
 
   let terminate = doNothingFunction;
   const start = (): void => {
@@ -92,8 +95,8 @@ export const createGame = (white: Accessor<PlayerType>, black: Accessor<PlayerTy
       setPromotion,
       humanInput,
       {
-        [WHITE]: black(),
         [BLACK]: white(),
+        [WHITE]: black(),
       },
     );
   };
@@ -103,14 +106,14 @@ export const createGame = (white: Accessor<PlayerType>, black: Accessor<PlayerTy
   };
 
   return {
-    board,
-    whiteHands,
     blackHands,
+    board,
     gameOver,
-    promotion,
-    start,
     handleBoardClick,
-    setGameOver,
+    promotion,
     resolve,
+    setGameOver,
+    start,
+    whiteHands,
   };
 };

@@ -1,4 +1,5 @@
 import type { JSXElement } from "solid-js";
+
 import { Board } from "../../../components/board/board.tsx";
 import { FieldBomb, FieldFlag, FieldNoOpen, FieldOpen } from "../consts.ts";
 import { UseSymbol } from "./define.tsx";
@@ -9,7 +10,7 @@ type MineCellProperties = {
   readonly y: number;
 };
 const MineCell = (properties: MineCellProperties): JSXElement => {
-  const id = (): number | "close" | "flag" | "mine" | "open" => {
+  const id = (): "close" | "flag" | "mine" | "open" | number => {
     return (
       (
         {
@@ -26,19 +27,16 @@ const MineCell = (properties: MineCellProperties): JSXElement => {
 };
 
 type MineFieldsProperties = {
-  readonly height: number;
-  readonly width: number;
   readonly fields: readonly number[];
+  readonly flag: (index: number) => boolean;
+  readonly height: number;
 
   readonly open: (index: number) => void;
-  readonly flag: (index: number) => boolean;
+  readonly width: number;
 };
 export const MineFields = (properties: MineFieldsProperties): JSXElement => {
   return (
     <Board
-      height={properties.height}
-      width={properties.width}
-      data={properties.fields}
       click={(_, index) => {
         properties.open(index);
       }}
@@ -47,6 +45,9 @@ export const MineFields = (properties: MineFieldsProperties): JSXElement => {
           event.preventDefault();
         }
       }}
+      data={properties.fields}
+      height={properties.height}
+      width={properties.width}
     >
       {(field, _, x, y) => <MineCell field={field} x={x} y={y} />}
     </Board>

@@ -1,7 +1,9 @@
 import type { JSXElement } from "solid-js";
+
+import type { BoardCell } from "../board.ts";
+
 import { Board } from "../../../components/board/board.tsx";
 import board from "../../../images/chess/board.svg";
-import type { BoardCell } from "../board.ts";
 import { BoardSquare } from "./board-square.tsx";
 
 type BoardProperties = {
@@ -11,9 +13,9 @@ type BoardProperties = {
 
 export const ChessBoard = (properties: BoardProperties): JSXElement => {
   return (
-    <Board height={8} width={8} data={properties.board} background={board.src} click={properties.handleClick}>
+    <Board background={board.src} click={properties.handleClick} data={properties.board} height={8} width={8}>
       {(cell, _, x, y) => {
-        return <BoardSquare piece={cell.piece} mark={cell.mark} x={x} y={y} />;
+        return <BoardSquare mark={cell.mark} piece={cell.piece} x={x} y={y} />;
       }}
     </Board>
   );

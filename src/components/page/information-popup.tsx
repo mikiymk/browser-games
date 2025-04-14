@@ -1,10 +1,12 @@
-import { Content, Overlay, Portal, Root } from "@corvu/dialog";
 import type { JSXElement } from "solid-js";
+
+import { Content, Overlay, Portal, Root } from "@corvu/dialog";
+
 import { content, overlay } from "./style.css.ts";
 
 type InformationPopUpProperties = {
-  readonly open: boolean;
   readonly children: JSXElement;
+  readonly open: boolean;
 };
 export const InformationPopUp = (properties: InformationPopUpProperties): JSXElement => {
   return (

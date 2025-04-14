@@ -1,16 +1,18 @@
+import type { JSXElement } from "solid-js";
+
 import { Close } from "@corvu/dialog";
 import { createSignal } from "solid-js";
-import type { JSXElement } from "solid-js";
-import { Start } from "../../../components/header-buttons/start.tsx";
-import { PageBody } from "../../../components/page/body.tsx";
-import { PageHeader } from "../../../components/page/header.tsx";
-import { InformationPopUp } from "../../../components/page/information-popup.tsx";
-import { createKlondike } from "../klondike.ts";
+
 import type { Select } from "../klondike.ts";
+
+import { Start } from "../../../components/header-buttons/start.tsx";
+import { InformationPopUp } from "../../../components/page/information-popup.tsx";
+import { Page } from "../../../components/page/page.tsx";
+import { createKlondike } from "../klondike.ts";
 import { Field } from "./field.tsx";
 
 export const App = (): JSXElement => {
-  const { start, cards, moveCards, openStock, autoFoundation, isCleared } = createKlondike();
+  const { autoFoundation, cards, isCleared, moveCards, openStock, start } = createKlondike();
   const [select, setSelect] = createSignal<Select | undefined>();
   const [popText, setPopText] = createSignal<string | undefined>();
 
@@ -21,7 +23,7 @@ export const App = (): JSXElement => {
 
   /** 場札をクリックしたときの関数 */
   const selectTableau = (index: number, depth: number): void => {
-    const current: Select = { type: "tableau", index, depth };
+    const current: Select = { depth, index, type: "tableau" };
 
     if (moveCards(select(), current)) {
       setSelect();
@@ -35,7 +37,7 @@ export const App = (): JSXElement => {
 
   /** 組札をクリックしたときの関数 */
   const selectFoundation = (index: number): void => {
-    const current: Select = { type: "foundation", index };
+    const current: Select = { index, type: "foundation" };
 
     if (moveCards(select(), current)) {
       setSelect();
@@ -48,31 +50,27 @@ export const App = (): JSXElement => {
   };
 
   return (
-    <>
-      <PageHeader buttons={<Start start={start} />} />
+    <Page header={<Start start={start} />}>
+      <Field
+        {...cards}
+        autoFoundation={autoFoundation}
+        openStock={openStock}
+        select={select()}
+        selectFoundation={selectFoundation}
+        selectStock={selectStock}
+        selectTableau={selectTableau}
+      />
 
-      <PageBody>
-        <Field
-          {...cards}
-          select={select()}
-          openStock={openStock}
-          selectStock={selectStock}
-          selectTableau={selectTableau}
-          selectFoundation={selectFoundation}
-          autoFoundation={autoFoundation}
-        />
-
-        <InformationPopUp open={popText() !== undefined}>
-          {popText()}
-          <Close
-            onClick={() => {
-              setPopText();
-            }}
-          >
-            close
-          </Close>
-        </InformationPopUp>
-      </PageBody>
-    </>
+      <InformationPopUp open={popText() !== undefined}>
+        {popText()}
+        <Close
+          onClick={() => {
+            setPopText();
+          }}
+        >
+          close
+        </Close>
+      </InformationPopUp>
+    </Page>
   );
 };
