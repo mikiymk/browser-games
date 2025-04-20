@@ -1,0 +1,766 @@
+<svg viewBox="0 0 620 240" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <style>
+        * {
+            --b: black;
+            --r: red;
+            --bg: #ddd;
+            --text: black;
+        }
+
+        .b {
+            fill: var(--b);
+        }
+
+        .r {
+            fill: var(--r);
+        }
+
+        .t,
+        .tm {
+            font-size: 10px;
+            fill: var(--text);
+        }
+
+        .tm {
+            text-anchor: middle;
+        }
+
+        .rv {
+            rotate: 180deg;
+            transform-origin: center;
+        }
+
+        .bg {
+            fill: var(--bg);
+            stroke: var(--b);
+        }
+    </style>
+
+    <!-- Suit -->
+
+    <symbol id="ss" viewBox="0 0 60 60">
+        <path d="
+            M 15,60
+            L 45,60
+            L 33,47
+            A 12,12 0 0 0 55,25
+            L 30,0
+            L 5,25
+            A 12,12 0 0 0 27,47
+            Z
+        " />
+    </symbol>
+
+    <symbol id="sc" viewBox="0 0 60 60">
+        <path d="
+            M 15,60
+            L 45,60
+            L 33,47
+            A 14,14 0 1 0 40,25
+            A 14,14 0 1 0 20,25
+            A 14,14 0 1 0 27,47
+            Z
+        " />
+    </symbol>
+
+    <symbol id="sd" viewBox="0 0 60 60">
+        <path d="
+            M 30,0
+            L 0,30
+            L 30,60
+            L 60,30
+            Z
+        " class="r" />
+    </symbol>
+
+    <symbol id="sh" viewBox="0 0 60 60">
+        <path d="
+            M 30,60
+            C 58,30 58,30 58,20
+            A 12,12 0 0 0 30,20
+            A 12,12 0 0 0 2,20
+            C 2,30 2,30 30,60
+            Z
+        " class="r" />
+    </symbol>
+
+    <!-- Reversed -->
+
+    <symbol id="ssr" viewBox="0 0 60 60">
+        <use href="#ss" class="rv" />
+    </symbol>
+
+    <symbol id="scr" viewBox="0 0 60 60">
+        <use href="#sc" class="rv" />
+    </symbol>
+
+    <symbol id="sdr" viewBox="0 0 60 60">
+        <use href="#sd" class="rv" />
+    </symbol>
+
+    <symbol id="shr" viewBox="0 0 60 60">
+        <use href="#sh" class="rv" />
+    </symbol>
+
+    <!-- Card -->
+
+    <symbol id="csa" viewBox="0 0 40 60">
+        <use href="#cf" />
+        <use href="#ss" x="3" y="3" height="8" width="8" />
+        <text x="12" y="11" class="t">A</text>
+        <use href="#ss" x="5" y="20" height="30" width="30" />
+    </symbol>
+
+
+
+    <symbol id="cs2" viewBox="0 0 40 60">
+        <use href="#cf" />
+        <use href="#ss" x="3" y="3" height="8" width="8" />
+        <text x="12" y="11" class="t">2</text>
+        <use href="#ss" x="5" y="14" height="10" width="10" />
+        <use href="#ss" x="25" y="47" height="10" width="10" />
+    </symbol>
+
+    <symbol id="cs3" viewBox="0 0 40 60">
+        <use href="#cf" />
+        <use href="#ss" x="3" y="3" height="8" width="8" />
+        <text x="12" y="11" class="t">3</text>
+        <use href="#ss" x="5" y="14" height="10" width="10" />
+        <use href="#ss" x="15" y="30" height="10" width="10" />
+        <use href="#ss" x="25" y="47" height="10" width="10" />
+    </symbol>
+
+    <symbol id="cs4" viewBox="0 0 40 60">
+        <use href="#cf" />
+        <use href="#ss" x="3" y="3" height="8" width="8" />
+        <text x="12" y="11" class="t">4</text>
+        <use href="#ss" x="5" y="14" height="10" width="10" />
+        <use href="#ss" x="5" y="47" height="10" width="10" />
+        <use href="#ss" x="25" y="14" height="10" width="10" />
+        <use href="#ss" x="25" y="47" height="10" width="10" />
+    </symbol>
+
+    <symbol id="cs5" viewBox="0 0 40 60">
+        <use href="#cf" />
+        <use href="#ss" x="3" y="3" height="8" width="8" />
+        <text x="12" y="11" class="t">5</text>
+        <use href="#ss" x="5" y="14" height="10" width="10" />
+        <use href="#ss" x="5" y="47" height="10" width="10" />
+        <use href="#ss" x="15" y="30" height="10" width="10" />
+        <use href="#ss" x="25" y="14" height="10" width="10" />
+        <use href="#ss" x="25" y="47" height="10" width="10" />
+    </symbol>
+
+    <symbol id="cs6" viewBox="0 0 40 60">
+        <use href="#cf" />
+        <use href="#ss" x="3" y="3" height="8" width="8" />
+        <text x="12" y="11" class="t">6</text>
+        <use href="#ss" x="5" y="14" height="10" width="10" />
+        <use href="#ss" x="5" y="30" height="10" width="10" />
+        <use href="#ss" x="5" y="47" height="10" width="10" />
+        <use href="#ss" x="25" y="14" height="10" width="10" />
+        <use href="#ss" x="25" y="30" height="10" width="10" />
+        <use href="#ss" x="25" y="47" height="10" width="10" />
+    </symbol>
+
+    <symbol id="cs7" viewBox="0 0 40 60">
+        <use href="#cf" />
+        <use href="#ss" x="3" y="3" height="8" width="8" />
+        <text x="12" y="11" class="t">7</text>
+        <use href="#ss" x="5" y="14" height="10" width="10" />
+        <use href="#ss" x="5" y="30" height="10" width="10" />
+        <use href="#ss" x="5" y="47" height="10" width="10" />
+        <use href="#ss" x="15" y="30" height="10" width="10" />
+        <use href="#ss" x="25" y="14" height="10" width="10" />
+        <use href="#ss" x="25" y="30" height="10" width="10" />
+        <use href="#ss" x="25" y="47" height="10" width="10" />
+    </symbol>
+
+    <symbol id="cs8" viewBox="0 0 40 60">
+        <use href="#cf" />
+        <use href="#ss" x="3" y="3" height="8" width="8" />
+        <text x="12" y="11" class="t">8</text>
+        <use href="#ss" x="5" y="14" height="10" width="10" />
+        <use href="#ss" x="5" y="30" height="10" width="10" />
+        <use href="#ss" x="5" y="47" height="10" width="10" />
+        <use href="#ss" x="15" y="14" height="10" width="10" />
+        <use href="#ss" x="15" y="47" height="10" width="10" />
+        <use href="#ss" x="25" y="14" height="10" width="10" />
+        <use href="#ss" x="25" y="30" height="10" width="10" />
+        <use href="#ss" x="25" y="47" height="10" width="10" />
+    </symbol>
+
+    <symbol id="cs9" viewBox="0 0 40 60">
+        <use href="#cf" />
+        <use href="#ss" x="3" y="3" height="8" width="8" />
+        <text x="12" y="11" class="t">9</text>
+        <use href="#ss" x="5" y="14" height="10" width="10" />
+        <use href="#ss" x="5" y="30" height="10" width="10" />
+        <use href="#ss" x="5" y="47" height="10" width="10" />
+        <use href="#ss" x="15" y="14" height="10" width="10" />
+        <use href="#ss" x="15" y="30" height="10" width="10" />
+        <use href="#ss" x="15" y="47" height="10" width="10" />
+        <use href="#ss" x="25" y="14" height="10" width="10" />
+        <use href="#ss" x="25" y="30" height="10" width="10" />
+        <use href="#ss" x="25" y="47" height="10" width="10" />
+    </symbol>
+
+    <symbol id="cs10" viewBox="0 0 40 60">
+        <use href="#cf" />
+        <use href="#ss" x="3" y="3" height="8" width="8" />
+        <text x="12" y="11" class="t">10</text>
+        <use href="#ss" x="5" y="14" height="10" width="10" />
+        <use href="#ss" x="5" y="30" height="10" width="10" />
+        <use href="#ss" x="5" y="47" height="10" width="10" />
+        <use href="#ss" x="15" y="14" height="10" width="10" />
+        <use href="#ss" x="15" y="25" height="10" width="10" />
+        <use href="#ss" x="15" y="36" height="10" width="10" />
+        <use href="#ss" x="15" y="47" height="10" width="10" />
+        <use href="#ss" x="25" y="14" height="10" width="10" />
+        <use href="#ss" x="25" y="30" height="10" width="10" />
+        <use href="#ss" x="25" y="47" height="10" width="10" />
+    </symbol>
+
+    <symbol id="csj" viewBox="0 0 40 60">
+        <use href="#cf" />
+        <use href="#ss" x="3" y="3" height="8" width="8" />
+        <text x="12" y="11" class="t">11</text>
+        <text x="20" y="37" class="tm">Jack</text>
+        <use href="#ss" x="15" y="47" height="10" width="10" />
+    </symbol>
+
+    <symbol id="csq" viewBox="0 0 40 60">
+        <use href="#cf" />
+        <use href="#ss" x="3" y="3" height="8" width="8" />
+        <text x="12" y="11" class="t">12</text>
+        <text x="20" y="37" class="tm">Queen</text>
+        <use href="#ss" x="5" y="47" height="10" width="10" />
+        <use href="#ss" x="25" y="47" height="10" width="10" />
+    </symbol>
+
+    <symbol id="csk" viewBox="0 0 40 60">
+        <use href="#cf" />
+        <use href="#ss" x="3" y="3" height="8" width="8" />
+        <text x="12" y="11" class="t">13</text>
+        <text x="20" y="37" class="tm">King</text>
+        <use href="#ss" x="5" y="47" height="10" width="10" />
+        <use href="#ss" x="15" y="47" height="10" width="10" />
+        <use href="#ss" x="25" y="47" height="10" width="10" />
+    </symbol>
+
+    <symbol id="cca" viewBox="0 0 40 60">
+        <use href="#cf" />
+        <use href="#sc" x="3" y="3" height="8" width="8" />
+        <text x="12" y="11" class="t">A</text>
+        <use href="#sc" x="15" y="30" height="10" width="10" />
+    </symbol>
+
+
+
+    <symbol id="cc2" viewBox="0 0 40 60">
+        <use href="#cf" />
+        <use href="#sc" x="3" y="3" height="8" width="8" />
+        <text x="12" y="11" class="t">2</text>
+        <use href="#sc" x="5" y="14" height="10" width="10" />
+        <use href="#sc" x="25" y="47" height="10" width="10" />
+    </symbol>
+
+    <symbol id="cc3" viewBox="0 0 40 60">
+        <use href="#cf" />
+        <use href="#sc" x="3" y="3" height="8" width="8" />
+        <text x="12" y="11" class="t">3</text>
+        <use href="#sc" x="5" y="14" height="10" width="10" />
+        <use href="#sc" x="15" y="30" height="10" width="10" />
+        <use href="#sc" x="25" y="47" height="10" width="10" />
+    </symbol>
+
+    <symbol id="cc4" viewBox="0 0 40 60">
+        <use href="#cf" />
+        <use href="#sc" x="3" y="3" height="8" width="8" />
+        <text x="12" y="11" class="t">4</text>
+        <use href="#sc" x="5" y="14" height="10" width="10" />
+        <use href="#sc" x="5" y="47" height="10" width="10" />
+        <use href="#sc" x="25" y="14" height="10" width="10" />
+        <use href="#sc" x="25" y="47" height="10" width="10" />
+    </symbol>
+
+    <symbol id="cc5" viewBox="0 0 40 60">
+        <use href="#cf" />
+        <use href="#sc" x="3" y="3" height="8" width="8" />
+        <text x="12" y="11" class="t">5</text>
+        <use href="#sc" x="5" y="14" height="10" width="10" />
+        <use href="#sc" x="5" y="47" height="10" width="10" />
+        <use href="#sc" x="15" y="30" height="10" width="10" />
+        <use href="#sc" x="25" y="14" height="10" width="10" />
+        <use href="#sc" x="25" y="47" height="10" width="10" />
+    </symbol>
+
+    <symbol id="cc6" viewBox="0 0 40 60">
+        <use href="#cf" />
+        <use href="#sc" x="3" y="3" height="8" width="8" />
+        <text x="12" y="11" class="t">6</text>
+        <use href="#sc" x="5" y="14" height="10" width="10" />
+        <use href="#sc" x="5" y="30" height="10" width="10" />
+        <use href="#sc" x="5" y="47" height="10" width="10" />
+        <use href="#sc" x="25" y="14" height="10" width="10" />
+        <use href="#sc" x="25" y="30" height="10" width="10" />
+        <use href="#sc" x="25" y="47" height="10" width="10" />
+    </symbol>
+
+    <symbol id="cc7" viewBox="0 0 40 60">
+        <use href="#cf" />
+        <use href="#sc" x="3" y="3" height="8" width="8" />
+        <text x="12" y="11" class="t">7</text>
+        <use href="#sc" x="5" y="14" height="10" width="10" />
+        <use href="#sc" x="5" y="30" height="10" width="10" />
+        <use href="#sc" x="5" y="47" height="10" width="10" />
+        <use href="#sc" x="15" y="30" height="10" width="10" />
+        <use href="#sc" x="25" y="14" height="10" width="10" />
+        <use href="#sc" x="25" y="30" height="10" width="10" />
+        <use href="#sc" x="25" y="47" height="10" width="10" />
+    </symbol>
+
+    <symbol id="cc8" viewBox="0 0 40 60">
+        <use href="#cf" />
+        <use href="#sc" x="3" y="3" height="8" width="8" />
+        <text x="12" y="11" class="t">8</text>
+        <use href="#sc" x="5" y="14" height="10" width="10" />
+        <use href="#sc" x="5" y="30" height="10" width="10" />
+        <use href="#sc" x="5" y="47" height="10" width="10" />
+        <use href="#sc" x="15" y="14" height="10" width="10" />
+        <use href="#sc" x="15" y="47" height="10" width="10" />
+        <use href="#sc" x="25" y="14" height="10" width="10" />
+        <use href="#sc" x="25" y="30" height="10" width="10" />
+        <use href="#sc" x="25" y="47" height="10" width="10" />
+    </symbol>
+
+    <symbol id="cc9" viewBox="0 0 40 60">
+        <use href="#cf" />
+        <use href="#sc" x="3" y="3" height="8" width="8" />
+        <text x="12" y="11" class="t">9</text>
+        <use href="#sc" x="5" y="14" height="10" width="10" />
+        <use href="#sc" x="5" y="30" height="10" width="10" />
+        <use href="#sc" x="5" y="47" height="10" width="10" />
+        <use href="#sc" x="15" y="14" height="10" width="10" />
+        <use href="#sc" x="15" y="30" height="10" width="10" />
+        <use href="#sc" x="15" y="47" height="10" width="10" />
+        <use href="#sc" x="25" y="14" height="10" width="10" />
+        <use href="#sc" x="25" y="30" height="10" width="10" />
+        <use href="#sc" x="25" y="47" height="10" width="10" />
+    </symbol>
+
+    <symbol id="cc10" viewBox="0 0 40 60">
+        <use href="#cf" />
+        <use href="#sc" x="3" y="3" height="8" width="8" />
+        <text x="12" y="11" class="t">10</text>
+        <use href="#sc" x="5" y="14" height="10" width="10" />
+        <use href="#sc" x="5" y="30" height="10" width="10" />
+        <use href="#sc" x="5" y="47" height="10" width="10" />
+        <use href="#sc" x="15" y="14" height="10" width="10" />
+        <use href="#sc" x="15" y="25" height="10" width="10" />
+        <use href="#sc" x="15" y="36" height="10" width="10" />
+        <use href="#sc" x="15" y="47" height="10" width="10" />
+        <use href="#sc" x="25" y="14" height="10" width="10" />
+        <use href="#sc" x="25" y="30" height="10" width="10" />
+        <use href="#sc" x="25" y="47" height="10" width="10" />
+    </symbol>
+
+    <symbol id="ccj" viewBox="0 0 40 60">
+        <use href="#cf" />
+        <use href="#sc" x="3" y="3" height="8" width="8" />
+        <text x="12" y="11" class="t">11</text>
+        <text x="20" y="37" class="tm">Jack</text>
+        <use href="#sc" x="15" y="47" height="10" width="10" />
+    </symbol>
+
+    <symbol id="ccq" viewBox="0 0 40 60">
+        <use href="#cf" />
+        <use href="#sc" x="3" y="3" height="8" width="8" />
+        <text x="12" y="11" class="t">12</text>
+        <text x="20" y="37" class="tm">Queen</text>
+        <use href="#sc" x="5" y="47" height="10" width="10" />
+        <use href="#sc" x="25" y="47" height="10" width="10" />
+    </symbol>
+
+    <symbol id="cck" viewBox="0 0 40 60">
+        <use href="#cf" />
+        <use href="#sc" x="3" y="3" height="8" width="8" />
+        <text x="12" y="11" class="t">13</text>
+        <text x="20" y="37" class="tm">King</text>
+        <use href="#sc" x="5" y="47" height="10" width="10" />
+        <use href="#sc" x="15" y="47" height="10" width="10" />
+        <use href="#sc" x="25" y="47" height="10" width="10" />
+    </symbol>
+
+    <symbol id="cha" viewBox="0 0 40 60">
+        <use href="#cf" />
+        <use href="#sh" x="3" y="3" height="8" width="8" />
+        <text x="12" y="11" class="t">A</text>
+        <use href="#sh" x="15" y="30" height="10" width="10" />
+    </symbol>
+
+
+
+    <symbol id="ch2" viewBox="0 0 40 60">
+        <use href="#cf" />
+        <use href="#sh" x="3" y="3" height="8" width="8" />
+        <text x="12" y="11" class="t">2</text>
+        <use href="#sh" x="5" y="14" height="10" width="10" />
+        <use href="#sh" x="25" y="47" height="10" width="10" />
+    </symbol>
+
+    <symbol id="ch3" viewBox="0 0 40 60">
+        <use href="#cf" />
+        <use href="#sh" x="3" y="3" height="8" width="8" />
+        <text x="12" y="11" class="t">3</text>
+        <use href="#sh" x="5" y="14" height="10" width="10" />
+        <use href="#sh" x="15" y="30" height="10" width="10" />
+        <use href="#sh" x="25" y="47" height="10" width="10" />
+    </symbol>
+
+    <symbol id="ch4" viewBox="0 0 40 60">
+        <use href="#cf" />
+        <use href="#sh" x="3" y="3" height="8" width="8" />
+        <text x="12" y="11" class="t">4</text>
+        <use href="#sh" x="5" y="14" height="10" width="10" />
+        <use href="#sh" x="5" y="47" height="10" width="10" />
+        <use href="#sh" x="25" y="14" height="10" width="10" />
+        <use href="#sh" x="25" y="47" height="10" width="10" />
+    </symbol>
+
+    <symbol id="ch5" viewBox="0 0 40 60">
+        <use href="#cf" />
+        <use href="#sh" x="3" y="3" height="8" width="8" />
+        <text x="12" y="11" class="t">5</text>
+        <use href="#sh" x="5" y="14" height="10" width="10" />
+        <use href="#sh" x="5" y="47" height="10" width="10" />
+        <use href="#sh" x="15" y="30" height="10" width="10" />
+        <use href="#sh" x="25" y="14" height="10" width="10" />
+        <use href="#sh" x="25" y="47" height="10" width="10" />
+    </symbol>
+
+    <symbol id="ch6" viewBox="0 0 40 60">
+        <use href="#cf" />
+        <use href="#sh" x="3" y="3" height="8" width="8" />
+        <text x="12" y="11" class="t">6</text>
+        <use href="#sh" x="5" y="14" height="10" width="10" />
+        <use href="#sh" x="5" y="30" height="10" width="10" />
+        <use href="#sh" x="5" y="47" height="10" width="10" />
+        <use href="#sh" x="25" y="14" height="10" width="10" />
+        <use href="#sh" x="25" y="30" height="10" width="10" />
+        <use href="#sh" x="25" y="47" height="10" width="10" />
+    </symbol>
+
+    <symbol id="ch7" viewBox="0 0 40 60">
+        <use href="#cf" />
+        <use href="#sh" x="3" y="3" height="8" width="8" />
+        <text x="12" y="11" class="t">7</text>
+        <use href="#sh" x="5" y="14" height="10" width="10" />
+        <use href="#sh" x="5" y="30" height="10" width="10" />
+        <use href="#sh" x="5" y="47" height="10" width="10" />
+        <use href="#sh" x="15" y="30" height="10" width="10" />
+        <use href="#sh" x="25" y="14" height="10" width="10" />
+        <use href="#sh" x="25" y="30" height="10" width="10" />
+        <use href="#sh" x="25" y="47" height="10" width="10" />
+    </symbol>
+
+    <symbol id="ch8" viewBox="0 0 40 60">
+        <use href="#cf" />
+        <use href="#sh" x="3" y="3" height="8" width="8" />
+        <text x="12" y="11" class="t">8</text>
+        <use href="#sh" x="5" y="14" height="10" width="10" />
+        <use href="#sh" x="5" y="30" height="10" width="10" />
+        <use href="#sh" x="5" y="47" height="10" width="10" />
+        <use href="#sh" x="15" y="14" height="10" width="10" />
+        <use href="#sh" x="15" y="47" height="10" width="10" />
+        <use href="#sh" x="25" y="14" height="10" width="10" />
+        <use href="#sh" x="25" y="30" height="10" width="10" />
+        <use href="#sh" x="25" y="47" height="10" width="10" />
+    </symbol>
+
+    <symbol id="ch9" viewBox="0 0 40 60">
+        <use href="#cf" />
+        <use href="#sh" x="3" y="3" height="8" width="8" />
+        <text x="12" y="11" class="t">9</text>
+        <use href="#sh" x="5" y="14" height="10" width="10" />
+        <use href="#sh" x="5" y="30" height="10" width="10" />
+        <use href="#sh" x="5" y="47" height="10" width="10" />
+        <use href="#sh" x="15" y="14" height="10" width="10" />
+        <use href="#sh" x="15" y="30" height="10" width="10" />
+        <use href="#sh" x="15" y="47" height="10" width="10" />
+        <use href="#sh" x="25" y="14" height="10" width="10" />
+        <use href="#sh" x="25" y="30" height="10" width="10" />
+        <use href="#sh" x="25" y="47" height="10" width="10" />
+    </symbol>
+
+    <symbol id="ch10" viewBox="0 0 40 60">
+        <use href="#cf" />
+        <use href="#sh" x="3" y="3" height="8" width="8" />
+        <text x="12" y="11" class="t">10</text>
+        <use href="#sh" x="5" y="14" height="10" width="10" />
+        <use href="#sh" x="5" y="30" height="10" width="10" />
+        <use href="#sh" x="5" y="47" height="10" width="10" />
+        <use href="#sh" x="15" y="14" height="10" width="10" />
+        <use href="#sh" x="15" y="25" height="10" width="10" />
+        <use href="#sh" x="15" y="36" height="10" width="10" />
+        <use href="#sh" x="15" y="47" height="10" width="10" />
+        <use href="#sh" x="25" y="14" height="10" width="10" />
+        <use href="#sh" x="25" y="30" height="10" width="10" />
+        <use href="#sh" x="25" y="47" height="10" width="10" />
+    </symbol>
+
+    <symbol id="chj" viewBox="0 0 40 60">
+        <use href="#cf" />
+        <use href="#sh" x="3" y="3" height="8" width="8" />
+        <text x="12" y="11" class="t">11</text>
+        <text x="20" y="37" class="tm">Jack</text>
+        <use href="#sh" x="15" y="47" height="10" width="10" />
+    </symbol>
+
+    <symbol id="chq" viewBox="0 0 40 60">
+        <use href="#cf" />
+        <use href="#sh" x="3" y="3" height="8" width="8" />
+        <text x="12" y="11" class="t">12</text>
+        <text x="20" y="37" class="tm">Queen</text>
+        <use href="#sh" x="5" y="47" height="10" width="10" />
+        <use href="#sh" x="25" y="47" height="10" width="10" />
+    </symbol>
+
+    <symbol id="chk" viewBox="0 0 40 60">
+        <use href="#cf" />
+        <use href="#sh" x="3" y="3" height="8" width="8" />
+        <text x="12" y="11" class="t">13</text>
+        <text x="20" y="37" class="tm">King</text>
+        <use href="#sh" x="5" y="47" height="10" width="10" />
+        <use href="#sh" x="15" y="47" height="10" width="10" />
+        <use href="#sh" x="25" y="47" height="10" width="10" />
+    </symbol>
+
+    <symbol id="cda" viewBox="0 0 40 60">
+        <use href="#cf" />
+        <use href="#sd" x="3" y="3" height="8" width="8" />
+        <text x="12" y="11" class="t">A</text>
+        <use href="#sd" x="15" y="30" height="10" width="10" />
+    </symbol>
+
+
+
+    <symbol id="cd2" viewBox="0 0 40 60">
+        <use href="#cf" />
+        <use href="#sd" x="3" y="3" height="8" width="8" />
+        <text x="12" y="11" class="t">2</text>
+        <use href="#sd" x="5" y="14" height="10" width="10" />
+        <use href="#sd" x="25" y="47" height="10" width="10" />
+    </symbol>
+
+    <symbol id="cd3" viewBox="0 0 40 60">
+        <use href="#cf" />
+        <use href="#sd" x="3" y="3" height="8" width="8" />
+        <text x="12" y="11" class="t">3</text>
+        <use href="#sd" x="5" y="14" height="10" width="10" />
+        <use href="#sd" x="15" y="30" height="10" width="10" />
+        <use href="#sd" x="25" y="47" height="10" width="10" />
+    </symbol>
+
+    <symbol id="cd4" viewBox="0 0 40 60">
+        <use href="#cf" />
+        <use href="#sd" x="3" y="3" height="8" width="8" />
+        <text x="12" y="11" class="t">4</text>
+        <use href="#sd" x="5" y="14" height="10" width="10" />
+        <use href="#sd" x="5" y="47" height="10" width="10" />
+        <use href="#sd" x="25" y="14" height="10" width="10" />
+        <use href="#sd" x="25" y="47" height="10" width="10" />
+    </symbol>
+
+    <symbol id="cd5" viewBox="0 0 40 60">
+        <use href="#cf" />
+        <use href="#sd" x="3" y="3" height="8" width="8" />
+        <text x="12" y="11" class="t">5</text>
+        <use href="#sd" x="5" y="14" height="10" width="10" />
+        <use href="#sd" x="5" y="47" height="10" width="10" />
+        <use href="#sd" x="15" y="30" height="10" width="10" />
+        <use href="#sd" x="25" y="14" height="10" width="10" />
+        <use href="#sd" x="25" y="47" height="10" width="10" />
+    </symbol>
+
+    <symbol id="cd6" viewBox="0 0 40 60">
+        <use href="#cf" />
+        <use href="#sd" x="3" y="3" height="8" width="8" />
+        <text x="12" y="11" class="t">6</text>
+        <use href="#sd" x="5" y="14" height="10" width="10" />
+        <use href="#sd" x="5" y="30" height="10" width="10" />
+        <use href="#sd" x="5" y="47" height="10" width="10" />
+        <use href="#sd" x="25" y="14" height="10" width="10" />
+        <use href="#sd" x="25" y="30" height="10" width="10" />
+        <use href="#sd" x="25" y="47" height="10" width="10" />
+    </symbol>
+
+    <symbol id="cd7" viewBox="0 0 40 60">
+        <use href="#cf" />
+        <use href="#sd" x="3" y="3" height="8" width="8" />
+        <text x="12" y="11" class="t">7</text>
+        <use href="#sd" x="5" y="14" height="10" width="10" />
+        <use href="#sd" x="5" y="30" height="10" width="10" />
+        <use href="#sd" x="5" y="47" height="10" width="10" />
+        <use href="#sd" x="15" y="30" height="10" width="10" />
+        <use href="#sd" x="25" y="14" height="10" width="10" />
+        <use href="#sd" x="25" y="30" height="10" width="10" />
+        <use href="#sd" x="25" y="47" height="10" width="10" />
+    </symbol>
+
+    <symbol id="cd8" viewBox="0 0 40 60">
+        <use href="#cf" />
+        <use href="#sd" x="3" y="3" height="8" width="8" />
+        <text x="12" y="11" class="t">8</text>
+        <use href="#sd" x="5" y="14" height="10" width="10" />
+        <use href="#sd" x="5" y="30" height="10" width="10" />
+        <use href="#sd" x="5" y="47" height="10" width="10" />
+        <use href="#sd" x="15" y="14" height="10" width="10" />
+        <use href="#sd" x="15" y="47" height="10" width="10" />
+        <use href="#sd" x="25" y="14" height="10" width="10" />
+        <use href="#sd" x="25" y="30" height="10" width="10" />
+        <use href="#sd" x="25" y="47" height="10" width="10" />
+    </symbol>
+
+    <symbol id="cd9" viewBox="0 0 40 60">
+        <use href="#cf" />
+        <use href="#sd" x="3" y="3" height="8" width="8" />
+        <text x="12" y="11" class="t">9</text>
+        <use href="#sd" x="5" y="14" height="10" width="10" />
+        <use href="#sd" x="5" y="30" height="10" width="10" />
+        <use href="#sd" x="5" y="47" height="10" width="10" />
+        <use href="#sd" x="15" y="14" height="10" width="10" />
+        <use href="#sd" x="15" y="30" height="10" width="10" />
+        <use href="#sd" x="15" y="47" height="10" width="10" />
+        <use href="#sd" x="25" y="14" height="10" width="10" />
+        <use href="#sd" x="25" y="30" height="10" width="10" />
+        <use href="#sd" x="25" y="47" height="10" width="10" />
+    </symbol>
+
+    <symbol id="cd10" viewBox="0 0 40 60">
+        <use href="#cf" />
+        <use href="#sd" x="3" y="3" height="8" width="8" />
+        <text x="12" y="11" class="t">10</text>
+        <use href="#sd" x="5" y="14" height="10" width="10" />
+        <use href="#sd" x="5" y="30" height="10" width="10" />
+        <use href="#sd" x="5" y="47" height="10" width="10" />
+        <use href="#sd" x="15" y="14" height="10" width="10" />
+        <use href="#sd" x="15" y="25" height="10" width="10" />
+        <use href="#sd" x="15" y="36" height="10" width="10" />
+        <use href="#sd" x="15" y="47" height="10" width="10" />
+        <use href="#sd" x="25" y="14" height="10" width="10" />
+        <use href="#sd" x="25" y="30" height="10" width="10" />
+        <use href="#sd" x="25" y="47" height="10" width="10" />
+    </symbol>
+
+    <symbol id="cdj" viewBox="0 0 40 60">
+        <use href="#cf" />
+        <use href="#sd" x="3" y="3" height="8" width="8" />
+        <text x="12" y="11" class="t">11</text>
+        <text x="20" y="37" class="tm">Jack</text>
+        <use href="#sd" x="15" y="47" height="10" width="10" />
+    </symbol>
+
+    <symbol id="cdq" viewBox="0 0 40 60">
+        <use href="#cf" />
+        <use href="#sd" x="3" y="3" height="8" width="8" />
+        <text x="12" y="11" class="t">12</text>
+        <text x="20" y="37" class="tm">Queen</text>
+        <use href="#sd" x="5" y="47" height="10" width="10" />
+        <use href="#sd" x="25" y="47" height="10" width="10" />
+    </symbol>
+
+    <symbol id="cdk" viewBox="0 0 40 60">
+        <use href="#cf" />
+        <use href="#sd" x="3" y="3" height="8" width="8" />
+        <text x="12" y="11" class="t">13</text>
+        <text x="20" y="37" class="tm">King</text>
+        <use href="#sd" x="5" y="47" height="10" width="10" />
+        <use href="#sd" x="15" y="47" height="10" width="10" />
+        <use href="#sd" x="25" y="47" height="10" width="10" />
+    </symbol>
+
+    <symbol id="cf" viewBox="0 0 40 60">
+        <!-- Card-Front -->
+        <rect x="1" y="1" height="58" width="38" rx="5" ry="5" class="bg" />
+    </symbol>
+
+    <symbol id="cb" viewBox="0 0 40 60">
+        <!-- Card-Back -->
+        <rect x="1" y="1" height="58" width="38" rx="5" ry="5" class="bg" />
+        <rect x="5" y="5" height="50" width="30" fill="#00f" />
+        <circle cx="20" cy="30" r="5" fill="white" />
+    </symbol>
+
+    <symbol id="cj" viewBox="0 0 40 60">
+        <!-- Card-Joker -->
+        <rect x="1" y="1" height="58" width="38" rx="5" ry="5" class="bg" />
+        <text x="12" y="11" class="t">Joker</text>
+    </symbol>
+
+    <use href="#ss" x="0" y="0" height="60" width="60" />
+    <use href="#sh" x="0" y="60" height="60" width="60" />
+    <use href="#sd" x="0" y="120" height="60" width="60" />
+    <use href="#sc" x="0" y="180" height="60" width="60" />
+
+    <use href="#csa" x="60" y="0" height="60" width="40" />
+    <use href="#cs2" x="100" y="0" height="60" width="40" />
+    <use href="#cs3" x="140" y="0" height="60" width="40" />
+    <use href="#cs4" x="180" y="0" height="60" width="40" />
+    <use href="#cs5" x="220" y="0" height="60" width="40" />
+    <use href="#cs6" x="260" y="0" height="60" width="40" />
+    <use href="#cs7" x="300" y="0" height="60" width="40" />
+    <use href="#cs8" x="340" y="0" height="60" width="40" />
+    <use href="#cs9" x="380" y="0" height="60" width="40" />
+    <use href="#cs10" x="420" y="0" height="60" width="40" />
+    <use href="#csj" x="460" y="0" height="60" width="40" />
+    <use href="#csq" x="500" y="0" height="60" width="40" />
+    <use href="#csk" x="540" y="0" height="60" width="40" />
+
+    <use href="#cha" x="60" y="60" height="60" width="40" />
+    <use href="#ch2" x="100" y="60" height="60" width="40" />
+    <use href="#ch3" x="140" y="60" height="60" width="40" />
+    <use href="#ch4" x="180" y="60" height="60" width="40" />
+    <use href="#ch5" x="220" y="60" height="60" width="40" />
+    <use href="#ch6" x="260" y="60" height="60" width="40" />
+    <use href="#ch7" x="300" y="60" height="60" width="40" />
+    <use href="#ch8" x="340" y="60" height="60" width="40" />
+    <use href="#ch9" x="380" y="60" height="60" width="40" />
+    <use href="#ch10" x="420" y="60" height="60" width="40" />
+    <use href="#chj" x="460" y="60" height="60" width="40" />
+    <use href="#chq" x="500" y="60" height="60" width="40" />
+    <use href="#chk" x="540" y="60" height="60" width="40" />
+
+    <use href="#cda" x="60" y="120" height="60" width="40" />
+    <use href="#cd2" x="100" y="120" height="60" width="40" />
+    <use href="#cd3" x="140" y="120" height="60" width="40" />
+    <use href="#cd4" x="180" y="120" height="60" width="40" />
+    <use href="#cd5" x="220" y="120" height="60" width="40" />
+    <use href="#cd6" x="260" y="120" height="60" width="40" />
+    <use href="#cd7" x="300" y="120" height="60" width="40" />
+    <use href="#cd8" x="340" y="120" height="60" width="40" />
+    <use href="#cd9" x="380" y="120" height="60" width="40" />
+    <use href="#cd10" x="420" y="120" height="60" width="40" />
+    <use href="#cdj" x="460" y="120" height="60" width="40" />
+    <use href="#cdq" x="500" y="120" height="60" width="40" />
+    <use href="#cdk" x="540" y="120" height="60" width="40" />
+
+    <use href="#cca" x="60" y="180" height="60" width="40" />
+    <use href="#cc2" x="100" y="180" height="60" width="40" />
+    <use href="#cc3" x="140" y="180" height="60" width="40" />
+    <use href="#cc4" x="180" y="180" height="60" width="40" />
+    <use href="#cc5" x="220" y="180" height="60" width="40" />
+    <use href="#cc6" x="260" y="180" height="60" width="40" />
+    <use href="#cc7" x="300" y="180" height="60" width="40" />
+    <use href="#cc8" x="340" y="180" height="60" width="40" />
+    <use href="#cc9" x="380" y="180" height="60" width="40" />
+    <use href="#cc10" x="420" y="180" height="60" width="40" />
+    <use href="#ccj" x="460" y="180" height="60" width="40" />
+    <use href="#ccq" x="500" y="180" height="60" width="40" />
+    <use href="#cck" x="540" y="180" height="60" width="40" />
+
+    <use href="#cf" x="580" y="0" height="60" width="40" />
+    <use href="#cb" x="580" y="60" height="60" width="40" />
+
+    <rect width="620" height="240" fill="none" stroke="black" />
+</svg>
