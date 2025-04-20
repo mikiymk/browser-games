@@ -761,6 +761,4 @@
 
     <use href="#cf" x="580" y="0" height="60" width="40" />
     <use href="#cb" x="580" y="60" height="60" width="40" />
-
-    <rect width="620" height="240" fill="none" stroke="black" />
 </svg>
