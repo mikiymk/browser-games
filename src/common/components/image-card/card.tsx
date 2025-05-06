@@ -4,6 +4,7 @@ import { For } from "solid-js";
 
 import type { CardId, CourtRank, PipRank, SuitName } from "./id.ts";
 
+import { SPADE } from "./id.ts";
 import { UseSuit } from "./suit.tsx";
 
 type UseCardProperties = {
@@ -17,20 +18,16 @@ export const UseCard = (properties: UseCardProperties): JSXElement => {
   return <use href={`#${properties.card}`} {...properties} />;
 };
 
-type CardProperties = {
-  readonly suit: SuitName;
-};
-
 /** スペードのエース */
-export const SpadeAce = (properties: CardProperties): JSXElement => {
+export const SpadeAce = (): JSXElement => {
   return (
     <symbol id={"card-spade-a" satisfies CardId} viewBox="0 0 40 60">
       <use href="#cf" />
-      <UseSuit height="8" suit={properties.suit} width="8" x="3" y="3" />
+      <UseSuit height="8" suit={SPADE} width="8" x="3" y="3" />
       <text class="t" x="12" y="11">
         A
       </text>
-      <UseSuit height="30" suit={properties.suit} width="30" x="5" y="20" />
+      <UseSuit height="30" suit={SPADE} width="30" x="5" y="20" />
     </symbol>
   );
 };
@@ -91,7 +88,7 @@ export const Pip = (properties: PipProperties): JSXElement => {
       <use href="#cf" />
       <UseSuit height="8" suit={properties.suit} width="8" x="3" y="3" />
       <text class="t" x="12" y="11">
-        A
+        {properties.rank}
       </text>
 
       <For each={pipSuitPositions[properties.rank]}>
@@ -116,11 +113,11 @@ export const Court = (properties: CourtProperties): JSXElement => {
   };
 
   return (
-    <symbol>
+    <symbol id={`card-${properties.suit}-${properties.rank}` satisfies CardId} viewBox="0 0 40 60">
       <use href="#cf" />
       <UseSuit height="8" suit={properties.suit} width="8" x="3" y="3" />
       <text class="t" x="12" y="11">
-        A
+        {properties.rank}
       </text>
       <text class="tm" x="20" y="37">
         {rankText()}

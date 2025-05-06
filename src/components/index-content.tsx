@@ -27,6 +27,7 @@ const pages = [
   { name: "klondike", title: TEXT_GAME_KLONDIKE },
   { name: "english-draughts", title: TEXT_GAME_ENGLISH_DRAUGHTS },
   { name: "bulls-and-cows", title: TEXT_GAME_BULLS_AND_COWS },
+  { name: "image-view", title: "Image View" },
 ];
 
 export const IndexContent = (): JSXElement => {
