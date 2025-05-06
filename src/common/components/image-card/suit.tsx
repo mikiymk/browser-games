@@ -4,6 +4,7 @@ import type { SuitName } from "./id.ts";
 
 import { arc, bezier, close, line, move, path } from "../../scripts/svg-path.ts";
 import { CLUB, DIAMOND, HEART, SPADE } from "./id.ts";
+import { black, red } from "./style.css.ts";
 
 type UseSuitProperties = {
   readonly height?: number | string | undefined;
@@ -20,6 +21,7 @@ export const SuitSpade = (): JSXElement => {
   return (
     <symbol id={SPADE} viewBox="0 0 60 60">
       <path
+        class={black}
         d={path(
           move(15, 60),
           line(45, 60),
@@ -39,6 +41,7 @@ export const SuitClub = (): JSXElement => {
   return (
     <symbol id={CLUB} viewBox="0 0 60 60">
       <path
+        class={black}
         d={path(
           move(15, 60),
           line(45, 60),
@@ -56,7 +59,7 @@ export const SuitClub = (): JSXElement => {
 export const SuitDiamond = (): JSXElement => {
   return (
     <symbol id={DIAMOND} viewBox="0 0 60 60">
-      <path d={path(move(30, 0), line(0, 30), line(30, 60), line(60, 30), close())} />
+      <path class={red} d={path(move(30, 0), line(0, 30), line(30, 60), line(60, 30), close())} />
     </symbol>
   );
 };
@@ -65,6 +68,7 @@ export const SuitHeart = (): JSXElement => {
   return (
     <symbol id={HEART} viewBox="0 0 60 60">
       <path
+        class={red}
         d={path(
           move(30, 60),
           bezier(58, 30, 58, 30, 58, 20),
