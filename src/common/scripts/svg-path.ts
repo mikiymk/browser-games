@@ -130,7 +130,7 @@ export const arc = (
 };
 const arcToText = (command: Arc, previous: Previous): string => {
   const absolute = `A${command.rx},${command.ry} ${command.angle} ${command.largeArc} ${command.sweep} ${command.x},${command.y}`;
-  const relative = `a${command.rx - previous.x},${command.ry - previous.y} ${command.angle} ${command.largeArc} ${command.sweep} ${command.x - previous.x},${command.y - previous.y}`;
+  const relative = `a${command.rx},${command.ry} ${command.angle} ${command.largeArc} ${command.sweep} ${command.x - previous.x},${command.y - previous.y}`;
 
   return shorter(absolute, relative);
 };
