@@ -13,7 +13,7 @@ type UseSuitProperties = {
   readonly y?: number | string | undefined;
 };
 export const UseSuit = (properties: UseSuitProperties): JSXElement => {
-  return <use href={`suit-${properties.suit}`} {...properties} />;
+  return <use href={`#suit-${properties.suit}`} {...properties} />;
 };
 
 export const SuitSpade = (): JSXElement => {
