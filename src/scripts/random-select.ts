@@ -14,3 +14,7 @@ export const shuffledArray = <T>(array: readonly T[]): readonly T[] => {
 
   return newArray;
 };
+
+export const randomId = (name?: string): string => {
+  return `__${name ?? "random"}-${Math.random().toString(36).slice(2, 11)}`;
+};

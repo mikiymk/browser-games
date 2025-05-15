@@ -1,7 +1,7 @@
 import type { JSXElement } from "solid-js";
 
 import { Define } from "../../../components/define/define.tsx";
-import { Court, Pip, SpadeAce } from "./card.tsx";
+import { Back, Court, Pip, SpadeAce } from "./card.tsx";
 import { CLUB, DIAMOND, HEART, SPADE } from "./id.ts";
 import { SuitClub, SuitDiamond, SuitHeart, SuitSpade } from "./suit.tsx";
 
@@ -68,6 +68,8 @@ export const DefineCards = (): JSXElement => {
       <Court rank="j" suit={HEART} />
       <Court rank="q" suit={HEART} />
       <Court rank="k" suit={HEART} />
+
+      <Back />
     </Define>
   );
 };

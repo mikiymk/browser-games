@@ -32,7 +32,7 @@ export const App = (): JSXElement => {
           <div>
             <For each={ranks}>
               {(rank) => (
-                <svg class={image} viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+                <svg class={image} viewBox="0 0 40 60" xmlns="http://www.w3.org/2000/svg">
                   <title>View</title>
                   <UseCard card={`card-${suit}-${rank}`} />
                 </svg>
@@ -41,6 +41,12 @@ export const App = (): JSXElement => {
           </div>
         )}
       </For>
+      <div>
+        <svg class={image} viewBox="0 0 40 60" xmlns="http://www.w3.org/2000/svg">
+          <title>View</title>
+          <UseCard card="card-back" />
+        </svg>
+      </div>
     </Page>
   );
 };

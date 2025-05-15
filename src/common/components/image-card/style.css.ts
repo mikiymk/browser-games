@@ -1,6 +1,6 @@
 import { style } from "@vanilla-extract/css";
 
-import { colorBlack, colorRed } from "../../../styles/colors.css.ts";
+import { cardBg, colorBlack, colorRed, text } from "../../../styles/colors.css.ts";
 import { latin } from "../../../styles/fonts.css.ts";
 
 export const black = style({
@@ -13,11 +13,16 @@ export const red = style({
   stroke: "none",
 });
 
-export const text = style({
+export const cardText = style({
   font: `10px ${latin}`,
 });
 
-export const textMiddle = style({
+export const cardTextMiddle = style({
   font: `12px ${latin}`,
   textAnchor: "middle",
+});
+
+export const cardBackGround = style({
+  fill: cardBg,
+  stroke: text,
 });

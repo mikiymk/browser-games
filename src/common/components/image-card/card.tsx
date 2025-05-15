@@ -4,8 +4,9 @@ import { For } from "solid-js";
 
 import type { CardId, CourtRank, PipRank, Rank, SuitName } from "./id.ts";
 
+import { cardBg, colorBlue } from "../../../styles/colors.css.ts";
 import { SPADE } from "./id.ts";
-import { text, textMiddle } from "./style.css.ts";
+import { cardBackGround, cardText, cardTextMiddle } from "./style.css.ts";
 import { UseSuit } from "./suit.tsx";
 
 type UseCardProperties = {
@@ -45,7 +46,7 @@ const tSuitPositions = [
   { x: 25, y: 47 },
 ];
 
-const pipSuitPositions = {
+const suitPositions = {
   2: selectIndexes(basePipSuitPositions, [0, 8]),
   3: selectIndexes(basePipSuitPositions, [0, 4, 8]),
   4: selectIndexes(basePipSuitPositions, [0, 2, 6, 8]),
@@ -55,14 +56,15 @@ const pipSuitPositions = {
   8: selectIndexes(basePipSuitPositions, [0, 1, 2, 3, 5, 6, 7, 8]),
   9: basePipSuitPositions,
   a: selectIndexes(basePipSuitPositions, [4]),
-  t: tSuitPositions,
-} satisfies Record<PipRank, readonly { x: number; y: number }[]>;
-
-const courtSuitPositions = {
   j: selectIndexes(basePipSuitPositions, [5]),
   k: selectIndexes(basePipSuitPositions, [2, 5, 8]),
   q: selectIndexes(basePipSuitPositions, [2, 8]),
-} satisfies Record<CourtRank, readonly { x: number; y: number }[]>;
+  t: tSuitPositions,
+} satisfies Record<Rank, readonly { x: number; y: number }[]>;
+
+export const Shape = (): JSXElement => {
+  return <rect class={cardBackGround} height="58" rx="5" ry="5" width="38" x="1" y="1" />;
+};
 
 type IndexProperties = {
   readonly rank: Rank;
@@ -72,7 +74,7 @@ const Index = (properties: IndexProperties): JSXElement => {
   return (
     <>
       <UseSuit height="8" suit={properties.suit} width="8" x="3" y="3" />
-      <text class={text} x="12" y="11">
+      <text class={cardText} x="12" y="11">
         {properties.rank}
       </text>
     </>
@@ -83,7 +85,7 @@ const Index = (properties: IndexProperties): JSXElement => {
 export const SpadeAce = (): JSXElement => {
   return (
     <symbol id={"card-spade-a" satisfies CardId} viewBox="0 0 40 60">
-      <use href="#cf" />
+      <Shape />
       <Index rank="a" suit={SPADE} />
       <UseSuit height="30" suit={SPADE} width="30" x="5" y="20" />
     </symbol>
@@ -98,9 +100,9 @@ type PipProperties = {
 export const Pip = (properties: PipProperties): JSXElement => {
   return (
     <symbol id={`card-${properties.suit}-${properties.rank}` satisfies CardId} viewBox="0 0 40 60">
-      <use href="#cf" />
+      <Shape />
       <Index rank={properties.rank} suit={properties.suit} />
-      <For each={pipSuitPositions[properties.rank]}>
+      <For each={suitPositions[properties.rank]}>
         {({ x, y }) => <UseSuit height="10" suit={properties.suit} width="10" x={x} y={y} />}
       </For>
     </symbol>
@@ -123,14 +125,25 @@ export const Court = (properties: CourtProperties): JSXElement => {
 
   return (
     <symbol id={`card-${properties.suit}-${properties.rank}` satisfies CardId} viewBox="0 0 40 60">
-      <use href="#cf" />
+      <Shape />
       <Index rank={properties.rank} suit={properties.suit} />
-      <text class={textMiddle} x="20" y="37">
+      <text class={cardTextMiddle} x="20" y="37">
         {rankText()}
       </text>
-      <For each={courtSuitPositions[properties.rank]}>
+      <For each={suitPositions[properties.rank]}>
         {({ x, y }) => <UseSuit height="10" suit={properties.suit} width="10" x={x} y={y} />}
       </For>
+    </symbol>
+  );
+};
+
+/** 裏側 */
+export const Back = (): JSXElement => {
+  return (
+    <symbol id={"card-back" satisfies CardId} viewBox="0 0 40 60">
+      <Shape />
+      <rect fill={colorBlue} height="50" width="30" x="5" y="5" />
+      <circle cx="20" cy="30" fill={cardBg} r="5" />
     </symbol>
   );
 };
