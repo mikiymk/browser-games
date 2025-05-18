@@ -1,55 +1,14 @@
-type Move = {
-  readonly type: "move";
+export type Path = Arc | Bezier | Close | Line | Move;
+type Arc = {
+  readonly angle: number;
+  readonly largeArc: 0 | 1;
+  readonly rx: number;
+  readonly ry: number;
+  readonly sweep: 0 | 1;
+  readonly type: "arc";
   readonly x: number;
   readonly y: number;
 };
-/**
- * 絶対値のMoveToコマンド。
- * @param x X座標
- * @param y Y座標
- * @returns MoveToコマンドのパスオブジェクト
- */
-export const move = (x: number, y: number): Move => {
-  return { type: "move", x, y };
-};
-const moveToText = (command: Move, previous: Previous): string => {
-  const { x, y } = command;
-
-  return shorter(`M${x},${y}`, `m${x - previous.x},${y - previous.y}`);
-};
-
-type Line = {
-  readonly type: "line";
-  readonly x: number;
-  readonly y: number;
-};
-/**
- * 絶対値のLineToコマンド。
- * @param x X座標
- * @param y Y座標
- * @returns LineToコマンドのパスオブジェクト
- */
-export const line = (x: number, y: number): Line => {
-  return { type: "line", x, y };
-};
-const lineToText = (command: Line, previous: Previous): string => {
-  const { x, y } = command;
-
-  if (previous.x === x && previous.y === y) {
-    return ""; // noop
-  }
-
-  if (previous.x === x) {
-    return shorter(`V${y}`, `v${y - previous.y}`);
-  }
-
-  if (previous.y === y) {
-    return shorter(`H${x}`, `h${x - previous.x}`);
-  }
-
-  return shorter(`L${x},${y}`, `l${x - previous.x},${y - previous.y}`);
-};
-
 type Bezier = {
   readonly type: "bezier";
   readonly x: number;
@@ -59,6 +18,40 @@ type Bezier = {
   readonly y1: number;
   readonly y2: number;
 };
+type Close = {
+  readonly type: "close";
+};
+type Line = {
+  readonly type: "line";
+  readonly x: number;
+  readonly y: number;
+};
+type Move = {
+  readonly type: "move";
+  readonly x: number;
+  readonly y: number;
+};
+
+/**
+ * 絶対値のMoveToコマンド。
+ * @param x X座標
+ * @param y Y座標
+ * @returns MoveToコマンドのパスオブジェクト
+ */
+export const move = (x: number, y: number): Move => {
+  return { type: "move", x, y };
+};
+
+/**
+ * 絶対値のLineToコマンド。
+ * @param x X座標
+ * @param y Y座標
+ * @returns LineToコマンドのパスオブジェクト
+ */
+export const line = (x: number, y: number): Line => {
+  return { type: "line", x, y };
+};
+
 /**
  * 絶対値の3次ベジェ曲線コマンド。
  * @param x1 開始制御点のX座標
@@ -80,23 +73,7 @@ export const bezier = (x1: number, y1: number, x2: number, y2: number, x: number
     y2,
   };
 };
-const bezierToText = (command: Bezier, previous: Previous): string => {
-  const absolute = `C${command.x1},${command.y1} ${command.x2},${command.y2} ${command.x},${command.y}`;
-  const relative = `c${command.x1 - previous.x},${command.y1 - previous.y} ${command.x2 - previous.x},${command.y2 - previous.y} ${command.x - previous.x},${command.y - previous.y}`;
 
-  return shorter(absolute, relative);
-};
-
-type Arc = {
-  readonly angle: number;
-  readonly largeArc: 0 | 1;
-  readonly rx: number;
-  readonly ry: number;
-  readonly sweep: 0 | 1;
-  readonly type: "arc";
-  readonly x: number;
-  readonly y: number;
-};
 /**
  * 絶対値の楕円円弧曲線コマンド。
  * @param rx 楕円のX半径
@@ -128,16 +105,7 @@ export const arc = (
     y,
   };
 };
-const arcToText = (command: Arc, previous: Previous): string => {
-  const absolute = `A${command.rx},${command.ry} ${command.angle} ${command.largeArc} ${command.sweep} ${command.x},${command.y}`;
-  const relative = `a${command.rx},${command.ry} ${command.angle} ${command.largeArc} ${command.sweep} ${command.x - previous.x},${command.y - previous.y}`;
 
-  return shorter(absolute, relative);
-};
-
-type Close = {
-  readonly type: "close";
-};
 /**
  * パスを閉じるコマンド。
  * @returns パスを閉じるパスオブジェクト
@@ -146,9 +114,46 @@ export const close = (): Close => {
   return { type: "close" };
 };
 
-export type Path = Arc | Bezier | Close | Line | Move;
 type Previous = { readonly x: number; readonly y: number };
 const shorter = (a: string, b: string): string => (a.length < b.length ? a : b);
+
+const moveToText = (command: Move, previous: Previous): string => {
+  const { x, y } = command;
+
+  return shorter(`M${x},${y}`, `m${x - previous.x},${y - previous.y}`);
+};
+
+const lineToText = (command: Line, previous: Previous): string => {
+  const { x, y } = command;
+
+  if (previous.x === x && previous.y === y) {
+    return ""; // noop
+  }
+
+  if (previous.x === x) {
+    return shorter(`V${y}`, `v${y - previous.y}`);
+  }
+
+  if (previous.y === y) {
+    return shorter(`H${x}`, `h${x - previous.x}`);
+  }
+
+  return shorter(`L${x},${y}`, `l${x - previous.x},${y - previous.y}`);
+};
+
+const bezierToText = (command: Bezier, previous: Previous): string => {
+  const absolute = `C${command.x1},${command.y1} ${command.x2},${command.y2} ${command.x},${command.y}`;
+  const relative = `c${command.x1 - previous.x},${command.y1 - previous.y} ${command.x2 - previous.x},${command.y2 - previous.y} ${command.x - previous.x},${command.y - previous.y}`;
+
+  return shorter(absolute, relative);
+};
+
+const arcToText = (command: Arc, previous: Previous): string => {
+  const absolute = `A${command.rx},${command.ry} ${command.angle} ${command.largeArc} ${command.sweep} ${command.x},${command.y}`;
+  const relative = `a${command.rx},${command.ry} ${command.angle} ${command.largeArc} ${command.sweep} ${command.x - previous.x},${command.y - previous.y}`;
+
+  return shorter(absolute, relative);
+};
 
 /**
  * SVGのパスを生成する。
