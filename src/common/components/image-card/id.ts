@@ -3,9 +3,13 @@ export const CLUB = "club";
 export const DIAMOND = "diamond";
 export const HEART = "heart";
 
-export type CardId = "card-back" | "card-joker" | `card-${SuitName}-${Rank}`;
-export type CourtRank = "j" | "k" | "q";
-export type PipRank = 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | "a" | "t";
-export type Rank = CourtRank | PipRank;
+export const CARD_SUITS = [SPADE, CLUB, DIAMOND, HEART] as const;
+export type CardSuit = (typeof CARD_SUITS)[number];
 
-export type SuitName = typeof CLUB | typeof DIAMOND | typeof HEART | typeof SPADE;
+export const CARD_PIP_RANKS = ["a", 2, 3, 4, 5, 6, 7, 8, 9, "t"] as const;
+export const CARD_COURT_RANKS = ["j", "q", "k"] as const;
+export const CARD_RANKS = ["a", 2, 3, 4, 5, 6, 7, 8, 9, "t", "j", "q", "k"] as const;
+export type CardCourtRank = (typeof CARD_COURT_RANKS)[number];
+export type CardId = "card-back" | "card-joker" | `card-${CardSuit}-${CardRank}`;
+export type CardPipRank = (typeof CARD_PIP_RANKS)[number];
+export type CardRank = CardCourtRank | CardPipRank;

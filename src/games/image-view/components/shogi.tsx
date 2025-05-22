@@ -3,7 +3,7 @@ import type { JSXElement } from "solid-js";
 import { For } from "solid-js";
 
 import { DefineShogiPieces } from "../../../common/components/image-shogi/define.tsx";
-import { DIRECTIONS, PIECES } from "../../../common/components/image-shogi/id.ts";
+import { SHOGI_DIRECTIONS, SHOGI_PIECES } from "../../../common/components/image-shogi/id.ts";
 import { UseShogiPiece } from "../../../common/components/image-shogi/use.tsx";
 import { image } from "./style.css.ts";
 
@@ -23,10 +23,10 @@ export const ShogiImages = (): JSXElement => {
         </For>
       </div>
 
-      <For each={DIRECTIONS}>
+      <For each={SHOGI_DIRECTIONS}>
         {(direction) => (
           <div>
-            <For each={PIECES}>
+            <For each={SHOGI_PIECES}>
               {(piece) => (
                 <svg class={image} viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
                   <title>View</title>

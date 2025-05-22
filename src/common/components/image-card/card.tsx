@@ -2,23 +2,12 @@ import type { JSXElement } from "solid-js";
 
 import { For } from "solid-js";
 
-import type { CardId, CourtRank, PipRank, Rank, SuitName } from "./id.ts";
+import type { CardCourtRank, CardId, CardPipRank, CardRank, CardSuit } from "./id.ts";
 
 import { cardBg, colorBlue } from "../../../styles/colors.css.ts";
 import { SPADE } from "./id.ts";
 import { cardBackGround, cardText, cardTextMiddle } from "./style.css.ts";
-import { UseSuit } from "./suit.tsx";
-
-type UseCardProperties = {
-  readonly card: CardId;
-  readonly height?: number | string | undefined;
-  readonly width?: number | string | undefined;
-  readonly x?: number | string | undefined;
-  readonly y?: number | string | undefined;
-};
-export const UseCard = (properties: UseCardProperties): JSXElement => {
-  return <use href={`#${properties.card}`} {...properties} />;
-};
+import { UseSuit } from "./use.tsx";
 
 const selectIndexes = <T,>(array: readonly T[], indexes: readonly number[]): readonly T[] => {
   return indexes.map((index) => array[index] as T);
@@ -62,15 +51,15 @@ const suitPositions = {
   k: selectIndexes(basePipSuitPositions, [2, 5, 8]),
   q: selectIndexes(basePipSuitPositions, [2, 8]),
   t: tSuitPositions,
-} satisfies Record<Rank, readonly { x: number; y: number }[]>;
+} satisfies Record<CardRank, readonly { x: number; y: number }[]>;
 
 export const Shape = (): JSXElement => {
   return <rect class={cardBackGround} height="58" rx="5" ry="5" width="38" x="1" y="1" />;
 };
 
 type IndexProperties = {
-  readonly rank: Rank;
-  readonly suit: SuitName;
+  readonly rank: CardRank;
+  readonly suit: CardSuit;
 };
 const Index = (properties: IndexProperties): JSXElement => {
   return (
@@ -95,8 +84,8 @@ export const SpadeAce = (): JSXElement => {
 };
 
 type PipProperties = {
-  readonly rank: PipRank;
-  readonly suit: SuitName;
+  readonly rank: CardPipRank;
+  readonly suit: CardSuit;
 };
 /** 数札 */
 export const Pip = (properties: PipProperties): JSXElement => {
@@ -111,8 +100,8 @@ export const Pip = (properties: PipProperties): JSXElement => {
 };
 
 type CourtProperties = {
-  readonly rank: CourtRank;
-  readonly suit: SuitName;
+  readonly rank: CardCourtRank;
+  readonly suit: CardSuit;
 };
 /** 数札 */
 export const Court = (properties: CourtProperties): JSXElement => {

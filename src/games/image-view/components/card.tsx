@@ -2,21 +2,18 @@ import type { JSXElement } from "solid-js";
 
 import { For } from "solid-js";
 
-import { UseCard } from "../../../common/components/image-card/card.tsx";
 import { DefineCards } from "../../../common/components/image-card/define.tsx";
-import { UseSuit } from "../../../common/components/image-card/suit.tsx";
+import { CARD_RANKS, CARD_SUITS } from "../../../common/components/image-card/id.ts";
+import { UseCard, UseSuit } from "../../../common/components/image-card/use.tsx";
 import { image } from "./style.css.ts";
 
 export const CardImage = (): JSXElement => {
-  const suits = ["spade", "club", "diamond", "heart"] as const;
-  const ranks = ["a", 2, 3, 4, 5, 6, 7, 8, 9, "t", "j", "q", "k"] as const;
-
   return (
     <div>
       <DefineCards />
 
       <div>
-        <For each={suits}>
+        <For each={CARD_SUITS}>
           {(suit) => (
             <svg class={image} viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
               <title>View</title>
@@ -26,10 +23,10 @@ export const CardImage = (): JSXElement => {
         </For>
       </div>
 
-      <For each={suits}>
+      <For each={CARD_SUITS}>
         {(suit) => (
           <div>
-            <For each={ranks}>
+            <For each={CARD_RANKS}>
               {(rank) => (
                 <svg class={image} viewBox="0 0 40 60" xmlns="http://www.w3.org/2000/svg">
                   <title>View</title>

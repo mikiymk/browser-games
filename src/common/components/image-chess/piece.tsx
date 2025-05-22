@@ -1,22 +1,8 @@
 import type { JSXElement } from "solid-js";
 
-import type { Piece } from "./id.ts";
-
 import { arc, bezier, close, line, move, path } from "../../scripts/svg-path.ts";
 import { BISHOP, KING, KNIGHT, PAWN, QUEEN, ROOK } from "./id.ts";
 import { piece } from "./style.css.ts";
-
-type UseSuitProperties = {
-  readonly color: "black" | "white";
-  readonly height?: number | string | undefined;
-  readonly piece: Piece;
-  readonly width?: number | string | undefined;
-  readonly x?: number | string | undefined;
-  readonly y?: number | string | undefined;
-};
-export const UseChessPiece = (properties: UseSuitProperties): JSXElement => {
-  return <use href={`#${properties.piece}-${properties.color}`} {...properties} />;
-};
 
 type PieceProperties = {
   readonly color: "black" | "white";

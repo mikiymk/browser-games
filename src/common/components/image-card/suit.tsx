@@ -1,21 +1,8 @@
 import type { JSXElement } from "solid-js";
 
-import type { SuitName } from "./id.ts";
-
 import { arc, bezier, close, line, move, path } from "../../scripts/svg-path.ts";
 import { CLUB, DIAMOND, HEART, SPADE } from "./id.ts";
 import { black, red } from "./style.css.ts";
-
-type UseSuitProperties = {
-  readonly height?: number | string | undefined;
-  readonly suit: SuitName;
-  readonly width?: number | string | undefined;
-  readonly x?: number | string | undefined;
-  readonly y?: number | string | undefined;
-};
-export const UseSuit = (properties: UseSuitProperties): JSXElement => {
-  return <use href={`#${properties.suit}`} {...properties} />;
-};
 
 export const SuitSpade = (): JSXElement => {
   return (

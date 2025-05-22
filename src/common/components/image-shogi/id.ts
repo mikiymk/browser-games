@@ -13,7 +13,7 @@ export const ROOK = "rook";
 export const ROOK_PROMOTED = "rook-promoted";
 export const KING = "king";
 
-export const PIECES = [
+export const SHOGI_PIECES = [
   PAWN,
   PAWN_PROMOTED,
   LANCE,
@@ -29,12 +29,11 @@ export const PIECES = [
   ROOK_PROMOTED,
   KING,
 ] as const;
-export type Piece = (typeof PIECES)[number];
+export type ShogiPiece = (typeof SHOGI_PIECES)[number];
 
 export const UP = "up";
 export const DOWN = "down";
 
-export const DIRECTIONS = [UP, DOWN] as const;
-export type Direction = (typeof DIRECTIONS)[number];
-
-export type Id = `${Piece}-${Direction}`;
+export const SHOGI_DIRECTIONS = [UP, DOWN] as const;
+export type Id = `${ShogiPiece}-${ShogiDirection}`;
+export type ShogiDirection = (typeof SHOGI_DIRECTIONS)[number];

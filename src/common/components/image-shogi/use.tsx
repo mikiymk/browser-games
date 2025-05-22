@@ -2,12 +2,12 @@ import type { JSXElement } from "solid-js";
 
 import { splitProps } from "solid-js";
 
-import type { Direction, Id, Piece } from "./id.ts";
+import type { ShogiDirection, Id, ShogiPiece } from "./id.ts";
 
 type UseProperties = {
-  readonly direction: Direction;
+  readonly direction: ShogiDirection;
   readonly height?: number | string | undefined;
-  readonly piece: Piece;
+  readonly piece: ShogiPiece;
   readonly width?: number | string | undefined;
   readonly x?: number | string | undefined;
   readonly y?: number | string | undefined;

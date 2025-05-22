@@ -1,6 +1,6 @@
 import type { JSXElement } from "solid-js";
 
-import type { Id, Piece } from "./id.ts";
+import type { Id, ShogiPiece } from "./id.ts";
 
 import { close, line, move, path } from "../../scripts/svg-path.ts";
 import { pieceShape, pieceTextDown, pieceTextPromotedDown, pieceTextPromotedUp, pieceTextUp } from "./style.css.ts";
@@ -18,7 +18,7 @@ export const PieceShapeDown = (): JSXElement => {
 };
 
 type DefinePieceProperties = {
-  readonly id: Piece;
+  readonly id: ShogiPiece;
   readonly name: string;
   readonly promoted?: boolean;
 };
