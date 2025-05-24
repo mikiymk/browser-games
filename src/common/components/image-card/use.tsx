@@ -1,25 +1,24 @@
 import type { JSXElement } from "solid-js";
 
+import type { ImageBound } from "../use-image/use.tsx";
 import type { CardId, CardSuit } from "./id.ts";
 
-type UseSuitProperties = {
-  readonly height?: number | string | undefined;
+import { splitBounds, UseImage } from "../use-image/use.tsx";
+
+type UseSuitProperties = ImageBound & {
   readonly suit: CardSuit;
-  readonly width?: number | string | undefined;
-  readonly x?: number | string | undefined;
-  readonly y?: number | string | undefined;
 };
 export const UseSuit = (properties: UseSuitProperties): JSXElement => {
-  return <use href={`#${properties.suit}`} {...properties} />;
+  const bounds = splitBounds(properties);
+
+  return <UseImage id={properties.suit} {...bounds} />;
 };
 
-type UseCardProperties = {
+type UseCardProperties = ImageBound & {
   readonly card: CardId;
-  readonly height?: number | string | undefined;
-  readonly width?: number | string | undefined;
-  readonly x?: number | string | undefined;
-  readonly y?: number | string | undefined;
 };
 export const UseCard = (properties: UseCardProperties): JSXElement => {
-  return <use href={`#${properties.card}`} {...properties} />;
+  const bounds = splitBounds(properties);
+
+  return <UseImage id={properties.card} {...bounds} />;
 };

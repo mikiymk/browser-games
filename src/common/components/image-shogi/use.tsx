@@ -1,19 +1,17 @@
 import type { JSXElement } from "solid-js";
 
-import { splitProps } from "solid-js";
+import type { ImageBound } from "../use-image/use.tsx";
+import type { ShogiDirection, ShogiPiece } from "./id.ts";
 
-import type { ShogiDirection, Id, ShogiPiece } from "./id.ts";
+import { splitBounds, UseImage } from "../use-image/use.tsx";
 
-type UseProperties = {
+type UseProperties = ImageBound & {
   readonly direction: ShogiDirection;
-  readonly height?: number | string | undefined;
+
   readonly piece: ShogiPiece;
-  readonly width?: number | string | undefined;
-  readonly x?: number | string | undefined;
-  readonly y?: number | string | undefined;
 };
 export const UseShogiPiece = (properties: UseProperties): JSXElement => {
-  const [piece, others] = splitProps(properties, ["piece", "direction"]);
+  const bounds = splitBounds(properties);
 
-  return <use href={`#${piece.piece}-${piece.direction}` satisfies `#${Id}`} {...others} />;
+  return <UseImage id={`${properties.piece}-${properties.direction}`} {...bounds} />;
 };
