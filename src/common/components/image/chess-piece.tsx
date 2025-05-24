@@ -2,7 +2,7 @@ import type { JSXElement } from "solid-js";
 
 import { arc, bezier, close, line, move, path } from "../../scripts/svg-path.ts";
 import { BISHOP, KING, KNIGHT, PAWN, QUEEN, ROOK } from "./id.ts";
-import { piece } from "./style.css.ts";
+import { chessPiece } from "./style.css.ts";
 
 type PieceProperties = {
   readonly color: "black" | "white";
@@ -11,7 +11,7 @@ type PieceProperties = {
 export const King = (properties: PieceProperties): JSXElement => {
   return (
     <symbol id={`${KING}-${properties.color}`} viewBox="0 0 60 60">
-      <g class={piece[properties.color]}>
+      <g class={chessPiece[properties.color]}>
         <path d={path(move(15, 55), line(20, 25), line(40, 25), line(45, 55), close())} />
         <path
           d={path(
@@ -37,7 +37,7 @@ export const King = (properties: PieceProperties): JSXElement => {
 export const Queen = (properties: PieceProperties): JSXElement => {
   return (
     <symbol id={`${QUEEN}-${properties.color}`} viewBox="0 0 60 60">
-      <g class={piece[properties.color]}>
+      <g class={chessPiece[properties.color]}>
         <path d={path(move(22, 35), line(13, 55), line(47, 55), line(38, 35), close())} />
         <path d={path(move(22, 15), line(20, 13), arc(10, 6, 0, 0, 1, 40, 13), line(38, 15), close())} />
         <path
@@ -63,7 +63,7 @@ export const Queen = (properties: PieceProperties): JSXElement => {
 export const Rook = (properties: PieceProperties): JSXElement => {
   return (
     <symbol id={`${ROOK}-${properties.color}`} viewBox="0 0 60 60">
-      <g class={piece[properties.color]}>
+      <g class={chessPiece[properties.color]}>
         <rect height="15" width="20" x="20" y="20" />
         <path d={path(move(20, 35), line(40, 35), line(45, 55), line(15, 55), close())} />
         <path
@@ -89,7 +89,7 @@ export const Rook = (properties: PieceProperties): JSXElement => {
 export const Bishop = (properties: PieceProperties): JSXElement => {
   return (
     <symbol id={`${BISHOP}-${properties.color}`} viewBox="0 0 60 60">
-      <g class={piece[properties.color]}>
+      <g class={chessPiece[properties.color]}>
         <rect height="7" width="16" x="22" y="45" />
         <path d={path(move(20, 45), arc(22, 22, 0, 0, 1, 30, 8), arc(22, 22, 0, 0, 1, 40, 45), close())} />
         <path d={path(move(39, 13), line(30, 22))} />
@@ -103,7 +103,7 @@ export const Bishop = (properties: PieceProperties): JSXElement => {
 export const Knight = (properties: PieceProperties): JSXElement => {
   return (
     <symbol id={`${KNIGHT}-${properties.color}`} viewBox="0 0 60 60">
-      <g class={piece[properties.color]}>
+      <g class={chessPiece[properties.color]}>
         <path d={path(move(45, 55), line(45, 20), arc(15, 15, 90, 0, 0, 30, 5), line(30, 55), close())} />
         <path
           d={path(
@@ -127,7 +127,7 @@ export const Knight = (properties: PieceProperties): JSXElement => {
 export const Pawn = (properties: PieceProperties): JSXElement => {
   return (
     <symbol id={`${PAWN}-${properties.color}`} viewBox="0 0 60 60">
-      <g class={piece[properties.color]}>
+      <g class={chessPiece[properties.color]}>
         <path d={path(move(25, 20), line(35, 20), line(40, 55), line(20, 55), close())} />
         <circle cx="30" cy="20" r="10" />
         <rect height="5" width="20" x="20" y="27" />

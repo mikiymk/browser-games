@@ -1,7 +1,7 @@
 import type { JSXElement } from "solid-js";
 
-import { CROSS, FLAG, MINE, NOUGHT } from "../../../common/components/image-symbol/id.ts";
-import { Cross, Flag, Mine, Nought, Stone, StoneKing } from "../../../common/components/image-symbol/symbol.tsx";
+import { CROSS, FLAG, MINE, NOUGHT } from "../../../common/components/image/id.ts";
+import { Cross, Flag, Mine, Nought, Stone, StoneKing } from "../../../common/components/image/symbol.tsx";
 import { UseImage } from "../../../common/components/use-image/use.tsx";
 import { Define } from "../../../components/define/define.tsx";
 import { image } from "./style.css.ts";

@@ -5,9 +5,8 @@ import { For } from "solid-js";
 import type { CardCourtRank, CardId, CardPipRank, CardRank, CardSuit } from "./id.ts";
 
 import { cardBg, colorBlue } from "../../../styles/colors.css.ts";
-import { SPADE } from "./id.ts";
+import { UseImage } from "../use-image/use.tsx";
 import { cardBackGround, cardText, cardTextMiddle } from "./style.css.ts";
-import { UseSuit } from "./use.tsx";
 
 const selectIndexes = <T,>(array: readonly T[], indexes: readonly number[]): readonly T[] => {
   return indexes.map((index) => array[index] as T);
@@ -65,21 +64,11 @@ const Index = (properties: IndexProperties): JSXElement => {
   return (
     <>
       <Shape />
-      <UseSuit height="8" suit={properties.suit} width="8" x="3" y="3" />
+      <UseImage height="8" id={properties.suit} width="8" x="3" y="3" />
       <text class={cardText} x="12" y="11">
         {properties.rank}
       </text>
     </>
-  );
-};
-
-/** スペードのエース */
-export const SpadeAce = (): JSXElement => {
-  return (
-    <symbol id={"card-spade-a" satisfies CardId} viewBox="0 0 40 60">
-      <Index rank="a" suit={SPADE} />
-      <UseSuit height="30" suit={SPADE} width="30" x="5" y="20" />
-    </symbol>
   );
 };
 
@@ -93,7 +82,7 @@ export const Pip = (properties: PipProperties): JSXElement => {
     <symbol id={`card-${properties.suit}-${properties.rank}` satisfies CardId} viewBox="0 0 40 60">
       <Index rank={properties.rank} suit={properties.suit} />
       <For each={suitPositions[properties.rank]}>
-        {({ x, y }) => <UseSuit height="10" suit={properties.suit} width="10" x={x} y={y} />}
+        {({ x, y }) => <UseImage height="10" id={properties.suit} width="10" x={x} y={y} />}
       </For>
     </symbol>
   );
@@ -120,7 +109,7 @@ export const Court = (properties: CourtProperties): JSXElement => {
         {rankText()}
       </text>
       <For each={suitPositions[properties.rank]}>
-        {({ x, y }) => <UseSuit height="10" suit={properties.suit} width="10" x={x} y={y} />}
+        {({ x, y }) => <UseImage height="10" id={properties.suit} width="10" x={x} y={y} />}
       </For>
     </symbol>
   );

@@ -2,12 +2,12 @@ import type { JSXElement } from "solid-js";
 
 import { close, line, move, path } from "../../scripts/svg-path.ts";
 import { CROSS, FLAG, MINE, NOUGHT, STONE, STONE_KING } from "./id.ts";
-import { blackLine, cross, flagFill, mineFill, nought, stone } from "./style.css.ts";
+import { stone, symbolCross, symbolFlag, symbolFlagFill, symbolMineFill, symbolNought } from "./style.css.ts";
 
 export const Nought = (): JSXElement => {
   return (
     <symbol id={NOUGHT} viewBox="0 0 60 60">
-      <circle class={nought} cx={30} cy={30} r={20} />
+      <circle class={symbolNought} cx={30} cy={30} r={20} />
     </symbol>
   );
 };
@@ -15,7 +15,7 @@ export const Nought = (): JSXElement => {
 export const Cross = (): JSXElement => {
   return (
     <symbol id={CROSS} viewBox="0 0 60 60">
-      <path class={cross} d={path(move(15, 15), line(45, 45), move(15, 45), line(45, 15))} />
+      <path class={symbolCross} d={path(move(15, 15), line(45, 45), move(15, 45), line(45, 15))} />
     </symbol>
   );
 };
@@ -23,8 +23,8 @@ export const Cross = (): JSXElement => {
 export const Flag = (): JSXElement => {
   return (
     <symbol id={FLAG} viewBox="0 0 60 60">
-      <path class={blackLine} d={path(move(30, 5), line(30, 50), move(10, 50), line(50, 50))} />
-      <path class={flagFill} d={path(move(30, 5), line(10, 30), line(30, 30), close())} />
+      <path class={symbolFlag} d={path(move(30, 5), line(30, 50), move(10, 50), line(50, 50))} />
+      <path class={symbolFlagFill} d={path(move(30, 5), line(10, 30), line(30, 30), close())} />
     </symbol>
   );
 };
@@ -33,7 +33,7 @@ export const Mine = (): JSXElement => {
   return (
     <symbol id={MINE} viewBox="0 0 60 60">
       <path
-        class={blackLine}
+        class={symbolFlag}
         d={path(
           move(5, 30),
           line(55, 30),
@@ -46,7 +46,7 @@ export const Mine = (): JSXElement => {
         )}
       />
 
-      <circle class={mineFill} cx="30" cy="30" r="15" />
+      <circle class={symbolMineFill} cx="30" cy="30" r="15" />
     </symbol>
   );
 };
