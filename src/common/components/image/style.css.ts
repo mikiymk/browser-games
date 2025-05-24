@@ -55,9 +55,9 @@ const stroke = style({
   strokeWidth: 2,
 });
 
+export const symbolMark = style([stroke, { stroke: text }]);
 export const symbolNought = style([stroke, { stroke: colorBlue }]);
 export const symbolCross = style([stroke, { stroke: colorRed }]);
-export const symbolFlag = style([stroke, { stroke: text }]);
 
 export const symbolFlagFill = style({ fill: colorRed });
 export const symbolMineFill = style({ fill: colorBlack });

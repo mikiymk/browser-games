@@ -70,3 +70,4 @@ export const FLAG = "flag";
 export const MINE = "mine";
 export const STONE = "stone";
 export const STONE_KING = "stone-king";
+export const MARKER = "marker";
