@@ -16,11 +16,6 @@ type UseProperties<T extends string> = ImageBound & {
   readonly id: T | undefined;
 };
 export const UseImage = <T extends string = string>(properties: UseProperties<T>): JSXElement => {
-  return (
-    <Show when={properties.id}>
-      {(id) => (
-        <use height={properties.height} href={`#${id()}`} width={properties.width} x={properties.x} y={properties.y} />
-      )}
-    </Show>
-  );
+  const [_id, others] = splitProps(properties, ["id"]);
+  return <Show when={properties.id}>{(id) => <use href={`#${id()}`} {...others} />}</Show>;
 };

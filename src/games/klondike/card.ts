@@ -1,12 +1,12 @@
 const Suits = ["club", "diamond", "heart", "spade"] as const;
 export type Suit = (typeof Suits)[number];
 
-const Ranks = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13] as const;
+const Ranks = ["a", 2, 3, 4, 5, 6, 7, 8, 9, "t", "j", "q", "k"] as const;
 export type Card = `${Suit}-${Rank}`;
 
 export type Rank = (typeof Ranks)[number];
 export const Cards = [
-  "club-1",
+  "club-a",
   "club-2",
   "club-3",
   "club-4",
@@ -15,12 +15,12 @@ export const Cards = [
   "club-7",
   "club-8",
   "club-9",
-  "club-10",
-  "club-11",
-  "club-12",
-  "club-13",
+  "club-t",
+  "club-j",
+  "club-q",
+  "club-k",
 
-  "diamond-1",
+  "diamond-a",
   "diamond-2",
   "diamond-3",
   "diamond-4",
@@ -29,12 +29,12 @@ export const Cards = [
   "diamond-7",
   "diamond-8",
   "diamond-9",
-  "diamond-10",
-  "diamond-11",
-  "diamond-12",
-  "diamond-13",
+  "diamond-t",
+  "diamond-j",
+  "diamond-q",
+  "diamond-k",
 
-  "heart-1",
+  "heart-a",
   "heart-2",
   "heart-3",
   "heart-4",
@@ -43,12 +43,12 @@ export const Cards = [
   "heart-7",
   "heart-8",
   "heart-9",
-  "heart-10",
-  "heart-11",
-  "heart-12",
-  "heart-13",
+  "heart-t",
+  "heart-j",
+  "heart-q",
+  "heart-k",
 
-  "spade-1",
+  "spade-a",
   "spade-2",
   "spade-3",
   "spade-4",
@@ -57,10 +57,10 @@ export const Cards = [
   "spade-7",
   "spade-8",
   "spade-9",
-  "spade-10",
-  "spade-11",
-  "spade-12",
-  "spade-13",
+  "spade-t",
+  "spade-j",
+  "spade-q",
+  "spade-k",
 ] as const satisfies Card[];
 
 export const suitOf = (card: Card): Suit => {
@@ -81,3 +81,35 @@ export const colorOf = (card: Suit): "black" | "red" => {
     } as const
   )[card];
 };
+
+export const incrementRank = {
+  2: 3,
+  3: 4,
+  4: 5,
+  5: 6,
+  6: 7,
+  7: 8,
+  8: 9,
+  9: "t",
+  a: 2,
+  j: "q",
+  k: undefined,
+  q: "k",
+  t: "j",
+} as const satisfies Record<Rank, Rank | undefined>;
+
+export const decrementRank = {
+  2: "a",
+  3: 2,
+  4: 3,
+  5: 4,
+  6: 5,
+  7: 6,
+  8: 7,
+  9: 8,
+  a: undefined,
+  j: "t",
+  k: "q",
+  q: "j",
+  t: 9,
+} as const satisfies Record<Rank, Rank | undefined>;

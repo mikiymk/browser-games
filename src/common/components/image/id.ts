@@ -1,5 +1,5 @@
 export type CardCourtRank = (typeof CARD_COURT_RANKS)[number];
-export type CardId = "card-back" | "card-joker" | `card-${CardSuit}-${CardRank}`;
+export type CardId = "card-back" | "card-empty" | "card-joker" | `card-${CardSuit}-${CardRank}`;
 export type CardPipRank = (typeof CARD_PIP_RANKS)[number];
 export type CardRank = CardCourtRank | CardPipRank;
 export type CardSuit = (typeof CARD_SUITS)[number];

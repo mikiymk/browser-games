@@ -27,6 +27,11 @@ export const cardBackGround = style({
   stroke: text,
 });
 
+export const cardEmpty = style({
+  fill: "none",
+  stroke: text,
+});
+
 export const chessPiece = styleVariants({
   black: {
     fill: stoneDark,

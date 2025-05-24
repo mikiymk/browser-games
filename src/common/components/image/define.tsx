@@ -3,7 +3,7 @@ import type { JSXElement } from "solid-js";
 import { For } from "solid-js";
 
 import { Define } from "../../../components/define/define.tsx";
-import { Back, Court, Pip } from "./card.tsx";
+import { Back, Court, Empty, Pip } from "./card.tsx";
 import { Bishop, King, Knight, Pawn, Queen, Rook } from "./chess-piece.tsx";
 import { CARD_COURT_RANKS, CARD_PIP_RANKS, CARD_SUITS } from "./id.ts";
 import { Piece2Letters, PieceShapeDown, PieceShapeUp } from "./shogi-piece.tsx";
@@ -27,6 +27,7 @@ export const DefineCards = (): JSXElement => {
       </For>
 
       <Back />
+      <Empty />
     </Define>
   );
 };

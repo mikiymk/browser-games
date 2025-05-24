@@ -3,7 +3,7 @@ import { createStore } from "solid-js/store";
 import type { Card } from "./card.ts";
 
 import { shuffledArray } from "../../scripts/random-select.ts";
-import { Cards, colorOf, rankOf, suitOf } from "./card.ts";
+import { Cards, colorOf, decrementRank, incrementRank, rankOf, suitOf } from "./card.ts";
 
 export type Select =
   | { readonly depth: number; readonly index: number; readonly type: "tableau" }
@@ -170,11 +170,11 @@ export const createKlondike = (): KlondikeObject => {
 
       if (
         // 場札が空でランクが13の場合
-        (tableauTop === undefined && rankOf(moveBottom) === 13) ||
+        (tableauTop === undefined && rankOf(moveBottom) === "k") ||
         // 場札の一番上に比べて動かすカードの一番下が色が違ってランクが1つ小さい場合
         (tableauTop !== undefined &&
           colorOf(suitOf(tableauTop)) !== colorOf(suitOf(moveBottom)) &&
-          rankOf(tableauTop) === rankOf(moveBottom) + 1)
+          rankOf(tableauTop) === incrementRank[rankOf(moveBottom)])
       ) {
         setCards("tableaus", to.index, "opened", (previous) => [...previous, ...moves]);
         return true;
@@ -225,8 +225,8 @@ export const createKlondike = (): KlondikeObject => {
 const canSetFoundation = (base: Card | undefined, target: Card): boolean => {
   return (
     // 組札が空でランクが1の場合
-    (base === undefined && rankOf(target) === 1) ||
+    (base === undefined && rankOf(target) === "a") ||
     // 組札の一番上と動かすカードの一番下がスートが同じでランクが1つ違いの場合
-    (base !== undefined && suitOf(base) === suitOf(target) && rankOf(base) === rankOf(target) - 1)
+    (base !== undefined && suitOf(base) === suitOf(target) && rankOf(base) === decrementRank[rankOf(target)])
   );
 };

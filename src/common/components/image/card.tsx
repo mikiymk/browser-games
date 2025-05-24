@@ -6,7 +6,7 @@ import type { CardCourtRank, CardId, CardPipRank, CardRank, CardSuit } from "./i
 
 import { cardBg, colorBlue } from "../../../styles/colors.css.ts";
 import { UseImage } from "../use-image/use.tsx";
-import { cardBackGround, cardText, cardTextMiddle } from "./style.css.ts";
+import { cardBackGround, cardEmpty, cardText, cardTextMiddle } from "./style.css.ts";
 
 const selectIndexes = <T,>(array: readonly T[], indexes: readonly number[]): readonly T[] => {
   return indexes.map((index) => array[index] as T);
@@ -122,6 +122,15 @@ export const Back = (): JSXElement => {
       <Shape />
       <rect fill={colorBlue} height="50" width="30" x="5" y="5" />
       <circle cx="20" cy="30" fill={cardBg} r="5" />
+    </symbol>
+  );
+};
+
+/** カードの枠だけ */
+export const Empty = (): JSXElement => {
+  return (
+    <symbol id={"card-empty" satisfies CardId} viewBox="0 0 40 60">
+      <rect class={cardEmpty} height="58" rx="5" ry="5" width="38" x="1" y="1" />
     </symbol>
   );
 };
