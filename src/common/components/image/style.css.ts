@@ -1,6 +1,6 @@
 import { style, styleVariants } from "@vanilla-extract/css";
 
-import { cardBg, colorBlack, colorBlue, colorRed, stoneDark, stoneLight, text } from "../../../styles/colors.css.ts";
+import { cardBg, colorBlack, colorRed, stoneDark, stoneLight, text } from "../../../styles/colors.css.ts";
 import { latin } from "../../../styles/fonts.css.ts";
 
 export const suitBlack = style({
@@ -61,8 +61,6 @@ const stroke = style({
 });
 
 export const symbolMark = style([stroke, { stroke: text }]);
-export const symbolNought = style([stroke, { stroke: colorBlue }]);
-export const symbolCross = style([stroke, { stroke: colorRed }]);
 
 export const symbolFlagFill = style({ fill: colorRed });
 export const symbolMineFill = style({ fill: colorBlack });

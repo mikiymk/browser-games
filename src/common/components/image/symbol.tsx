@@ -2,12 +2,12 @@ import type { JSXElement } from "solid-js";
 
 import { close, line, move, path } from "../../scripts/svg-path.ts";
 import { CROSS, FLAG, MARKER, MINE, NOUGHT, STONE, STONE_KING } from "./id.ts";
-import { stone, symbolCross, symbolFlagFill, symbolMark, symbolMineFill, symbolNought } from "./style.css.ts";
+import { stone, symbolFlagFill, symbolMark, symbolMineFill } from "./style.css.ts";
 
 export const Nought = (): JSXElement => {
   return (
     <symbol id={NOUGHT} viewBox="0 0 60 60">
-      <circle class={symbolNought} cx={30} cy={30} r={20} />
+      <circle class={symbolMark} cx={30} cy={30} r={20} />
     </symbol>
   );
 };
@@ -15,7 +15,7 @@ export const Nought = (): JSXElement => {
 export const Cross = (): JSXElement => {
   return (
     <symbol id={CROSS} viewBox="0 0 60 60">
-      <path class={symbolCross} d={path(move(15, 15), line(45, 45), move(15, 45), line(45, 15))} />
+      <path class={symbolMark} d={path(move(15, 15), line(45, 45), move(15, 45), line(45, 15))} />
     </symbol>
   );
 };
