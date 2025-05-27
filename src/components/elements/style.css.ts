@@ -46,9 +46,3 @@ export const svg = style({
   height: "2rem",
   width: "2rem",
 });
-
-export const svgUse = style({
-  fill: "none",
-  stroke: text,
-  strokeWidth: "2",
-});

@@ -20,8 +20,6 @@ const symbol = style({
 
 export const closed = style([symbol, { fill: colorGray }]);
 export const opened = style([symbol, { fill: "none" }]);
-export const mineStyle = style([symbol, { fill: colorBlack }]);
-export const flagStyle = style([symbol, { fill: colorRed }]);
 
 export const number = style({
   fontSize: 60,

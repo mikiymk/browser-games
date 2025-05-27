@@ -1,3 +1,3 @@
 # browser-games
 
-https://mikiymk.github.io/browser-games/
+<https://mikiymk.github.io/browser-games/>

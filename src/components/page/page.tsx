@@ -4,7 +4,7 @@ import icon from "../../images/theme-icon.svg";
 import { body, header, headerButton, headerIcon, headerText, headerTitle } from "./style.css.ts";
 
 type PageBodyProperties = {
-  readonly children: JSXElement;
+  readonly children?: JSXElement;
   readonly header?: JSXElement;
 };
 export const Page = (properties: PageBodyProperties): JSXElement => {

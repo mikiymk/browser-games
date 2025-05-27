@@ -1,13 +1,12 @@
 import type { JSXElement } from "solid-js";
 
+import { Knight } from "../../../common/components/image/chess-piece.tsx";
+import { CROSS_ID, KNIGHT, NOUGHT_ID, WHITE } from "../../../common/components/image/id.ts";
+import { Cross, Nought } from "../../../common/components/image/symbol.tsx";
+import { UseImage } from "../../../common/components/use-image/use.tsx";
 import { DefineNumber } from "../../../components/define/define-number.tsx";
-import { DefineUse } from "../../../components/define/define-use.tsx";
 import { Define } from "../../../components/define/define.tsx";
-import { Use } from "../../../components/define/use.tsx";
-import knight from "../../../images/chess/knight.svg";
-import cross from "../../../images/icon/cross.svg";
-import nought from "../../../images/icon/nought.svg";
-import { figure, number, piece } from "./style.css.ts";
+import { number } from "./style.css.ts";
 
 export const DefineSymbol = (): JSXElement => {
   return (
@@ -21,11 +20,36 @@ export const DefineSymbol = (): JSXElement => {
       <DefineNumber class={number} number={6} />
       <DefineNumber class={number} number={7} />
 
-      <DefineUse class={piece} href={knight.src} id="knight" />
-      <DefineUse class={figure} href={nought.src} id="nought" />
-      <DefineUse class={figure} href={cross.src} id="cross" />
+      <Knight color={WHITE} />
+      <Nought />
+      <Cross />
     </Define>
   );
 };
 
-export const UsePiece = Use<"cross" | "knight" | "nought" | number | undefined>;
+const idMap = (id: "cross" | "knight" | "nought" | number | undefined): string | undefined => {
+  if (typeof id === "number") {
+    return String(id);
+  }
+  if (id === "nought") {
+    return NOUGHT_ID;
+  }
+  if (id === "cross") {
+    return CROSS_ID;
+  }
+  if (id === "knight") {
+    return `${KNIGHT}-${WHITE}`;
+  }
+
+  return undefined;
+};
+
+type UseProperties = {
+  readonly id: "cross" | "knight" | "nought" | number | undefined;
+
+  readonly x: number;
+  readonly y: number;
+};
+export const UsePiece = (properties: UseProperties): JSXElement => {
+  return <UseImage height={10} id={idMap(properties.id)} width={10} x={properties.x} y={properties.y} />;
+};

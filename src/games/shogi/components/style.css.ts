@@ -1,28 +1,6 @@
 import { style } from "@vanilla-extract/css";
 
-import { colorBlack, colorRed, shogiBoard, shogiPiece, text } from "../../../styles/colors.css.ts";
-
-export const pieceStyle = style({
-  fill: shogiPiece,
-  stroke: text,
-});
-
-export const pieceText = style({
-  fontSize: 20,
-  textAnchor: "middle",
-});
-
-export const blackText = style({
-  fill: colorBlack,
-});
-
-export const redText = style({
-  fill: colorRed,
-});
-
-export const reversed = style({
-  transform: "translate(100%, 100%) rotate(180deg)",
-});
+import { shogiBoard, text } from "../../../styles/colors.css.ts";
 
 export const board = style({
   fill: shogiBoard,

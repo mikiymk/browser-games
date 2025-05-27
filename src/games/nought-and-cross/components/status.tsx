@@ -4,9 +4,8 @@ import { Match, Switch } from "solid-js";
 
 import type { GameStatus } from "../constants.ts";
 
-import { StyledSvg } from "../../../components/elements/styled-svg.tsx";
-import cross from "../../../images/icon/cross.svg";
-import nought from "../../../images/icon/nought.svg";
+import { CROSS_ID, NOUGHT_ID } from "../../../common/components/image/id.ts";
+import { UseSvg } from "../../../components/elements/styled-svg.tsx";
 import {
   STATUS_DRAW,
   STATUS_PLAY_CROSS,
@@ -23,17 +22,17 @@ export const StatusButton = (properties: StatusButtonProperties): JSXElement => 
     <div>
       <Switch>
         <Match when={properties.status === STATUS_WIN_NOUGHT}>
-          win <StyledSvg alt="nought" src={nought.src} />
+          win <UseSvg alt="nought" id={NOUGHT_ID} />
         </Match>
         <Match when={properties.status === STATUS_WIN_CROSS}>
-          win <StyledSvg alt="cross" src={cross.src} />
+          win <UseSvg alt="cross" id={CROSS_ID} />
         </Match>
         <Match when={properties.status === STATUS_DRAW}>Draw!</Match>
         <Match when={properties.status === STATUS_PLAY_NOUGHT}>
-          next <StyledSvg alt="nought" src={nought.src} />
+          next <UseSvg alt="nought" id={NOUGHT_ID} />
         </Match>
         <Match when={properties.status === STATUS_PLAY_CROSS}>
-          next <StyledSvg alt="cross" src={cross.src} />
+          next <UseSvg alt="cross" id={CROSS_ID} />
         </Match>
       </Switch>
     </div>

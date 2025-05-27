@@ -1,20 +1,9 @@
 import { style } from "@vanilla-extract/css";
 
-import { stoneLight, text } from "../../../styles/colors.css.ts";
-
-export const piece = style({
-  fill: stoneLight,
-  stroke: text,
-});
+import { text } from "../../../styles/colors.css.ts";
 
 export const number = style({
   fill: text,
-});
-
-export const figure = style({
-  fill: "none",
-  stroke: text,
-  strokeWidth: 4,
 });
 
 export const history = style({

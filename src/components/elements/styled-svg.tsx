@@ -1,17 +1,17 @@
 import type { JSXElement } from "solid-js";
 
-import { svg, svgUse } from "./style.css.ts";
+import { UseImage } from "../../common/components/use-image/use.tsx";
+import { svg } from "./style.css.ts";
 
-type StyledSvgProperties = {
+type UseSvgProperties = {
   readonly alt: string;
-  readonly class?: string;
-  readonly src: string;
+  readonly id?: string;
 };
-export const StyledSvg = (properties: StyledSvgProperties): JSXElement => {
+export const UseSvg = (properties: UseSvgProperties): JSXElement => {
   return (
     <svg class={svg} viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
       <title>{properties.alt}</title>
-      <use class={properties.class ?? svgUse} href={`${properties.src}#root`} />
+      <UseImage id={properties.id} />
     </svg>
   );
 };
