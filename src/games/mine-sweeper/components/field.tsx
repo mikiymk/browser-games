@@ -1,8 +1,11 @@
 import type { JSXElement } from "solid-js";
 
+import { Show } from "solid-js";
+
+import { FLAG, MINE } from "../../../common/components/image/id.ts";
+import { UseImage } from "../../../common/components/use-image/use.tsx";
 import { Board } from "../../../components/board/board.tsx";
-import { FieldBomb, FieldFlag, FieldNoOpen, FieldOpen } from "../consts.ts";
-import { UseSymbol } from "./define.tsx";
+import { FieldBomb, FieldFlag, FieldNoOpen } from "../consts.ts";
 
 type MineCellProperties = {
   readonly field: number;
@@ -10,20 +13,29 @@ type MineCellProperties = {
   readonly y: number;
 };
 const MineCell = (properties: MineCellProperties): JSXElement => {
-  const id = (): "close" | "flag" | "mine" | "open" | number => {
-    return (
-      (
-        {
-          [FieldBomb]: "mine",
-          [FieldFlag]: "flag",
-          [FieldNoOpen]: "close",
-          [FieldOpen]: "open",
-        } as const
-      )[properties.field] ?? properties.field
-    );
+  const id = (): string | undefined => {
+    if (properties.field > 0) {
+      return String(properties.field);
+    }
+
+    return {
+      [FieldBomb]: MINE,
+      [FieldFlag]: FLAG,
+    }[properties.field];
   };
 
-  return <UseSymbol id={id()} x={properties.x} y={properties.y} />;
+  const isClosed = (): boolean => {
+    return [FieldBomb, FieldFlag, FieldNoOpen].includes(properties.field);
+  };
+
+  return (
+    <>
+      <Show when={isClosed()}>
+        <UseImage height={10} id="close" width={10} x={properties.x} y={properties.y} />
+      </Show>
+      <UseImage height={10} id={id()} width={10} x={properties.x} y={properties.y} />
+    </>
+  );
 };
 
 type MineFieldsProperties = {
@@ -48,6 +60,7 @@ export const MineFields = (properties: MineFieldsProperties): JSXElement => {
       data={properties.fields}
       height={properties.height}
       width={properties.width}
+      // TODO: foreground
     >
       {(field, _, x, y) => <MineCell field={field} x={x} y={y} />}
     </Board>

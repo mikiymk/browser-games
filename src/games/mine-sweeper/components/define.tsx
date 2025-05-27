@@ -1,14 +1,10 @@
 import type { JSXElement } from "solid-js";
 
+import { Flag, Mine } from "../../../common/components/image/symbol.tsx";
 import { Define } from "../../../components/define/define.tsx";
-import { Use } from "../../../components/define/use.tsx";
-import flag from "../../../images/icon/flag.svg";
-import mine from "../../../images/icon/mine.svg";
 import { classes } from "../../../scripts/classes.ts";
 import {
   closed,
-  flagStyle,
-  mineStyle,
   number,
   number1,
   number2,
@@ -24,14 +20,8 @@ import {
 export const DefineSymbol = (): JSXElement => {
   return (
     <Define>
-      <symbol id="mine" viewBox="0 0 60 60">
-        <Closed />
-        <use class={mineStyle} href={`${mine.src}#root`} />
-      </symbol>
-      <symbol id="flag" viewBox="0 0 60 60">
-        <Closed />
-        <use class={flagStyle} href={`${flag.src}#root`} />
-      </symbol>
+      <Mine />
+      <Flag />
       <symbol id="close" viewBox="0 0 60 60">
         <Closed />
       </symbol>
@@ -73,5 +63,3 @@ const DefineNumber = (properties: DefineNumberProperties): JSXElement => {
     </symbol>
   );
 };
-
-export const UseSymbol = Use<"close" | "flag" | "mine" | "open" | number>;
