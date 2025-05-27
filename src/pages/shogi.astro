@@ -1,13 +1,13 @@
 ---
+import { DefineShogiPieces } from "../common/components/image/define.tsx";
 import Head from "../components/head.astro";
 import { App } from "../games/shogi/components/app.tsx";
-import { DefinePieces } from "../games/shogi/components/define.tsx";
 import { TEXT_GAME_SHOGI } from "../scripts/constants.ts";
 ---
 
 <Head title={TEXT_GAME_SHOGI} />
 
-<DefinePieces />
+<DefineShogiPieces />
 <App client:load />
 
 <div />
