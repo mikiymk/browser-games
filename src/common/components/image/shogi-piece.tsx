@@ -2,7 +2,7 @@ import type { JSXElement } from "solid-js";
 
 import type { ShogiId, ShogiPiece } from "./id.ts";
 
-import { close, line, move, path } from "../../scripts/svg-path.ts";
+import { path, close, line, move } from "../../scripts/svg-path.ts";
 import {
   shogiPieceShape,
   shogiPieceTextDown,

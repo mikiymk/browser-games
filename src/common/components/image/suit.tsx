@@ -1,6 +1,6 @@
 import type { JSXElement } from "solid-js";
 
-import { arc, bezier, close, line, move, path } from "../../scripts/svg-path.ts";
+import { path, arc, bezier, close, line, move } from "../../scripts/svg-path.ts";
 import { CLUB, DIAMOND, HEART, SPADE } from "./id.ts";
 import { suitBlack, suitRed } from "./style.css.ts";
 
