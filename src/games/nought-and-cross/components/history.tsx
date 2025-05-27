@@ -2,10 +2,9 @@ import type { JSXElement } from "solid-js";
 
 import { For, Show } from "solid-js";
 
-import { StyledSvg } from "../../../components/elements/styled-svg.tsx";
+import { CROSS_ID, NOUGHT_ID } from "../../../common/components/image/id.ts";
+import { UseSvg } from "../../../components/elements/styled-svg.tsx";
 import { HeaderPopup } from "../../../components/page/header-popup.tsx";
-import cross from "../../../images/icon/cross.svg";
-import nought from "../../../images/icon/nought.svg";
 import { TEXT_HISTORY } from "../../../scripts/constants.ts";
 import { history, historyItem } from "./style.css.ts";
 
@@ -28,8 +27,8 @@ export const History = (properties: HistoryProperties): JSXElement => {
         <For each={paddedHistory()}>
           {(history, index) => (
             <li class={historyItem}>
-              <Show fallback={<StyledSvg alt="nought" src={nought.src} />} when={index() % 2}>
-                <StyledSvg alt="cross" src={cross.src} />
+              <Show fallback={<UseSvg alt="nought" id={NOUGHT_ID} />} when={index() % 2}>
+                <UseSvg alt="cross" id={CROSS_ID} />
               </Show>
               <Show when={history !== -1}>{position(history)}</Show>
             </li>

@@ -64,8 +64,8 @@ export const SHOGI_DIRECTIONS = [UP, DOWN] as const;
 export type ShogiDirection = (typeof SHOGI_DIRECTIONS)[number];
 export type ShogiId = `${ShogiPiece}-${ShogiDirection}`;
 
-export const CROSS = "cross";
-export const NOUGHT = "nought";
+export const CROSS_ID = "cross";
+export const NOUGHT_ID = "nought";
 export const FLAG = "flag";
 export const MINE = "mine";
 export const STONE = "stone";

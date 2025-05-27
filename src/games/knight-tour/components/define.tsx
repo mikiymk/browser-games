@@ -1,7 +1,7 @@
 import type { JSXElement } from "solid-js";
 
 import { Knight } from "../../../common/components/image/chess-piece.tsx";
-import { CROSS, KNIGHT, NOUGHT, WHITE } from "../../../common/components/image/id.ts";
+import { CROSS_ID, KNIGHT, NOUGHT_ID, WHITE } from "../../../common/components/image/id.ts";
 import { Cross, Nought } from "../../../common/components/image/symbol.tsx";
 import { UseImage } from "../../../common/components/use-image/use.tsx";
 import { DefineNumber } from "../../../components/define/define-number.tsx";
@@ -32,10 +32,10 @@ const idMap = (id: "cross" | "knight" | "nought" | number | undefined): string |
     return String(id);
   }
   if (id === "nought") {
-    return NOUGHT;
+    return NOUGHT_ID;
   }
   if (id === "cross") {
-    return CROSS;
+    return CROSS_ID;
   }
   if (id === "knight") {
     return `${KNIGHT}-${WHITE}`;

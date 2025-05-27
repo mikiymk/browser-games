@@ -1,6 +1,6 @@
 import type { JSXElement } from "solid-js";
 
-import { CROSS, FLAG, MINE, NOUGHT } from "../../../common/components/image/id.ts";
+import { CROSS_ID, FLAG, MINE, NOUGHT_ID } from "../../../common/components/image/id.ts";
 import { Cross, Flag, Mine, Nought, Stone, StoneKing } from "../../../common/components/image/symbol.tsx";
 import { UseImage } from "../../../common/components/use-image/use.tsx";
 import { Define } from "../../../components/define/define.tsx";
@@ -23,12 +23,12 @@ export const OtherSymbolImages = (): JSXElement => {
       <div>
         <svg class={image} viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
           <title>View</title>
-          <UseImage id={NOUGHT} />
+          <UseImage id={NOUGHT_ID} />
         </svg>
 
         <svg class={image} viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
           <title>View</title>
-          <UseImage id={CROSS} />
+          <UseImage id={CROSS_ID} />
         </svg>
 
         <svg class={image} viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">

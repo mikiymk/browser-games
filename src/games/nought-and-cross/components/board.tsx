@@ -1,13 +1,10 @@
 import type { JSXElement } from "solid-js";
 
-import { Match, Switch } from "solid-js";
-
+import { CROSS_ID, NOUGHT_ID } from "../../../common/components/image/id.ts";
+import { UseImage } from "../../../common/components/use-image/use.tsx";
 import { Board } from "../../../components/board/board.tsx";
-import cross from "../../../images/icon/cross.svg";
-import nought from "../../../images/icon/nought.svg";
 import board from "../../../images/nought-and-cross/board.svg";
 import { CROSS, NOUGHT } from "../constants.ts";
-import { crossStyle, noughtStyle } from "./style.css.ts";
 
 type CellProperties = {
   readonly mark: number;
@@ -15,16 +12,18 @@ type CellProperties = {
   readonly y: number;
 };
 const Cell = (properties: CellProperties): JSXElement => {
-  return (
-    <Switch>
-      <Match when={properties.mark === NOUGHT}>
-        <use class={noughtStyle} height={10} href={`${nought.src}#root`} width={10} x={properties.x} y={properties.y} />
-      </Match>
-      <Match when={properties.mark === CROSS}>
-        <use class={crossStyle} height={10} href={`${cross.src}#root`} width={10} x={properties.x} y={properties.y} />
-      </Match>
-    </Switch>
-  );
+  const id = (): string | undefined => {
+    switch (properties.mark) {
+      case CROSS:
+        return CROSS_ID;
+      case NOUGHT:
+        return NOUGHT_ID;
+      default:
+        return undefined;
+    }
+  };
+
+  return <UseImage height={10} id={id()} width={10} x={properties.x} y={properties.y} />;
 };
 
 type BoardProperties = {
