@@ -1,4 +1,3 @@
-export type Path = Arc | Bezier | Close | Line | Move;
 type Arc = {
   readonly angle: number;
   readonly largeArc: 0 | 1;
@@ -31,6 +30,7 @@ type Move = {
   readonly x: number;
   readonly y: number;
 };
+type Path = Arc | Bezier | Close | Line | Move;
 
 /**
  * 絶対値のMoveToコマンド。

@@ -19,6 +19,7 @@
     "lint:eslint:fix": "eslint src --cache --fix",
     "lint:ts": "tsc",
     "lint:knip": "knip --cache",
+    "lint:knip:fix": "knip --cache --fix",
     "build:js": "astro build",
     "check:js": "run-z format:js lint:js build:js",
     "ci:js": "run-z lint:js build:js",

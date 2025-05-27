@@ -52,7 +52,7 @@ const suitPositions = {
   t: tSuitPositions,
 } satisfies Record<CardRank, readonly { x: number; y: number }[]>;
 
-export const Shape = (): JSXElement => {
+const Shape = (): JSXElement => {
   return <rect class={cardBackGround} height="58" rx="5" ry="5" width="38" x="1" y="1" />;
 };
 

@@ -23,7 +23,6 @@ export const stoneDark = "#78716c";
 export const stoneLight = "#c4bfbb";
 
 // 将棋の駒
-export const shogiPiece = "#fde047";
 export const shogiBoard = "#fbbf24";
 
 // カードの背景

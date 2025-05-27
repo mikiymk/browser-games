@@ -2,11 +2,11 @@ import { style } from "@vanilla-extract/css";
 
 import { stoneDark, stoneLight, text } from "../../../styles/colors.css.ts";
 
-export const white = style({
+const white = style({
   fill: stoneLight,
 });
 
-export const black = style({
+const black = style({
   fill: stoneDark,
 });
 

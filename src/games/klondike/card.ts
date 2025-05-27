@@ -1,10 +1,10 @@
 const Suits = ["club", "diamond", "heart", "spade"] as const;
-export type Suit = (typeof Suits)[number];
+type Suit = (typeof Suits)[number];
 
 const Ranks = ["a", 2, 3, 4, 5, 6, 7, 8, 9, "t", "j", "q", "k"] as const;
 export type Card = `${Suit}-${Rank}`;
 
-export type Rank = (typeof Ranks)[number];
+type Rank = (typeof Ranks)[number];
 export const Cards = [
   "club-a",
   "club-2",

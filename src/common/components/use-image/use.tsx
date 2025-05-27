@@ -2,14 +2,11 @@ import type { JSXElement } from "solid-js";
 
 import { Show, splitProps } from "solid-js";
 
-export type ImageBound = {
+type ImageBound = {
   readonly height?: number | string | undefined;
   readonly width?: number | string | undefined;
   readonly x?: number | string | undefined;
   readonly y?: number | string | undefined;
-};
-export const splitBounds = (properties: ImageBound): ImageBound => {
-  return splitProps(properties, ["height", "width", "x", "y"])[0];
 };
 
 type UseProperties<T extends string> = ImageBound & {

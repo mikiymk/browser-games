@@ -212,6 +212,9 @@ export default typescript.config(
   },
   {
     rules: {
+      // Biomeのインポートのソートとかぶる
+      "perfectionist/sort-named-imports": "off",
+
       // Biomeで検出できるルール
       "@typescript-eslint/ban-types": "off", // complexity/noBannedTypes
       "no-extra-boolean-cast": "off", // complexity/noExtraBooleanCast

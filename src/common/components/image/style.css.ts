@@ -48,7 +48,7 @@ export const shogiPieceShape = style({
   stroke: text,
 });
 
-export const redText = style({ fill: colorRed });
+const redText = style({ fill: colorRed });
 
 export const shogiPieceTextUp = style({ fontSize: 20, textAnchor: "middle" });
 export const shogiPieceTextDown = style([shogiPieceTextUp, { transform: "translate(100%, 100%) rotate(180deg)" }]);

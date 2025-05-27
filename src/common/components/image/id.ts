@@ -15,29 +15,27 @@ export const CARD_COURT_RANKS = ["j", "q", "k"] as const;
 export const CARD_RANKS = ["a", 2, 3, 4, 5, 6, 7, 8, 9, "t", "j", "q", "k"] as const;
 
 export const BISHOP = "bishop";
-export const BISHOP_PROMOTED = "bishop-promoted";
-export const GOLD = "gold";
+const BISHOP_PROMOTED = "bishop-promoted";
+const GOLD = "gold";
 export const KING = "king";
 export const KNIGHT = "knight";
-export const KNIGHT_PROMOTED = "knight-promoted";
-export const LANCE = "lance";
-export const LANCE_PROMOTED = "lance-promoted";
+const KNIGHT_PROMOTED = "knight-promoted";
+const LANCE = "lance";
+const LANCE_PROMOTED = "lance-promoted";
 export const PAWN = "pawn";
-export const PAWN_PROMOTED = "pawn-promoted";
+const PAWN_PROMOTED = "pawn-promoted";
 export const QUEEN = "queen";
 export const ROOK = "rook";
-export const ROOK_PROMOTED = "rook-promoted";
-export const SILVER = "silver";
-export const SILVER_PROMOTED = "silver-promoted";
+const ROOK_PROMOTED = "rook-promoted";
+const SILVER = "silver";
+const SILVER_PROMOTED = "silver-promoted";
 
 export const CHESS_PIECES = [PAWN, KNIGHT, BISHOP, ROOK, QUEEN, KING] as const;
-export type ChessPiece = (typeof CHESS_PIECES)[number];
 
 export const WHITE = "white";
 export const BLACK = "black";
 
 export const CHESS_COLORS = [WHITE, BLACK] as const;
-export type ChessColor = (typeof CHESS_COLORS)[number];
 
 export const SHOGI_PIECES = [
   PAWN,
@@ -57,12 +55,12 @@ export const SHOGI_PIECES = [
 ] as const;
 export type ShogiPiece = (typeof SHOGI_PIECES)[number];
 
-export const UP = "up";
-export const DOWN = "down";
+const UP = "up";
+const DOWN = "down";
 
 export const SHOGI_DIRECTIONS = [UP, DOWN] as const;
-export type ShogiDirection = (typeof SHOGI_DIRECTIONS)[number];
 export type ShogiId = `${ShogiPiece}-${ShogiDirection}`;
+type ShogiDirection = (typeof SHOGI_DIRECTIONS)[number];
 
 export const CROSS_ID = "cross";
 export const NOUGHT_ID = "nought";
