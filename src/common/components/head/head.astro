@@ -1,0 +1,14 @@
+---
+import { rootStyle } from "../../../styles/style.css.ts";
+import { Head as H } from "./head.tsx";
+
+interface Props {
+  title?: string;
+}
+
+const { title } = Astro.props;
+const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
+---
+
+<H canonicalUrl={canonicalUrl.toString()} title={title} />
+<body class={rootStyle} />
