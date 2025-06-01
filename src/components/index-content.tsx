@@ -2,6 +2,7 @@ import type { JSXElement } from "solid-js";
 
 import { For } from "solid-js";
 
+import { Page } from "../common/components/page-frame/page.tsx";
 import {
   TEXT_GAME_BULLS_AND_COWS,
   TEXT_GAME_CHESS,
@@ -15,7 +16,6 @@ import {
 } from "../scripts/constants.ts";
 import { Anchor } from "./elements/anchor.tsx";
 import { List, ListItem } from "./elements/list.tsx";
-import { Page } from "./page/page.tsx";
 
 const pages = [
   { name: "nought-and-cross", title: TEXT_GAME_NOUGHT_AND_CROSS },

@@ -2,7 +2,7 @@ import type { JSXElement } from "solid-js";
 
 import { Close } from "@corvu/dialog";
 
-import { InformationPopUp } from "../../../components/page/information-popup.tsx";
+import { InformationPopUp } from "../../../common/components/page-frame/information-popup.tsx";
 
 type GameOverPopUpProperties = {
   readonly gameOver: boolean;

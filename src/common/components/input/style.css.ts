@@ -1,6 +1,6 @@
 import { style } from "@vanilla-extract/css";
 
-import { settingRadioSelected, text } from "../../styles/colors.css.ts";
+import { settingRadioSelected, text } from "../../../styles/colors.css.ts";
 
 export const number = style({
   borderBottom: `solid ${text} 2px`,

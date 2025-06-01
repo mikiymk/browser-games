@@ -1,6 +1,6 @@
 import type { JSXElement } from "solid-js";
 
-import { classes } from "../../scripts/classes.ts";
+import { classes } from "../../../scripts/classes.ts";
 import { defineText } from "./style.css.ts";
 
 type DefineNumberProperties = {

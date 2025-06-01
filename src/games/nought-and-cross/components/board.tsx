@@ -1,8 +1,8 @@
 import type { JSXElement } from "solid-js";
 
+import { Board } from "../../../common/components/game-board/board.tsx";
 import { CROSS_ID, NOUGHT_ID } from "../../../common/components/image/id.ts";
 import { UseImage } from "../../../common/components/use-image/use.tsx";
-import { Board } from "../../../components/board/board.tsx";
 import board from "../../../images/nought-and-cross/board.svg";
 import { CROSS, NOUGHT } from "../constants.ts";
 

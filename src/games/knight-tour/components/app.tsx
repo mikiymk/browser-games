@@ -2,7 +2,7 @@ import type { JSXElement } from "solid-js";
 
 import { onMount } from "solid-js";
 
-import { Page } from "../../../components/page/page.tsx";
+import { Page } from "../../../common/components/page-frame/page.tsx";
 import { createUrlQuerySignal } from "../../../scripts/use-url-query.ts";
 import { CellKnight, CellMovable, CellVisited } from "../consts.ts";
 import { createGame } from "../create-game.ts";

@@ -1,7 +1,7 @@
 import type { JSXElement } from "solid-js";
 
+import { Define } from "../../../common/components/define/define.tsx";
 import { Cross, Nought } from "../../../common/components/image/symbol.tsx";
-import { Define } from "../../../components/define/define.tsx";
 
 export const DefineNoughtAndCross = (): JSXElement => {
   return (

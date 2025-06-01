@@ -1,6 +1,6 @@
 import { keyframes, style } from "@vanilla-extract/css";
 
-import { pageBody, pageHeader, pageHeaderShadow, text } from "../../styles/colors.css.ts";
+import { pageBody, pageHeader, pageHeaderShadow, text } from "../../../styles/colors.css.ts";
 
 export const header = style({
   alignItems: "center",

@@ -1,7 +1,7 @@
 import type { JSXElement, Setter } from "solid-js";
 
+import { Radio } from "../../../common/components/input/radio.tsx";
 import { SettingItem, Settings } from "../../../components/header-buttons/settings.tsx";
-import { Radio } from "../../../components/input/radio.tsx";
 import { TEXT_HINT, TEXT_HINT_NONE, TEXT_HINT_NUMBER } from "../../../scripts/constants.ts";
 
 const hintValues = [

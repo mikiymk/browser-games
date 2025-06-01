@@ -4,7 +4,7 @@ import { For } from "solid-js";
 
 import type { Hand } from "../constants.ts";
 
-import { Board } from "../../../components/board/board.tsx";
+import { Board } from "../../../common/components/game-board/board.tsx";
 import board from "../../../images/shogi/board.svg";
 import { BLACK, WHITE } from "../constants.ts";
 import { Hands } from "./hands.tsx";

@@ -2,7 +2,7 @@ import type { JSXElement } from "solid-js";
 
 import { Show } from "solid-js";
 
-import { Icon } from "../elements/material-icon.tsx";
+import { Icon } from "../../../components/elements/material-icon.tsx";
 import { headerButton, headerText } from "./style.css.ts";
 
 type HeaderButtonProperites = {

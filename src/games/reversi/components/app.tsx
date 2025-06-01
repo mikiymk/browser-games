@@ -4,9 +4,9 @@ import { createSignal } from "solid-js";
 
 import type { PlayerType } from "../../../scripts/player.ts";
 
+import { Page } from "../../../common/components/page-frame/page.tsx";
 import { PlayerSetting, Settings } from "../../../components/header-buttons/settings.tsx";
 import { Start } from "../../../components/header-buttons/start.tsx";
-import { Page } from "../../../components/page/page.tsx";
 import { doNothingFunction } from "../../../scripts/do-nothing.ts";
 import { MultiPromise } from "../../../scripts/multi-promise.ts";
 import { PlayerTypeAi, PlayerTypeHuman } from "../../../scripts/player.ts";

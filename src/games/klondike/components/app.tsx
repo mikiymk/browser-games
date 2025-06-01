@@ -5,9 +5,9 @@ import { createSignal } from "solid-js";
 
 import type { Select } from "../klondike.ts";
 
+import { InformationPopUp } from "../../../common/components/page-frame/information-popup.tsx";
+import { Page } from "../../../common/components/page-frame/page.tsx";
 import { Start } from "../../../components/header-buttons/start.tsx";
-import { InformationPopUp } from "../../../components/page/information-popup.tsx";
-import { Page } from "../../../components/page/page.tsx";
 import { createKlondike } from "../klondike.ts";
 import { Field } from "./field.tsx";
 

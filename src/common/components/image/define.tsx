@@ -2,7 +2,7 @@ import type { JSXElement } from "solid-js";
 
 import { For } from "solid-js";
 
-import { Define } from "../../../components/define/define.tsx";
+import { Define } from "../define/define.tsx";
 import { Back, Court, Empty, Pip } from "./card.tsx";
 import { Bishop, King, Knight, Pawn, Queen, Rook } from "./chess-piece.tsx";
 import { CARD_COURT_RANKS, CARD_PIP_RANKS, CARD_SUITS } from "./id.ts";

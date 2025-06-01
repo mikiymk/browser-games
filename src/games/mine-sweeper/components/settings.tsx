@@ -1,7 +1,7 @@
 import type { JSXElement, Setter } from "solid-js";
 
+import { InputNumber } from "../../../common/components/input/number.tsx";
 import { SettingItem, Settings } from "../../../components/header-buttons/settings.tsx";
-import { InputNumber } from "../../../components/input/number.tsx";
 import { TEXT_HEIGHT, TEXT_MINES_COUNT, TEXT_WIDTH } from "../../../scripts/constants.ts";
 
 type Properties = {

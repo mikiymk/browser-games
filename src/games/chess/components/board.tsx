@@ -2,7 +2,7 @@ import type { JSXElement } from "solid-js";
 
 import type { BoardCell } from "../board.ts";
 
-import { Board } from "../../../components/board/board.tsx";
+import { Board } from "../../../common/components/game-board/board.tsx";
 import board from "../../../images/chess/board.svg";
 import { BoardSquare } from "./board-square.tsx";
 

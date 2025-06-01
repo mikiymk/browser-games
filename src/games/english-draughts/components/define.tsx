@@ -1,9 +1,9 @@
 import type { JSXElement } from "solid-js";
 
+import { Define } from "../../../common/components/define/define.tsx";
 import { BLACK, MARKER, STONE, STONE_KING, WHITE } from "../../../common/components/image/id.ts";
 import { Marker, Stone, StoneKing } from "../../../common/components/image/symbol.tsx";
 import { UseImage } from "../../../common/components/use-image/use.tsx";
-import { Define } from "../../../components/define/define.tsx";
 import { COLOR_KING_BLACK, COLOR_KING_WHITE, COLOR_PAWN_BLACK, COLOR_PAWN_WHITE, MOVE_TARGET } from "../constants.ts";
 
 const WHITE_PAWN_ID = `${STONE}-${WHITE}`;

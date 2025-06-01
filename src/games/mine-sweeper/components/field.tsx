@@ -2,9 +2,9 @@ import type { JSXElement } from "solid-js";
 
 import { Show } from "solid-js";
 
+import { Board } from "../../../common/components/game-board/board.tsx";
 import { FLAG, MINE } from "../../../common/components/image/id.ts";
 import { UseImage } from "../../../common/components/use-image/use.tsx";
-import { Board } from "../../../components/board/board.tsx";
 import { FieldBomb, FieldFlag, FieldNoOpen } from "../consts.ts";
 
 type MineCellProperties = {

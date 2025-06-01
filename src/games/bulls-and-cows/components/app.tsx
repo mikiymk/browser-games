@@ -2,10 +2,10 @@ import type { JSXElement } from "solid-js";
 
 import { For, Show } from "solid-js";
 
+import { InputNumber } from "../../../common/components/input/number.tsx";
+import { Page } from "../../../common/components/page-frame/page.tsx";
 import { SettingItem, Settings } from "../../../components/header-buttons/settings.tsx";
 import { Start } from "../../../components/header-buttons/start.tsx";
-import { InputNumber } from "../../../components/input/number.tsx";
-import { Page } from "../../../components/page/page.tsx";
 import { createGame } from "../game.ts";
 import { Guess } from "./guess.tsx";
 import { InputDigits } from "./input-digits.tsx";
