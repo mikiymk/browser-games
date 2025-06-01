@@ -7,16 +7,20 @@ import { defineConfig } from "astro/config";
 export default defineConfig({
   site: "https://mikiymk.github.io/",
   base: "browser-games/",
+
   integrations: [
-    solidJs({}),
+    solidJs(),
     compress({
       // biome-ignore lint/style/useNamingConvention: ライブラリに合わせる
       HTML: {
         "html-minifier-terser": {
-          collapseWhitespace: true,
+          collapseBooleanAttributes: true,
           collapseInlineTagWhitespace: true,
+          collapseWhitespace: true,
           decodeEntities: true,
           removeAttributeQuotes: true,
+          removeComments: true,
+          removeEmptyAttributes: true,
           removeRedundantAttributes: true,
           sortAttributes: true,
           sortClassName: true,
@@ -40,22 +44,6 @@ export default defineConfig({
       SVG: {
         svgo: {
           multipass: true,
-          plugins: [
-            {
-              name: "cleanupIds",
-              params: {
-                preserve: ["root"],
-              },
-            },
-            {
-              name: "preset-default",
-              params: {
-                overrides: {
-                  cleanupIds: false,
-                },
-              },
-            },
-          ],
         },
       },
     }),

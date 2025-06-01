@@ -1,8 +1,10 @@
-node_modules
-dist
+# キャッシュファイル
 .eslintcache
 .stylelintcache
-target
 .zig-cache
-public/wasm
 .astro
+
+# 自動生成されたファイル
+node_modules
+public/wasm
+dist
