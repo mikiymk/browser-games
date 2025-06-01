@@ -3,7 +3,7 @@ import type { JSXElement, Setter } from "solid-js";
 import type { PlayerType } from "../../../scripts/player.ts";
 
 import { Radio } from "../../../common/components/input/radio.tsx";
-import { Settings } from "../../../components/header-buttons/settings.tsx";
+import { Settings } from "../../../common/components/header-buttons/settings.tsx";
 import { TEXT_FIRST_PLAYER, TEXT_SECOND_PLAYER } from "../../../scripts/constants.ts";
 import { playerValues } from "../../../scripts/player.ts";
 

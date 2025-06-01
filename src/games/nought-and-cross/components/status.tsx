@@ -5,7 +5,7 @@ import { Match, Switch } from "solid-js";
 import type { GameStatus } from "../constants.ts";
 
 import { CROSS_ID, NOUGHT_ID } from "../../../common/components/image/id.ts";
-import { UseSvg } from "../../../components/elements/styled-svg.tsx";
+import { UseSvg } from "../../../common/components/use-svg/use-svg.tsx";
 import {
   STATUS_DRAW,
   STATUS_PLAY_CROSS,

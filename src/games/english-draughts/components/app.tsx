@@ -7,8 +7,8 @@ import type { PlayerColor } from "../game-loop.ts";
 
 import { Board } from "../../../common/components/game-board/board.tsx";
 import { Page } from "../../../common/components/page-frame/page.tsx";
-import { PlayerSetting, Settings } from "../../../components/header-buttons/settings.tsx";
-import { Start } from "../../../components/header-buttons/start.tsx";
+import { PlayerSetting, Settings } from "../../../common/components/header-buttons/settings.tsx";
+import { Start } from "../../../common/components/header-buttons/start.tsx";
 import board from "../../../images/chess/board.svg";
 import { MultiPromise } from "../../../scripts/multi-promise.ts";
 import { PlayerTypeAi, PlayerTypeHuman } from "../../../scripts/player.ts";

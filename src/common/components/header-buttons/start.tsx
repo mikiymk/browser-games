@@ -1,7 +1,7 @@
 import type { JSXElement } from "solid-js";
 
-import { HeaderButton } from "../../common/components/page-frame/header-button.tsx";
-import { TEXT_START } from "../../scripts/constants.ts";
+import { HeaderButton } from "../page-frame/header-button.tsx";
+import { TEXT_START } from "../../../scripts/constants.ts";
 
 type StartButtonProperties = {
   readonly start: () => void;

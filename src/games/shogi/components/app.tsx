@@ -3,7 +3,7 @@ import type { JSXElement } from "solid-js";
 import type { PlayerType } from "../../../scripts/player.ts";
 
 import { Page } from "../../../common/components/page-frame/page.tsx";
-import { Start } from "../../../components/header-buttons/start.tsx";
+import { Start } from "../../../common/components/header-buttons/start.tsx";
 import { PlayerTypeAi, PlayerTypeHuman } from "../../../scripts/player.ts";
 import { createUrlQuerySignal } from "../../../scripts/use-url-query.ts";
 import { createGame } from "../game.ts";

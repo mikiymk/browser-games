@@ -1,6 +1,6 @@
 import type { JSXElement } from "solid-js";
 
-import { UseImage } from "../../common/components/use-image/use.tsx";
+import { UseImage } from "../use-image/use.tsx";
 import { svg } from "./style.css.ts";
 
 type UseSvgProperties = {

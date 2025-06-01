@@ -3,7 +3,7 @@ import type { JSXElement } from "solid-js";
 import { batch, createEffect, createSignal } from "solid-js";
 
 import { Page } from "../../../common/components/page-frame/page.tsx";
-import { Start } from "../../../components/header-buttons/start.tsx";
+import { Start } from "../../../common/components/header-buttons/start.tsx";
 import { createUrlQuerySignal } from "../../../scripts/use-url-query.ts";
 import { Bombed, Clear, FieldBomb, FieldFlag, FieldNoOpen, FirstClick, Playing } from "../consts.ts";
 import { getAround, initializeField, isClear, resetMines } from "../field.ts";

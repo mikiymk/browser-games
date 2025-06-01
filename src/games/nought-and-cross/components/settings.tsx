@@ -4,8 +4,8 @@ import type { PlayerType } from "../../../scripts/player.ts";
 
 import { CROSS_ID, NOUGHT_ID } from "../../../common/components/image/id.ts";
 import { Radio } from "../../../common/components/input/radio.tsx";
-import { UseSvg } from "../../../components/elements/styled-svg.tsx";
-import { SettingItem, Settings } from "../../../components/header-buttons/settings.tsx";
+import { UseSvg } from "../../../common/components/use-svg/use-svg.tsx";
+import { SettingItem, Settings } from "../../../common/components/header-buttons/settings.tsx";
 import { playerValues } from "../../../scripts/player.ts";
 
 type Properties = {

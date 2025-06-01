@@ -7,7 +7,7 @@ import type { Select } from "../klondike.ts";
 
 import { InformationPopUp } from "../../../common/components/page-frame/information-popup.tsx";
 import { Page } from "../../../common/components/page-frame/page.tsx";
-import { Start } from "../../../components/header-buttons/start.tsx";
+import { Start } from "../../../common/components/header-buttons/start.tsx";
 import { createKlondike } from "../klondike.ts";
 import { Field } from "./field.tsx";
 

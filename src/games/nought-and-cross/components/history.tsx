@@ -4,7 +4,7 @@ import { For, Show } from "solid-js";
 
 import { CROSS_ID, NOUGHT_ID } from "../../../common/components/image/id.ts";
 import { HeaderPopup } from "../../../common/components/page-frame/header-popup.tsx";
-import { UseSvg } from "../../../components/elements/styled-svg.tsx";
+import { UseSvg } from "../../../common/components/use-svg/use-svg.tsx";
 import { TEXT_HISTORY } from "../../../scripts/constants.ts";
 import { history, historyItem } from "./style.css.ts";
 
