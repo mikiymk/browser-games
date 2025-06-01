@@ -1,5 +1,4 @@
 import type { JSXElement } from "solid-js";
-
 import { anchor } from "./style.css.ts";
 
 type ListProperties = {

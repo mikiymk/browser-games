@@ -2,7 +2,7 @@ import type { JSXElement } from "solid-js";
 
 import { For } from "solid-js";
 
-import { Page } from "../common/components/page-frame/page.tsx";
+import { Page } from "../../../common/components/page-frame/page.tsx";
 import {
   TEXT_GAME_BULLS_AND_COWS,
   TEXT_GAME_CHESS,
@@ -13,9 +13,9 @@ import {
   TEXT_GAME_NOUGHT_AND_CROSS,
   TEXT_GAME_REVERSI,
   TEXT_GAME_SHOGI,
-} from "../scripts/constants.ts";
-import { Anchor } from "./elements/anchor.tsx";
-import { List, ListItem } from "./elements/list.tsx";
+} from "../../../scripts/constants.ts";
+import { Anchor } from "./anchor.tsx";
+import { List, ListItem } from "./list.tsx";
 
 const pages = [
   { name: "nought-and-cross", title: TEXT_GAME_NOUGHT_AND_CROSS },
@@ -30,7 +30,7 @@ const pages = [
   { name: "image-view", title: "Image View" },
 ];
 
-export const IndexContent = (): JSXElement => {
+export const App = (): JSXElement => {
   return (
     <Page>
       <List>

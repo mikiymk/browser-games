@@ -14,3 +14,10 @@ export const hand = style({
 });
 
 export const handHeader = style([hand, { backgroundColor: shogiBoard }]);
+
+export const button = style({
+  margin: "0 0.25rem",
+  textDecorationColor: text,
+  textDecorationLine: "underline",
+  textDecorationStyle: "double",
+});

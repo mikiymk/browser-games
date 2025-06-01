@@ -4,8 +4,8 @@ import { For, Show } from "solid-js";
 
 import type { Hand } from "../constants.ts";
 
-import { Button } from "../../../components/elements/button.tsx";
 import { WHITE } from "../constants.ts";
+import { Button } from "./button.tsx";
 import { hand } from "./style.css.ts";
 
 type HandsProperties = {
