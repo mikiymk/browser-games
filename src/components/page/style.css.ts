@@ -54,7 +54,7 @@ export const body = style({
   backgroundColor: pageBody,
   display: "flex",
   flexDirection: "column",
-  minHeight: "calc(100dvh - 3rem)",
+  height: "calc(100dvh - 3rem)",
 });
 
 const fade = keyframes({
