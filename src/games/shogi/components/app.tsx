@@ -1,11 +1,11 @@
 import type { JSXElement } from "solid-js";
 
-import type { PlayerType } from "../../../scripts/player.ts";
+import type { PlayerType } from "../../../common/scripts/player.ts";
 
 import { Start } from "../../../common/components/header-buttons/start.tsx";
 import { Page } from "../../../common/components/page-frame/page.tsx";
-import { PlayerTypeAi, PlayerTypeHuman } from "../../../scripts/player.ts";
-import { createUrlQuerySignal } from "../../../scripts/use-url-query.ts";
+import { PlayerTypeAi, PlayerTypeHuman } from "../../../common/scripts/player.ts";
+import { createUrlQuerySignal } from "../../../common/scripts/use-url-query.ts";
 import { createGame } from "../game.ts";
 import { ShogiBoard } from "./board.tsx";
 import { GameOverPopUp } from "./game-over-pop-up.tsx";

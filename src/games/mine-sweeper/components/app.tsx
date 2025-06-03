@@ -4,7 +4,7 @@ import { batch, createEffect, createSignal } from "solid-js";
 
 import { Start } from "../../../common/components/header-buttons/start.tsx";
 import { Page } from "../../../common/components/page-frame/page.tsx";
-import { createUrlQuerySignal } from "../../../scripts/use-url-query.ts";
+import { createUrlQuerySignal } from "../../../common/scripts/use-url-query.ts";
 import { Bombed, Clear, FieldBomb, FieldFlag, FieldNoOpen, FirstClick, Playing } from "../consts.ts";
 import { getAround, initializeField, isClear, resetMines } from "../field.ts";
 import { Status } from "./controller.tsx";

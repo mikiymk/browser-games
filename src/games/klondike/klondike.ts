@@ -2,7 +2,7 @@ import { createStore } from "solid-js/store";
 
 import type { Card } from "./card.ts";
 
-import { shuffledArray } from "../../scripts/random-select.ts";
+import { shuffledArray } from "../../common/scripts/random-select.ts";
 import { Cards, colorOf, decrementRank, incrementRank, rankOf, suitOf } from "./card.ts";
 
 export type Select =

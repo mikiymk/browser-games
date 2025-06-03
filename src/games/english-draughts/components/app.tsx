@@ -2,18 +2,18 @@ import type { JSXElement } from "solid-js";
 
 import { createSignal, mapArray } from "solid-js";
 
-import type { PlayerType } from "../../../scripts/player.ts";
+import type { PlayerType } from "../../../common/scripts/player.ts";
 import type { PlayerColor } from "../game-loop.ts";
 
 import { Board } from "../../../common/components/game-board/board.tsx";
 import { PlayerSetting, Settings } from "../../../common/components/header-buttons/settings.tsx";
 import { Start } from "../../../common/components/header-buttons/start.tsx";
 import { Page } from "../../../common/components/page-frame/page.tsx";
+import { MultiPromise } from "../../../common/scripts/multi-promise.ts";
+import { PlayerTypeAi, PlayerTypeHuman } from "../../../common/scripts/player.ts";
+import { usePromise } from "../../../common/scripts/use-promise.ts";
+import { createUrlQuerySignal } from "../../../common/scripts/use-url-query.ts";
 import board from "../../../images/chess/board.svg";
-import { MultiPromise } from "../../../scripts/multi-promise.ts";
-import { PlayerTypeAi, PlayerTypeHuman } from "../../../scripts/player.ts";
-import { usePromise } from "../../../scripts/use-promise.ts";
-import { createUrlQuerySignal } from "../../../scripts/use-url-query.ts";
 import { createBoard } from "../boards.ts";
 import { COLOR_KING_BLACK, COLOR_KING_WHITE, COLOR_PAWN_BLACK, COLOR_PAWN_WHITE, MOVE_TARGET } from "../constants.ts";
 import { gameLoop } from "../game-loop.ts";

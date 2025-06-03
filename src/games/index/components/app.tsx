@@ -13,7 +13,7 @@ import {
   TEXT_GAME_NOUGHT_AND_CROSS,
   TEXT_GAME_REVERSI,
   TEXT_GAME_SHOGI,
-} from "../../../scripts/constants.ts";
+} from "../../../common/scripts/constants.ts";
 import { Anchor } from "./anchor.tsx";
 import { List, ListItem } from "./list.tsx";
 

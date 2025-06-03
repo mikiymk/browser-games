@@ -2,10 +2,10 @@ import type { JSXElement, Setter } from "solid-js";
 
 import { Close } from "@corvu/dialog";
 
-import type { PlayerType } from "../../../scripts/player.ts";
+import type { PlayerType } from "../../scripts/player.ts";
 
-import { TEXT_BLACK_PLAYER, TEXT_SETTINGS, TEXT_WHITE_PLAYER } from "../../../scripts/constants.ts";
-import { playerValues } from "../../../scripts/player.ts";
+import { TEXT_BLACK_PLAYER, TEXT_SETTINGS, TEXT_WHITE_PLAYER } from "../../scripts/constants.ts";
+import { playerValues } from "../../scripts/player.ts";
 import { Radio } from "../input/radio.tsx";
 import { HeaderPopup } from "../page-frame/header-popup.tsx";
 import { setting } from "./style.css.ts";

@@ -2,7 +2,7 @@ import type { JSXElement, Setter } from "solid-js";
 
 import { SettingItem, Settings } from "../../../common/components/header-buttons/settings.tsx";
 import { InputNumber } from "../../../common/components/input/number.tsx";
-import { TEXT_HEIGHT, TEXT_MINES_COUNT, TEXT_WIDTH } from "../../../scripts/constants.ts";
+import { TEXT_HEIGHT, TEXT_MINES_COUNT, TEXT_WIDTH } from "../../../common/scripts/constants.ts";
 
 type Properties = {
   readonly height: number;

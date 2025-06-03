@@ -2,7 +2,7 @@ import type { Accessor, Setter } from "solid-js";
 
 import { createSignal } from "solid-js";
 
-import { randomRange } from "../../scripts/random-select.ts";
+import { randomRange } from "../../common/scripts/random-select.ts";
 import { BoardLength, CellMovable, CellUnvisited, CellVisited } from "./consts.ts";
 import { setKnightMovable } from "./knight-move.ts";
 

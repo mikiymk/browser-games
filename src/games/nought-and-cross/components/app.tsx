@@ -2,16 +2,16 @@ import type { JSXElement } from "solid-js";
 
 import { createSignal, onMount } from "solid-js";
 
-import type { PlayerType } from "../../../scripts/player.ts";
+import type { PlayerType } from "../../../common/scripts/player.ts";
 import type { EndType, GameStatus, PlayerColor } from "../constants.ts";
 
 import { Start } from "../../../common/components/header-buttons/start.tsx";
 import { Page } from "../../../common/components/page-frame/page.tsx";
-import { doNothingFunction } from "../../../scripts/do-nothing.ts";
-import { MultiPromise } from "../../../scripts/multi-promise.ts";
-import { PlayerTypeAi, PlayerTypeHuman } from "../../../scripts/player.ts";
-import { usePromise } from "../../../scripts/use-promise.ts";
-import { createUrlQuerySignal } from "../../../scripts/use-url-query.ts";
+import { doNothingFunction } from "../../../common/scripts/do-nothing.ts";
+import { MultiPromise } from "../../../common/scripts/multi-promise.ts";
+import { PlayerTypeAi, PlayerTypeHuman } from "../../../common/scripts/player.ts";
+import { usePromise } from "../../../common/scripts/use-promise.ts";
+import { createUrlQuerySignal } from "../../../common/scripts/use-url-query.ts";
 import {
   CROSS,
   END_CROSS_WIN,

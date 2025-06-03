@@ -1,6 +1,6 @@
 import type { JSXElement } from "solid-js";
 
-import { TEXT_START } from "../../../scripts/constants.ts";
+import { TEXT_START } from "../../scripts/constants.ts";
 import { HeaderButton } from "../page-frame/header-button.tsx";
 
 type StartButtonProperties = {

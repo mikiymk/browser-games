@@ -3,7 +3,7 @@ import type { JSXElement } from "solid-js";
 import { For } from "solid-js";
 
 import { HeaderPopup } from "../../../common/components/page-frame/header-popup.tsx";
-import { TEXT_HISTORY } from "../../../scripts/constants.ts";
+import { TEXT_HISTORY } from "../../../common/scripts/constants.ts";
 import { history, historyButton, historyItem } from "./style.css.ts";
 
 type HistoryProperties = {
