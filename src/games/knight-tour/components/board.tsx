@@ -1,7 +1,7 @@
 import type { JSXElement } from "solid-js";
 
 import { Board } from "../../../common/components/game-board/board.tsx";
-import board from "../../../images/chess/board.svg";
+import { chessBoard } from "../../../images/image-sources.ts";
 import { Square } from "./square.tsx";
 
 type BoardProperties = {
@@ -13,7 +13,7 @@ type BoardProperties = {
 export const KnightBoard = (properties: BoardProperties): JSXElement => {
   return (
     <Board
-      background={board.src}
+      background={chessBoard}
       click={(_, index) => {
         properties.handleClick(index);
       }}

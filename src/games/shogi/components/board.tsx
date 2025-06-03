@@ -5,7 +5,7 @@ import { For } from "solid-js";
 import type { Hand } from "../constants.ts";
 
 import { Board } from "../../../common/components/game-board/board.tsx";
-import board from "../../../images/shogi/board.svg";
+import { shogiBoard } from "../../../images/image-sources.ts";
 import { BLACK, WHITE } from "../constants.ts";
 import { Hands } from "./hands.tsx";
 import { Square } from "./square.tsx";
@@ -20,7 +20,7 @@ export const ShogiBoard = (properties: BoardProperties): JSXElement => {
   return (
     <>
       <Board
-        background={board.src}
+        background={shogiBoard}
         click={(_square, index) => {
           properties.onSquareClick(index);
         }}

@@ -1,7 +1,7 @@
 import type { JSXElement } from "solid-js";
 
 import { Board } from "../../../common/components/game-board/board.tsx";
-import board from "../../../images/reversi/board.svg";
+import { reversiBoard } from "../../../images/image-sources.ts";
 import { CellImage } from "./cell-image.tsx";
 
 type BoardProperties = {
@@ -11,7 +11,7 @@ type BoardProperties = {
 
 export const ReversiBoard = (properties: BoardProperties): JSXElement => {
   return (
-    <Board background={board.src} click={properties.click} data={properties.board} height={8} width={8}>
+    <Board background={reversiBoard} click={properties.click} data={properties.board} height={8} width={8}>
       {(square, _, x, y) => {
         return <CellImage square={square} x={x} y={y} />;
       }}

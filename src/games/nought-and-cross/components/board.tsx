@@ -3,7 +3,7 @@ import type { JSXElement } from "solid-js";
 import { Board } from "../../../common/components/game-board/board.tsx";
 import { CROSS_ID, NOUGHT_ID } from "../../../common/components/image/id.ts";
 import { UseImage } from "../../../common/components/use-image/use.tsx";
-import board from "../../../images/nought-and-cross/board.svg";
+import { noughtAndCrossBoard } from "../../../images/image-sources.ts";
 import { CROSS, NOUGHT } from "../constants.ts";
 
 type CellProperties = {
@@ -34,7 +34,7 @@ type BoardProperties = {
 export const NncBoard = (properties: BoardProperties): JSXElement => {
   return (
     <Board
-      background={board.src}
+      background={noughtAndCrossBoard}
       click={(_, index) => {
         properties.click(index);
       }}

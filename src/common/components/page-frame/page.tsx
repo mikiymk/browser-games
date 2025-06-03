@@ -1,6 +1,6 @@
 import type { JSXElement } from "solid-js";
 
-import icon from "../../../images/theme-icon.svg";
+import { themeIcon } from "../../../images/image-sources.ts";
 import { body, header, headerButton, headerIcon, headerText, headerTitle } from "./style.css.ts";
 
 type PageBodyProperties = {
@@ -14,7 +14,7 @@ export const Page = (properties: PageBodyProperties): JSXElement => {
         <h1 class={headerTitle}>
           <a href="/browser-games/">
             <span class={headerButton}>
-              <img alt="Browser Games" class={headerIcon} src={icon.src} />
+              <img alt="Browser Games" class={headerIcon} src={themeIcon} />
               <span class={headerText}>B-Games</span>
             </span>
           </a>

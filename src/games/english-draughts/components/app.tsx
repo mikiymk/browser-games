@@ -13,7 +13,7 @@ import { MultiPromise } from "../../../common/scripts/multi-promise.ts";
 import { PlayerTypeAi, PlayerTypeHuman } from "../../../common/scripts/player.ts";
 import { usePromise } from "../../../common/scripts/use-promise.ts";
 import { createUrlQuerySignal } from "../../../common/scripts/use-url-query.ts";
-import board from "../../../images/chess/board.svg";
+import { chessBoard } from "../../../images/image-sources.ts";
 import { createBoard } from "../boards.ts";
 import { COLOR_KING_BLACK, COLOR_KING_WHITE, COLOR_PAWN_BLACK, COLOR_PAWN_WHITE, MOVE_TARGET } from "../constants.ts";
 import { gameLoop } from "../game-loop.ts";
@@ -95,7 +95,7 @@ export const App = (): JSXElement => {
         </>
       }
     >
-      <Board background={board.src} click={handleClick} data={boardNumber()} height={8} width={8}>
+      <Board background={chessBoard} click={handleClick} data={boardNumber()} height={8} width={8}>
         {(square, _, x, y) => <UsePiece piece={square} x={x} y={y} />}
       </Board>
     </Page>
