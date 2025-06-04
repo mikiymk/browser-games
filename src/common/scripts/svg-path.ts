@@ -115,14 +115,27 @@ export const close = (): Close => {
 };
 
 type Previous = { readonly x: number; readonly y: number };
+/** より短い文字列を返す */
 const shorter = (a: string, b: string): string => (a.length < b.length ? a : b);
 
+/**
+ * SVGのパス文字列を生成する。
+ * @param command コマンドオブジェクト
+ * @param previous 前回の位置
+ * @returns SVGパス文字列
+ */
 const moveToText = (command: Move, previous: Previous): string => {
   const { x, y } = command;
 
   return shorter(`M${x},${y}`, `m${x - previous.x},${y - previous.y}`);
 };
 
+/**
+ * SVGのパス文字列を生成する。
+ * @param command コマンドオブジェクト
+ * @param previous 前回の位置
+ * @returns SVGパス文字列
+ */
 const lineToText = (command: Line, previous: Previous): string => {
   const { x, y } = command;
 
@@ -141,6 +154,12 @@ const lineToText = (command: Line, previous: Previous): string => {
   return shorter(`L${x},${y}`, `l${x - previous.x},${y - previous.y}`);
 };
 
+/**
+ * SVGのパス文字列を生成する。
+ * @param command コマンドオブジェクト
+ * @param previous 前回の位置
+ * @returns SVGパス文字列
+ */
 const bezierToText = (command: Bezier, previous: Previous): string => {
   const absolute = `C${command.x1},${command.y1} ${command.x2},${command.y2} ${command.x},${command.y}`;
   const relative = `c${command.x1 - previous.x},${command.y1 - previous.y} ${command.x2 - previous.x},${command.y2 - previous.y} ${command.x - previous.x},${command.y - previous.y}`;
@@ -148,6 +167,12 @@ const bezierToText = (command: Bezier, previous: Previous): string => {
   return shorter(absolute, relative);
 };
 
+/**
+ * SVGのパス文字列を生成する。
+ * @param command コマンドオブジェクト
+ * @param previous 前回の位置
+ * @returns SVGパス文字列
+ */
 const arcToText = (command: Arc, previous: Previous): string => {
   const absolute = `A${command.rx},${command.ry} ${command.angle} ${command.largeArc} ${command.sweep} ${command.x},${command.y}`;
   const relative = `a${command.rx},${command.ry} ${command.angle} ${command.largeArc} ${command.sweep} ${command.x - previous.x},${command.y - previous.y}`;

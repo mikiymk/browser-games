@@ -1,3 +1,6 @@
+/**
+ * 同じオブジェクトで複数回の非同期処理を行うためのクラス。
+ */
 export class MultiPromise<T> {
   readonly #executor: (resolve: (value: PromiseLike<T> | T) => void, reject: (reason?: unknown) => void) => void;
 
@@ -5,6 +8,10 @@ export class MultiPromise<T> {
     this.#executor = executor;
   }
 
+  /**
+   * 新しい`MultiPromise`インスタンスを作成し、`resolve` `reject`と共に返します。
+   * @returns `resolve`と`reject`を含むオブジェクト
+   */
   static withResolvers<T>(): {
     promise: MultiPromise<T>;
     reject: (reason?: unknown) => void;
@@ -24,6 +31,10 @@ export class MultiPromise<T> {
     };
   }
 
+  /**
+   * 新しい非同期リクエストを作成し、結果を`Promise`で返します。
+   * @returns リクエストの結果の`Promise`。
+   */
   request(): Promise<T> {
     return new Promise(this.#executor);
   }
