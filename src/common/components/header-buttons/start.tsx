@@ -6,6 +6,10 @@ import { HeaderButton } from "../page-frame/header-button.tsx";
 type StartButtonProperties = {
   readonly start: () => void;
 };
+
+/**
+ * ゲームを開始するボタン
+ */
 export const Start = (properties: StartButtonProperties): JSXElement => {
   return (
     <button

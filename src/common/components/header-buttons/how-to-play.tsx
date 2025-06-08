@@ -6,6 +6,9 @@ import { HeaderPopup } from "../page-frame/header-popup.tsx";
 type HowToPlayProperties = {
   readonly children: JSXElement;
 };
+/**
+ * 遊びかたを表示する
+ */
 export const HowToPlay = (properties: HowToPlayProperties): JSXElement => {
   return (
     <HeaderPopup icon="help" label={TEXT_HOW_TO_PLAY}>

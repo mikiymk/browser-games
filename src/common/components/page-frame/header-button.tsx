@@ -9,6 +9,8 @@ type HeaderButtonProperites = {
   readonly children: string;
   readonly icon?: string | undefined;
 };
+
+/** 上部のボタン */
 export const HeaderButton = (properties: HeaderButtonProperites): JSXElement => {
   return (
     <span class={headerButton}>

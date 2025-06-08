@@ -5,18 +5,26 @@ import { For, Show } from "solid-js";
 import { clear } from "./style.css.ts";
 
 type BoardProperties<T> = {
+  /** ゲームボードの背景画像 */
   readonly background?: string;
   readonly children: (square: T, index: number, x: number, y: number) => JSXElement;
 
   readonly class?: string;
 
+  /** ゲームボードをクリックした時のイベント */
   readonly click?: (square: T, index: number, event: MouseEvent) => void;
+  /** ゲームボードを右クリックした時のイベント */
   readonly contextmenu?: (square: T, index: number, event: MouseEvent) => void;
   readonly data: readonly T[];
+  /** ゲームボードの高さ */
   readonly height: number;
+  /** ゲームボードの幅 */
   readonly width: number;
 };
 
+/**
+ * ゲームボードを描画する。
+ */
 export const Board = <T,>(properties: BoardProperties<T>): JSXElement => {
   const handleClick = (event: MouseEvent & { readonly currentTarget: Element }): [square: T, index: number] => {
     const rect = event.currentTarget.getBoundingClientRect();

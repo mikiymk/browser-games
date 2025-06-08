@@ -11,6 +11,8 @@ type HeaderPopupProperties = {
   readonly icon?: string | undefined;
   readonly label: string;
 };
+
+/** 上部のボタンを押すと表示されるポップアップ */
 export const HeaderPopup = (properties: HeaderPopupProperties): JSXElement => {
   return (
     <Root>

@@ -9,6 +9,7 @@ import { CARD_COURT_RANKS, CARD_PIP_RANKS, CARD_SUITS } from "./id.ts";
 import { Piece2Letters, PieceShapeDown, PieceShapeUp } from "./shogi-piece.tsx";
 import { SuitClub, SuitDiamond, SuitHeart, SuitSpade } from "./suit.tsx";
 
+/** トランプのカードをすべて定義する */
 export const DefineCards = (): JSXElement => {
   return (
     <Define>
@@ -32,6 +33,7 @@ export const DefineCards = (): JSXElement => {
   );
 };
 
+/** チェスの駒をすべて定義する */
 export const DefineChessPieces = (): JSXElement => {
   return (
     <Define>
@@ -52,6 +54,7 @@ export const DefineChessPieces = (): JSXElement => {
   );
 };
 
+/** 将棋の駒をすべて定義する */
 export const DefineShogiPieces = (): JSXElement => {
   return (
     <Define>

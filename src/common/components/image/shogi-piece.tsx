@@ -11,6 +11,7 @@ import {
   shogiPieceTextUp,
 } from "./style.css.ts";
 
+/** 上向きの駒の形 */
 export const PieceShapeUp = (): JSXElement => {
   return (
     <path
@@ -20,6 +21,7 @@ export const PieceShapeUp = (): JSXElement => {
   );
 };
 
+/** 下向きの駒の形 */
 export const PieceShapeDown = (): JSXElement => {
   return (
     <path
@@ -35,6 +37,7 @@ type DefinePieceProperties = {
   readonly promoted?: boolean;
 };
 
+/** 将棋の駒 */
 export const Piece2Letters = (properties: DefinePieceProperties): JSXElement => {
   return (
     <>

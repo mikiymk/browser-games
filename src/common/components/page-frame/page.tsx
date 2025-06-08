@@ -7,6 +7,8 @@ type PageBodyProperties = {
   readonly children?: JSXElement;
   readonly header?: JSXElement;
 };
+
+/** ページのフレーム */
 export const Page = (properties: PageBodyProperties): JSXElement => {
   return (
     <>

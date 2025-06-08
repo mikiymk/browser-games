@@ -8,6 +8,12 @@ import { cardBg, colorBlue } from "../../../styles/colors.css.ts";
 import { UseImage } from "../use-image/use.tsx";
 import { cardBackGround, cardEmpty, cardText, cardTextMiddle } from "./style.css.ts";
 
+/**
+ * 配列から指定されたインデックスの要素を選択して新しい配列を作成します。
+ * @param array 元の配列
+ * @param indexes フィルタリングするインデックスの配列
+ * @returns インデックスで指定された要素を含む新しい配列
+ */
 const selectIndexes = <T,>(array: readonly T[], indexes: readonly number[]): readonly T[] => {
   return indexes.map((index) => array[index] as T);
 };
@@ -52,6 +58,9 @@ const suitPositions = {
   t: tSuitPositions,
 } satisfies Record<CardRank, readonly { x: number; y: number }[]>;
 
+/**
+ * カードの外枠の形状
+ */
 const Shape = (): JSXElement => {
   return <rect class={cardBackGround} height="58" rx="5" ry="5" width="38" x="1" y="1" />;
 };
@@ -60,6 +69,10 @@ type IndexProperties = {
   readonly rank: CardRank;
   readonly suit: CardSuit;
 };
+
+/**
+ * カードのインデックス(左上)部分
+ */
 const Index = (properties: IndexProperties): JSXElement => {
   return (
     <>

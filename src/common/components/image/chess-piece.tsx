@@ -5,9 +5,11 @@ import { BISHOP, KING, KNIGHT, PAWN, QUEEN, ROOK } from "./id.ts";
 import { chessPiece } from "./style.css.ts";
 
 type PieceProperties = {
+  /** チェスの駒の色 */
   readonly color: "black" | "white";
 };
 
+/** キング */
 export const King = (properties: PieceProperties): JSXElement => {
   return (
     <symbol id={`${KING}-${properties.color}`} viewBox="0 0 60 60">
@@ -34,6 +36,7 @@ export const King = (properties: PieceProperties): JSXElement => {
   );
 };
 
+/** クイーン */
 export const Queen = (properties: PieceProperties): JSXElement => {
   return (
     <symbol id={`${QUEEN}-${properties.color}`} viewBox="0 0 60 60">
@@ -60,6 +63,7 @@ export const Queen = (properties: PieceProperties): JSXElement => {
   );
 };
 
+/** ルーク */
 export const Rook = (properties: PieceProperties): JSXElement => {
   return (
     <symbol id={`${ROOK}-${properties.color}`} viewBox="0 0 60 60">
@@ -86,6 +90,7 @@ export const Rook = (properties: PieceProperties): JSXElement => {
   );
 };
 
+/** ビショップ */
 export const Bishop = (properties: PieceProperties): JSXElement => {
   return (
     <symbol id={`${BISHOP}-${properties.color}`} viewBox="0 0 60 60">
@@ -100,6 +105,7 @@ export const Bishop = (properties: PieceProperties): JSXElement => {
   );
 };
 
+/** ナイト */
 export const Knight = (properties: PieceProperties): JSXElement => {
   return (
     <symbol id={`${KNIGHT}-${properties.color}`} viewBox="0 0 60 60">
@@ -124,6 +130,7 @@ export const Knight = (properties: PieceProperties): JSXElement => {
   );
 };
 
+/** ポーン */
 export const Pawn = (properties: PieceProperties): JSXElement => {
   return (
     <symbol id={`${PAWN}-${properties.color}`} viewBox="0 0 60 60">

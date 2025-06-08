@@ -13,6 +13,10 @@ import { setting } from "./style.css.ts";
 type SettingsProperties = {
   readonly children: JSXElement;
 };
+
+/**
+ * 設定を表示する
+ */
 export const Settings = (properties: SettingsProperties): JSXElement => {
   return (
     <HeaderPopup icon="settings" label={TEXT_SETTINGS}>
@@ -27,9 +31,15 @@ export const Settings = (properties: SettingsProperties): JSXElement => {
 };
 
 type ItemProperties = {
+  /** 設定項目の内容 */
   readonly children: JSXElement;
+  /** 設定項目のラベル */
   readonly label: JSXElement;
 };
+
+/**
+ *  設定項目
+ */
 export const SettingItem = (properties: ItemProperties): JSXElement => {
   return (
     <>
@@ -40,12 +50,19 @@ export const SettingItem = (properties: ItemProperties): JSXElement => {
 };
 
 type PlayerSettingProperties = {
+  /** 現在の黒のプレイヤーの種類 */
   readonly black: PlayerType;
+  /** 黒のプレイヤーを設定する */
   readonly setBlack: Setter<PlayerType>;
-
+  /** 白のプレイヤーを設定する */
   readonly setWhite: Setter<PlayerType>;
+  /** 現在の白のプレイヤーの種類 */
   readonly white: PlayerType;
 };
+
+/**
+ * プレイヤーの設定
+ */
 export const PlayerSetting = (properties: PlayerSettingProperties): JSXElement => {
   return (
     <>
