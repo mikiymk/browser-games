@@ -25,7 +25,7 @@
     "ci:js": "run-z lint:js build:js",
     "serve": "astro dev",
     "serve:preview": "astro preview",
-    "format:wasm": "zig fmt ./src-zig",
+    "format:wasm": "zig fmt ./src",
     "lint:wasm:format": "zig fmt --check ./src",
     "build:wasm": "zig build -Doptimize=Debug",
     "build:wasm:fast": "zig build -Doptimize=ReleaseFast",
