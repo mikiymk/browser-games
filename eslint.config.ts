@@ -9,6 +9,8 @@ import solid from "eslint-plugin-solid";
 import unicorn from "eslint-plugin-unicorn";
 import globals from "globals";
 import typescript from "typescript-eslint";
+import jsdoc from "eslint-plugin-jsdoc";
+import react from "eslint-plugin-react";
 
 export default typescript.config(
   {
@@ -25,6 +27,7 @@ export default typescript.config(
   astro.configs.recommended,
   jsxA11y.flatConfigs.strict,
   perfectionist.configs["recommended-natural"],
+  jsdoc.configs["flat/recommended-typescript"],
   biome,
   {
     languageOptions: {
@@ -189,6 +192,31 @@ export default typescript.config(
     },
   },
   {
+    // jsdoc
+    rules: {
+      "jsdoc/check-indentation": "error",
+      "jsdoc/no-blank-blocks": "error",
+      "jsdoc/require-asterisk-prefix": "error",
+      "jsdoc/require-hyphen-before-param-description": "error",
+    },
+  },
+  {
+    // ReactのルールからSolidでも利用できるもの
+    plugins: { react },
+    rules: {
+      "react/checked-requires-onchange-or-readonly": "error",
+      "react/iframe-missing-sandbox": "error",
+      "react/jsx-boolean-value": "error",
+      "react/jsx-curly-brace-presence": ["error", "never"],
+      "react/jsx-filename-extension": ["error", { extensions: [".tsx", ".astro"] }],
+      "react/jsx-handler-names": "error",
+      "react/jsx-max-depth": ["error", { max: 4 }],
+      "react/jsx-pascal-case": "error",
+      "react/jsx-props-no-spreading": "error",
+      "react/no-adjacent-inline-elements": "error",
+    },
+  },
+  {
     // perfectionist
     rules: {
       "import-x/order": "off",
@@ -330,7 +358,7 @@ export default typescript.config(
       "no-console": "off", // suspicious/noConsole
       // suspicious/noEvolvingTypes
       "jest/no-standalone-expect": "off", // suspicious/noMisplacedAssertion
-      "solidjs/no-react-specific-props": "off", // suspicious/noReactSpecificProps
+      "solid/no-react-specific-props": "off", // suspicious/noReactSpecificProps
       "unicorn/error-message": "off", // suspicious/useErrorMessage
       "unicorn/require-number-to-fixed-digits-argument": "off", // suspicious/useNumberToFixedDigitsArgument
     },

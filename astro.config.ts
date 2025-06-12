@@ -1,4 +1,4 @@
-import solidJs from "@astrojs/solid-js";
+import solid from "@astrojs/solid-js";
 import { vanillaExtractPlugin } from "@vanilla-extract/vite-plugin";
 import compress from "astro-compress";
 import { defineConfig } from "astro/config";
@@ -9,7 +9,7 @@ export default defineConfig({
   base: "browser-games/",
 
   integrations: [
-    solidJs(),
+    solid(),
     compress({
       // biome-ignore lint/style/useNamingConvention: ライブラリに合わせる
       HTML: {
