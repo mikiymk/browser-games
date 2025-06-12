@@ -16,6 +16,8 @@ type SettingsProperties = {
 
 /**
  * 設定を表示する
+ * @param properties - プロパティ
+ * @returns 要素
  */
 export const Settings = (properties: SettingsProperties): JSXElement => {
   return (
@@ -38,7 +40,9 @@ type ItemProperties = {
 };
 
 /**
- *  設定項目
+ * 設定項目
+ * @param properties - プロパティ
+ * @returns 要素
  */
 export const SettingItem = (properties: ItemProperties): JSXElement => {
   return (
@@ -62,6 +66,8 @@ type PlayerSettingProperties = {
 
 /**
  * プレイヤーの設定
+ * @param properties - プロパティ
+ * @returns 要素
  */
 export const PlayerSetting = (properties: PlayerSettingProperties): JSXElement => {
   return (

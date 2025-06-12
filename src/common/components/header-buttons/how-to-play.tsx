@@ -8,6 +8,8 @@ type HowToPlayProperties = {
 };
 /**
  * 遊びかたを表示する
+ * @param properties - プロパティ
+ * @returns 要素
  */
 export const HowToPlay = (properties: HowToPlayProperties): JSXElement => {
   return (

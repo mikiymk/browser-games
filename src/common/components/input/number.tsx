@@ -11,7 +11,11 @@ type InputNumberProperties = {
   readonly value: number;
 };
 
-/** 数値の入力 */
+/**
+ * 数値の入力
+ * @param properties - プロパティ
+ * @returns 要素
+ */
 export const InputNumber = (properties: InputNumberProperties): JSXElement => {
   return (
     <input

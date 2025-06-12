@@ -8,6 +8,8 @@ type DefineProperties = {
 
 /**
  * SVGシンボルの定義をする
+ * @param properties - プロパティ
+ * @returns 要素
  */
 export const Define = (properties: DefineProperties): JSXElement => {
   return (

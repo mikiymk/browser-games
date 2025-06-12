@@ -11,19 +11,21 @@ type BoardProperties<T> = {
 
   readonly class?: string;
 
-  /** ゲームボードをクリックした時のイベント */
-  readonly click?: (square: T, index: number, event: MouseEvent) => void;
-  /** ゲームボードを右クリックした時のイベント */
-  readonly contextmenu?: (square: T, index: number, event: MouseEvent) => void;
   readonly data: readonly T[];
   /** ゲームボードの高さ */
   readonly height: number;
+  /** ゲームボードをクリックした時のイベント */
+  readonly onClick?: (square: T, index: number, event: MouseEvent) => void;
+  /** ゲームボードを右クリックした時のイベント */
+  readonly onContextmenu?: (square: T, index: number, event: MouseEvent) => void;
   /** ゲームボードの幅 */
   readonly width: number;
 };
 
 /**
  * ゲームボードを描画する。
+ * @param properties - プロパティ
+ * @returns 要素
  */
 export const Board = <T,>(properties: BoardProperties<T>): JSXElement => {
   const handleClick = (event: MouseEvent & { readonly currentTarget: Element }): [square: T, index: number] => {
@@ -57,7 +59,7 @@ export const Board = <T,>(properties: BoardProperties<T>): JSXElement => {
         }}
       </For>
 
-      <Show when={properties.click !== undefined || properties.contextmenu !== undefined}>
+      <Show when={properties.onClick !== undefined || properties.onContextmenu !== undefined}>
         {/* biome-ignore lint/a11y/useKeyWithClickEvents: キーボードでできない */}
         <rect
           class={clear}
@@ -65,12 +67,12 @@ export const Board = <T,>(properties: BoardProperties<T>): JSXElement => {
           onClick={(event) => {
             const [square, index] = handleClick(event);
 
-            properties.click?.(square, index, event);
+            properties.onClick?.(square, index, event);
           }}
           onContextMenu={(event) => {
             const [square, index] = handleClick(event);
 
-            properties.contextmenu?.(square, index, event);
+            properties.onContextmenu?.(square, index, event);
           }}
           tabindex={0}
           width={properties.width * 10}

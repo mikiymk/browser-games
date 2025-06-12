@@ -10,8 +10,8 @@ import { cardBackGround, cardEmpty, cardText, cardTextMiddle } from "./style.css
 
 /**
  * 配列から指定されたインデックスの要素を選択して新しい配列を作成します。
- * @param array 元の配列
- * @param indexes フィルタリングするインデックスの配列
+ * @param array - 元の配列
+ * @param indexes - フィルタリングするインデックスの配列
  * @returns インデックスで指定された要素を含む新しい配列
  */
 const selectIndexes = <T,>(array: readonly T[], indexes: readonly number[]): readonly T[] => {
@@ -60,6 +60,7 @@ const suitPositions = {
 
 /**
  * カードの外枠の形状
+ * @returns 要素
  */
 const Shape = (): JSXElement => {
   return <rect class={cardBackGround} height="58" rx="5" ry="5" width="38" x="1" y="1" />;
@@ -72,6 +73,8 @@ type IndexProperties = {
 
 /**
  * カードのインデックス(左上)部分
+ * @param properties - プロパティ
+ * @returns 要素
  */
 const Index = (properties: IndexProperties): JSXElement => {
   return (
@@ -89,7 +92,11 @@ type PipProperties = {
   readonly rank: CardPipRank;
   readonly suit: CardSuit;
 };
-/** 数札 */
+/**
+ * 数札
+ * @param properties - プロパティ
+ * @returns 要素
+ */
 export const Pip = (properties: PipProperties): JSXElement => {
   return (
     <symbol id={`card-${properties.suit}-${properties.rank}` satisfies CardId} viewBox="0 0 40 60">
@@ -105,7 +112,11 @@ type CourtProperties = {
   readonly rank: CardCourtRank;
   readonly suit: CardSuit;
 };
-/** 数札 */
+/**
+ * 数札
+ * @param properties - プロパティ
+ * @returns 要素
+ */
 export const Court = (properties: CourtProperties): JSXElement => {
   const rankText = (): string => {
     return {
@@ -128,7 +139,10 @@ export const Court = (properties: CourtProperties): JSXElement => {
   );
 };
 
-/** 裏側 */
+/**
+ * 裏側
+ * @returns 要素
+ */
 export const Back = (): JSXElement => {
   return (
     <symbol id={"card-back" satisfies CardId} viewBox="0 0 40 60">
@@ -139,7 +153,10 @@ export const Back = (): JSXElement => {
   );
 };
 
-/** カードの枠だけ */
+/**
+ * カードの枠だけ
+ * @returns 要素
+ */
 export const Empty = (): JSXElement => {
   return (
     <symbol id={"card-empty" satisfies CardId} viewBox="0 0 40 60">

@@ -21,7 +21,11 @@ export const App = (): JSXElement => {
     setSelect({ type: "stock" });
   };
 
-  /** 場札をクリックしたときの関数 */
+  /**
+   * 場札をクリックしたときの関数
+   * @param index - クリックした場札のインデックス
+   * @param depth - クリックした場札の深さ（0が一番上）
+   */
   const selectTableau = (index: number, depth: number): void => {
     const current: Select = { depth, index, type: "tableau" };
 
@@ -35,7 +39,10 @@ export const App = (): JSXElement => {
     }
   };
 
-  /** 組札をクリックしたときの関数 */
+  /**
+   * 組札をクリックしたときの関数
+   * @param index - クリックした組札のインデックス
+   */
   const selectFoundation = (index: number): void => {
     const current: Select = { index, type: "foundation" };
 
@@ -52,13 +59,15 @@ export const App = (): JSXElement => {
   return (
     <Page header={<Start start={start} />}>
       <Field
-        {...cards}
         autoFoundation={autoFoundation}
+        foundations={cards.foundations}
         openStock={openStock}
         select={select()}
         selectFoundation={selectFoundation}
         selectStock={selectStock}
         selectTableau={selectTableau}
+        stock={cards.stock}
+        tableaus={cards.tableaus}
       />
 
       <InformationPopUp open={popText() !== undefined}>

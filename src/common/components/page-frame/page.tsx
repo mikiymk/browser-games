@@ -8,23 +8,36 @@ type PageBodyProperties = {
   readonly header?: JSXElement;
 };
 
-/** ページのフレーム */
+/**
+ * ページのフレーム
+ * @param properties - プロパティ
+ * @returns 要素
+ */
 export const Page = (properties: PageBodyProperties): JSXElement => {
   return (
     <>
       <div class={header}>
-        <h1 class={headerTitle}>
-          <a href="/browser-games/">
-            <span class={headerButton}>
-              <img alt="Browser Games" class={headerIcon} src={themeIcon} />
-              <span class={headerText}>B-Games</span>
-            </span>
-          </a>
-        </h1>
-
+        <TitleLink />
         {properties.header}
       </div>
       <div class={body}>{properties.children}</div>
     </>
+  );
+};
+
+/**
+ * トップページへのリンク
+ * @returns 要素
+ */
+const TitleLink = (): JSXElement => {
+  return (
+    <h1 class={headerTitle}>
+      <a href="/browser-games/">
+        <span class={headerButton}>
+          <img alt="Browser Games" class={headerIcon} src={themeIcon} />
+          <span class={headerText}>B-Games</span>
+        </span>
+      </a>
+    </h1>
   );
 };

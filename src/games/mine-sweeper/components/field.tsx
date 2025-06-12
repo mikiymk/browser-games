@@ -49,16 +49,16 @@ type MineFieldsProperties = {
 export const MineFields = (properties: MineFieldsProperties): JSXElement => {
   return (
     <Board
-      click={(_, index) => {
+      data={properties.fields}
+      height={properties.height}
+      onClick={(_, index) => {
         properties.open(index);
       }}
-      contextmenu={(_, index, event) => {
+      onContextmenu={(_, index, event) => {
         if (properties.flag(index)) {
           event.preventDefault();
         }
       }}
-      data={properties.fields}
-      height={properties.height}
       width={properties.width}
       // TODO: foreground
     >

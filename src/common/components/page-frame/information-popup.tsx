@@ -9,7 +9,11 @@ type InformationPopUpProperties = {
   readonly open: boolean;
 };
 
-/** 条件を満たすと表示されるポップアップ */
+/**
+ * 条件を満たすと表示されるポップアップ
+ * @param properties - プロパティ
+ * @returns 要素
+ */
 export const InformationPopUp = (properties: InformationPopUpProperties): JSXElement => {
   return (
     <Root open={properties.open}>

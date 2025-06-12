@@ -35,11 +35,11 @@ export const NncBoard = (properties: BoardProperties): JSXElement => {
   return (
     <Board
       background={noughtAndCrossBoard}
-      click={(_, index) => {
-        properties.click(index);
-      }}
       data={properties.board}
       height={3}
+      onClick={(_, index) => {
+        properties.click(index);
+      }}
       width={3}
     >
       {(mark, _, x, y) => <Cell mark={mark} x={x} y={y} />}

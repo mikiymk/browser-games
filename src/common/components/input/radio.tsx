@@ -20,7 +20,11 @@ type RadioProperties<T> = {
   }[];
 };
 
-/** 選択ラジオボタン */
+/**
+ * 選択ラジオボタン
+ * @param properties - プロパティ
+ * @returns 要素
+ */
 export const Radio = <T,>(properties: RadioProperties<T>): JSXElement => {
   return (
     <For each={properties.values}>

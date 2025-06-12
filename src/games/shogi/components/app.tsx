@@ -35,7 +35,7 @@ export const App = (): JSXElement => {
         </>
       }
     >
-      <ShogiBoard board={board()} hands={[whiteHands(), blackHands()]} onSquareClick={handleBoardClick} />
+      <ShogiBoard board={board()} handleSquareClick={handleBoardClick} hands={[whiteHands(), blackHands()]} />
     </Page>
   );
 };

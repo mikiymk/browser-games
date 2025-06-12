@@ -12,6 +12,8 @@ type DefineNumberProperties = {
 
 /**
  * 数字のSVGシンボルを定義する
+ * @param properties - プロパティ
+ * @returns 要素
  */
 export const DefineNumber = (properties: DefineNumberProperties): JSXElement => {
   return (

@@ -92,7 +92,7 @@ export const App = (): JSXElement => {
         </>
       }
     >
-      <ReversiBoard board={board()} click={handleClick} />
+      <ReversiBoard board={board()} handleClick={handleClick} />
     </Page>
   );
 };

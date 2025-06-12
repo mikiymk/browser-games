@@ -12,7 +12,11 @@ type HeaderPopupProperties = {
   readonly label: string;
 };
 
-/** 上部のボタンを押すと表示されるポップアップ */
+/**
+ * 上部のボタンを押すと表示されるポップアップ
+ * @param properties - プロパティ
+ * @returns 要素
+ */
 export const HeaderPopup = (properties: HeaderPopupProperties): JSXElement => {
   return (
     <Root>

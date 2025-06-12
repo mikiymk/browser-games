@@ -1,7 +1,7 @@
 /**
  * [最小値, 最大値)の範囲でランダムな整数値を生成します。
- * @param min 最小値
- * @param max 最大値
+ * @param min - 最小値
+ * @param max - 最大値
  * @returns ランダムな整数値
  */
 export const randomRange = (min: number, max: number): number => {
@@ -10,7 +10,7 @@ export const randomRange = (min: number, max: number): number => {
 
 /**
  * 要素をシャッフルした新しい配列を返します。
- * @param array シャッフルする配列
+ * @param array - シャッフルする配列
  * @returns シャッフルされた配列
  */
 export const shuffledArray = <T>(array: readonly T[]): readonly T[] => {

@@ -13,7 +13,7 @@ type BoardProperties = {
 
 export const ChessBoard = (properties: BoardProperties): JSXElement => {
   return (
-    <Board background={chessBoard} click={properties.handleClick} data={properties.board} height={8} width={8}>
+    <Board background={chessBoard} data={properties.board} height={8} onClick={properties.handleClick} width={8}>
       {(cell, _, x, y) => {
         return <BoardSquare mark={cell.mark} piece={cell.piece} x={x} y={y} />;
       }}

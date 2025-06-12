@@ -95,7 +95,7 @@ export const App = (): JSXElement => {
         </>
       }
     >
-      <Board background={chessBoard} click={handleClick} data={boardNumber()} height={8} width={8}>
+      <Board background={chessBoard} data={boardNumber()} height={8} onClick={handleClick} width={8}>
         {(square, _, x, y) => <UsePiece piece={square} x={x} y={y} />}
       </Board>
     </Page>

@@ -1,4 +1,5 @@
 import type { JSXElement } from "solid-js";
+
 import { themeIcon } from "../../../images/image-sources.ts";
 
 type HeadPropeties = {

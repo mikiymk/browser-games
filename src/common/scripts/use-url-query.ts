@@ -4,8 +4,8 @@ import { createEffect, createSignal, onMount } from "solid-js";
 
 /**
  * URLのクエリパラメータをSignalとして扱うアクセサーとセッターを作成します。
- * @param name クエリパラメータの名前
- * @param defaultValue デフォルト値
+ * @param name - クエリパラメータの名前
+ * @param defaultValue - デフォルト値
  * @returns アクセサーとセッターの組
  */
 export const createUrlQuerySignal = <T extends string>(

@@ -96,8 +96,8 @@ export const createKlondike = (): KlondikeObject => {
 
   /**
    * カードを移動する
-   * @param from 行き元
-   * @param to 行き先
+   * @param from - 行き元
+   * @param to - 行き先
    * @returns 移動が成功したらtrue
    */
   const moveCards = (from: Select | undefined, to: Select | undefined): boolean => {
@@ -123,7 +123,11 @@ export const createKlondike = (): KlondikeObject => {
     return false;
   };
 
-  /** 行き元からカードを減らす処理 */
+  /**
+   * 行き元からカードを減らす処理
+   * @param from - 行き元を指定するオブジェクト
+   * @returns 移動するカード、行き元のカードを減らすアクションのタプル
+   */
   const popCards = (from: Select): [moves: Card[], action: () => void] | undefined => {
     if (from.type === "stock") {
       return [
@@ -151,7 +155,12 @@ export const createKlondike = (): KlondikeObject => {
     ];
   };
 
-  /** 行き先にカードを増やす処理 */
+  /**
+   * 行き先にカードを増やす処理
+   * @param to - 行き先を指定するオブジェクト
+   * @param moves - 移動するカードのリスト
+   * @returns 移動が成功したらtrue
+   */
   const pushCards = (to: Select, moves: readonly Card[]): boolean => {
     const [moveBottom] = moves;
     if (moveBottom === undefined) {
@@ -184,7 +193,10 @@ export const createKlondike = (): KlondikeObject => {
     return false;
   };
 
-  /** クリアしたかを判定する関数 */
+  /**
+   * クリアしたかを判定する関数
+   * @returns クリアした場合はtrue
+   */
   const isCleared = (): boolean => {
     // 組札がすべて1から13まで順番に並んでいるか
     for (const foundation of cards.foundations) {
@@ -196,7 +208,10 @@ export const createKlondike = (): KlondikeObject => {
     return true;
   };
 
-  /** 自動でカードを組札に送る関数 */
+  /**
+   * 自動でカードを組札に送る関数
+   * @param from - 行き元を指定するオブジェクト
+   */
   const autoFoundation = (from: Select): void => {
     const foundations: Select[] = [
       { index: 0, type: "foundation" },

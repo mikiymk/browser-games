@@ -3,14 +3,14 @@ import eslint from "@eslint/js";
 import biome from "eslint-config-biome";
 import astro from "eslint-plugin-astro";
 import importX from "eslint-plugin-import-x";
+import jsdoc from "eslint-plugin-jsdoc";
 import jsxA11y from "eslint-plugin-jsx-a11y";
 import perfectionist from "eslint-plugin-perfectionist";
+import react from "eslint-plugin-react";
 import solid from "eslint-plugin-solid";
 import unicorn from "eslint-plugin-unicorn";
 import globals from "globals";
 import typescript from "typescript-eslint";
-import jsdoc from "eslint-plugin-jsdoc";
-import react from "eslint-plugin-react";
 
 export default typescript.config(
   {
@@ -198,6 +198,7 @@ export default typescript.config(
       "jsdoc/no-blank-blocks": "error",
       "jsdoc/require-asterisk-prefix": "error",
       "jsdoc/require-hyphen-before-param-description": "error",
+      "jsdoc/require-returns": ["error", { enableFixer: true }],
     },
   },
   {

@@ -14,11 +14,11 @@ export const KnightBoard = (properties: BoardProperties): JSXElement => {
   return (
     <Board
       background={chessBoard}
-      click={(_, index) => {
-        properties.handleClick(index);
-      }}
       data={properties.board}
       height={8}
+      onClick={(_, index) => {
+        properties.handleClick(index);
+      }}
       width={8}
     >
       {(cell, index, x, y) => (

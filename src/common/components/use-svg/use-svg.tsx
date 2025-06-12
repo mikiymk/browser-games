@@ -8,7 +8,11 @@ type UseSvgProperties = {
   readonly id?: string;
 };
 
-/** 定義した画像を使用する */
+/**
+ * 定義した画像を使用する
+ * @param properties - プロパティ
+ * @returns 要素
+ */
 export const UseSvg = (properties: UseSvgProperties): JSXElement => {
   return (
     <svg class={svg} viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">

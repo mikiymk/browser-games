@@ -9,6 +9,8 @@ type StartButtonProperties = {
 
 /**
  * ゲームを開始するボタン
+ * @param properties - プロパティ
+ * @returns 要素
  */
 export const Start = (properties: StartButtonProperties): JSXElement => {
   return (
