@@ -11,24 +11,24 @@ import { Guess } from "./guess.tsx";
 import { InputDigits } from "./input-digits.tsx";
 
 export const App = (): JSXElement => {
-  const game = createGame();
+  const { addGuess, digits, guesses, message, reset, setDigitsCount } = createGame();
 
   return (
     <Page
       header={
         <>
-          <Start start={() => game.reset()} />
+          <Start start={() => reset()} />
           <Settings>
             <SettingItem label="Digits">
-              <InputNumber name="digits" setValue={game.setNumberOfDigits} value={game.digits().length} />
+              <InputNumber name="digits" setValue={setDigitsCount} value={digits().length} />
             </SettingItem>
           </Settings>
         </>
       }
     >
-      <For each={game.guesses()}>{(guess) => <Guess digits={game.digits()} guess={guess} />}</For>
-      <Show when={game.message()}>{(message) => message()}</Show>
-      <InputDigits numberOfDigits={game.digits().length} setDigits={game.addGuess} />
+      <For each={guesses()}>{(guess) => <Guess digits={digits()} guess={guess} />}</For>
+      <Show when={message()}>{(message) => message()}</Show>
+      <InputDigits digitsCount={digits().length} setDigits={addGuess} />
     </Page>
   );
 };

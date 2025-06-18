@@ -2,7 +2,7 @@ import type { JSXElement } from "solid-js";
 
 import { BLACK, MARKER, STONE, WHITE } from "../../../common/components/image/id.ts";
 import { UseImage } from "../../../common/components/use-image/use.tsx";
-import { CellBlack, CellCanMoveBlack, CellCanMoveWhite, CellWhite } from "../const.ts";
+import { CellBlack, CellCanMoveBlack, CellCanMoveWhite, CellWhite } from "../constants.ts";
 
 type CellImageProperties = {
   readonly square: number;

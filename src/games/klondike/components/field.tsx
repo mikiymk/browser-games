@@ -3,7 +3,7 @@ import type { JSXElement } from "solid-js";
 import { For, Show } from "solid-js";
 
 import type { Card } from "../card.ts";
-import type { Select } from "../klondike.tsx";
+import type { Select } from "../game.tsx";
 
 import { UseCard } from "./define.tsx";
 import { field } from "./style.css.ts";

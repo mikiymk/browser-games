@@ -5,7 +5,7 @@ import { Show } from "solid-js";
 import { Board } from "../../../common/components/game-board/board.tsx";
 import { FLAG, MINE } from "../../../common/components/image/id.ts";
 import { UseImage } from "../../../common/components/use-image/use.tsx";
-import { FieldBomb, FieldFlag, FieldNoOpen } from "../consts.ts";
+import { FieldBomb, FieldFlag, FieldNoOpen } from "../constants.ts";
 
 type MineCellProperties = {
   readonly field: number;

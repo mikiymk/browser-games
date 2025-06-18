@@ -1,18 +1,16 @@
-import type { Accessor, Setter } from "solid-js";
+import type { Accessor } from "solid-js";
 
-import { createSignal } from "solid-js";
+import { createSignal, onMount } from "solid-js";
 
 import { randomRange } from "../../common/scripts/random-select.ts";
-import { BoardLength, CellMovable, CellUnvisited, CellVisited } from "./consts.ts";
+import { BoardLength, CellKnight, CellMovable, CellUnvisited, CellVisited } from "./constants.ts";
 import { setKnightMovable } from "./knight-move.ts";
 
 type GameObject = {
   backHistory: (index: number) => void;
   board: Accessor<readonly number[]>;
+  handleClick: (index: number) => void;
   history: Accessor<readonly number[]>;
-  reset: () => void;
-  resetBoard: (callback: (board: readonly number[]) => readonly number[]) => void;
-  setHistory: Setter<readonly number[]>;
 };
 
 export const createGame = (): GameObject => {
@@ -53,12 +51,25 @@ export const createGame = (): GameObject => {
     });
   };
 
+  const handleClick = (index: number): void => {
+    if (board()[index] !== CellMovable) {
+      return;
+    }
+
+    setHistory((history) => [...history, index]);
+    resetBoard((board) => {
+      const previousKnightIndex = board.indexOf(CellKnight);
+
+      return setKnightMovable(board, index).with(previousKnightIndex, CellVisited);
+    });
+  };
+
+  onMount(reset);
+
   return {
     backHistory,
     board,
+    handleClick,
     history,
-    reset,
-    resetBoard,
-    setHistory,
   };
 };

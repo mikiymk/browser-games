@@ -24,7 +24,7 @@ type Game = {
   start: () => void;
   whiteHands: Accessor<Hand>;
 };
-export const createGame = (white: Accessor<PlayerType>, black: Accessor<PlayerType>): Game => {
+export const createShogiGame = (white: Accessor<PlayerType>, black: Accessor<PlayerType>): Game => {
   const [board, setFullBoard] = createSignal<Board>(
     Array.from({ length: 81 }, () => ({ moveTarget: false, piece: 0 })),
   );

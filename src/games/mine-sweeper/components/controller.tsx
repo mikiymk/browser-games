@@ -2,7 +2,7 @@ import type { JSXElement } from "solid-js";
 
 import { Match, Show, Switch } from "solid-js";
 
-import { Bombed, Clear, EmojiBombed, EmojiClear, EmojiSmile, FieldFlag } from "../consts.ts";
+import { Bombed, Clear, EmojiBombed, EmojiClear, EmojiSmile, FieldFlag } from "../constants.ts";
 import { fontEmoji } from "./style.css.ts";
 
 type ControllerProperties = {

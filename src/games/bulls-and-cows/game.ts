@@ -12,19 +12,19 @@ type Game = {
 
   message: Accessor<string>;
   reset: () => void;
-  setNumberOfDigits: (value: number) => void;
+  setDigitsCount: (value: number) => void;
 };
 
 export const createGame = (): Game => {
   const [digits, setDigits] = createSignal<readonly number[]>([0, 0, 0, 0]);
   const [guesses, setGuesses] = createSignal<readonly (readonly number[])[]>([]);
-  const [numberOfDigitsString, setNumberOfDigitsString] = createUrlQuerySignal("digits", "4");
+  const [digitsCountString, setDigitsCountString] = createUrlQuerySignal("digits", "4");
   const [message, setMessage] = createSignal("");
 
   const reset = (): void => {
     const numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
     const shuffledNumbers = shuffledArray(numbers);
-    setDigits(shuffledNumbers.slice(0, Number(numberOfDigitsString())));
+    setDigits(shuffledNumbers.slice(0, Number(digitsCountString())));
     setGuesses([]);
   };
 
@@ -46,6 +46,6 @@ export const createGame = (): Game => {
 
     message,
     reset,
-    setNumberOfDigits: (value: number): string => setNumberOfDigitsString(value.toString()),
+    setDigitsCount: (value: number): string => setDigitsCountString(value.toString()),
   };
 };

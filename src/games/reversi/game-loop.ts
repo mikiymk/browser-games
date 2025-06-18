@@ -8,7 +8,7 @@ import type { ReversiWasmConnect } from "./get-wasm.ts";
 
 import { PlayerTypeHuman } from "../../common/scripts/player.ts";
 import { sleep } from "../../common/scripts/sleep.ts";
-import { CellBlack, CellEmpty, CellWhite } from "./const.ts";
+import { CellBlack, CellEmpty, CellWhite } from "./constants.ts";
 
 const AI_SLEEP_TIME_MS = 500;
 

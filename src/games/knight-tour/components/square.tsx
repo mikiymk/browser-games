@@ -2,7 +2,7 @@ import type { JSXElement } from "solid-js";
 
 import { createMemo } from "solid-js";
 
-import { CellKnight, CellMovable, CellVisited } from "../consts.ts";
+import { CellKnight, CellMovable, CellVisited } from "../constants.ts";
 import { getLegalMove } from "../knight-move.ts";
 import { UsePiece } from "./define.tsx";
 

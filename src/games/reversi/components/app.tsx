@@ -12,7 +12,7 @@ import { MultiPromise } from "../../../common/scripts/multi-promise.ts";
 import { PlayerTypeAi, PlayerTypeHuman } from "../../../common/scripts/player.ts";
 import { usePromise } from "../../../common/scripts/use-promise.ts";
 import { createUrlQuerySignal } from "../../../common/scripts/use-url-query.ts";
-import { CellBlack, CellCanMoveBlack, CellCanMoveWhite, CellEmpty, CellWhite } from "../const.ts";
+import { CellBlack, CellCanMoveBlack, CellCanMoveWhite, CellEmpty, CellWhite } from "../constants.ts";
 import { gameLoop } from "../game-loop.ts";
 import { getReversiWasm } from "../get-wasm.ts";
 import { ReversiBoard } from "./board.tsx";
