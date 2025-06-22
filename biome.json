@@ -1,5 +1,5 @@
 {
-  "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.0.4/schema.json",
 
   "vcs": {
     "enabled": true,
@@ -7,6 +7,7 @@
   },
 
   "files": {
+    "includes": ["**", "!dist", "!.astro"],
     "ignoreUnknown": true
   },
   "formatter": {
@@ -14,74 +15,135 @@
     "lineWidth": 120
   },
   "linter": {
+    "domains": {
+      "project": "recommended",
+      "solid": "recommended"
+    },
     "rules": {
+      "a11y": {},
       "complexity": {
-        "noExcessiveCognitiveComplexity": "error",
-        "useSimplifiedLogicExpression": "error",
-        "noUselessStringConcat": "error",
-        "noUselessUndefinedInitialization": "error",
-        "useDateNow": "error"
+        "noExcessiveCognitiveComplexity": "on",
+        "noFlatMapIdentity": "on",
+        "noUselessStringConcat": "on",
+        "noUselessUndefinedInitialization": "on",
+        "useDateNow": "on",
+        "useSimplifiedLogicExpression": "on"
       },
       "correctness": {
-        "noUnusedImports": "error",
-        "noUnusedPrivateClassMembers": "error",
-        "noUnusedVariables": "error",
-        "useArrayLiterals": "error",
-        "noConstantMathMinMaxClamp": "error",
-        "noFlatMapIdentity": "error",
-        "noUndeclaredDependencies": "error",
-        "noUnusedFunctionParameters": "error",
-        "useImportExtensions": "error"
+        "noConstantMathMinMaxClamp": "on",
+        "noSwitchDeclarations": "on",
+        "noUndeclaredDependencies": "on",
+        "noUnusedFunctionParameters": "on",
+        "noUnusedImports": "on",
+        "noUnusedPrivateClassMembers": "on",
+        "noUnusedVariables": "on",
+        "useImportExtensions": "on"
       },
+
+      "nursery": {},
       "performance": {
-        "noBarrelFile": "error",
-        "noReExportAll": "error",
-        "useTopLevelRegex": "error"
+        "noBarrelFile": "on",
+        "noNamespaceImport": "on",
+        "noReExportAll": "on",
+        "useTopLevelRegex": "on"
       },
+      "security": {},
       "style": {
-        "noNamespace": "error",
-        "noNamespaceImport": "error",
-        "noNegationElse": "error",
-        "noParameterProperties": "error",
-        "noShoutyConstants": "error",
-        "useBlockStatements": "error",
-        "useCollapsedElseIf": "error",
-        "useConsistentArrayType": "error",
+        "noCommonJs": "on",
+        "noDoneCallback": "on",
+        "noEnum": "on",
+        "noExportedImports": "on",
+        "noInferrableTypes": "on",
+        "noNamespace": "on",
+        "noNegationElse": "on",
+        "noNestedTernary": "on",
+        "noParameterAssign": "on",
+        "noParameterProperties": "on",
+        "noProcessEnv": "on",
+        "noShoutyConstants": "on",
+        "noSubstr": "on",
+        "noUnusedTemplateLiteral": "on",
+        "noUselessElse": "on",
+        "noValueAtRule": "on",
+        "noYodaExpression": "on",
+        "useArrayLiterals": "on",
+        "useAsConstAssertion": "on",
+        "useAtIndex": "on",
+        "useBlockStatements": "on",
+        "useCollapsedElseIf": "on",
+        "useCollapsedIf": "on",
+        "useConsistentArrayType": "on",
+        "useConsistentBuiltinInstantiation": "on",
+        "useConsistentCurlyBraces": "on",
+        "useConsistentMemberAccessibility": "on",
+        "useDefaultParameterLast": "on",
+        "useDefaultSwitchClause": "on",
+        "useEnumInitializers": "on",
+        "useExplicitLengthCheck": "on",
         "useFilenamingConvention": {
-          "level": "error",
+          "level": "on",
           "options": { "requireAscii": true, "filenameCases": ["kebab-case", "export"] }
         },
-        "useForOf": "error",
-        "useFragmentSyntax": "error",
-        "useNamingConvention": "error",
-        "useNodeAssertStrict": "error",
-        "useShorthandArrayType": "error",
-        "useShorthandAssign": "error",
-        "useSingleCaseStatement": "error",
-        "noDoneCallback": "error",
-        "noYodaExpression": "error",
-        "useConsistentBuiltinInstantiation": "error",
-        "useDefaultSwitchClause": "error",
-        "useExplicitLengthCheck": "error",
-        "useThrowNewError": "error",
-        "useThrowOnlyError": "error"
+        "useForOf": "on",
+        "useFragmentSyntax": "on",
+        "useNamingConvention": "on",
+        "useNodeAssertStrict": "on",
+        "useNumberNamespace": "on",
+        "useSelfClosingElements": "on",
+        "useShorthandAssign": "on",
+        "useSingleVarDeclarator": "on",
+        "useThrowNewError": "on",
+        "useThrowOnlyError": "on",
+        "useTrimStartEnd": "on"
       },
       "suspicious": {
-        "noEmptyBlockStatements": "error",
-        "noSkippedTests": "error",
-        "useAwait": "error",
-        "noConsole": "error",
-        "noEvolvingTypes": "error",
-        "noMisplacedAssertion": "error",
-        "noReactSpecificProps": "error",
-        "useErrorMessage": "error",
-        "useNumberToFixedDigitsArgument": "error"
+        "noConsole": "on",
+        "noEmptyBlockStatements": "on",
+        "noEvolvingTypes": "on",
+        "noMisplacedAssertion": "on",
+        "noReactSpecificProps": "on",
+        "noSkippedTests": "on",
+        "useAwait": "on",
+        "useErrorMessage": "on",
+        "useGuardForIn": "on",
+        "useNumberToFixedDigitsArgument": "on"
+      }
+    }
+  },
+  "assist": {
+    "actions": {
+      "source": {
+        "organizeImports": {
+          "level": "on",
+          "options": {
+            "groups": [
+              ":NODE:",
+              ":BUN:",
+              ":PACKAGE_WITH_PROTOCOL:",
+              ":URL:",
+              ":BLANK_LINE:",
+              { "source": ":PACKAGE:", "type": false },
+              ":BLANK_LINE:",
+              { "source": ":ALIAS:", "type": false },
+              ":BLANK_LINE:",
+              { "source": ":PATH:", "type": false },
+              ":BLANK_LINE:",
+              ":PACKAGE:",
+              ":BLANK_LINE:",
+              ":ALIAS:",
+              ":BLANK_LINE:",
+              ":PATH:"
+            ]
+          }
+        },
+        "useSortedAttributes": "on",
+        "useSortedKeys": "on"
       }
     }
   },
   "overrides": [
     {
-      "include": ["*.astro"],
+      "includes": ["**/*.astro"],
       "linter": {
         "rules": {
           "correctness": {
