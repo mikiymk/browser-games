@@ -1,4 +1,4 @@
-import type { Setter, Accessor } from "solid-js";
+import type { Accessor, Setter } from "solid-js";
 
 import { createSignal } from "solid-js";
 
@@ -10,7 +10,7 @@ import { PlayerTypeAi, PlayerTypeHuman } from "../../common/scripts/player.ts";
 import { usePromise } from "../../common/scripts/use-promise.ts";
 import { createUrlQuerySignal } from "../../common/scripts/use-url-query.ts";
 import { createBoard } from "../english-draughts/boards.ts";
-import { EndNotYet, White, CellEmpty } from "./constants.ts";
+import { CellEmpty, EndNotYet, White } from "./constants.ts";
 import { gameLoop, getWasm } from "./game-loop.ts";
 
 export type BoardCell = {

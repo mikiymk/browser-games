@@ -8,17 +8,6 @@ import type { Card } from "./card.ts";
 import { shuffledArray } from "../../common/scripts/random-select.ts";
 import { Cards, colorOf, decrementRank, incrementRank, rankOf, suitOf } from "./card.ts";
 
-export type CardField = {
-  foundations: Card[][];
-  stock: Pile;
-  tableaus: Pile[];
-};
-
-export type Pile = {
-  closed: Card[];
-  opened: Card[];
-};
-
 export type Select =
   | { readonly depth: number; readonly index: number; readonly type: "tableau" }
   | { readonly index: number; readonly type: "foundation" }
@@ -37,6 +26,11 @@ type KlondikeGame = {
   start: () => void;
   stock: Pile;
   tableaus: Pile[];
+};
+
+type Pile = {
+  closed: Card[];
+  opened: Card[];
 };
 
 export const createKlondikeGame = (): KlondikeGame => {
