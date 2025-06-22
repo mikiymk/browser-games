@@ -1,8 +1,8 @@
-import type { JSXElement } from "solid-js";
-
 import { Content, Overlay, Portal, Root } from "@corvu/dialog";
 
 import { content, overlay } from "./style.css.ts";
+
+import type { JSXElement } from "solid-js";
 
 type InformationPopUpProperties = {
   readonly children: JSXElement;

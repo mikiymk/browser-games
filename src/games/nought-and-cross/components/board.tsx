@@ -1,10 +1,10 @@
-import type { JSXElement } from "solid-js";
-
 import { Board } from "../../../common/components/game-board/board.tsx";
 import { CROSS_ID, NOUGHT_ID } from "../../../common/components/image/id.ts";
 import { UseImage } from "../../../common/components/use-image/use.tsx";
 import { noughtAndCrossBoard } from "../../../images/image-sources.ts";
 import { CROSS, NOUGHT } from "../constants.ts";
+
+import type { JSXElement } from "solid-js";
 
 type CellProperties = {
   readonly mark: number;

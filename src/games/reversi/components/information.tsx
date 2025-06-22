@@ -1,9 +1,9 @@
-import type { JSXElement } from "solid-js";
-
 import { Show } from "solid-js";
 
 import { CellBlack } from "../constants.ts";
 import { iconOuter, next, stoneBlack, stoneWhite } from "./style.css.ts";
+
+import type { JSXElement } from "solid-js";
 
 // ゲーム終了時に結果を表示する
 

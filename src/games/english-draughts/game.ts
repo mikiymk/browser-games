@@ -1,9 +1,4 @@
-import type { Accessor, Setter } from "solid-js";
-
 import { createSignal, mapArray } from "solid-js";
-
-import type { PlayerType } from "../../common/scripts/player.ts";
-import type { PlayerColor } from "./game-loop.ts";
 
 import { MultiPromise } from "../../common/scripts/multi-promise.ts";
 import { PlayerTypeAi, PlayerTypeHuman } from "../../common/scripts/player.ts";
@@ -13,6 +8,11 @@ import { createBoard } from "./boards.ts";
 import { COLOR_KING_BLACK, COLOR_KING_WHITE, COLOR_PAWN_BLACK, COLOR_PAWN_WHITE, MOVE_TARGET } from "./constants.ts";
 import { gameLoop } from "./game-loop.ts";
 import { getWasm } from "./wasm.ts";
+
+import type { Accessor, Setter } from "solid-js";
+
+import type { PlayerType } from "../../common/scripts/player.ts";
+import type { PlayerColor } from "./game-loop.ts";
 
 type EnglishDraughtsGame = {
   black: Accessor<PlayerType>;

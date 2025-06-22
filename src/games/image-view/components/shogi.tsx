@@ -1,11 +1,11 @@
-import type { JSXElement } from "solid-js";
-
 import { For } from "solid-js";
 
 import { DefineShogiPieces } from "../../../common/components/image/define.tsx";
 import { SHOGI_DIRECTIONS, SHOGI_PIECES } from "../../../common/components/image/id.ts";
 import { UseImage } from "../../../common/components/use-image/use.tsx";
 import { image } from "./style.css.ts";
+
+import type { JSXElement } from "solid-js";
 
 export const ShogiImages = (): JSXElement => {
   return (

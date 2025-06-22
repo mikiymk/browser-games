@@ -1,8 +1,8 @@
-import type { JSXElement } from "solid-js";
-
-import { path, arc, bezier, close, line, move } from "../../scripts/svg-path.ts";
+import { arc, bezier, close, line, move, path } from "../../scripts/svg-path.ts";
 import { BISHOP, KING, KNIGHT, PAWN, QUEEN, ROOK } from "./id.ts";
 import { chessPiece } from "./style.css.ts";
+
+import type { JSXElement } from "solid-js";
 
 type PieceProperties = {
   /** チェスの駒の色 */

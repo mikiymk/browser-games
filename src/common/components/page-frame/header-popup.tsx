@@ -1,10 +1,10 @@
-import type { JSXElement } from "solid-js";
-
 import { Content, Overlay, Root, Trigger } from "@corvu/dialog";
 import { Portal } from "solid-js/web";
 
 import { HeaderButton } from "./header-button.tsx";
 import { content, overlay } from "./style.css.ts";
+
+import type { JSXElement } from "solid-js";
 
 type HeaderPopupProperties = {
   readonly children: JSXElement;

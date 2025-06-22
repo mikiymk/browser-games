@@ -1,10 +1,10 @@
-import type { Accessor } from "solid-js";
-
 import { createSignal, onMount } from "solid-js";
 
 import { randomRange } from "../../common/scripts/random-select.ts";
 import { BoardLength, CellKnight, CellMovable, CellUnvisited, CellVisited } from "./constants.ts";
 import { setKnightMovable } from "./knight-move.ts";
+
+import type { Accessor } from "solid-js";
 
 type GameObject = {
   backHistory: (index: number) => void;

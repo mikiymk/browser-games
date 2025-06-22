@@ -1,8 +1,4 @@
-import type { JSXElement } from "solid-js";
-
 import { For } from "solid-js";
-
-import type { Hand } from "../constants.ts";
 
 import { Board } from "../../../common/components/game-board/board.tsx";
 import { shogiBoard } from "../../../images/image-sources.ts";
@@ -10,6 +6,10 @@ import { BLACK, WHITE } from "../constants.ts";
 import { Hands } from "./hands.tsx";
 import { Square } from "./square.tsx";
 import { handHeader } from "./style.css.ts";
+
+import type { JSXElement } from "solid-js";
+
+import type { Hand } from "../constants.ts";
 
 type BoardProperties = {
   readonly board: readonly { readonly moveTarget: boolean; readonly piece: number }[];

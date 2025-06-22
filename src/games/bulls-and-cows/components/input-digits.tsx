@@ -1,8 +1,8 @@
-import type { JSXElement } from "solid-js";
-
 import { createEffect, createSignal } from "solid-js";
 
 import { input, submitButton } from "./style.css.ts";
+
+import type { JSXElement } from "solid-js";
 
 type InputDigitsProperties = {
   readonly digitsCount: number;

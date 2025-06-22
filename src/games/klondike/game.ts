@@ -1,12 +1,12 @@
-import type { Accessor, Setter } from "solid-js";
-
 import { createSignal } from "solid-js";
 import { createStore } from "solid-js/store";
 
-import type { Card } from "./card.ts";
-
 import { shuffledArray } from "../../common/scripts/random-select.ts";
 import { Cards, colorOf, decrementRank, incrementRank, rankOf, suitOf } from "./card.ts";
+
+import type { Accessor, Setter } from "solid-js";
+
+import type { Card } from "./card.ts";
 
 export type Select =
   | { readonly depth: number; readonly index: number; readonly type: "tableau" }

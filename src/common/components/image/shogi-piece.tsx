@@ -1,8 +1,4 @@
-import type { JSXElement } from "solid-js";
-
-import type { ShogiId, ShogiPiece } from "./id.ts";
-
-import { path, close, line, move } from "../../scripts/svg-path.ts";
+import { close, line, move, path } from "../../scripts/svg-path.ts";
 import {
   shogiPieceShape,
   shogiPieceTextDown,
@@ -10,6 +6,10 @@ import {
   shogiPieceTextPromotedUp,
   shogiPieceTextUp,
 } from "./style.css.ts";
+
+import type { JSXElement } from "solid-js";
+
+import type { ShogiId, ShogiPiece } from "./id.ts";
 
 /**
  * 上向きの駒の形

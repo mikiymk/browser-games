@@ -1,6 +1,6 @@
-import type { JSXElement } from "solid-js";
-
 import { number } from "./style.css.ts";
+
+import type { JSXElement } from "solid-js";
 
 type InputNumberProperties = {
   /** 識別用の名前 */

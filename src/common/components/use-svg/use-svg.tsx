@@ -1,7 +1,7 @@
-import type { JSXElement } from "solid-js";
-
 import { UseImage } from "../use-image/use.tsx";
 import { svg } from "./style.css.ts";
+
+import type { JSXElement } from "solid-js";
 
 type UseSvgProperties = {
   readonly alt: string;

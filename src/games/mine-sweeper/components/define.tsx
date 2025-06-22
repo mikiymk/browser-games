@@ -1,5 +1,3 @@
-import type { JSXElement } from "solid-js";
-
 import { Define } from "../../../common/components/define/define.tsx";
 import { Flag, Mine } from "../../../common/components/image/symbol.tsx";
 import { classes } from "../../../common/scripts/classes.ts";
@@ -16,6 +14,8 @@ import {
   number8,
   opened,
 } from "./style.css.ts";
+
+import type { JSXElement } from "solid-js";
 
 export const DefineSymbol = (): JSXElement => {
   return (

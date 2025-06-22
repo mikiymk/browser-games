@@ -1,14 +1,40 @@
 {
   "$schema": "https://biomejs.dev/schemas/2.0.4/schema.json",
-
-  "vcs": {
-    "enabled": true,
-    "clientKind": "git"
+  "assist": {
+    "actions": {
+      "source": {
+        "organizeImports": {
+          "level": "on",
+          "options": {
+            "groups": [
+              ":NODE:",
+              ":BUN:",
+              ":PACKAGE_WITH_PROTOCOL:",
+              ":URL:",
+              ":BLANK_LINE:",
+              { "source": ":PACKAGE:", "type": false },
+              ":BLANK_LINE:",
+              { "source": ":ALIAS:", "type": false },
+              ":BLANK_LINE:",
+              { "source": ":PATH:", "type": false },
+              ":BLANK_LINE:",
+              ":PACKAGE:",
+              ":BLANK_LINE:",
+              ":ALIAS:",
+              ":BLANK_LINE:",
+              ":PATH:"
+            ]
+          }
+        },
+        "useSortedAttributes": "on",
+        "useSortedKeys": "on"
+      }
+    }
   },
 
   "files": {
-    "includes": ["**", "!dist", "!.astro"],
-    "ignoreUnknown": true
+    "ignoreUnknown": true,
+    "includes": ["src", "*"]
   },
   "formatter": {
     "indentStyle": "space",
@@ -82,7 +108,7 @@
         "useExplicitLengthCheck": "on",
         "useFilenamingConvention": {
           "level": "on",
-          "options": { "requireAscii": true, "filenameCases": ["kebab-case", "export"] }
+          "options": { "filenameCases": ["kebab-case", "export"], "requireAscii": true }
         },
         "useForOf": "on",
         "useFragmentSyntax": "on",
@@ -110,37 +136,6 @@
       }
     }
   },
-  "assist": {
-    "actions": {
-      "source": {
-        "organizeImports": {
-          "level": "on",
-          "options": {
-            "groups": [
-              ":NODE:",
-              ":BUN:",
-              ":PACKAGE_WITH_PROTOCOL:",
-              ":URL:",
-              ":BLANK_LINE:",
-              { "source": ":PACKAGE:", "type": false },
-              ":BLANK_LINE:",
-              { "source": ":ALIAS:", "type": false },
-              ":BLANK_LINE:",
-              { "source": ":PATH:", "type": false },
-              ":BLANK_LINE:",
-              ":PACKAGE:",
-              ":BLANK_LINE:",
-              ":ALIAS:",
-              ":BLANK_LINE:",
-              ":PATH:"
-            ]
-          }
-        },
-        "useSortedAttributes": "on",
-        "useSortedKeys": "on"
-      }
-    }
-  },
   "overrides": [
     {
       "includes": ["**/*.astro"],
@@ -155,5 +150,10 @@
         }
       }
     }
-  ]
+  ],
+
+  "vcs": {
+    "clientKind": "git",
+    "enabled": true
+  }
 }

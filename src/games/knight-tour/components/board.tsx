@@ -1,8 +1,8 @@
-import type { JSXElement } from "solid-js";
-
 import { Board } from "../../../common/components/game-board/board.tsx";
 import { chessBoard } from "../../../images/image-sources.ts";
 import { Square } from "./square.tsx";
+
+import type { JSXElement } from "solid-js";
 
 type BoardProperties = {
   readonly board: readonly number[];

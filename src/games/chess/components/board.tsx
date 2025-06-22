@@ -1,10 +1,10 @@
-import type { JSXElement } from "solid-js";
-
-import type { BoardCell } from "../game.ts";
-
 import { Board } from "../../../common/components/game-board/board.tsx";
 import { chessBoard } from "../../../images/image-sources.ts";
 import { BoardSquare } from "./board-square.tsx";
+
+import type { JSXElement } from "solid-js";
+
+import type { BoardCell } from "../game.ts";
 
 type BoardProperties = {
   readonly board: readonly BoardCell[];

@@ -1,5 +1,3 @@
-import type { JSXElement } from "solid-js";
-
 import { Page } from "../../../common/components/page-frame/page.tsx";
 import { createUrlQuerySignal } from "../../../common/scripts/use-url-query.ts";
 import { createGame } from "../game.ts";
@@ -7,6 +5,8 @@ import { KnightBoard } from "./board.tsx";
 import { History } from "./history.tsx";
 import { HowToPlayKnightTour } from "./how-to-play.tsx";
 import { KnightTourSettings } from "./settings.tsx";
+
+import type { JSXElement } from "solid-js";
 
 export const App = (): JSXElement => {
   const [hint, setHint] = createUrlQuerySignal("board", "hide");

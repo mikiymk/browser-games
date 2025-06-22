@@ -1,6 +1,6 @@
-import type { JSXElement } from "solid-js";
-
 import { headerMaterialIcon } from "./style.css.ts";
+
+import type { JSXElement } from "solid-js";
 
 type Properties = {
   readonly children: string;

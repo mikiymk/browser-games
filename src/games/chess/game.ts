@@ -1,8 +1,4 @@
-import type { Accessor, Setter } from "solid-js";
-
 import { createSignal } from "solid-js";
-
-import type { PlayerType } from "../../common/scripts/player.ts";
 
 import { doNothingFunction } from "../../common/scripts/do-nothing.ts";
 import { MultiPromise } from "../../common/scripts/multi-promise.ts";
@@ -12,6 +8,10 @@ import { createUrlQuerySignal } from "../../common/scripts/use-url-query.ts";
 import { createBoard } from "../english-draughts/boards.ts";
 import { CellEmpty, EndNotYet, White } from "./constants.ts";
 import { gameLoop, getWasm } from "./game-loop.ts";
+
+import type { Accessor, Setter } from "solid-js";
+
+import type { PlayerType } from "../../common/scripts/player.ts";
 
 export type BoardCell = {
   readonly mark: number;

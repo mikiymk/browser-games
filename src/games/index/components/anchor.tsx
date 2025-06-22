@@ -1,6 +1,6 @@
-import type { JSXElement } from "solid-js";
-
 import { anchor } from "./style.css.ts";
+
+import type { JSXElement } from "solid-js";
 
 type ListProperties = {
   readonly children: JSXElement;

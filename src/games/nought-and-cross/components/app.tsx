@@ -1,5 +1,3 @@
-import type { JSXElement } from "solid-js";
-
 import { Start } from "../../../common/components/header-buttons/start.tsx";
 import { Page } from "../../../common/components/page-frame/page.tsx";
 import { createNoughtAndCrossGame } from "../game.ts";
@@ -7,6 +5,8 @@ import { NncBoard } from "./board.tsx";
 import { History } from "./history.tsx";
 import { NoughtAndCrossSettings } from "./settings.tsx";
 import { StatusButton } from "./status.tsx";
+
+import type { JSXElement } from "solid-js";
 
 export const App = (): JSXElement => {
   const { board, handleClick, history, playerO, playerX, reset, setPlayerO, setPlayerX, status } =

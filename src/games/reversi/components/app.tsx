@@ -1,8 +1,4 @@
-import type { JSXElement } from "solid-js";
-
 import { createSignal } from "solid-js";
-
-import type { PlayerType } from "../../../common/scripts/player.ts";
 
 import { PlayerSetting, Settings } from "../../../common/components/header-buttons/settings.tsx";
 import { Start } from "../../../common/components/header-buttons/start.tsx";
@@ -18,6 +14,10 @@ import { getReversiWasm } from "../get-wasm.ts";
 import { ReversiBoard } from "./board.tsx";
 import { HowToPlayReversi } from "./how-to-play.tsx";
 import { StoneCount } from "./information.tsx";
+
+import type { JSXElement } from "solid-js";
+
+import type { PlayerType } from "../../../common/scripts/player.ts";
 
 const emptyBoard: number[] = Array.from({ length: 64 }, () => CellEmpty);
 

@@ -1,5 +1,3 @@
-import type { JSXElement } from "solid-js";
-
 import { For } from "solid-js";
 
 import { Define } from "../define/define.tsx";
@@ -8,6 +6,8 @@ import { Bishop, King, Knight, Pawn, Queen, Rook } from "./chess-piece.tsx";
 import { CARD_COURT_RANKS, CARD_PIP_RANKS, CARD_SUITS } from "./id.ts";
 import { Piece2Letters, PieceShapeDown, PieceShapeUp } from "./shogi-piece.tsx";
 import { SuitClub, SuitDiamond, SuitHeart, SuitSpade } from "./suit.tsx";
+
+import type { JSXElement } from "solid-js";
 
 /**
  * トランプのカードをすべて定義する

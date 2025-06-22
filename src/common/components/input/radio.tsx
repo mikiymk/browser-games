@@ -1,8 +1,8 @@
-import type { JSXElement } from "solid-js";
-
 import { For } from "solid-js";
 
 import { radio, radioInput } from "./style.css.ts";
+
+import type { JSXElement } from "solid-js";
 
 type RadioProperties<T> = {
   /** 識別用の名前 */

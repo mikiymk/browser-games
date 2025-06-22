@@ -1,9 +1,4 @@
-import type { Accessor, Setter } from "solid-js";
-
 import { createSignal, onMount } from "solid-js";
-
-import type { PlayerType } from "../../common/scripts/player.ts";
-import type { EndType, GameStatus, PlayerColor } from "./constants.ts";
 
 import { doNothingFunction } from "../../common/scripts/do-nothing.ts";
 import { MultiPromise } from "../../common/scripts/multi-promise.ts";
@@ -26,6 +21,11 @@ import {
 } from "./constants.ts";
 import { startGame } from "./game-body.ts";
 import { getWasm } from "./wasm.ts";
+
+import type { Accessor, Setter } from "solid-js";
+
+import type { PlayerType } from "../../common/scripts/player.ts";
+import type { EndType, GameStatus, PlayerColor } from "./constants.ts";
 
 type NoughtAndCrossGame = {
   board: Accessor<readonly number[]>;

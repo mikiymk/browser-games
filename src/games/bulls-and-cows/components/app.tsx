@@ -1,5 +1,3 @@
-import type { JSXElement } from "solid-js";
-
 import { For, Show } from "solid-js";
 
 import { SettingItem, Settings } from "../../../common/components/header-buttons/settings.tsx";
@@ -9,6 +7,8 @@ import { Page } from "../../../common/components/page-frame/page.tsx";
 import { createGame } from "../game.ts";
 import { Guess } from "./guess.tsx";
 import { InputDigits } from "./input-digits.tsx";
+
+import type { JSXElement } from "solid-js";
 
 export const App = (): JSXElement => {
   const { addGuess, digits, guesses, message, reset, setDigitsCount } = createGame();

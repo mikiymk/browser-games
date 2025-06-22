@@ -1,8 +1,8 @@
-import type { JSXElement } from "solid-js";
-
-import { path, close, line, move } from "../../scripts/svg-path.ts";
+import { close, line, move, path } from "../../scripts/svg-path.ts";
 import { CROSS_ID, FLAG, MARKER, MINE, NOUGHT_ID, STONE, STONE_KING } from "./id.ts";
 import { stone, symbolFlagFill, symbolMark, symbolMineFill } from "./style.css.ts";
+
+import type { JSXElement } from "solid-js";
 
 /**
  * マル

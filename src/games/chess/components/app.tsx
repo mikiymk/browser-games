@@ -1,11 +1,11 @@
-import type { JSXElement } from "solid-js";
-
 import { PlayerSetting, Settings } from "../../../common/components/header-buttons/settings.tsx";
 import { Start } from "../../../common/components/header-buttons/start.tsx";
 import { Page } from "../../../common/components/page-frame/page.tsx";
 import { createChessGame } from "../game.ts";
 import { ChessBoard } from "./board.tsx";
 import { Status } from "./status.tsx";
+
+import type { JSXElement } from "solid-js";
 
 export const App = (): JSXElement => {
   const { black, board, color, end, handleClick, setBlack, setWhite, start, white } = createChessGame();

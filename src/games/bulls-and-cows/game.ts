@@ -1,9 +1,9 @@
-import type { Accessor } from "solid-js";
-
 import { createEffect, createSignal } from "solid-js";
 
 import { shuffledArray } from "../../common/scripts/random-select.ts";
 import { createUrlQuerySignal } from "../../common/scripts/use-url-query.ts";
+
+import type { Accessor } from "solid-js";
 
 type Game = {
   addGuess: (guess: readonly number[]) => void;

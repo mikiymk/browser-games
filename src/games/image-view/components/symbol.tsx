@@ -1,10 +1,10 @@
-import type { JSXElement } from "solid-js";
-
 import { Define } from "../../../common/components/define/define.tsx";
 import { CROSS_ID, FLAG, MINE, NOUGHT_ID } from "../../../common/components/image/id.ts";
 import { Cross, Flag, Mine, Nought, Stone, StoneKing } from "../../../common/components/image/symbol.tsx";
 import { UseImage } from "../../../common/components/use-image/use.tsx";
 import { image } from "./style.css.ts";
+
+import type { JSXElement } from "solid-js";
 
 export const OtherSymbolImages = (): JSXElement => {
   return (

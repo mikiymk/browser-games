@@ -1,8 +1,8 @@
-import type { JSXElement } from "solid-js";
-
 import { For } from "solid-js";
 
 import { digits, digitsContainer } from "./style.css.ts";
+
+import type { JSXElement } from "solid-js";
 
 type DigitsProperties = {
   readonly digits: readonly number[];

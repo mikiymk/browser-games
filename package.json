@@ -1,50 +1,14 @@
 {
-  "name": "browser-games",
-  "version": "0.1.0",
-  "description": "html games",
-  "main": "index.js",
-  "type": "module",
-  "scripts": {
-    "format": "run-z format:js format:wasm",
-    "build": "run-z build:wasm:fast build:js",
-    "test": "run-z test:wasm",
-    "check": "run-z check:wasm check:js",
-    "ci": "run-z ci:wasm ci:js",
-    "format:js": "biome format . --write",
-    "lint:js": "run-z lint:biome lint:eslint lint:ts lint:knip",
-    "lint:biome": "biome check .",
-    "lint:biome:fix": "biome check . --write",
-    "lint:biome:fix-unsafe": "biome check . --write --unsafe",
-    "lint:biome:format": "biome ci .",
-    "lint:eslint": "eslint src --cache",
-    "lint:eslint:fix": "eslint src --cache --fix",
-    "lint:ts": "tsc",
-    "lint:knip": "knip --cache",
-    "lint:knip:fix": "knip --cache --fix",
-    "build:js": "astro build",
-    "check:js": "run-z format:js lint:js build:js",
-    "ci:js": "run-z lint:biome:format lint:js build:js",
-    "serve": "astro dev",
-    "serve:preview": "astro preview",
-    "format:wasm": "zig fmt ./src",
-    "lint:wasm:format": "zig fmt --check ./src",
-    "build:wasm": "zig build -Doptimize=Debug",
-    "build:wasm:fast": "zig build -Doptimize=ReleaseFast",
-    "build:wasm:small": "zig build -Doptimize=ReleaseSmall",
-    "test:wasm": "zig build test",
-    "check:wasm": "run-z format:wasm test:wasm build:wasm",
-    "ci:wasm": "run-z lint:wasm:format test:wasm build:wasm"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/mikiymk/.git"
-  },
   "author": "mikiymk",
-  "license": "MIT",
   "bugs": {
     "url": "https://github.com/mikiymk/browser-games/issues"
   },
-  "homepage": "https://github.com/mikiymk/browser-games#readme",
+  "dependencies": {
+    "@corvu/dialog": "^0.2.4",
+    "@vanilla-extract/css": "^1.17.4",
+    "solid-js": "^1.9.7"
+  },
+  "description": "html games",
   "devDependencies": {
     "@astrojs/solid-js": "^5.1.0",
     "@biomejs/biome": "^2.0.4",
@@ -70,9 +34,45 @@
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.34.1"
   },
-  "dependencies": {
-    "@corvu/dialog": "^0.2.4",
-    "@vanilla-extract/css": "^1.17.4",
-    "solid-js": "^1.9.7"
-  }
+  "homepage": "https://github.com/mikiymk/browser-games#readme",
+  "license": "MIT",
+  "main": "index.js",
+  "name": "browser-games",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mikiymk/.git"
+  },
+  "scripts": {
+    "build": "run-z build:wasm:fast build:js",
+    "build:js": "astro build",
+    "build:wasm": "zig build -Doptimize=Debug",
+    "build:wasm:fast": "zig build -Doptimize=ReleaseFast",
+    "build:wasm:small": "zig build -Doptimize=ReleaseSmall",
+    "check": "run-z check:wasm check:js",
+    "check:js": "run-z format:js lint:js build:js",
+    "check:wasm": "run-z format:wasm test:wasm build:wasm",
+    "ci": "run-z ci:wasm ci:js",
+    "ci:js": "run-z lint:biome:format lint:js build:js",
+    "ci:wasm": "run-z lint:wasm:format test:wasm build:wasm",
+    "format": "run-z format:js format:wasm",
+    "format:js": "biome format . --write",
+    "format:wasm": "zig fmt ./src",
+    "lint:biome": "biome check .",
+    "lint:biome:fix": "biome check . --write",
+    "lint:biome:fix-unsafe": "biome check . --write --unsafe",
+    "lint:biome:format": "biome ci .",
+    "lint:eslint": "eslint src --cache",
+    "lint:eslint:fix": "eslint src --cache --fix",
+    "lint:js": "run-z lint:biome lint:eslint lint:ts lint:knip",
+    "lint:knip": "knip --cache",
+    "lint:knip:fix": "knip --cache --fix",
+    "lint:ts": "tsc",
+    "lint:wasm:format": "zig fmt --check ./src",
+    "serve": "astro dev",
+    "serve:preview": "astro preview",
+    "test": "run-z test:wasm",
+    "test:wasm": "zig build test"
+  },
+  "type": "module",
+  "version": "0.1.0"
 }

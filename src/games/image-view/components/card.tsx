@@ -1,11 +1,11 @@
-import type { JSXElement } from "solid-js";
-
 import { For } from "solid-js";
 
 import { DefineCards } from "../../../common/components/image/define.tsx";
 import { CARD_RANKS, CARD_SUITS } from "../../../common/components/image/id.ts";
 import { UseImage } from "../../../common/components/use-image/use.tsx";
 import { image } from "./style.css.ts";
+
+import type { JSXElement } from "solid-js";
 
 export const CardImage = (): JSXElement => {
   return (

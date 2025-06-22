@@ -1,6 +1,6 @@
-import type { JSXElement } from "solid-js";
-
 import { button } from "./style.css.ts";
+
+import type { JSXElement } from "solid-js";
 
 type ButtonProperties = {
   readonly children: JSXElement;

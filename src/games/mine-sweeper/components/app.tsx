@@ -1,5 +1,3 @@
-import type { JSXElement } from "solid-js";
-
 import { Start } from "../../../common/components/header-buttons/start.tsx";
 import { Page } from "../../../common/components/page-frame/page.tsx";
 import { createUrlQuerySignalNumber } from "../../../common/scripts/use-url-query.ts";
@@ -7,6 +5,8 @@ import { createMineSweeperGame } from "../game.ts";
 import { Status } from "./controller.tsx";
 import { MineFields } from "./field.tsx";
 import { MineSweeperSettings } from "./settings.tsx";
+
+import type { JSXElement } from "solid-js";
 
 export const App = (): JSXElement => {
   const [height, setHeight] = createUrlQuerySignalNumber("height", 10);

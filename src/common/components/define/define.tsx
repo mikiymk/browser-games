@@ -1,6 +1,6 @@
-import type { JSXElement } from "solid-js";
-
 import { define } from "./style.css.ts";
+
+import type { JSXElement } from "solid-js";
 
 type DefineProperties = {
   readonly children: JSXElement;

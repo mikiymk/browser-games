@@ -1,8 +1,8 @@
-import type { JSXElement } from "solid-js";
-
 import { For, Show } from "solid-js";
 
 import { clear } from "./style.css.ts";
+
+import type { JSXElement } from "solid-js";
 
 type BoardProperties<T> = {
   /** ゲームボードの背景画像 */

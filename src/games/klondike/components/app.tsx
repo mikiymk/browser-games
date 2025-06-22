@@ -1,5 +1,3 @@
-import type { JSXElement } from "solid-js";
-
 import { Close } from "@corvu/dialog";
 
 import { Start } from "../../../common/components/header-buttons/start.tsx";
@@ -7,6 +5,8 @@ import { InformationPopUp } from "../../../common/components/page-frame/informat
 import { Page } from "../../../common/components/page-frame/page.tsx";
 import { createKlondikeGame } from "../game.ts";
 import { Field } from "./field.tsx";
+
+import type { JSXElement } from "solid-js";
 
 export const App = (): JSXElement => {
   const {

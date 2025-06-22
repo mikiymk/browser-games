@@ -1,7 +1,3 @@
-import type { JSXElement } from "solid-js";
-
-import type { PlayerType } from "../../../common/scripts/player.ts";
-
 import { Start } from "../../../common/components/header-buttons/start.tsx";
 import { Page } from "../../../common/components/page-frame/page.tsx";
 import { PlayerTypeAi, PlayerTypeHuman } from "../../../common/scripts/player.ts";
@@ -11,6 +7,10 @@ import { ShogiBoard } from "./board.tsx";
 import { GameOverPopUp } from "./game-over-pop-up.tsx";
 import { PromotionPopUp } from "./promotion-pop-up.tsx";
 import { ShogiSettings } from "./settings.tsx";
+
+import type { JSXElement } from "solid-js";
+
+import type { PlayerType } from "../../../common/scripts/player.ts";
 
 export const App = (): JSXElement => {
   const [black, setBlack] = createUrlQuerySignal<PlayerType>("first", PlayerTypeHuman);

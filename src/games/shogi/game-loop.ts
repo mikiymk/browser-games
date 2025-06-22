@@ -1,11 +1,11 @@
+import { PlayerTypeHuman } from "../../common/scripts/player.ts";
+import { sleep } from "../../common/scripts/sleep.ts";
+import { MOVE_TARGET } from "./constants.ts";
+
 import type { MultiPromise } from "../../common/scripts/multi-promise.ts";
 import type { PlayerType } from "../../common/scripts/player.ts";
 import type { BLACK, Hand, WHITE } from "./constants.ts";
 import type { Game, WasmConnect } from "./wasm.ts";
-
-import { PlayerTypeHuman } from "../../common/scripts/player.ts";
-import { sleep } from "../../common/scripts/sleep.ts";
-import { MOVE_TARGET } from "./constants.ts";
 
 const AI_SLEEP_TIME_MS = 500;
 const EmptyBoard: readonly number[] = Array.from({ length: 81 }, () => 0);

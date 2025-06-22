@@ -1,7 +1,7 @@
-import type { JSXElement } from "solid-js";
-
 import { themeIcon } from "../../../images/image-sources.ts";
 import { body, header, headerButton, headerIcon, headerText, headerTitle } from "./style.css.ts";
+
+import type { JSXElement } from "solid-js";
 
 type PageBodyProperties = {
   readonly children?: JSXElement;

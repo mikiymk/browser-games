@@ -1,12 +1,12 @@
-import type { JSXElement } from "solid-js";
-
 import { For, Show } from "solid-js";
-
-import type { Hand } from "../constants.ts";
 
 import { WHITE } from "../constants.ts";
 import { Button } from "./button.tsx";
 import { hand } from "./style.css.ts";
+
+import type { JSXElement } from "solid-js";
+
+import type { Hand } from "../constants.ts";
 
 type HandsProperties = {
   readonly color: number;

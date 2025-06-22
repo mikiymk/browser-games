@@ -1,9 +1,9 @@
-import type { Accessor } from "solid-js";
-
 import { batch, createEffect, createSignal } from "solid-js";
 
 import { Bombed, Clear, FieldBomb, FieldFlag, FieldNoOpen, FirstClick, Playing } from "./constants.ts";
 import { getAround, initializeField, isClear, resetMines } from "./field.ts";
+
+import type { Accessor } from "solid-js";
 
 type MineSweeperGame = {
   fields: Accessor<readonly number[]>;

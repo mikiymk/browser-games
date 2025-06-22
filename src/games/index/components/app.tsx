@@ -1,5 +1,3 @@
-import type { JSXElement } from "solid-js";
-
 import { For } from "solid-js";
 
 import { Page } from "../../../common/components/page-frame/page.tsx";
@@ -16,6 +14,8 @@ import {
 } from "../../../common/scripts/constants.ts";
 import { Anchor } from "./anchor.tsx";
 import { List, ListItem } from "./list.tsx";
+
+import type { JSXElement } from "solid-js";
 
 const pages = [
   { name: "nought-and-cross", title: TEXT_GAME_NOUGHT_AND_CROSS },

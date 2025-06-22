@@ -1,9 +1,9 @@
-import type { JSXElement } from "solid-js";
-
 import { Show } from "solid-js";
 
 import { Icon } from "./material-icon.tsx";
 import { headerButton, headerText } from "./style.css.ts";
+
+import type { JSXElement } from "solid-js";
 
 type HeaderButtonProperites = {
   readonly children: string;

@@ -1,6 +1,6 @@
-import type { JSXElement } from "solid-js";
-
 import { Show } from "solid-js";
+
+import type { JSXElement } from "solid-js";
 
 type UseProperties<T extends string> = {
   readonly height?: number | string | undefined;

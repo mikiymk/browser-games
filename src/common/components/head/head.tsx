@@ -1,6 +1,6 @@
-import type { JSXElement } from "solid-js";
-
 import { themeIcon } from "../../../images/image-sources.ts";
+
+import type { JSXElement } from "solid-js";
 
 type HeadPropeties = {
   readonly canonicalUrl: string;

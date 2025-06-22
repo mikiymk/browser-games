@@ -1,6 +1,6 @@
-import type { Accessor, Setter } from "solid-js";
-
 import { createEffect, createSignal, onMount } from "solid-js";
+
+import type { Accessor, Setter } from "solid-js";
 
 /**
  * URLのクエリパラメータをSignalとして扱うアクセサーとセッターを作成します。

@@ -1,12 +1,12 @@
-import type { JSXElement } from "solid-js";
-
 import { For } from "solid-js";
-
-import type { CardCourtRank, CardId, CardPipRank, CardRank, CardSuit } from "./id.ts";
 
 import { cardBg, colorBlue } from "../../../styles/colors.css.ts";
 import { UseImage } from "../use-image/use.tsx";
 import { cardBackGround, cardEmpty, cardText, cardTextMiddle } from "./style.css.ts";
+
+import type { JSXElement } from "solid-js";
+
+import type { CardCourtRank, CardId, CardPipRank, CardRank, CardSuit } from "./id.ts";
 
 /**
  * 配列から指定されたインデックスの要素を選択して新しい配列を作成します。
