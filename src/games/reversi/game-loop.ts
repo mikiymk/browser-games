@@ -1,14 +1,14 @@
-import type { Accessor } from "solid-js";
-
 import { createSignal } from "solid-js";
 
-import type { MultiPromise } from "../../scripts/multi-promise.ts";
-import type { PlayerType } from "../../scripts/player.ts";
-import type { ReversiWasmConnect } from "./get-wasm.ts";
+import { PlayerTypeHuman } from "../../common/scripts/player.ts";
+import { sleep } from "../../common/scripts/sleep.ts";
+import { CellBlack, CellEmpty, CellWhite } from "./constants.ts";
 
-import { PlayerTypeHuman } from "../../scripts/player.ts";
-import { sleep } from "../../scripts/sleep.ts";
-import { CellBlack, CellEmpty, CellWhite } from "./const.ts";
+import type { Accessor } from "solid-js";
+
+import type { MultiPromise } from "../../common/scripts/multi-promise.ts";
+import type { PlayerType } from "../../common/scripts/player.ts";
+import type { ReversiWasmConnect } from "./get-wasm.ts";
 
 const AI_SLEEP_TIME_MS = 500;
 

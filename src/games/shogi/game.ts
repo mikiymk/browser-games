@@ -1,16 +1,16 @@
-import type { Accessor, Setter } from "solid-js";
-
 import { createSignal } from "solid-js";
 
-import type { PlayerType } from "../../scripts/player.ts";
-import type { Hand } from "./constants.ts";
-
-import { doNothingFunction } from "../../scripts/do-nothing.ts";
-import { MultiPromise } from "../../scripts/multi-promise.ts";
-import { usePromise } from "../../scripts/use-promise.ts";
+import { doNothingFunction } from "../../common/scripts/do-nothing.ts";
+import { MultiPromise } from "../../common/scripts/multi-promise.ts";
+import { usePromise } from "../../common/scripts/use-promise.ts";
 import { BLACK, MOVE_TARGET, WHITE } from "./constants.ts";
 import { gameLoop } from "./game-loop.ts";
 import { getWasm } from "./wasm.ts";
+
+import type { Accessor, Setter } from "solid-js";
+
+import type { PlayerType } from "../../common/scripts/player.ts";
+import type { Hand } from "./constants.ts";
 
 type Board = readonly { moveTarget: boolean; piece: number }[];
 type Game = {
@@ -24,7 +24,7 @@ type Game = {
   start: () => void;
   whiteHands: Accessor<Hand>;
 };
-export const createGame = (white: Accessor<PlayerType>, black: Accessor<PlayerType>): Game => {
+export const createShogiGame = (white: Accessor<PlayerType>, black: Accessor<PlayerType>): Game => {
   const [board, setFullBoard] = createSignal<Board>(
     Array.from({ length: 81 }, () => ({ moveTarget: false, piece: 0 })),
   );

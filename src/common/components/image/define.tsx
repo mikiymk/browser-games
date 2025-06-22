@@ -1,14 +1,18 @@
-import type { JSXElement } from "solid-js";
-
 import { For } from "solid-js";
 
-import { Define } from "../../../components/define/define.tsx";
+import { Define } from "../define/define.tsx";
 import { Back, Court, Empty, Pip } from "./card.tsx";
 import { Bishop, King, Knight, Pawn, Queen, Rook } from "./chess-piece.tsx";
 import { CARD_COURT_RANKS, CARD_PIP_RANKS, CARD_SUITS } from "./id.ts";
 import { Piece2Letters, PieceShapeDown, PieceShapeUp } from "./shogi-piece.tsx";
 import { SuitClub, SuitDiamond, SuitHeart, SuitSpade } from "./suit.tsx";
 
+import type { JSXElement } from "solid-js";
+
+/**
+ * トランプのカードをすべて定義する
+ * @returns 要素
+ */
 export const DefineCards = (): JSXElement => {
   return (
     <Define>
@@ -32,6 +36,10 @@ export const DefineCards = (): JSXElement => {
   );
 };
 
+/**
+ * チェスの駒をすべて定義する
+ * @returns 要素
+ */
 export const DefineChessPieces = (): JSXElement => {
   return (
     <Define>
@@ -52,6 +60,10 @@ export const DefineChessPieces = (): JSXElement => {
   );
 };
 
+/**
+ * 将棋の駒をすべて定義する
+ * @returns 要素
+ */
 export const DefineShogiPieces = (): JSXElement => {
   return (
     <Define>

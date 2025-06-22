@@ -1,34 +1,34 @@
-import type { JSXElement } from "solid-js";
-
 import { For, Show } from "solid-js";
 
-import { SettingItem, Settings } from "../../../components/header-buttons/settings.tsx";
-import { Start } from "../../../components/header-buttons/start.tsx";
-import { InputNumber } from "../../../components/input/number.tsx";
-import { Page } from "../../../components/page/page.tsx";
+import { SettingItem, Settings } from "../../../common/components/header-buttons/settings.tsx";
+import { Start } from "../../../common/components/header-buttons/start.tsx";
+import { InputNumber } from "../../../common/components/input/number.tsx";
+import { Page } from "../../../common/components/page-frame/page.tsx";
 import { createGame } from "../game.ts";
 import { Guess } from "./guess.tsx";
 import { InputDigits } from "./input-digits.tsx";
 
+import type { JSXElement } from "solid-js";
+
 export const App = (): JSXElement => {
-  const game = createGame();
+  const { addGuess, digits, guesses, message, reset, setDigitsCount } = createGame();
 
   return (
     <Page
       header={
         <>
-          <Start start={() => game.reset()} />
+          <Start start={() => reset()} />
           <Settings>
             <SettingItem label="Digits">
-              <InputNumber name="digits" setValue={game.setNumberOfDigits} value={game.digits().length} />
+              <InputNumber name="digits" setValue={setDigitsCount} value={digits().length} />
             </SettingItem>
           </Settings>
         </>
       }
     >
-      <For each={game.guesses()}>{(guess) => <Guess digits={game.digits()} guess={guess} />}</For>
-      <Show when={game.message()}>{(message) => message()}</Show>
-      <InputDigits numberOfDigits={game.digits().length} setDigits={game.addGuess} />
+      <For each={guesses()}>{(guess) => <Guess digits={digits()} guess={guess} />}</For>
+      <Show when={message()}>{(message) => message()}</Show>
+      <InputDigits digitsCount={digits().length} setDigits={addGuess} />
     </Page>
   );
 };

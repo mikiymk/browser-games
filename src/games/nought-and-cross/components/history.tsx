@@ -1,12 +1,12 @@
-import type { JSXElement } from "solid-js";
-
 import { For, Show } from "solid-js";
 
 import { CROSS_ID, NOUGHT_ID } from "../../../common/components/image/id.ts";
-import { UseSvg } from "../../../components/elements/styled-svg.tsx";
-import { HeaderPopup } from "../../../components/page/header-popup.tsx";
-import { TEXT_HISTORY } from "../../../scripts/constants.ts";
+import { HeaderPopup } from "../../../common/components/page-frame/header-popup.tsx";
+import { UseSvg } from "../../../common/components/use-svg/use-svg.tsx";
+import { TEXT_HISTORY } from "../../../common/scripts/constants.ts";
 import { history, historyItem } from "./style.css.ts";
+
+import type { JSXElement } from "solid-js";
 
 const historyFillArray = [-1, -1, -1, -1, -1, -1, -1, -1, -1];
 

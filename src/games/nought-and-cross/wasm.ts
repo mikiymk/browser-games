@@ -1,7 +1,7 @@
-import type { EndType, PlayerColor } from "./constants.ts";
-
 import { mergeBoards, transBoard } from "../english-draughts/boards.ts";
 import { CROSS, CROSS_WASM, NOUGHT, NOUGHT_WASM } from "./constants.ts";
+
+import type { EndType, PlayerColor } from "./constants.ts";
 
 export type GameController = {
   readonly ai: (g: GameObject) => void;

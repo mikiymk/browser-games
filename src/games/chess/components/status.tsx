@@ -1,5 +1,3 @@
-import type { JSXElement } from "solid-js";
-
 import {
   Black,
   End5Repetition,
@@ -9,6 +7,8 @@ import {
   EndStalemate,
   EndWhiteWin,
 } from "../constants.ts";
+
+import type { JSXElement } from "solid-js";
 
 type StatusProperties = {
   readonly color: number;

@@ -1,12 +1,12 @@
-import type { JSXElement } from "solid-js";
-
 import { For, Show } from "solid-js";
-
-import type { Card } from "../card.ts";
-import type { Select } from "../klondike.tsx";
 
 import { UseCard } from "./define.tsx";
 import { field } from "./style.css.ts";
+
+import type { JSXElement } from "solid-js";
+
+import type { Card } from "../card.ts";
+import type { Select } from "../game.tsx";
 
 type FieldProperties = {
   readonly autoFoundation: (from: Select) => void;

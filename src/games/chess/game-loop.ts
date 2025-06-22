@@ -1,8 +1,5 @@
-import type { MultiPromise } from "../../scripts/multi-promise.ts";
-import type { PlayerType } from "../../scripts/player.ts";
-
-import { PlayerTypeHuman } from "../../scripts/player.ts";
-import { sleep } from "../../scripts/sleep.ts";
+import { PlayerTypeHuman } from "../../common/scripts/player.ts";
+import { sleep } from "../../common/scripts/sleep.ts";
 import {
   Black,
   CellBlackBishop,
@@ -23,6 +20,9 @@ import {
   MoveTarget,
   White,
 } from "./constants.ts";
+
+import type { MultiPromise } from "../../common/scripts/multi-promise.ts";
+import type { PlayerType } from "../../common/scripts/player.ts";
 
 type GamePtr = 0 | (number & { readonly __unique: "Wasm pointer of Board struct" });
 type Players = {

@@ -1,64 +1,41 @@
-import type { JSXElement } from "solid-js";
-
 import { Close } from "@corvu/dialog";
-import { createSignal } from "solid-js";
 
-import type { Select } from "../klondike.ts";
-
-import { Start } from "../../../components/header-buttons/start.tsx";
-import { InformationPopUp } from "../../../components/page/information-popup.tsx";
-import { Page } from "../../../components/page/page.tsx";
-import { createKlondike } from "../klondike.ts";
+import { Start } from "../../../common/components/header-buttons/start.tsx";
+import { InformationPopUp } from "../../../common/components/page-frame/information-popup.tsx";
+import { Page } from "../../../common/components/page-frame/page.tsx";
+import { createKlondikeGame } from "../game.ts";
 import { Field } from "./field.tsx";
 
+import type { JSXElement } from "solid-js";
+
 export const App = (): JSXElement => {
-  const { autoFoundation, cards, isCleared, moveCards, openStock, start } = createKlondike();
-  const [select, setSelect] = createSignal<Select | undefined>();
-  const [popText, setPopText] = createSignal<string | undefined>();
-
-  /** 山札をクリックしたときの関数 */
-  const selectStock = (): void => {
-    setSelect({ type: "stock" });
-  };
-
-  /** 場札をクリックしたときの関数 */
-  const selectTableau = (index: number, depth: number): void => {
-    const current: Select = { depth, index, type: "tableau" };
-
-    if (moveCards(select(), current)) {
-      setSelect();
-      if (isCleared()) {
-        setPopText("cleared!");
-      }
-    } else {
-      setSelect(current);
-    }
-  };
-
-  /** 組札をクリックしたときの関数 */
-  const selectFoundation = (index: number): void => {
-    const current: Select = { index, type: "foundation" };
-
-    if (moveCards(select(), current)) {
-      setSelect();
-      if (isCleared()) {
-        setPopText("cleared!");
-      }
-    } else {
-      setSelect(current);
-    }
-  };
+  const {
+    autoFoundation,
+    foundations,
+    openStock,
+    popText,
+    select,
+    selectFoundation,
+    selectStock,
+    selectTableau,
+    setPopText,
+    start,
+    stock,
+    tableaus,
+  } = createKlondikeGame();
 
   return (
     <Page header={<Start start={start} />}>
       <Field
-        {...cards}
         autoFoundation={autoFoundation}
+        foundations={foundations}
         openStock={openStock}
         select={select()}
         selectFoundation={selectFoundation}
         selectStock={selectStock}
         selectTableau={selectTableau}
+        stock={stock}
+        tableaus={tableaus}
       />
 
       <InformationPopUp open={popText() !== undefined}>

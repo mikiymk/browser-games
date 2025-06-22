@@ -1,23 +1,23 @@
-import type { JSXElement } from "solid-js";
-
 import { createSignal } from "solid-js";
 
-import type { PlayerType } from "../../../scripts/player.ts";
-
-import { PlayerSetting, Settings } from "../../../components/header-buttons/settings.tsx";
-import { Start } from "../../../components/header-buttons/start.tsx";
-import { Page } from "../../../components/page/page.tsx";
-import { doNothingFunction } from "../../../scripts/do-nothing.ts";
-import { MultiPromise } from "../../../scripts/multi-promise.ts";
-import { PlayerTypeAi, PlayerTypeHuman } from "../../../scripts/player.ts";
-import { usePromise } from "../../../scripts/use-promise.ts";
-import { createUrlQuerySignal } from "../../../scripts/use-url-query.ts";
-import { CellBlack, CellCanMoveBlack, CellCanMoveWhite, CellEmpty, CellWhite } from "../const.ts";
+import { PlayerSetting, Settings } from "../../../common/components/header-buttons/settings.tsx";
+import { Start } from "../../../common/components/header-buttons/start.tsx";
+import { Page } from "../../../common/components/page-frame/page.tsx";
+import { doNothingFunction } from "../../../common/scripts/do-nothing.ts";
+import { MultiPromise } from "../../../common/scripts/multi-promise.ts";
+import { PlayerTypeAi, PlayerTypeHuman } from "../../../common/scripts/player.ts";
+import { usePromise } from "../../../common/scripts/use-promise.ts";
+import { createUrlQuerySignal } from "../../../common/scripts/use-url-query.ts";
+import { CellBlack, CellCanMoveBlack, CellCanMoveWhite, CellEmpty, CellWhite } from "../constants.ts";
 import { gameLoop } from "../game-loop.ts";
 import { getReversiWasm } from "../get-wasm.ts";
 import { ReversiBoard } from "./board.tsx";
 import { HowToPlayReversi } from "./how-to-play.tsx";
 import { StoneCount } from "./information.tsx";
+
+import type { JSXElement } from "solid-js";
+
+import type { PlayerType } from "../../../common/scripts/player.ts";
 
 const emptyBoard: number[] = Array.from({ length: 64 }, () => CellEmpty);
 
@@ -92,7 +92,7 @@ export const App = (): JSXElement => {
         </>
       }
     >
-      <ReversiBoard board={board()} click={handleClick} />
+      <ReversiBoard board={board()} handleClick={handleClick} />
     </Page>
   );
 };

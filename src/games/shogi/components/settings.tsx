@@ -1,11 +1,11 @@
+import { Settings } from "../../../common/components/header-buttons/settings.tsx";
+import { Radio } from "../../../common/components/input/radio.tsx";
+import { TEXT_FIRST_PLAYER, TEXT_SECOND_PLAYER } from "../../../common/scripts/constants.ts";
+import { playerValues } from "../../../common/scripts/player.ts";
+
 import type { JSXElement, Setter } from "solid-js";
 
-import type { PlayerType } from "../../../scripts/player.ts";
-
-import { Settings } from "../../../components/header-buttons/settings.tsx";
-import { Radio } from "../../../components/input/radio.tsx";
-import { TEXT_FIRST_PLAYER, TEXT_SECOND_PLAYER } from "../../../scripts/constants.ts";
-import { playerValues } from "../../../scripts/player.ts";
+import type { PlayerType } from "../../../common/scripts/player.ts";
 
 type SettingsProperties = {
   readonly black: PlayerType;

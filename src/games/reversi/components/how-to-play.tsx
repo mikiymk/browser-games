@@ -1,6 +1,6 @@
-import type { JSXElement } from "solid-js";
+import { HowToPlay } from "../../../common/components/header-buttons/how-to-play.tsx";
 
-import { HowToPlay } from "../../../components/header-buttons/how-to-play.tsx";
+import type { JSXElement } from "solid-js";
 
 export const HowToPlayReversi = (): JSXElement => {
   return (

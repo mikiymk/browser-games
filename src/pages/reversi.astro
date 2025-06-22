@@ -1,8 +1,8 @@
 ---
-import Head from "../components/head.astro";
+import Head from "../common/components/head/head.astro";
+import { TEXT_GAME_REVERSI } from "../common/scripts/constants.ts";
 import { App } from "../games/reversi/components/app.tsx";
 import { DefineReversiStone } from "../games/reversi/components/define.tsx";
-import { TEXT_GAME_REVERSI } from "../scripts/constants.ts";
 ---
 
 <Head title={TEXT_GAME_REVERSI} />

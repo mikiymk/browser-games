@@ -1,9 +1,13 @@
-import type { JSXElement } from "solid-js";
-
-import { path, arc, bezier, close, line, move } from "../../scripts/svg-path.ts";
+import { arc, bezier, close, line, move, path } from "../../scripts/svg-path.ts";
 import { CLUB, DIAMOND, HEART, SPADE } from "./id.ts";
 import { suitBlack, suitRed } from "./style.css.ts";
 
+import type { JSXElement } from "solid-js";
+
+/**
+ * スペード
+ * @returns 要素
+ */
 export const SuitSpade = (): JSXElement => {
   return (
     <symbol id={SPADE} viewBox="0 0 60 60">
@@ -24,6 +28,10 @@ export const SuitSpade = (): JSXElement => {
   );
 };
 
+/**
+ * クラブ
+ * @returns 要素
+ */
 export const SuitClub = (): JSXElement => {
   return (
     <symbol id={CLUB} viewBox="0 0 60 60">
@@ -43,6 +51,10 @@ export const SuitClub = (): JSXElement => {
   );
 };
 
+/**
+ * ダイヤ
+ * @returns 要素
+ */
 export const SuitDiamond = (): JSXElement => {
   return (
     <symbol id={DIAMOND} viewBox="0 0 60 60">
@@ -51,6 +63,10 @@ export const SuitDiamond = (): JSXElement => {
   );
 };
 
+/**
+ * ハート
+ * @returns 要素
+ */
 export const SuitHeart = (): JSXElement => {
   return (
     <symbol id={HEART} viewBox="0 0 60 60">

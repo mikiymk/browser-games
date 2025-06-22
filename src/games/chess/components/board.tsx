@@ -1,10 +1,10 @@
+import { Board } from "../../../common/components/game-board/board.tsx";
+import { chessBoard } from "../../../images/image-sources.ts";
+import { BoardSquare } from "./board-square.tsx";
+
 import type { JSXElement } from "solid-js";
 
-import type { BoardCell } from "../board.ts";
-
-import { Board } from "../../../components/board/board.tsx";
-import board from "../../../images/chess/board.svg";
-import { BoardSquare } from "./board-square.tsx";
+import type { BoardCell } from "../game.ts";
 
 type BoardProperties = {
   readonly board: readonly BoardCell[];
@@ -13,7 +13,7 @@ type BoardProperties = {
 
 export const ChessBoard = (properties: BoardProperties): JSXElement => {
   return (
-    <Board background={board.src} click={properties.handleClick} data={properties.board} height={8} width={8}>
+    <Board background={chessBoard} data={properties.board} height={8} onClick={properties.handleClick} width={8}>
       {(cell, _, x, y) => {
         return <BoardSquare mark={cell.mark} piece={cell.piece} x={x} y={y} />;
       }}

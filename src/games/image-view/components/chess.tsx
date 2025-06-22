@@ -1,11 +1,11 @@
-import type { JSXElement } from "solid-js";
-
 import { For } from "solid-js";
 
 import { DefineChessPieces } from "../../../common/components/image/define.tsx";
 import { CHESS_COLORS, CHESS_PIECES } from "../../../common/components/image/id.ts";
 import { UseImage } from "../../../common/components/use-image/use.tsx";
 import { image } from "./style.css.ts";
+
+import type { JSXElement } from "solid-js";
 
 export const ChessImage = (): JSXElement => {
   return (

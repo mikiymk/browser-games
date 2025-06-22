@@ -1,4 +1,4 @@
-import { CellKnight, CellMovable, CellUnvisited } from "./consts.ts";
+import { CellKnight, CellMovable, CellUnvisited } from "./constants.ts";
 
 export const getLegalMove = (index: number): number[] => {
   /// . A . B .

@@ -1,10 +1,10 @@
-import type { JSXElement } from "solid-js";
-
+import { Board } from "../../../common/components/game-board/board.tsx";
 import { CROSS_ID, NOUGHT_ID } from "../../../common/components/image/id.ts";
 import { UseImage } from "../../../common/components/use-image/use.tsx";
-import { Board } from "../../../components/board/board.tsx";
-import board from "../../../images/nought-and-cross/board.svg";
+import { noughtAndCrossBoard } from "../../../images/image-sources.ts";
 import { CROSS, NOUGHT } from "../constants.ts";
+
+import type { JSXElement } from "solid-js";
 
 type CellProperties = {
   readonly mark: number;
@@ -34,12 +34,12 @@ type BoardProperties = {
 export const NncBoard = (properties: BoardProperties): JSXElement => {
   return (
     <Board
-      background={board.src}
-      click={(_, index) => {
-        properties.click(index);
-      }}
+      background={noughtAndCrossBoard}
       data={properties.board}
       height={3}
+      onClick={(_, index) => {
+        properties.click(index);
+      }}
       width={3}
     >
       {(mark, _, x, y) => <Cell mark={mark} x={x} y={y} />}

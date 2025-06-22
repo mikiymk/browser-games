@@ -1,4 +1,4 @@
-import { CellBlack, CellCanMoveBlack, CellCanMoveWhite, CellEmpty, CellWhite } from "./const.ts";
+import { CellBlack, CellCanMoveBlack, CellCanMoveWhite, CellEmpty, CellWhite } from "./constants.ts";
 
 export type ReversiWasmConnect = {
   readonly ai: (bp: BoardPtr) => number;

@@ -1,23 +1,23 @@
-import type { JSXElement } from "solid-js";
-
-import type { PlayerType } from "../../../scripts/player.ts";
-
-import { Start } from "../../../components/header-buttons/start.tsx";
-import { Page } from "../../../components/page/page.tsx";
-import { PlayerTypeAi, PlayerTypeHuman } from "../../../scripts/player.ts";
-import { createUrlQuerySignal } from "../../../scripts/use-url-query.ts";
-import { createGame } from "../game.ts";
+import { Start } from "../../../common/components/header-buttons/start.tsx";
+import { Page } from "../../../common/components/page-frame/page.tsx";
+import { PlayerTypeAi, PlayerTypeHuman } from "../../../common/scripts/player.ts";
+import { createUrlQuerySignal } from "../../../common/scripts/use-url-query.ts";
+import { createShogiGame } from "../game.ts";
 import { ShogiBoard } from "./board.tsx";
 import { GameOverPopUp } from "./game-over-pop-up.tsx";
 import { PromotionPopUp } from "./promotion-pop-up.tsx";
 import { ShogiSettings } from "./settings.tsx";
+
+import type { JSXElement } from "solid-js";
+
+import type { PlayerType } from "../../../common/scripts/player.ts";
 
 export const App = (): JSXElement => {
   const [black, setBlack] = createUrlQuerySignal<PlayerType>("first", PlayerTypeHuman);
   const [white, setWhite] = createUrlQuerySignal<PlayerType>("second", PlayerTypeAi);
 
   const { blackHands, board, gameOver, handleBoardClick, promotion, resolve, setGameOver, start, whiteHands } =
-    createGame(white, black);
+    createShogiGame(white, black);
 
   return (
     <Page
@@ -35,7 +35,7 @@ export const App = (): JSXElement => {
         </>
       }
     >
-      <ShogiBoard board={board()} hands={[whiteHands(), blackHands()]} onSquareClick={handleBoardClick} />
+      <ShogiBoard board={board()} handleSquareClick={handleBoardClick} hands={[whiteHands(), blackHands()]} />
     </Page>
   );
 };

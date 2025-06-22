@@ -1,10 +1,10 @@
-import type { PlayerType } from "../../scripts/player.ts";
+import { PlayerTypeHuman } from "../../common/scripts/player.ts";
+import { sleep } from "../../common/scripts/sleep.ts";
+import { CROSS, END_PLAYING, NOUGHT } from "./constants.ts";
+
+import type { PlayerType } from "../../common/scripts/player.ts";
 import type { EndType, PlayerColor } from "./constants.ts";
 import type { GameController } from "./wasm.ts";
-
-import { PlayerTypeHuman } from "../../scripts/player.ts";
-import { sleep } from "../../scripts/sleep.ts";
-import { CROSS, END_PLAYING, NOUGHT } from "./constants.ts";
 
 type Parameters = {
   readonly game: GameController;

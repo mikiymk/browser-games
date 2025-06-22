@@ -1,8 +1,8 @@
-import type { JSXElement } from "solid-js";
-
-import { Board } from "../../../components/board/board.tsx";
-import board from "../../../images/chess/board.svg";
+import { Board } from "../../../common/components/game-board/board.tsx";
+import { chessBoard } from "../../../images/image-sources.ts";
 import { Square } from "./square.tsx";
+
+import type { JSXElement } from "solid-js";
 
 type BoardProperties = {
   readonly board: readonly number[];
@@ -13,12 +13,12 @@ type BoardProperties = {
 export const KnightBoard = (properties: BoardProperties): JSXElement => {
   return (
     <Board
-      background={board.src}
-      click={(_, index) => {
-        properties.handleClick(index);
-      }}
+      background={chessBoard}
       data={properties.board}
       height={8}
+      onClick={(_, index) => {
+        properties.handleClick(index);
+      }}
       width={8}
     >
       {(cell, index, x, y) => (

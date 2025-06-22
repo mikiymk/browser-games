@@ -1,13 +1,19 @@
-import type { JSXElement } from "solid-js";
-
-import { path, arc, bezier, close, line, move } from "../../scripts/svg-path.ts";
+import { arc, bezier, close, line, move, path } from "../../scripts/svg-path.ts";
 import { BISHOP, KING, KNIGHT, PAWN, QUEEN, ROOK } from "./id.ts";
 import { chessPiece } from "./style.css.ts";
 
+import type { JSXElement } from "solid-js";
+
 type PieceProperties = {
+  /** チェスの駒の色 */
   readonly color: "black" | "white";
 };
 
+/**
+ * キング
+ * @param properties - プロパティ
+ * @returns 要素
+ */
 export const King = (properties: PieceProperties): JSXElement => {
   return (
     <symbol id={`${KING}-${properties.color}`} viewBox="0 0 60 60">
@@ -34,6 +40,11 @@ export const King = (properties: PieceProperties): JSXElement => {
   );
 };
 
+/**
+ * クイーン
+ * @param properties - プロパティ
+ * @returns 要素
+ */
 export const Queen = (properties: PieceProperties): JSXElement => {
   return (
     <symbol id={`${QUEEN}-${properties.color}`} viewBox="0 0 60 60">
@@ -60,6 +71,11 @@ export const Queen = (properties: PieceProperties): JSXElement => {
   );
 };
 
+/**
+ * ルーク
+ * @param properties - プロパティ
+ * @returns 要素
+ */
 export const Rook = (properties: PieceProperties): JSXElement => {
   return (
     <symbol id={`${ROOK}-${properties.color}`} viewBox="0 0 60 60">
@@ -86,6 +102,11 @@ export const Rook = (properties: PieceProperties): JSXElement => {
   );
 };
 
+/**
+ * ビショップ
+ * @param properties - プロパティ
+ * @returns 要素
+ */
 export const Bishop = (properties: PieceProperties): JSXElement => {
   return (
     <symbol id={`${BISHOP}-${properties.color}`} viewBox="0 0 60 60">
@@ -100,6 +121,11 @@ export const Bishop = (properties: PieceProperties): JSXElement => {
   );
 };
 
+/**
+ * ナイト
+ * @param properties - プロパティ
+ * @returns 要素
+ */
 export const Knight = (properties: PieceProperties): JSXElement => {
   return (
     <symbol id={`${KNIGHT}-${properties.color}`} viewBox="0 0 60 60">
@@ -124,6 +150,11 @@ export const Knight = (properties: PieceProperties): JSXElement => {
   );
 };
 
+/**
+ * ポーン
+ * @param properties - プロパティ
+ * @returns 要素
+ */
 export const Pawn = (properties: PieceProperties): JSXElement => {
   return (
     <symbol id={`${PAWN}-${properties.color}`} viewBox="0 0 60 60">

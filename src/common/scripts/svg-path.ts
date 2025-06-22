@@ -34,8 +34,8 @@ type Path = Arc | Bezier | Close | Line | Move;
 
 /**
  * 絶対値のMoveToコマンド。
- * @param x X座標
- * @param y Y座標
+ * @param x - X座標
+ * @param y - Y座標
  * @returns MoveToコマンドのパスオブジェクト
  */
 export const move = (x: number, y: number): Move => {
@@ -44,8 +44,8 @@ export const move = (x: number, y: number): Move => {
 
 /**
  * 絶対値のLineToコマンド。
- * @param x X座標
- * @param y Y座標
+ * @param x - X座標
+ * @param y - Y座標
  * @returns LineToコマンドのパスオブジェクト
  */
 export const line = (x: number, y: number): Line => {
@@ -54,12 +54,12 @@ export const line = (x: number, y: number): Line => {
 
 /**
  * 絶対値の3次ベジェ曲線コマンド。
- * @param x1 開始制御点のX座標
- * @param y1 開始制御点のY座標
- * @param x2 終端制御点のX座標
- * @param y2 終端制御点のY座標
- * @param x 終了点のX座標
- * @param y 終了点のY座標
+ * @param x1 - 開始制御点のX座標
+ * @param y1 - 開始制御点のY座標
+ * @param x2 - 終端制御点のX座標
+ * @param y2 - 終端制御点のY座標
+ * @param x - 終了点のX座標
+ * @param y - 終了点のY座標
  * @returns 3次ベジェ曲線のパスオブジェクト
  */
 export const bezier = (x1: number, y1: number, x2: number, y2: number, x: number, y: number): Bezier => {
@@ -76,13 +76,13 @@ export const bezier = (x1: number, y1: number, x2: number, y2: number, x: number
 
 /**
  * 絶対値の楕円円弧曲線コマンド。
- * @param rx 楕円のX半径
- * @param ry 楕円のY半径
- * @param angle 楕円の傾き
- * @param largeArc 大きい円弧フラグ
- * @param sweep 時計回りの円弧フラグ
- * @param x 終了点のX座標
- * @param y 終了点のY座標
+ * @param rx - 楕円のX半径
+ * @param ry - 楕円のY半径
+ * @param angle - 楕円の傾き
+ * @param largeArc - 大きい円弧フラグ
+ * @param sweep - 時計回りの円弧フラグ
+ * @param x - 終了点のX座標
+ * @param y - 終了点のY座標
  * @returns 楕円円弧曲線のパスオブジェクト
  */
 export const arc = (
@@ -115,14 +115,32 @@ export const close = (): Close => {
 };
 
 type Previous = { readonly x: number; readonly y: number };
-const shorter = (a: string, b: string): string => (a.length < b.length ? a : b);
+/**
+ * より短い文字列を返す
+ * @param left - 文字列1
+ * @param right - 文字列2
+ * @returns どちらか短い方の文字列
+ */
+const shorter = (left: string, right: string): string => (left.length < right.length ? left : right);
 
+/**
+ * SVGのパス文字列を生成する。
+ * @param command - コマンドオブジェクト
+ * @param previous - 前回の位置
+ * @returns SVGパス文字列
+ */
 const moveToText = (command: Move, previous: Previous): string => {
   const { x, y } = command;
 
   return shorter(`M${x},${y}`, `m${x - previous.x},${y - previous.y}`);
 };
 
+/**
+ * SVGのパス文字列を生成する。
+ * @param command - コマンドオブジェクト
+ * @param previous - 前回の位置
+ * @returns SVGパス文字列
+ */
 const lineToText = (command: Line, previous: Previous): string => {
   const { x, y } = command;
 
@@ -141,6 +159,12 @@ const lineToText = (command: Line, previous: Previous): string => {
   return shorter(`L${x},${y}`, `l${x - previous.x},${y - previous.y}`);
 };
 
+/**
+ * SVGのパス文字列を生成する。
+ * @param command - コマンドオブジェクト
+ * @param previous - 前回の位置
+ * @returns SVGパス文字列
+ */
 const bezierToText = (command: Bezier, previous: Previous): string => {
   const absolute = `C${command.x1},${command.y1} ${command.x2},${command.y2} ${command.x},${command.y}`;
   const relative = `c${command.x1 - previous.x},${command.y1 - previous.y} ${command.x2 - previous.x},${command.y2 - previous.y} ${command.x - previous.x},${command.y - previous.y}`;
@@ -148,6 +172,12 @@ const bezierToText = (command: Bezier, previous: Previous): string => {
   return shorter(absolute, relative);
 };
 
+/**
+ * SVGのパス文字列を生成する。
+ * @param command - コマンドオブジェクト
+ * @param previous - 前回の位置
+ * @returns SVGパス文字列
+ */
 const arcToText = (command: Arc, previous: Previous): string => {
   const absolute = `A${command.rx},${command.ry} ${command.angle} ${command.largeArc} ${command.sweep} ${command.x},${command.y}`;
   const relative = `a${command.rx},${command.ry} ${command.angle} ${command.largeArc} ${command.sweep} ${command.x - previous.x},${command.y - previous.y}`;
@@ -157,7 +187,7 @@ const arcToText = (command: Arc, previous: Previous): string => {
 
 /**
  * SVGのパスを生成する。
- * @param commands パスオブジェクトの配列
+ * @param commands - パスオブジェクトの配列
  * @returns パス文字列
  */
 export const path = (...commands: readonly Path[]): string => {

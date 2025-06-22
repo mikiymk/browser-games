@@ -1,18 +1,26 @@
+import { Show } from "solid-js";
+
 import type { JSXElement } from "solid-js";
 
-import { Show, splitProps } from "solid-js";
-
-type ImageBound = {
+type UseProperties<T extends string> = {
   readonly height?: number | string | undefined;
+  readonly id: T | undefined;
   readonly width?: number | string | undefined;
   readonly x?: number | string | undefined;
   readonly y?: number | string | undefined;
 };
 
-type UseProperties<T extends string> = ImageBound & {
-  readonly id: T | undefined;
-};
+/**
+ * 定義した画像をSVGの中で使用する
+ * @param properties - プロパティ
+ * @returns 要素
+ */
 export const UseImage = <T extends string = string>(properties: UseProperties<T>): JSXElement => {
-  const [_id, others] = splitProps(properties, ["id"]);
-  return <Show when={properties.id}>{(id) => <use href={`#${id()}`} {...others} />}</Show>;
+  return (
+    <Show when={properties.id}>
+      {(id) => (
+        <use height={properties.height} href={`#${id()}`} width={properties.width} x={properties.x} y={properties.y} />
+      )}
+    </Show>
+  );
 };

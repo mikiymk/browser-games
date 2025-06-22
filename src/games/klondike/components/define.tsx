@@ -1,11 +1,11 @@
-import type { JSXElement } from "solid-js";
-
 import { Show } from "solid-js";
+
+import { selected } from "./style.css.ts";
+
+import type { JSXElement } from "solid-js";
 
 import type { CardId } from "../../../common/components/image/id.ts";
 import type { Card } from "../card.ts";
-
-import { selected } from "./style.css.ts";
 
 type UseCardProperties = {
   readonly card: "back" | "empty" | Card;

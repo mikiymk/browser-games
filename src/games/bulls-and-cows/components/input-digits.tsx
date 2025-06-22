@@ -1,11 +1,11 @@
-import type { JSXElement } from "solid-js";
-
 import { createEffect, createSignal } from "solid-js";
 
 import { input, submitButton } from "./style.css.ts";
 
+import type { JSXElement } from "solid-js";
+
 type InputDigitsProperties = {
-  readonly numberOfDigits: number;
+  readonly digitsCount: number;
   readonly setDigits: (digits: readonly number[]) => void;
 };
 
@@ -13,7 +13,7 @@ export const InputDigits = (properties: InputDigitsProperties): JSXElement => {
   const [innerDigits, setInnerDigits] = createSignal<number>(0);
   const innerDigitsArray = (): readonly number[] => {
     let digits = innerDigits();
-    return Array.from({ length: properties.numberOfDigits }, () => {
+    return Array.from({ length: properties.digitsCount }, () => {
       const digit = digits % 10;
       digits = Math.floor(digits / 10);
       return digit;

@@ -1,7 +1,7 @@
-import type { JSXElement } from "solid-js";
-
+import { Define } from "../../../common/components/define/define.tsx";
 import { Marker, Stone } from "../../../common/components/image/symbol.tsx";
-import { Define } from "../../../components/define/define.tsx";
+
+import type { JSXElement } from "solid-js";
 
 export const DefineReversiStone = (): JSXElement => {
   return (

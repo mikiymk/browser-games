@@ -1,8 +1,4 @@
-import type { JSXElement } from "solid-js";
-
-import type { ShogiId, ShogiPiece } from "./id.ts";
-
-import { path, close, line, move } from "../../scripts/svg-path.ts";
+import { close, line, move, path } from "../../scripts/svg-path.ts";
 import {
   shogiPieceShape,
   shogiPieceTextDown,
@@ -11,6 +7,14 @@ import {
   shogiPieceTextUp,
 } from "./style.css.ts";
 
+import type { JSXElement } from "solid-js";
+
+import type { ShogiId, ShogiPiece } from "./id.ts";
+
+/**
+ * 上向きの駒の形
+ * @returns 要素
+ */
 export const PieceShapeUp = (): JSXElement => {
   return (
     <path
@@ -20,6 +24,10 @@ export const PieceShapeUp = (): JSXElement => {
   );
 };
 
+/**
+ * 下向きの駒の形
+ * @returns 要素
+ */
 export const PieceShapeDown = (): JSXElement => {
   return (
     <path
@@ -35,6 +43,11 @@ type DefinePieceProperties = {
   readonly promoted?: boolean;
 };
 
+/**
+ * 将棋の駒
+ * @param properties - プロパティ
+ * @returns 要素
+ */
 export const Piece2Letters = (properties: DefinePieceProperties): JSXElement => {
   return (
     <>

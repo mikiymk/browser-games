@@ -1,31 +1,31 @@
-import type { JSXElement } from "solid-js";
-
 import { For } from "solid-js";
 
-import type { Hand } from "../constants.ts";
-
-import { Board } from "../../../components/board/board.tsx";
-import board from "../../../images/shogi/board.svg";
+import { Board } from "../../../common/components/game-board/board.tsx";
+import { shogiBoard } from "../../../images/image-sources.ts";
 import { BLACK, WHITE } from "../constants.ts";
 import { Hands } from "./hands.tsx";
 import { Square } from "./square.tsx";
 import { handHeader } from "./style.css.ts";
 
+import type { JSXElement } from "solid-js";
+
+import type { Hand } from "../constants.ts";
+
 type BoardProperties = {
   readonly board: readonly { readonly moveTarget: boolean; readonly piece: number }[];
+  readonly handleSquareClick: (index: number) => void;
   readonly hands: readonly [Hand, Hand];
-  readonly onSquareClick: (index: number) => void;
 };
 export const ShogiBoard = (properties: BoardProperties): JSXElement => {
   return (
     <>
       <Board
-        background={board.src}
-        click={(_square, index) => {
-          properties.onSquareClick(index);
-        }}
+        background={shogiBoard}
         data={properties.board}
         height={9}
+        onClick={(_square, index) => {
+          properties.handleSquareClick(index);
+        }}
         width={9}
       >
         {(square, _index, x, y) => <Square move={square.moveTarget} square={square.piece} x={x} y={y} />}
@@ -39,8 +39,8 @@ export const ShogiBoard = (properties: BoardProperties): JSXElement => {
           </tr>
         </thead>
         <tbody>
-          <Hands color={WHITE} hands={properties.hands[0]} onClick={properties.onSquareClick} />
-          <Hands color={BLACK} hands={properties.hands[1]} onClick={properties.onSquareClick} />
+          <Hands color={WHITE} hands={properties.hands[0]} onClick={properties.handleSquareClick} />
+          <Hands color={BLACK} hands={properties.hands[1]} onClick={properties.handleSquareClick} />
         </tbody>
       </table>
     </>

@@ -1,8 +1,8 @@
-import type { JSXElement, Setter } from "solid-js";
+import { SettingItem, Settings } from "../../../common/components/header-buttons/settings.tsx";
+import { Radio } from "../../../common/components/input/radio.tsx";
+import { TEXT_HINT, TEXT_HINT_NONE, TEXT_HINT_NUMBER } from "../../../common/scripts/constants.ts";
 
-import { SettingItem, Settings } from "../../../components/header-buttons/settings.tsx";
-import { Radio } from "../../../components/input/radio.tsx";
-import { TEXT_HINT, TEXT_HINT_NONE, TEXT_HINT_NUMBER } from "../../../scripts/constants.ts";
+import type { JSXElement, Setter } from "solid-js";
 
 const hintValues = [
   { label: TEXT_HINT_NONE, value: "hide" },

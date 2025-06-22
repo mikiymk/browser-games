@@ -1,10 +1,10 @@
-import type { JSXElement } from "solid-js";
-
 import { Show } from "solid-js";
 
 import { UseImage } from "../../../common/components/use-image/use.tsx";
 import { BISHOP, COLOR, GOLD, KING, KNIGHT, LANCE, PAWN, PIECE, PROMOTED, ROOK, SILVER } from "../constants.ts";
 import { board } from "./style.css.ts";
+
+import type { JSXElement } from "solid-js";
 
 const source = (square: number): string | undefined => {
   if (!square) {

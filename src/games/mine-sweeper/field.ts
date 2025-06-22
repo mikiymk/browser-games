@@ -1,4 +1,4 @@
-import { FieldNoOpen } from "./consts.ts";
+import { FieldNoOpen } from "./constants.ts";
 
 const diffArray: [number, number][] = [
   [1, 0],

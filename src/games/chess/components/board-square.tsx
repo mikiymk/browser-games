@@ -1,5 +1,3 @@
-import type { JSXElement } from "solid-js";
-
 import { Show } from "solid-js";
 
 import { UseImage } from "../../../common/components/use-image/use.tsx";
@@ -20,6 +18,8 @@ import {
   MoveTarget,
 } from "../constants.ts";
 import { squareFrom, squareTarget } from "./style.css.ts";
+
+import type { JSXElement } from "solid-js";
 
 const idMap: Record<number, string> = {
   [CellBlackBishop]: "bishop-black",

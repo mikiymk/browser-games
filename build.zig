@@ -36,7 +36,7 @@ pub fn build(b: *Build) void {
 }
 
 fn source(comptime name: []const u8) []const u8 {
-    return "src-zig/" ++ name ++ ".zig";
+    return "src/zig/" ++ name ++ ".zig";
 }
 
 fn buildLib(b: *Build, comptime name: []const u8, target: Target, optimize: Optimize) *Build.Step {

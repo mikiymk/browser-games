@@ -1,107 +1,18 @@
-import type { JSXElement } from "solid-js";
-
-import { batch, createEffect, createSignal } from "solid-js";
-
-import { Start } from "../../../components/header-buttons/start.tsx";
-import { Page } from "../../../components/page/page.tsx";
-import { createUrlQuerySignal } from "../../../scripts/use-url-query.ts";
-import { Bombed, Clear, FieldBomb, FieldFlag, FieldNoOpen, FirstClick, Playing } from "../consts.ts";
-import { getAround, initializeField, isClear, resetMines } from "../field.ts";
+import { Start } from "../../../common/components/header-buttons/start.tsx";
+import { Page } from "../../../common/components/page-frame/page.tsx";
+import { createUrlQuerySignalNumber } from "../../../common/scripts/use-url-query.ts";
+import { createMineSweeperGame } from "../game.ts";
 import { Status } from "./controller.tsx";
 import { MineFields } from "./field.tsx";
 import { MineSweeperSettings } from "./settings.tsx";
 
+import type { JSXElement } from "solid-js";
+
 export const App = (): JSXElement => {
-  const [heightString, setHeight] = createUrlQuerySignal("height", "10");
-  const [widthString, setWidth] = createUrlQuerySignal("width", "10");
-  const [mineCountString, setMineCount] = createUrlQuerySignal("mines", "10");
-
-  const height = (): number => Number.parseInt(heightString());
-  const width = (): number => Number.parseInt(widthString());
-  const mineCount = (): number => Number.parseInt(mineCountString());
-
-  const [fields, setFields] = createSignal(initializeField(10 * 10));
-  const setFieldOn = (index: number, field: number): void => {
-    setFields((fields) => {
-      const newFields = [...fields];
-
-      newFields[index] = field;
-
-      return newFields;
-    });
-  };
-  let mines = new Set([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
-
-  const [gameState, setGameState] = createSignal(FirstClick);
-
-  const reset = (): void => {
-    setGameState(FirstClick);
-    setFields(initializeField(height() * width()));
-  };
-
-  createEffect(() => {
-    reset();
-  });
-
-  // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
-  const openField = (index: number): void => {
-    if (gameState() === Bombed || gameState() === Clear || fields().length <= index) {
-      return;
-    }
-
-    if (gameState() === FirstClick) {
-      mines = resetMines(mineCount(), height(), width(), index);
-      setGameState(Playing);
-    }
-
-    const aroundIndexes = getAround(height(), width(), index);
-    let clickResult = 0;
-
-    if (mines.has(index)) {
-      setGameState(Bombed);
-
-      batch(() => {
-        for (const mine of mines) {
-          setFieldOn(mine, FieldBomb);
-        }
-      });
-      clickResult = FieldBomb;
-    } else {
-      for (const aroundIndex of aroundIndexes) {
-        if (mines.has(aroundIndex)) {
-          clickResult++;
-        }
-      }
-    }
-
-    setFieldOn(index, clickResult);
-
-    if (clickResult === 0) {
-      for (const aroundIndex of aroundIndexes) {
-        if (fields()[aroundIndex] === FieldNoOpen) {
-          openField(aroundIndex);
-        }
-      }
-    }
-
-    if (isClear(fields(), mines)) {
-      setGameState(Clear);
-    }
-  };
-
-  const flagField = (index: number): boolean => {
-    if (fields()[index] === FieldFlag) {
-      setFieldOn(index, FieldNoOpen);
-      return true;
-    }
-
-    if (fields()[index] === FieldNoOpen) {
-      setFieldOn(index, FieldFlag);
-      return true;
-    }
-
-    return false;
-  };
+  const [height, setHeight] = createUrlQuerySignalNumber("height", 10);
+  const [width, setWidth] = createUrlQuerySignalNumber("width", 10);
+  const [mineCount, setMineCount] = createUrlQuerySignalNumber("mines", 10);
+  const { fields, flagField, gameState, openField, reset } = createMineSweeperGame(height, width, mineCount);
 
   return (
     <Page
@@ -112,9 +23,9 @@ export const App = (): JSXElement => {
           <MineSweeperSettings
             height={height()}
             mineCount={mineCount()}
-            setHeight={(height) => setHeight(String(height))}
-            setMineCount={(mineCount) => setMineCount(String(mineCount))}
-            setWidth={(width) => setWidth(String(width))}
+            setHeight={setHeight}
+            setMineCount={setMineCount}
+            setWidth={setWidth}
             width={width()}
           />
         </>
