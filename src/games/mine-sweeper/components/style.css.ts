@@ -18,13 +18,7 @@ export const separator = style({
   strokeWidth: 0.3,
 });
 
-const symbol = style({
-  stroke: text,
-  strokeWidth: 2,
-});
-
-export const closed = style([symbol, { fill: colorGray }]);
-export const opened = style([symbol, { fill: "none" }]);
+export const closed = style({ fill: colorGray });
 
 const number = style([
   notoSans,
