@@ -21,6 +21,7 @@ type UseCardProperties = {
 export const UseCard = (properties: UseCardProperties): JSXElement => {
   return (
     <>
+      {/** biome-ignore lint/a11y/noStaticElementInteractions: カードのクリック */}
       <use
         height={31.2}
         href={`#card-${properties.card}` satisfies `#${CardId}`}

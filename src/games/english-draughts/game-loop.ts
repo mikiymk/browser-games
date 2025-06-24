@@ -49,7 +49,7 @@ export const gameLoop = (game: GameController, view: ViewController): (() => voi
     gameObject = 0;
   };
 
-  // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
+  // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: 大きな関数
   const run = async (): Promise<void> => {
     view.setBoard(game.getBoard(gameObject));
     const color = game.getColor(gameObject);

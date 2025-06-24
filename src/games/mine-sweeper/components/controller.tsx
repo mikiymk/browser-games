@@ -1,9 +1,9 @@
 import { Match, Show, Switch } from "solid-js";
 
+import { notoEmoji } from "../../../styles/fonts.css.ts";
 import { Bombed, Clear, EmojiBombed, EmojiClear, EmojiSmile, FieldFlag } from "../constants.ts";
 
 import type { JSXElement } from "solid-js";
-import { notoEmoji } from "../../../styles/fonts.css.ts";
 
 type ControllerProperties = {
   readonly fields: readonly number[];

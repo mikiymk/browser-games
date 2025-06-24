@@ -6,8 +6,9 @@ import { notoSans } from "../../../styles/fonts.css.ts";
 export const number = style([
   notoSans,
   {
-  fill: text,
-}]);
+    fill: text,
+  },
+]);
 
 export const history = style({
   marginLeft: "0.5rem",

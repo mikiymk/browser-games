@@ -21,7 +21,7 @@ const symbol = style({
 export const closed = style([symbol, { fill: colorGray }]);
 export const opened = style([symbol, { fill: "none" }]);
 
-export const number = style([
+const number = style([
   notoSans,
   {
     fontSize: 60,
