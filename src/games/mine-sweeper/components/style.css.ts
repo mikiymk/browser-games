@@ -13,6 +13,11 @@ import {
 } from "../../../styles/colors.css.ts";
 import { notoSans } from "../../../styles/fonts.css.ts";
 
+export const separator = style({
+  stroke: text,
+  strokeWidth: 0.3,
+});
+
 const symbol = style({
   stroke: text,
   strokeWidth: 2,

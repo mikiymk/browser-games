@@ -22,7 +22,7 @@ export const App = (): JSXElement => {
         </>
       }
     >
-      <Board background={chessBoard} data={boardNumber()} height={8} onClick={handleClick} width={8}>
+      <Board backgroundImage={chessBoard} data={boardNumber()} height={8} onClick={handleClick} width={8}>
         {(square, _, x, y) => <UsePiece piece={square} x={x} y={y} />}
       </Board>
     </Page>

@@ -6,12 +6,11 @@ import type { JSXElement } from "solid-js";
 
 type BoardProperties<T> = {
   /** ゲームボードの背景画像 */
-  readonly background?: string;
+  readonly backgroundImage?: string;
   readonly children: (square: T, index: number, x: number, y: number) => JSXElement;
-
   readonly class?: string;
-
   readonly data: readonly T[];
+  readonly foreground?: JSXElement;
   /** ゲームボードの高さ */
   readonly height: number;
   /** ゲームボードをクリックした時のイベント */
@@ -46,7 +45,7 @@ export const Board = <T,>(properties: BoardProperties<T>): JSXElement => {
     >
       <title>board</title>
 
-      <Show when={properties.background}>
+      <Show when={properties.backgroundImage}>
         {(bg) => <image height={properties.height * 10} href={bg()} width={properties.width * 10} />}
       </Show>
 
@@ -58,6 +57,8 @@ export const Board = <T,>(properties: BoardProperties<T>): JSXElement => {
           return <>{properties.children(square, index(), x(), y())}</>;
         }}
       </For>
+
+      {properties.foreground}
 
       <Show when={properties.onClick !== undefined || properties.onContextmenu !== undefined}>
         {/** biome-ignore lint/a11y/noStaticElementInteractions: クリックできる */}

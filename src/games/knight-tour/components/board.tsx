@@ -13,7 +13,7 @@ type BoardProperties = {
 export const KnightBoard = (properties: BoardProperties): JSXElement => {
   return (
     <Board
-      background={chessBoard}
+      backgroundImage={chessBoard}
       data={properties.board}
       height={8}
       onClick={(_, index) => {

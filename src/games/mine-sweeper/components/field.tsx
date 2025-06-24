@@ -6,6 +6,7 @@ import { UseImage } from "../../../common/components/use-image/use.tsx";
 import { FieldBomb, FieldFlag, FieldNoOpen } from "../constants.ts";
 
 import type { JSXElement } from "solid-js";
+import { SquareSeparation } from "./square-separation.tsx";
 
 type MineCellProperties = {
   readonly field: number;
@@ -50,6 +51,7 @@ export const MineFields = (properties: MineFieldsProperties): JSXElement => {
   return (
     <Board
       data={properties.fields}
+      foreground={<SquareSeparation height={properties.height} width={properties.width} />}
       height={properties.height}
       onClick={(_, index) => {
         properties.open(index);
@@ -60,7 +62,6 @@ export const MineFields = (properties: MineFieldsProperties): JSXElement => {
         }
       }}
       width={properties.width}
-      // TODO: foreground
     >
       {(field, _, x, y) => <MineCell field={field} x={x} y={y} />}
     </Board>

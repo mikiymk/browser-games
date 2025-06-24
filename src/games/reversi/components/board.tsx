@@ -11,7 +11,7 @@ type BoardProperties = {
 
 export const ReversiBoard = (properties: BoardProperties): JSXElement => {
   return (
-    <Board background={reversiBoard} data={properties.board} height={8} onClick={properties.handleClick} width={8}>
+    <Board backgroundImage={reversiBoard} data={properties.board} height={8} onClick={properties.handleClick} width={8}>
       {(square, _, x, y) => {
         return <CellImage square={square} x={x} y={y} />;
       }}

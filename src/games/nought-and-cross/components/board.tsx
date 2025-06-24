@@ -34,7 +34,7 @@ type BoardProperties = {
 export const NncBoard = (properties: BoardProperties): JSXElement => {
   return (
     <Board
-      background={noughtAndCrossBoard}
+      backgroundImage={noughtAndCrossBoard}
       data={properties.board}
       height={3}
       onClick={(_, index) => {
