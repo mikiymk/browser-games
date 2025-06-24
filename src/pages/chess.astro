@@ -1,11 +1,13 @@
 ---
 import Head from "../common/components/head/head.astro";
+import { LinkMaterialSymbol } from "../common/components/head/link-material-symbol.tsx";
 import { DefineChessPieces } from "../common/components/image/define.tsx";
 import { TEXT_GAME_CHESS } from "../common/scripts/constants.ts";
 import { App } from "../games/chess/components/app.tsx";
 ---
 
 <Head title={TEXT_GAME_CHESS} />
+<LinkMaterialSymbol icons={["play_arrow", "settings"]} />
 <DefineChessPieces />
 <App client:load />
 <div />

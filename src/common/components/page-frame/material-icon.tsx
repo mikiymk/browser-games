@@ -1,4 +1,4 @@
-import { headerMaterialIcon } from "./style.css.ts";
+import { materialSymbols } from "../../../styles/fonts.css.ts";
 
 import type { JSXElement } from "solid-js";
 
@@ -12,5 +12,5 @@ type Properties = {
  * @returns 要素
  */
 export const Icon = (properties: Properties): JSXElement => {
-  return <span class={headerMaterialIcon}>{properties.children}</span>;
+  return <span class={materialSymbols}>{properties.children}</span>;
 };

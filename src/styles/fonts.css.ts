@@ -1,12 +1,4 @@
-import { fontFace, style } from "@vanilla-extract/css";
-
-/** Material Symbols Rounded */
-export const symbols = fontFace({
-  fontDisplay: "swap",
-  fontStyle: "normal",
-  fontWeight: "400",
-  src: "url(https://cdn.jsdelivr.net/fontsource/fonts/material-symbols-rounded@latest/latin-400-normal.woff2) format('woff2')",
-});
+import {  style } from "@vanilla-extract/css";
 
 /** Noto Sans */
 export const notoSans = style({
@@ -31,3 +23,6 @@ export const notoEmoji = style({
   fontStyle: "normal",
   fontWeight: "400",
 });
+
+/** Material Symbols */
+export const materialSymbols = "material-symbols-rounded";

@@ -7,11 +7,11 @@ type LinkGoogleFontsProperties = {
 
 export const LinkGoogleFonts = (properties: LinkGoogleFontsProperties): JSXElement => {
   const href = (): string => {
-    return (
-      "https://fonts.googleapis.com/css2?display=swap" +
-      properties.fonts.map((font) => `&family=${font.replaceAll(" ", "+")}`).join("") +
-      (properties.text !== undefined ? `&text=${encodeURIComponent(properties.text)}` : "")
-    );
+    const urlBase = "https://fonts.googleapis.com/css2?display=swap";
+    const fonts = properties.fonts.map((font) => `&family=${font.replaceAll(" ", "+")}`);
+    const text = encodeURIComponent([...new Set(properties.text ?? "")].toSorted().join(""));
+
+    return `${urlBase}${fonts.join("")}${text !== "" ? `&text=${text}` : ""}`;
   };
 
   return <link href={href()} rel="stylesheet" />;

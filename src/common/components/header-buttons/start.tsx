@@ -20,7 +20,7 @@ export const Start = (properties: StartButtonProperties): JSXElement => {
       }}
       type="button"
     >
-      <HeaderButton icon="replay">{TEXT_START}</HeaderButton>
+      <HeaderButton icon="play_arrow">{TEXT_START}</HeaderButton>
     </button>
   );
 };

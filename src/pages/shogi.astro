@@ -1,6 +1,7 @@
 ---
 import Head from "../common/components/head/head.astro";
 import { LinkGoogleFonts } from "../common/components/head/link-google-fonts.tsx";
+import { LinkMaterialSymbol } from "../common/components/head/link-material-symbol.tsx";
 import { DefineShogiPieces } from "../common/components/image/define.tsx";
 import { TEXT_GAME_SHOGI } from "../common/scripts/constants.ts";
 import { App } from "../games/shogi/components/app.tsx";
@@ -8,6 +9,7 @@ import { App } from "../games/shogi/components/app.tsx";
 
 <Head title={TEXT_GAME_SHOGI} />
 <LinkGoogleFonts fonts={["Noto Sans JP"]} text="歩兵香車桂馬銀将金将角行飛車王将玉将と金成香成桂成銀龍馬龍王" />
+<LinkMaterialSymbol icons={["play_arrow", "settings"]} />
 <DefineShogiPieces />
 <App client:load />
 <div />
