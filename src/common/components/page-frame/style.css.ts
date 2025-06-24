@@ -1,7 +1,6 @@
 import { keyframes, style } from "@vanilla-extract/css";
 
 import { pageBody, pageHeader, pageHeaderShadow, text } from "../../../styles/colors.css.ts";
-import { symbols } from "../../../styles/fonts.css.ts";
 
 export const header = style({
   alignItems: "center",
@@ -38,20 +37,6 @@ export const headerButton = style({
 export const headerIcon = style({
   aspectRatio: "1 / 1",
   height: "2rem",
-});
-
-export const headerMaterialIcon = style({
-  direction: "ltr",
-  display: "inline-block",
-  fontFamily: symbols,
-  fontSize: "24px",
-  fontStyle: "normal",
-  fontWeight: "normal",
-  letterSpacing: "normal",
-  lineHeight: "1",
-  textTransform: "none",
-  whiteSpace: "nowrap",
-  wordWrap: "normal",
 });
 
 export const headerText = style({

@@ -41,7 +41,7 @@ export const createMineSweeperGame = (
     reset();
   });
 
-  // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
+  // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: 大きな関数
   const openField = (index: number): void => {
     if (gameState() === Bombed || gameState() === Clear || fields().length <= index) {
       return;

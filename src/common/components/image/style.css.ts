@@ -1,7 +1,7 @@
 import { style, styleVariants } from "@vanilla-extract/css";
 
 import { cardBg, colorBlack, colorRed, stoneDark, stoneLight, text } from "../../../styles/colors.css.ts";
-import { latin } from "../../../styles/fonts.css.ts";
+import { notoSans, notoSansJp } from "../../../styles/fonts.css.ts";
 
 export const suitBlack = style({
   fill: colorBlack,
@@ -13,14 +13,20 @@ export const suitRed = style({
   stroke: "none",
 });
 
-export const cardText = style({
-  font: `10px ${latin}`,
-});
+export const cardText = style([
+  notoSans,
+  {
+    fontSize: "10px",
+  },
+]);
 
-export const cardTextMiddle = style({
-  font: `12px ${latin}`,
-  textAnchor: "middle",
-});
+export const cardTextMiddle = style([
+  notoSans,
+  {
+    fontSize: "12px",
+    textAnchor: "middle",
+  },
+]);
 
 export const cardBackGround = style({
   fill: cardBg,
@@ -50,7 +56,7 @@ export const shogiPieceShape = style({
 
 const redText = style({ fill: colorRed });
 
-export const shogiPieceTextUp = style({ fontSize: 20, textAnchor: "middle" });
+export const shogiPieceTextUp = style([notoSansJp, { fontSize: 20, textAnchor: "middle" }]);
 export const shogiPieceTextDown = style([shogiPieceTextUp, { transform: "translate(100%, 100%) rotate(180deg)" }]);
 export const shogiPieceTextPromotedUp = style([shogiPieceTextUp, redText]);
 export const shogiPieceTextPromotedDown = style([shogiPieceTextDown, redText]);

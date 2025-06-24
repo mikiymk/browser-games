@@ -16,6 +16,8 @@ export const Head = (properties: HeadPropeties): JSXElement => {
       <meta content="width=device-width, initial-scale=1.0" name="viewport" />
       <link href={themeIcon} rel="shortcut icon" type="image/svg+xml" />
       <link href={properties.canonicalUrl} rel="canonical" />
+      <link href="https://fonts.googleapis.com" rel="preconnect" />
+      <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
       <link href="https://cdn.jsdelivr.net/npm/destyle.css@latest/destyle.min.css" rel="stylesheet" />
       <title>{titleText()}</title>
     </>

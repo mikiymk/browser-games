@@ -60,7 +60,7 @@ export const Board = <T,>(properties: BoardProperties<T>): JSXElement => {
       </For>
 
       <Show when={properties.onClick !== undefined || properties.onContextmenu !== undefined}>
-        {/* biome-ignore lint/a11y/useKeyWithClickEvents: キーボードでできない */}
+        {/** biome-ignore lint/a11y/noStaticElementInteractions: クリックできる */}
         <rect
           class={clear}
           height={properties.height * 10}

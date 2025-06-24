@@ -1,13 +1,13 @@
 ---
 import Head from "../common/components/head/head.astro";
+import { LinkMaterialSymbol } from "../common/components/head/link-material-symbol.tsx";
 import { TEXT_GAME_NOUGHT_AND_CROSS } from "../common/scripts/constants.ts";
 import { App } from "../games/nought-and-cross/components/app.tsx";
 import { DefineNoughtAndCross } from "../games/nought-and-cross/components/define.tsx";
 ---
 
 <Head title={TEXT_GAME_NOUGHT_AND_CROSS} />
-
+<LinkMaterialSymbol icons={["play_arrow", "history", "settings"]} />
 <DefineNoughtAndCross />
 <App client:load />
-
 <div />

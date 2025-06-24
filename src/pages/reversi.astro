@@ -1,13 +1,13 @@
 ---
 import Head from "../common/components/head/head.astro";
+import { LinkMaterialSymbol } from "../common/components/head/link-material-symbol.tsx";
 import { TEXT_GAME_REVERSI } from "../common/scripts/constants.ts";
 import { App } from "../games/reversi/components/app.tsx";
 import { DefineReversiStone } from "../games/reversi/components/define.tsx";
 ---
 
 <Head title={TEXT_GAME_REVERSI} />
-
+<LinkMaterialSymbol icons={["play_arrow", "settings", "help"]} />
 <DefineReversiStone />
 <App client:load />
-
 <div />

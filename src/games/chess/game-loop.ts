@@ -118,7 +118,7 @@ export const getWasm = async (): Promise<WasmConnect> => {
     const whiteQueen = exports.getPiece(g, CellWhiteQueen);
     const whiteKing = exports.getPiece(g, CellWhiteKing);
 
-    // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
+    // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: 大きな関数
     return Array.from({ length: 64 }, (_, index) => {
       const bitBoard = 1n << BigInt(index);
 
@@ -287,7 +287,7 @@ export const gameLoop = (
     boardPtr = 0;
   };
 
-  // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
+  // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: 大きな関数
   const run = async (): Promise<void> => {
     setBoard(getBoard(boardPtr));
     const color = getColor(boardPtr);

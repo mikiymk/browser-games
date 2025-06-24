@@ -11,14 +11,13 @@ export default defineConfig({
 
   integrations: [
     solid(),
+    // biome-ignore-start lint/style/useNamingConvention: ライブラリに合わせる
     compress({
-      // biome-ignore lint/style/useNamingConvention: ライブラリに合わせる
       CSS: {
         csso: {
           forceMediaMerge: true,
         },
       },
-      // biome-ignore lint/style/useNamingConvention: ライブラリに合わせる
       HTML: {
         "html-minifier-terser": {
           collapseBooleanAttributes: true,
@@ -33,21 +32,19 @@ export default defineConfig({
           sortClassName: true,
         },
       },
-      // biome-ignore lint/style/useNamingConvention: ライブラリに合わせる
       Image: {
         sharp: {},
       },
-      // biome-ignore lint/style/useNamingConvention: ライブラリに合わせる
       JavaScript: {
         terser: {},
       },
-      // biome-ignore lint/style/useNamingConvention: ライブラリに合わせる
       SVG: {
         svgo: {
           multipass: true,
         },
       },
     }),
+    // biome-ignore-end lint/style/useNamingConvention: ライブラリに合わせる
   ],
   site: "https://mikiymk.github.io/",
   vite: {

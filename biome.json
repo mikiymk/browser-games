@@ -27,14 +27,15 @@
           }
         },
         "useSortedAttributes": "on",
-        "useSortedKeys": "on"
+        "useSortedKeys": "on",
+        "useSortedProperties": "on"
       }
     }
   },
 
   "files": {
     "ignoreUnknown": true,
-    "includes": ["src", "*"]
+    "includes": ["src/**/*", "*"]
   },
   "formatter": {
     "indentStyle": "space",
@@ -108,7 +109,10 @@
         "useExplicitLengthCheck": "on",
         "useFilenamingConvention": {
           "level": "on",
-          "options": { "filenameCases": ["kebab-case", "export"], "requireAscii": true }
+          "options": {
+            "filenameCases": ["kebab-case", "export"],
+            "requireAscii": true
+          }
         },
         "useForOf": "on",
         "useFragmentSyntax": "on",
@@ -138,6 +142,7 @@
   },
   "overrides": [
     {
+      "assist": { "actions": { "source": { "organizeImports": "off" } } },
       "includes": ["**/*.astro"],
       "linter": {
         "rules": {
