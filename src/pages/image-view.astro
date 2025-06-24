@@ -1,8 +1,10 @@
 ---
 import Head from "../common/components/head/head.astro";
+import { LinkGoogleFonts } from "../common/components/head/link-google-fonts.tsx";
 import { App } from "../games/image-view/components/app.tsx";
 ---
 
-<Head title="Image View" />
+<Head linkGoogleFonts title="Image View" />
+<LinkGoogleFonts fonts={["Noto Sans"]}   />
 <App />
 <div />

@@ -1,19 +1,6 @@
 import { Define } from "../../../common/components/define/define.tsx";
 import { Flag, Mine } from "../../../common/components/image/symbol.tsx";
-import { classes } from "../../../common/scripts/classes.ts";
-import {
-  closed,
-  number,
-  number1,
-  number2,
-  number3,
-  number4,
-  number5,
-  number6,
-  number7,
-  number8,
-  opened,
-} from "./style.css.ts";
+import { closed, number1, number2, number3, number4, number5, number6, number7, number8, opened } from "./style.css.ts";
 
 import type { JSXElement } from "solid-js";
 
@@ -57,7 +44,7 @@ const DefineNumber = (properties: DefineNumberProperties): JSXElement => {
   return (
     <symbol id={String(properties.number)} viewBox="0 0 60 60">
       <Opened />
-      <text class={classes(number, properties.class)} x={30} y={54}>
+      <text class={properties.class} x={30} y={54}>
         {properties.number}
       </text>
     </symbol>

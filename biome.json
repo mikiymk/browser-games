@@ -34,7 +34,7 @@
 
   "files": {
     "ignoreUnknown": true,
-    "includes": ["src", "*"]
+    "includes": ["src/**/*", "*"]
   },
   "formatter": {
     "indentStyle": "space",

@@ -1,11 +1,13 @@
 ---
 import Head from "../common/components/head/head.astro";
+import { LinkGoogleFonts } from "../common/components/head/link-google-fonts.tsx";
 import { DefineCards } from "../common/components/image/define.tsx";
 import { TEXT_GAME_KLONDIKE } from "../common/scripts/constants.ts";
 import { App } from "../games/klondike/components/app.tsx";
 ---
 
-<Head title={TEXT_GAME_KLONDIKE} />
+<Head linkGoogleFonts title={TEXT_GAME_KLONDIKE} />
+<LinkGoogleFonts fonts={["Noto Sans"]} text="A2345678910JackQueenKing" />
 <DefineCards />
 <App client:load />
 <div />

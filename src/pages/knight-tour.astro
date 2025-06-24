@@ -1,11 +1,13 @@
 ---
 import Head from "../common/components/head/head.astro";
+import { LinkGoogleFonts } from "../common/components/head/link-google-fonts.tsx";
 import { TEXT_GAME_KNIGHT_TOUR } from "../common/scripts/constants.ts";
 import { App } from "../games/knight-tour/components/app.tsx";
 import { DefineSymbol } from "../games/knight-tour/components/define.tsx";
 ---
 
 <Head title={TEXT_GAME_KNIGHT_TOUR} />
+<LinkGoogleFonts fonts={["Noto Sans"]} text="123456780" />
 <DefineSymbol />
 <App client:load />
 <div />

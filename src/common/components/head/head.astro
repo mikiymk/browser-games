@@ -3,12 +3,13 @@ import { rootStyle } from "../../../styles/style.css.ts";
 import { Head as H } from "./head.tsx";
 
 interface Props {
-  title?: string;
+  readonly linkGoogleFonts?: boolean;
+  readonly title?: string;
 }
 
-const { title } = Astro.props;
+const { linkGoogleFonts, title } = Astro.props;
 const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
 ---
 
-<H canonicalUrl={canonicalUrl.toString()} title={title} />
+<H canonicalUrl={canonicalUrl.toString()} linkGoogleFonts={linkGoogleFonts}  title={title} />
 <body class={rootStyle} />
