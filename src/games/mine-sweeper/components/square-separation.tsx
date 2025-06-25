@@ -1,7 +1,9 @@
-import type { JSXElement } from "solid-js";
 import { line, move, path } from "../../../common/scripts/svg-path.ts";
-import type { Path } from "../../../common/scripts/svg-path.ts";
 import { separator } from "./style.css.ts";
+
+import type { JSXElement } from "solid-js";
+
+import type { Path } from "../../../common/scripts/svg-path.ts";
 
 type FieldSeparationProperties = {
   readonly height: number;

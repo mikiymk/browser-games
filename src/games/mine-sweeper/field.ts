@@ -1,5 +1,3 @@
-import { FieldNoOpen } from "./constants.ts";
-
 const diffArray: [number, number][] = [
   [1, 0],
   [1, 1],
@@ -35,10 +33,6 @@ export const isClear = (fields: readonly number[], mines: Set<number>): boolean 
   }
 
   return true;
-};
-
-export const initializeField = (length: number): readonly number[] => {
-  return Array.from({ length }, () => FieldNoOpen);
 };
 
 export const resetMines = (numberMines: number, height: number, width: number, firstClick: number): Set<number> => {

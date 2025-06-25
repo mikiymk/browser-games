@@ -1,10 +1,10 @@
 import { batch, createEffect, createSignal } from "solid-js";
 
+import { createBoard } from "../english-draughts/boards.ts";
 import { Bombed, Clear, FieldBomb, FieldFlag, FieldNoOpen, FirstClick, Playing } from "./constants.ts";
 import { getAround, isClear, resetMines } from "./field.ts";
 
 import type { Accessor } from "solid-js";
-import { createBoard } from "../english-draughts/boards.ts";
 
 type MineSweeperGame = {
   fields: Accessor<readonly number[]>;

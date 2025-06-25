@@ -1,5 +1,5 @@
-import { DefineNumber } from "../../../common/components/define/define-number.tsx";
 import { Define } from "../../../common/components/define/define.tsx";
+import { DefineNumber } from "../../../common/components/define/define-number.tsx";
 import { Flag, Mine } from "../../../common/components/image/symbol.tsx";
 import { number1, number2, number3, number4, number5, number6, number7, number8 } from "./style.css.ts";
 

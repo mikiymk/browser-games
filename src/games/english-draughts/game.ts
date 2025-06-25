@@ -28,9 +28,7 @@ export const createEnglishDraughtsGame = (): EnglishDraughtsGame => {
   const [white, setWhite] = createUrlQuerySignal<PlayerType>("white", PlayerTypeHuman);
   const [black, setBlack] = createUrlQuerySignal<PlayerType>("black", PlayerTypeAi);
 
-  const [boardData, setBoardData] = createSignal<{ move: number; stone: number }[]>(
-    createBoard(8, 8, { move: 0, stone: 0 }),
-  );
+  const [boardData, setBoardData] = createSignal(createBoard(8, 8, { move: 0, stone: 0 }));
   const [color, setColor] = createSignal<PlayerColor>("white");
   const boardNumber = mapArray(boardData, (value) => {
     if (value.move === MOVE_TARGET) {
