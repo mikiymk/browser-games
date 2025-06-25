@@ -13,13 +13,12 @@ import {
 } from "../../../styles/colors.css.ts";
 import { notoSans } from "../../../styles/fonts.css.ts";
 
-const symbol = style({
+export const separator = style({
   stroke: text,
-  strokeWidth: 2,
+  strokeWidth: 0.3,
 });
 
-export const closed = style([symbol, { fill: colorGray }]);
-export const opened = style([symbol, { fill: "none" }]);
+export const closed = style({ fill: colorGray });
 
 const number = style([
   notoSans,

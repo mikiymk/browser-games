@@ -4,6 +4,8 @@ import { Board } from "../../../common/components/game-board/board.tsx";
 import { FLAG, MINE } from "../../../common/components/image/id.ts";
 import { UseImage } from "../../../common/components/use-image/use.tsx";
 import { FieldBomb, FieldFlag, FieldNoOpen } from "../constants.ts";
+import { SquareSeparation } from "./square-separation.tsx";
+import { closed } from "./style.css.ts";
 
 import type { JSXElement } from "solid-js";
 
@@ -31,7 +33,7 @@ const MineCell = (properties: MineCellProperties): JSXElement => {
   return (
     <>
       <Show when={isClosed()}>
-        <UseImage height={10} id="close" width={10} x={properties.x} y={properties.y} />
+        <rect class={closed} height={10} width={10} x={properties.x} y={properties.y} />
       </Show>
       <UseImage height={10} id={id()} width={10} x={properties.x} y={properties.y} />
     </>
@@ -50,6 +52,7 @@ export const MineFields = (properties: MineFieldsProperties): JSXElement => {
   return (
     <Board
       data={properties.fields}
+      foreground={<SquareSeparation height={properties.height} width={properties.width} />}
       height={properties.height}
       onClick={(_, index) => {
         properties.open(index);
@@ -60,7 +63,6 @@ export const MineFields = (properties: MineFieldsProperties): JSXElement => {
         }
       }}
       width={properties.width}
-      // TODO: foreground
     >
       {(field, _, x, y) => <MineCell field={field} x={x} y={y} />}
     </Board>

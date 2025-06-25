@@ -7,6 +7,8 @@ export const number = style([
   notoSans,
   {
     fill: text,
+    fontSize: 60,
+    textAnchor: "middle",
   },
 ]);
 

@@ -5,7 +5,7 @@
  * @param value - ボードの各マスの初期値
  * @returns 新しいボード
  */
-export const createBoard = <T>(height: number, width: number, value: T): T[] => {
+export const createBoard = <T>(height: number, width: number, value: T): readonly T[] => {
   return Array.from({ length: height * width }, () => value);
 };
 

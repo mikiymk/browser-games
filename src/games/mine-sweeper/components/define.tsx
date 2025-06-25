@@ -1,6 +1,7 @@
 import { Define } from "../../../common/components/define/define.tsx";
+import { DefineNumber } from "../../../common/components/define/define-number.tsx";
 import { Flag, Mine } from "../../../common/components/image/symbol.tsx";
-import { closed, number1, number2, number3, number4, number5, number6, number7, number8, opened } from "./style.css.ts";
+import { number1, number2, number3, number4, number5, number6, number7, number8 } from "./style.css.ts";
 
 import type { JSXElement } from "solid-js";
 
@@ -9,12 +10,6 @@ export const DefineSymbol = (): JSXElement => {
     <Define>
       <Mine />
       <Flag />
-      <symbol id="close" viewBox="0 0 60 60">
-        <Closed />
-      </symbol>
-      <symbol id="open" viewBox="0 0 60 60">
-        <Opened />
-      </symbol>
 
       <DefineNumber class={number1} number={1} />
       <DefineNumber class={number2} number={2} />
@@ -25,28 +20,5 @@ export const DefineSymbol = (): JSXElement => {
       <DefineNumber class={number7} number={7} />
       <DefineNumber class={number8} number={8} />
     </Define>
-  );
-};
-
-const Closed = (): JSXElement => {
-  return <rect class={closed} height={60} width={60} />;
-};
-
-const Opened = (): JSXElement => {
-  return <rect class={opened} height={60} width={60} />;
-};
-
-type DefineNumberProperties = {
-  readonly class?: string | undefined;
-  readonly number: number;
-};
-const DefineNumber = (properties: DefineNumberProperties): JSXElement => {
-  return (
-    <symbol id={String(properties.number)} viewBox="0 0 60 60">
-      <Opened />
-      <text class={properties.class} x={30} y={54}>
-        {properties.number}
-      </text>
-    </symbol>
   );
 };

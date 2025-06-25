@@ -20,7 +20,7 @@ export const ShogiBoard = (properties: BoardProperties): JSXElement => {
   return (
     <>
       <Board
-        background={shogiBoard}
+        backgroundImage={shogiBoard}
         data={properties.board}
         height={9}
         onClick={(_square, index) => {
