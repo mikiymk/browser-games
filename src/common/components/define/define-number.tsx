@@ -1,6 +1,3 @@
-import { classes } from "../../scripts/classes.ts";
-import { defineText } from "./style.css.ts";
-
 import type { JSXElement } from "solid-js";
 
 type DefineNumberProperties = {
@@ -18,7 +15,7 @@ type DefineNumberProperties = {
 export const DefineNumber = (properties: DefineNumberProperties): JSXElement => {
   return (
     <symbol id={String(properties.number)} viewBox="0 0 60 60">
-      <text class={classes(defineText, properties.class)} x={30} y={54}>
+      <text class={properties.class} x={30} y={54}>
         {properties.number}
       </text>
     </symbol>

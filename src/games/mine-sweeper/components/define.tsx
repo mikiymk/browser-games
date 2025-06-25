@@ -1,3 +1,4 @@
+import { DefineNumber } from "../../../common/components/define/define-number.tsx";
 import { Define } from "../../../common/components/define/define.tsx";
 import { Flag, Mine } from "../../../common/components/image/symbol.tsx";
 import { number1, number2, number3, number4, number5, number6, number7, number8 } from "./style.css.ts";
@@ -19,19 +20,5 @@ export const DefineSymbol = (): JSXElement => {
       <DefineNumber class={number7} number={7} />
       <DefineNumber class={number8} number={8} />
     </Define>
-  );
-};
-
-type DefineNumberProperties = {
-  readonly class?: string | undefined;
-  readonly number: number;
-};
-const DefineNumber = (properties: DefineNumberProperties): JSXElement => {
-  return (
-    <symbol id={String(properties.number)} viewBox="0 0 60 60">
-      <text class={properties.class} x={30} y={54}>
-        {properties.number}
-      </text>
-    </symbol>
   );
 };
