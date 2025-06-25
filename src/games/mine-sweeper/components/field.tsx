@@ -7,6 +7,7 @@ import { FieldBomb, FieldFlag, FieldNoOpen } from "../constants.ts";
 
 import type { JSXElement } from "solid-js";
 import { SquareSeparation } from "./square-separation.tsx";
+import { closed } from "./style.css.ts";
 
 type MineCellProperties = {
   readonly field: number;
@@ -32,7 +33,7 @@ const MineCell = (properties: MineCellProperties): JSXElement => {
   return (
     <>
       <Show when={isClosed()}>
-        <UseImage height={10} id="close" width={10} x={properties.x} y={properties.y} />
+        <rect class={closed} height={10} width={10} x={properties.x} y={properties.y} />
       </Show>
       <UseImage height={10} id={id()} width={10} x={properties.x} y={properties.y} />
     </>

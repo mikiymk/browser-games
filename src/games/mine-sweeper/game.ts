@@ -1,9 +1,10 @@
 import { batch, createEffect, createSignal } from "solid-js";
 
 import { Bombed, Clear, FieldBomb, FieldFlag, FieldNoOpen, FirstClick, Playing } from "./constants.ts";
-import { getAround, initializeField, isClear, resetMines } from "./field.ts";
+import { getAround, isClear, resetMines } from "./field.ts";
 
 import type { Accessor } from "solid-js";
+import { createBoard } from "../english-draughts/boards.ts";
 
 type MineSweeperGame = {
   fields: Accessor<readonly number[]>;
@@ -18,82 +19,82 @@ export const createMineSweeperGame = (
   width: Accessor<number>,
   mineCount: Accessor<number>,
 ): MineSweeperGame => {
-  const [fields, setFields] = createSignal(initializeField(10 * 10));
+  const [fields, setFields] = createSignal(createBoard(height(), width(), FieldNoOpen));
   const setFieldOn = (index: number, field: number): void => {
-    setFields((fields) => {
-      const newFields = [...fields];
-
-      newFields[index] = field;
-
-      return newFields;
-    });
+    setFields((fields) => fields.with(index, field));
   };
-  let mines = new Set([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+
+  let mines = new Set<number>();
 
   const [gameState, setGameState] = createSignal(FirstClick);
 
   const reset = (): void => {
     setGameState(FirstClick);
-    setFields(initializeField(height() * width()));
+    setFields(createBoard(height(), width(), FieldNoOpen));
   };
 
-  createEffect(() => {
-    reset();
-  });
-
-  // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: 大きな関数
-  const openField = (index: number): void => {
+  const clickField = (index: number): void => {
     if (gameState() === Bombed || gameState() === Clear || fields().length <= index) {
+      // ゲームが終了している場合
       return;
     }
 
     if (gameState() === FirstClick) {
+      // 一番最初にクリックした場合、クリック周辺以外に爆弾を配置する
       mines = resetMines(mineCount(), height(), width(), index);
       setGameState(Playing);
     }
 
-    const aroundIndexes = getAround(height(), width(), index);
-    let clickResult = 0;
-
     if (mines.has(index)) {
-      setGameState(Bombed);
-
-      batch(() => {
-        for (const mine of mines) {
-          setFieldOn(mine, FieldBomb);
-        }
-      });
-      clickResult = FieldBomb;
-    } else {
-      for (const aroundIndex of aroundIndexes) {
-        if (mines.has(aroundIndex)) {
-          clickResult++;
-        }
-      }
+      // 爆弾をクリックした場合、ゲームオーバー処理
+      onBombed();
+      return;
     }
 
-    setFieldOn(index, clickResult);
-
-    if (clickResult === 0) {
-      for (const aroundIndex of aroundIndexes) {
-        if (fields()[aroundIndex] === FieldNoOpen) {
-          openField(aroundIndex);
-        }
-      }
-    }
+    openField(index);
 
     if (isClear(fields(), mines)) {
       setGameState(Clear);
     }
   };
 
-  const flagField = (index: number): boolean => {
-    if (fields()[index] === FieldFlag) {
+  const onBombed = (): void => {
+    batch(() => {
+      setGameState(Bombed);
+      for (const mine of mines) {
+        setFieldOn(mine, FieldBomb);
+      }
+    });
+  };
+
+  const openField = (index: number): void => {
+    const aroundIndexes = getAround(height(), width(), index);
+    let aroundMineCount = 0;
+    for (const aroundIndex of aroundIndexes) {
+      if (mines.has(aroundIndex)) {
+        aroundMineCount++;
+      }
+    }
+
+    setFieldOn(index, aroundMineCount);
+
+    if (aroundMineCount === 0) {
+      for (const aroundIndex of aroundIndexes) {
+        if (fields()[aroundIndex] === FieldNoOpen) {
+          openField(aroundIndex);
+        }
+      }
+    }
+  };
+
+  const toggleFlagField = (index: number): boolean => {
+    const field = fields()[index];
+    if (field === FieldFlag) {
       setFieldOn(index, FieldNoOpen);
       return true;
     }
 
-    if (fields()[index] === FieldNoOpen) {
+    if (field === FieldNoOpen) {
       setFieldOn(index, FieldFlag);
       return true;
     }
@@ -101,5 +102,9 @@ export const createMineSweeperGame = (
     return false;
   };
 
-  return { fields, flagField, gameState, openField, reset };
+  createEffect(() => {
+    reset();
+  });
+
+  return { fields, flagField: toggleFlagField, gameState, openField: clickField, reset };
 };

@@ -1,6 +1,6 @@
 import { Define } from "../../../common/components/define/define.tsx";
 import { Flag, Mine } from "../../../common/components/image/symbol.tsx";
-import { closed, number1, number2, number3, number4, number5, number6, number7, number8 } from "./style.css.ts";
+import { number1, number2, number3, number4, number5, number6, number7, number8 } from "./style.css.ts";
 
 import type { JSXElement } from "solid-js";
 
@@ -9,7 +9,6 @@ export const DefineSymbol = (): JSXElement => {
     <Define>
       <Mine />
       <Flag />
-      <Closed />
 
       <DefineNumber class={number1} number={1} />
       <DefineNumber class={number2} number={2} />
@@ -20,14 +19,6 @@ export const DefineSymbol = (): JSXElement => {
       <DefineNumber class={number7} number={7} />
       <DefineNumber class={number8} number={8} />
     </Define>
-  );
-};
-
-const Closed = (): JSXElement => {
-  return (
-    <symbol id="close" viewBox="0 0 60 60">
-      <rect class={closed} height={60} width={60} />
-    </symbol>
   );
 };
 
