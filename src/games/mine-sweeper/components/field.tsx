@@ -1,10 +1,10 @@
 import { Show } from "solid-js";
 
 import { Board } from "../../../common/components/game-board/board.tsx";
+import { SquareSeparation } from "../../../common/components/game-board/square-separation.tsx";
 import { FLAG, MINE } from "../../../common/components/image/id.ts";
 import { UseImage } from "../../../common/components/use-image/use.tsx";
 import { FieldBomb, FieldFlag, FieldNoOpen } from "../constants.ts";
-import { SquareSeparation } from "./square-separation.tsx";
 import { closed } from "./style.css.ts";
 
 import type { JSXElement } from "solid-js";
