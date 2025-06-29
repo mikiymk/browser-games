@@ -1,5 +1,5 @@
-import { line, move, path } from "../../scripts/svg-path.ts";
 import { separator } from "../../../games/mine-sweeper/components/style.css.ts";
+import { line, move, path } from "../../scripts/svg-path.ts";
 
 import type { JSXElement } from "solid-js";
 

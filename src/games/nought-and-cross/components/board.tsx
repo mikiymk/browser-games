@@ -1,7 +1,7 @@
 import { Board } from "../../../common/components/game-board/board.tsx";
+import { SquareSeparation } from "../../../common/components/game-board/square-separation.tsx";
 import { CROSS_ID, NOUGHT_ID } from "../../../common/components/image/id.ts";
 import { UseImage } from "../../../common/components/use-image/use.tsx";
-import { noughtAndCrossBoard } from "../../../images/image-sources.ts";
 import { CROSS, NOUGHT } from "../constants.ts";
 
 import type { JSXElement } from "solid-js";
@@ -34,8 +34,8 @@ type BoardProperties = {
 export const NncBoard = (properties: BoardProperties): JSXElement => {
   return (
     <Board
-      backgroundImage={noughtAndCrossBoard}
       data={properties.board}
+      foreground={<SquareSeparation height={3} width={3} />}
       height={3}
       onClick={(_, index) => {
         properties.click(index);
