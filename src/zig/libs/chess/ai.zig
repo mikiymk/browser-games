@@ -28,8 +28,8 @@ pub fn getAiMove(board: Board, allocator: Allocator, color: Color, depth: u8) Al
     defer allocator.free(moves);
 
     // ここまでの最も良い手
-    var best_places = std.ArrayList(Move).init(allocator);
-    defer best_places.deinit();
+    var best_places = std.ArrayList(Move).empty;
+    defer best_places.deinit(allocator);
     // ここまでの最も良い手の評価点
     var best_evaluation: isize = std.math.minInt(isize);
 
@@ -54,9 +54,9 @@ pub fn getAiMove(board: Board, allocator: Allocator, color: Color, depth: u8) Al
             if (best_places.items.len == 0 or evaluation > best_evaluation) {
                 best_evaluation = evaluation;
                 best_places.items.len = 0;
-                try best_places.append(.{ .from = from, .to = to_board });
+                try best_places.append(allocator, .{ .from = from, .to = to_board });
             } else if (evaluation == best_evaluation) {
-                try best_places.append(.{ .from = from, .to = to_board });
+                try best_places.append(allocator, .{ .from = from, .to = to_board });
             }
         }
     }
@@ -67,8 +67,8 @@ pub fn getAiMove(board: Board, allocator: Allocator, color: Color, depth: u8) Al
 
 /// 合法手をすべてリストする
 fn getValidMoves(board: Board, allocator: Allocator, color: Color) AllocError![]Move {
-    var moves = std.ArrayList(Move).init(allocator);
-    errdefer moves.deinit();
+    var moves = std.ArrayList(Move).empty;
+    errdefer moves.deinit(allocator);
 
     const boards = board.boards.get(color);
 
@@ -79,7 +79,7 @@ fn getValidMoves(board: Board, allocator: Allocator, color: Color) AllocError![]
             const to = board.getMove(BitBoard.fromIndex(current));
 
             if (!to.isEmpty()) {
-                try moves.append(.{
+                try moves.append(allocator, .{
                     .from = BitBoard.fromIndex(current),
                     .to = to,
                 });
@@ -87,7 +87,7 @@ fn getValidMoves(board: Board, allocator: Allocator, color: Color) AllocError![]
         }
     }
 
-    return moves.toOwnedSlice();
+    return moves.toOwnedSlice(allocator);
 }
 
 /// αβ法を使ってよい手を探す

@@ -7,6 +7,7 @@ const Optimize = std.builtin.OptimizeMode;
 
 const public_dir: Dir = .{ .override = .{ .custom = "../public/wasm" } };
 
+// zig 0.15.1
 pub fn build(b: *Build) void {
     const target: Target = b.standardTargetOptions(.{ .default_target = .{
         .cpu_arch = .wasm32,
@@ -44,11 +45,13 @@ fn buildLib(b: *Build, comptime name: []const u8, target: Target, optimize: Opti
 
     const exe = b.addExecutable(.{
         .name = name,
-        .root_source_file = b.path(source(name)),
-        .target = target,
-        .optimize = optimize,
-        // Omit debug symbols
-        .strip = true,
+        .root_module = b.addModule(name, .{
+            .root_source_file = b.path(source(name)),
+            .target = target,
+            .optimize = optimize,
+            // Omit debug symbols
+            .strip = true,
+        }),
     });
 
     // exports all "export" functions
@@ -65,7 +68,10 @@ fn buildTest(b: *Build) void {
     const test_step = b.step("test", "Run library tests");
 
     const main_tests = b.addTest(.{
-        .root_source_file = b.path(source("test")),
+        .root_module = b.addModule("test", .{
+            .root_source_file = b.path(source("test")),
+            .target = b.graph.host,
+        }),
     });
     const run_main_tests = b.addRunArtifact(main_tests);
     test_step.dependOn(&run_main_tests.step);

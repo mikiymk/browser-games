@@ -105,8 +105,8 @@ pub fn getPiece(self: Board, position: BitBoard) ?Piece {
 
 /// 盤上の通常移動を全て取得する。
 pub fn getAllWalkMoves(self: Board, a: Allocator, color: Color) ![]Game.Move {
-    var walk_moves = std.ArrayList(Game.Move).init(a);
-    errdefer walk_moves.deinit();
+    var walk_moves = std.ArrayList(Game.Move).empty;
+    errdefer walk_moves.deinit(a);
 
     // ポーンの移動を取得
     const pawn_board = self.getBoard(color, .pawn);
@@ -118,7 +118,7 @@ pub fn getAllWalkMoves(self: Board, a: Allocator, color: Color) ![]Game.Move {
         var walk_to_iterator = walk_to.iterator();
         while (walk_to_iterator.next()) |walk_to_position_index| {
             const move = Game.Move.init(pawn_position_index, walk_to_position_index);
-            try walk_moves.append(move);
+            try walk_moves.append(a, move);
         }
     }
 
@@ -132,11 +132,11 @@ pub fn getAllWalkMoves(self: Board, a: Allocator, color: Color) ![]Game.Move {
         var walk_to_iterator = walk_to.iterator();
         while (walk_to_iterator.next()) |walk_to_position_index| {
             const move = Game.Move.init(king_position_index, walk_to_position_index);
-            try walk_moves.append(move);
+            try walk_moves.append(a, move);
         }
     }
 
-    return walk_moves.toOwnedSlice();
+    return walk_moves.toOwnedSlice(a);
 }
 
 test "📖Board.getAllWalkMoves" {
@@ -176,8 +176,8 @@ test "📖Board.getAllWalkMoves" {
 
 /// 盤上のジャンプを全て取得する。
 pub fn getAllJumpMoves(self: Board, a: Allocator, color: Color) ![]Game.Move {
-    var jump_moves = std.ArrayList(Game.Move).init(a);
-    errdefer jump_moves.deinit();
+    var jump_moves = std.ArrayList(Game.Move).empty;
+    errdefer jump_moves.deinit(a);
 
     // ポーンの移動を取得
     const pawn_board = self.getBoard(color, .pawn);
@@ -189,7 +189,7 @@ pub fn getAllJumpMoves(self: Board, a: Allocator, color: Color) ![]Game.Move {
         var jump_to_iterator = jump_to.iterator();
         while (jump_to_iterator.next()) |jump_to_position_index| {
             const move = Game.Move.init(pawn_position_index, jump_to_position_index);
-            try jump_moves.append(move);
+            try jump_moves.append(a, move);
         }
     }
 
@@ -203,11 +203,11 @@ pub fn getAllJumpMoves(self: Board, a: Allocator, color: Color) ![]Game.Move {
         var jump_to_iterator = jump_to.iterator();
         while (jump_to_iterator.next()) |jump_to_position_index| {
             const move = Game.Move.init(king_position_index, jump_to_position_index);
-            try jump_moves.append(move);
+            try jump_moves.append(a, move);
         }
     }
 
-    return jump_moves.toOwnedSlice();
+    return jump_moves.toOwnedSlice(a);
 }
 
 test "📖Board.getAllJumpMoves" {
