@@ -18,7 +18,7 @@
     "paths": {},
     "target": "ESNext"
   },
-  "exclude": ["./vitest.config.ts"],
+  "exclude": [],
   "extends": "@tsconfig/strictest/tsconfig.json",
   "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.astro"]
 }

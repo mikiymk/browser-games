@@ -5,4 +5,5 @@ const knipConfig = {
   ignoreBinaries: ["zig"],
 };
 
+// biome-ignore lint/style/noDefaultExport: knipに従う
 export default knipConfig;

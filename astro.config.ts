@@ -4,7 +4,7 @@ import { defineConfig } from "astro/config";
 import compress from "astro-compress";
 
 // https://astro.build/config
-export default defineConfig({
+const astroConfig = defineConfig({
   base: "browser-games/",
   // biome-ignore lint/style/useNamingConvention: ライブラリに合わせる
   compressHTML: true,
@@ -60,11 +60,7 @@ export default defineConfig({
     esbuild: {
       mangleProps: /_$/,
     },
-    plugins: [
-      vanillaExtractPlugin({
-        identifiers: "short",
-      }),
-    ],
+    plugins: [vanillaExtractPlugin({ identifiers: "short" })],
     server: {
       watch: {
         ignored: ["**/.zig-cache/**"],
@@ -72,3 +68,6 @@ export default defineConfig({
     },
   },
 });
+
+// biome-ignore lint/style/noDefaultExport: astroに従う
+export default astroConfig;
