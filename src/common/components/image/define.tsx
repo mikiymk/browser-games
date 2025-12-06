@@ -83,12 +83,12 @@ export const DefineShogiPieces = (): JSXElement => {
       <Piece2Letters id="lance" name="香車" />
       <Piece2Letters id="pawn" name="歩兵" />
 
-      <Piece2Letters id="rook-promoted" name="龍王" promoted />
-      <Piece2Letters id="bishop-promoted" name="龍馬" promoted />
-      <Piece2Letters id="silver-promoted" name="成銀" promoted />
-      <Piece2Letters id="knight-promoted" name="成桂" promoted />
-      <Piece2Letters id="lance-promoted" name="成香" promoted />
-      <Piece2Letters id="pawn-promoted" name="と金" promoted />
+      <Piece2Letters id="rook-promoted" name="龍王" promoted={true} />
+      <Piece2Letters id="bishop-promoted" name="龍馬" promoted={true} />
+      <Piece2Letters id="silver-promoted" name="成銀" promoted={true} />
+      <Piece2Letters id="knight-promoted" name="成桂" promoted={true} />
+      <Piece2Letters id="lance-promoted" name="成香" promoted={true} />
+      <Piece2Letters id="pawn-promoted" name="と金" promoted={true} />
     </Define>
   );
 };

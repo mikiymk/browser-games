@@ -24,20 +24,14 @@ const emptyBoard: number[] = Array.from({ length: 64 }, () => CellEmpty);
 export const App = (): JSXElement => {
   const [black, setBlack] = createUrlQuerySignal<PlayerType>("black", PlayerTypeHuman);
   const [white, setWhite] = createUrlQuerySignal<PlayerType>("white", PlayerTypeAi);
-
   const [gamePlaying, setGamePlaying] = createSignal(false);
-
   const [board, setBoard] = createSignal(emptyBoard);
-
   const wasm = usePromise(getReversiWasm);
+
   let terminateGame: () => void = doNothingFunction;
   let getColor: (() => number) | undefined;
 
-  let resolve: (value: number) => void = doNothingFunction;
-
-  const humanInput = new MultiPromise<number>((rs) => {
-    resolve = rs;
-  });
+  const { promise: humanInput, resolve } = MultiPromise.withResolvers<number>();
 
   const handleStart = (): void => {
     const exports = wasm();

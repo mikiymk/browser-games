@@ -22,7 +22,7 @@ export const InputNumber = (properties: InputNumberProperties): JSXElement => {
       class={number}
       name={properties.name}
       onChange={(event) => {
-        properties.setValue(Number.parseInt(event.currentTarget.value));
+        properties.setValue(Number.parseInt(event.currentTarget.value, 10));
       }}
       type="number"
       value={properties.value}

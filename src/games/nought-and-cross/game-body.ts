@@ -67,7 +67,5 @@ const isHuman = (color: PlayerColor, players: Players): boolean => {
 };
 
 const setCallback = (callback: () => Promise<void> | void): void => {
-  setTimeout(() => {
-    return void callback();
-  }, 0);
+  setTimeout(() => callback(), 0);
 };

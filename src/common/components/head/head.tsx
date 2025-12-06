@@ -12,7 +12,7 @@ export const Head = (properties: HeadPropeties): JSXElement => {
 
   return (
     <>
-      <meta charset="utf8" />
+      <meta charset="utf-8" />
       <meta content="width=device-width, initial-scale=1.0" name="viewport" />
       <link href={themeIcon} rel="shortcut icon" type="image/svg+xml" />
       <link href={properties.canonicalUrl} rel="canonical" />

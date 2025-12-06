@@ -39,6 +39,7 @@ type NoughtAndCrossGame = {
   status: Accessor<GameStatus>;
 };
 
+// biome-ignore lint/complexity/noExcessiveLinesPerFunction: 長い関数
 export const createNoughtAndCrossGame = (): NoughtAndCrossGame => {
   const [playerO, setPlayerO] = createUrlQuerySignal<PlayerType>("o", PlayerTypeHuman);
   const [playerX, setPlayerX] = createUrlQuerySignal<PlayerType>("x", PlayerTypeAi);

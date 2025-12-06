@@ -9,7 +9,7 @@ export const usePromise = <T>(getter: () => Promise<T>): (() => T | undefined) =
   const [resource, setResource] = createSignal<T | undefined>();
 
   onMount(() => {
-    void getter().then((value) => {
+    getter().then((value) => {
       setResource(() => value);
     });
   });

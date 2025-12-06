@@ -36,7 +36,7 @@ export const isClear = (fields: readonly number[], mines: Set<number>): boolean 
 };
 
 export const resetMines = (numberMines: number, height: number, width: number, firstClick: number): Set<number> => {
-  const mines = new Set<number>([]);
+  const mines = new Set<number>();
 
   const around = new Set([firstClick, ...getAround(height, width, firstClick)]);
   const length = height * width;

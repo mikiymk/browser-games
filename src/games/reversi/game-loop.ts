@@ -72,15 +72,13 @@ export const gameLoop = (
     }
 
     if (bp !== 0) {
-      setTimeout(() => {
-        void gameMove();
-      }, 0);
+      setTimeout(() => gameMove(), 0);
     }
   };
 
   setTimeout(() => {
     updateColor();
-    void gameMove();
+    gameMove();
   }, 0);
 
   return {

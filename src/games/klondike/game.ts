@@ -33,6 +33,7 @@ type Pile = {
   opened: Card[];
 };
 
+// biome-ignore lint/complexity/noExcessiveLinesPerFunction: 長い関数
 export const createKlondikeGame = (): KlondikeGame => {
   const [foundations, setFoundations] = createStore<Card[][]>([[], [], [], []]);
   const [stock, setStock] = createStore<Pile>({ closed: [], opened: [] });

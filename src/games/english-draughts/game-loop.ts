@@ -41,6 +41,7 @@ const isHuman = (color: PlayerColor, players: Players): boolean => {
 
 const AI_SLEEP_TIME_MS = 1000;
 
+// biome-ignore lint/complexity/noExcessiveLinesPerFunction: 長い関数
 export const gameLoop = (game: GameController, view: ViewController): (() => void) => {
   let gameObject: GameObject = game.init();
 
@@ -61,6 +62,7 @@ export const gameLoop = (game: GameController, view: ViewController): (() => voi
       for (;;) {
         view.setMove([]);
 
+        // biome-ignore lint/performance/noAwaitInLoops: ループ中でawait
         from = await view.requestInput();
 
         const moves = game.getMove(gameObject, from);
@@ -96,15 +98,11 @@ export const gameLoop = (game: GameController, view: ViewController): (() => voi
     }
 
     if (gameObject !== 0) {
-      setTimeout(() => {
-        return void run();
-      }, 0);
+      setTimeout(() => run(), 0);
     }
   };
 
-  setTimeout(() => {
-    return void run();
-  }, 0);
+  setTimeout(() => run(), 0);
 
   return terminate;
 };

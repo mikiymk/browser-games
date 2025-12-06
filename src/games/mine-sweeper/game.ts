@@ -14,6 +14,7 @@ type MineSweeperGame = {
   reset: () => void;
 };
 
+// biome-ignore lint/complexity/noExcessiveLinesPerFunction: 長い関数
 export const createMineSweeperGame = (
   height: Accessor<number>,
   width: Accessor<number>,

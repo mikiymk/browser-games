@@ -24,6 +24,8 @@ type Game = {
   start: () => void;
   whiteHands: Accessor<Hand>;
 };
+
+// biome-ignore lint/complexity/noExcessiveLinesPerFunction: 長い関数
 export const createShogiGame = (white: Accessor<PlayerType>, black: Accessor<PlayerType>): Game => {
   const [board, setFullBoard] = createSignal<Board>(
     Array.from({ length: 81 }, () => ({ moveTarget: false, piece: 0 })),

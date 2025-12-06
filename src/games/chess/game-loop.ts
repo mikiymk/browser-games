@@ -95,6 +95,7 @@ const BlackPromotionBoard = Array.from({ length: 64 }, (_, index) => {
 
 const AI_SLEEP_TIME_MS = 500;
 
+// biome-ignore lint/complexity/noExcessiveLinesPerFunction: 長い関数
 export const getWasm = async (): Promise<WasmConnect> => {
   const wasm = await WebAssembly.instantiateStreaming(fetch(`${import.meta.env.BASE_URL}/wasm/chess.wasm`));
 
@@ -188,10 +189,10 @@ export const getWasm = async (): Promise<WasmConnect> => {
     ai: exports.moveAi,
     deinit: exports.deinit,
 
-    getBoard: getBoard,
-    getColor: getColor,
-    getEnd: getEnd,
-    getMove: getMove,
+    getBoard,
+    getColor,
+    getEnd,
+    getMove,
 
     init: exports.init,
     move: exports.move,
@@ -218,6 +219,7 @@ const inputKind = async (
   }
 
   for (;;) {
+    // biome-ignore lint/performance/noAwaitInLoops: ループ中でawait
     const kindIndex = await humanInput.request();
 
     if (color === Black) {
@@ -257,6 +259,7 @@ const inputKind = async (
   }
 };
 
+// biome-ignore lint/complexity/noExcessiveLinesPerFunction: 長い関数
 export const gameLoop = (
   wasm: WasmConnect,
   setColor: (color: number) => void,
@@ -299,6 +302,7 @@ export const gameLoop = (
       for (;;) {
         setMove(EmptyBoard);
 
+        // biome-ignore lint/performance/noAwaitInLoops: ループ中でawait
         from = await humanInput.request();
 
         const moves = getMove(boardPtr, from);
@@ -338,15 +342,11 @@ export const gameLoop = (
     }
 
     if (boardPtr !== 0) {
-      setTimeout(() => {
-        void run();
-      }, 0);
+      setTimeout(() => run(), 0);
     }
   };
 
-  setTimeout(() => {
-    void run();
-  }, 0);
+  setTimeout(() => run(), 0);
 
   return terminate;
 };

@@ -30,118 +30,125 @@ export const gameLoop = (
   humanInput: MultiPromise<number>,
   players: Players,
 ): (() => void) => {
-  const {
-    ai,
-    board,
-
-    deinit,
-    hands,
-    hit,
-    hitPos,
-    init,
-    move,
-
-    movePos,
-    player,
-    promote,
-
-    winner,
-  } = wasm;
-
-  let game: Game = init();
+  let game: Game = wasm.init();
 
   const terminate = (): void => {
-    deinit(game);
+    wasm.deinit(game);
     game = { board: 0, game: 0 };
   };
 
-  // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: 長い関数
-  const ply = async (color: number): Promise<void> => {
+  const run = async (): Promise<void> => {
+    setBoard(wasm.board(game));
+    setHands(wasm.hands(game));
+
+    const color = wasm.player(game);
     if (isHuman(players, color)) {
-      for (;;) {
-        setMove(EmptyBoard);
-
-        const from = await humanInput.request();
-        if (from > 99) {
-          const hits = hitPos(game, from - 100);
-          if (!hits.includes(MOVE_TARGET)) {
-            continue;
-          }
-          setMove(hits);
-          const to = await humanInput.request();
-          if (to > 99) {
-            continue;
-          }
-
-          if (hits[to] === MOVE_TARGET) {
-            hit(game, from - 100, to);
-            return;
-          }
-
-          continue;
-        }
-
-        const moves = movePos(game, from);
-
-        if (!moves.includes(MOVE_TARGET)) {
-          continue;
-        }
-
-        setMove(moves);
-
-        const to = await humanInput.request();
-        if (to > 99) {
-          continue;
-        }
-
-        if (moves[to] === MOVE_TARGET) {
-          if (move(game, from, to)) {
-            setPromotion(true);
-            const isPromote = await askPromote(humanInput);
-            setPromotion(false);
-
-            if (isPromote) {
-              promote(game, to);
-            }
-          }
-
-          return;
-        }
-      }
+      await plyHuman(wasm, game, setMove, setPromotion, humanInput);
     } else {
-      ai(game);
-
+      wasm.ai(game);
       await sleep(AI_SLEEP_TIME_MS);
     }
-  };
 
-  const run = async (): Promise<void> => {
-    setBoard(board(game));
-    setHands(hands(game));
-    const color = player(game);
-
-    await ply(color);
-
-    setPlayer(player(game));
-    setBoard(board(game));
+    setPlayer(wasm.player(game));
+    setBoard(wasm.board(game));
     setMove(EmptyBoard);
 
-    const end = winner(game);
+    const end = wasm.winner(game);
     if (end !== 0) {
       setWinner(end);
       terminate();
     }
 
     if (game.game !== 0) {
-      setTimeout(() => {
-        void run();
-      }, 0);
+      setTimeout(() => run(), 0);
     }
   };
 
-  setTimeout(() => {
-    void run();
-  }, 0);
+  setTimeout(() => run(), 0);
 
   return terminate;
+};
+
+const plyHuman = async (
+  wasm: WasmConnect,
+  game: Game,
+  setMove: (move: readonly number[]) => void,
+  setPromotion: (promotion: boolean) => void,
+  humanInput: MultiPromise<number>,
+): Promise<void> => {
+  for (;;) {
+    setMove(EmptyBoard);
+
+    // biome-ignore lint/performance/noAwaitInLoops: 入力を待つ
+    const from = await humanInput.request();
+    if (from >= 100) {
+      if (await plyHumanHit(wasm, game, setMove, humanInput, from - 100)) {
+        return;
+      }
+    } else if (await plyHumanMove(wasm, game, setMove, setPromotion, humanInput, from)) {
+      return;
+    }
+  }
+};
+
+const plyHumanHit = async (
+  wasm: WasmConnect,
+  game: Game,
+  setMove: (move: readonly number[]) => void,
+  humanInput: MultiPromise<number>,
+  from: number,
+): Promise<boolean> => {
+  const hits = wasm.hitPos(game, from);
+  if (!hits.includes(MOVE_TARGET)) {
+    return false;
+  }
+  setMove(hits);
+  const to = await humanInput.request();
+  if (to >= 100) {
+    return false;
+  }
+
+  if (hits[to] === MOVE_TARGET) {
+    wasm.hit(game, from, to);
+    return true;
+  }
+
+  return false;
+};
+
+const plyHumanMove = async (
+  wasm: WasmConnect,
+  game: Game,
+  setMove: (move: readonly number[]) => void,
+  setPromotion: (promotion: boolean) => void,
+  humanInput: MultiPromise<number>,
+  from: number,
+): Promise<boolean> => {
+  const moves = wasm.movePos(game, from);
+
+  if (!moves.includes(MOVE_TARGET)) {
+    return false;
+  }
+
+  setMove(moves);
+
+  const to = await humanInput.request();
+  if (to > 99) {
+    return false;
+  }
+
+  if (moves[to] === MOVE_TARGET) {
+    if (wasm.move(game, from, to)) {
+      setPromotion(true);
+      const isPromote = await askPromote(humanInput);
+      setPromotion(false);
+
+      if (isPromote) {
+        wasm.promote(game, to);
+      }
+    }
+
+    return true;
+  }
+  return false;
 };

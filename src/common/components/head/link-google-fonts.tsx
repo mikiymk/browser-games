@@ -9,7 +9,7 @@ export const LinkGoogleFonts = (properties: LinkGoogleFontsProperties): JSXEleme
   const href = (): string => {
     const urlBase = "https://fonts.googleapis.com/css2?display=swap";
     const fonts = properties.fonts.map((font) => `&family=${font.replaceAll(" ", "+")}`);
-    const text = encodeURIComponent([...new Set(properties.text ?? "")].toSorted().join(""));
+    const text = encodeURIComponent([...new Set(properties.text)].toSorted().join(""));
 
     return `${urlBase}${fonts.join("")}${text !== "" ? `&text=${text}` : ""}`;
   };

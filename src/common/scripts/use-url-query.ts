@@ -42,12 +42,13 @@ export const createUrlQuerySignalNumber = <T extends number>(
   defaultValue: NoInfer<number>,
 ): [Accessor<T>, Setter<T>] => {
   const [value, setValue] = createUrlQuerySignal(name, String(defaultValue));
-  const valueNumber = (): T => Number.parseInt(value()) as T;
+  const valueNumber = (): T => Number.parseInt(value(), 10) as T;
   const setValueNumber = (value: ((previous: T) => T) | T): T => {
     return Number.parseInt(
       typeof value === "function"
-        ? setValue((previous) => String(value(Number.parseInt(previous) as T)))
+        ? setValue((previous) => String(value(Number.parseInt(previous, 10) as T)))
         : setValue(String(value)),
+      10,
     ) as T;
   };
 
