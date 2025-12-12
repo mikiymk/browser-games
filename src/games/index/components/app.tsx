@@ -2,6 +2,7 @@ import { For } from "solid-js";
 
 import { Page } from "../../../common/components/page-frame/page.tsx";
 import {
+  TEXT_GAME_BACKGAMMON,
   TEXT_GAME_BULLS_AND_COWS,
   TEXT_GAME_CHESS,
   TEXT_GAME_ENGLISH_DRAUGHTS,
@@ -27,6 +28,7 @@ const pages = [
   { name: "klondike", title: TEXT_GAME_KLONDIKE },
   { name: "english-draughts", title: TEXT_GAME_ENGLISH_DRAUGHTS },
   { name: "bulls-and-cows", title: TEXT_GAME_BULLS_AND_COWS },
+  { name: "backgammon", title: TEXT_GAME_BACKGAMMON },
   { name: "image-view", title: "Image View" },
 ];
 

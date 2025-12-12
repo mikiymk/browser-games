@@ -18,6 +18,7 @@ export const TEXT_SECOND_PLAYER = "後手";
 
 export const TEXT_GAME_BULLS_AND_COWS = "雄牛と雌牛";
 export const TEXT_GAME_CHESS = "チェス";
+export const TEXT_GAME_BACKGAMMON = "バックギャモン";
 export const TEXT_GAME_ENGLISH_DRAUGHTS = "イギリス式チェッカー";
 export const TEXT_GAME_KLONDIKE = "クロンダイク";
 export const TEXT_GAME_KNIGHT_TOUR = "ナイトツアー";
